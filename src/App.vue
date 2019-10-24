@@ -1,8 +1,8 @@
 <template>
-  <div id="app">
-    <Map/>
-    <SpotInfo/>
-  </div>
+    <div id="app">
+        <Map/>
+        <SpotInfo/>
+    </div>
 </template>
 
 <script lang="ts">
@@ -11,10 +11,10 @@ import Map from './components/Map.vue';
 import SpotInfo from './components/SpotInfo.vue';
 
 @Component({
-  components: {
-    Map,
-    SpotInfo,
-  },
+    components: {
+        Map,
+        SpotInfo,
+    },
 })
 export default class App extends Vue {}
 </script>

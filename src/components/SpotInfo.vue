@@ -1,7 +1,7 @@
 <template>
-  <div class="spot-info">
-      spot-info
-  </div>
+    <div class="spot-info">
+            spot-info
+    </div>
 </template>
 
 <script lang="ts">

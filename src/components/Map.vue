@@ -1,7 +1,7 @@
 <template>
-  <div class="map">
-    map
-  </div>
+    <div class="map">
+        map
+    </div>
 </template>
 
 <script lang="ts">
