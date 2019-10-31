@@ -1,5 +1,5 @@
 <template>
-    <div class="spot-info">
+    <div class="spot-info" v-show="visible">
         <p>{{ spot_name }}</p>
     </div>
 </template>
@@ -10,24 +10,34 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 @Component
 export default class SpotInfo extends Vue {
 
-    private spot_name: string = '';
-    private others: Object = {};
+    private spotName: string = '';
+    private others: any = {};
+    private visible: boolean = false;
 
     private get currentSpotID(): number {
         return this.$store.getters.getCurrentSpotID;
     }
 
+    private get spotInfoVisible(): boolean {
+        return this.$store.getters.getSpotInfoVisible;
+    }
+
     // currentSpotIDの変更を検知したら，spot_name, othersを更新する
     @Watch('currentSpotID')
-    private spotIDChanged() {
-        let spot = this.$store.getters.getInfoOfCurrentSpot;
+    private spotIDChanged(): void {
+        let spot: any = this.$store.getters.getInfoOfCurrentSpot;
         if (spot) {
-            this.spot_name = spot.name;
+            this.spotName = spot.name;
             this.others = spot.others;
         } else {
-            this.spot_name = "no_name";
+            this.spotName = "no_name";
             this.others = {};
         }
+    }
+
+    @Watch('spotInfoVisible')
+    private spotInfoVisibleChanged(): void {
+        this.visible = this.$store.getters.getSpotInfoVisible;
     }
 
 }
