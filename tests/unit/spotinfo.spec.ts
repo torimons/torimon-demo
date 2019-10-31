@@ -4,6 +4,7 @@ import SpotInfo from '@/components/SpotInfo.vue';
 
 const state = {
     currentSpotID: null,
+    spotInfoVisible: false,
     map: {
         spots: [
             {
@@ -32,7 +33,8 @@ describe('components/SpotInfo.vue', () => {
             getters: {
                 getCurrentSpotID: () => store.state.currentSpotID,
                 getInfoOfCurrentSpot:　() =>
-                    store.state.map.spots.find((spot:any) => spot.id === store.getters.getCurrentSpotID)
+                    store.state.map.spots.find((spot:any) => spot.id === store.getters.getCurrentSpotID),
+                getSpotInfoVisible: () => store.state.spotInfoVisible,
             }
         });
         wrapper = shallowMount( SpotInfo, {
@@ -44,13 +46,21 @@ describe('components/SpotInfo.vue', () => {
     it('currentSpotIDの変化を検知してspot_nameが変化する．', () => {
         // 存在するspotIDが指定された場合，対応するspot_nameに変化する
         store.state.currentSpotID = 0;
-        expect(wrapper.vm.spot_name).toBe("spot0");
+        expect(wrapper.vm.spotName).toBe("spot0");
         store.state.currentSpotID = 1;
-        expect(wrapper.vm.spot_name).toBe("spot1");
+        expect(wrapper.vm.spotName).toBe("spot1");
         // 存在しないspotIDが指定された場合，no_nameに変化する
         store.state.currentSpotID = null;
-        expect(wrapper.vm.spot_name).toBe("no_name");
+        expect(wrapper.vm.spotName).toBe("no_name");
         store.state.currentSpotID = 999;
-        expect(wrapper.vm.spot_name).toBe("no_name");
+        expect(wrapper.vm.spotName).toBe("no_name");
+    });
+
+    it('spotInfoVisibleの変化を検知して，コンポーネントの表示，非表示を切り替える', () => {
+        // 初期状態では見えない状態
+        expect(wrapper.isVisible()).toBe(false);
+        // spoInfoVisibleが変わると見える
+        store.state.spotInfoVisible = true;
+        expect(wrapper.isVisible()).toBe(true);
     });
 });
