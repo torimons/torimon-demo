@@ -13,6 +13,6 @@ assignees: ''
 ## このIssueに取り掛かるために完了している必要があるIssue番号
 
 
-## 参照したnotionページのURL
+## notion　URL
 
 
