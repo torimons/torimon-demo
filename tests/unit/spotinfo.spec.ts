@@ -43,8 +43,8 @@ describe('components/SpotInfo.vue', () => {
         });
     });
 
-    it('currentSpotIDの変化を検知してspot_nameが変化する．', () => {
-        // 存在するspotIDが指定された場合，対応するspot_nameに変化する
+    it('選択されているスポットIDの変化を検知するとコンポーネントの表示内容が変化する．', () => {
+        // 存在するspotIDが指定された場合，対応するspotNameに変化する
         store.state.currentSpotID = 0;
         expect(wrapper.vm.spotName).toBe("spot0");
         store.state.currentSpotID = 1;
@@ -56,7 +56,7 @@ describe('components/SpotInfo.vue', () => {
         expect(wrapper.vm.spotName).toBe("no_name");
     });
 
-    it('spotInfoVisibleの変化を検知して，コンポーネントの表示，非表示を切り替える', () => {
+    it('可視化状態変数を参照して，コンポーネントの表示，非表示を切り替える', () => {
         // 初期状態では見えない状態
         expect(wrapper.isVisible()).toBe(false);
         // spoInfoVisibleが変わると見える
