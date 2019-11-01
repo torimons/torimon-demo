@@ -43,7 +43,7 @@ describe('components/SpotInfo.vue', () => {
         });
     });
 
-    it('選択されているスポットIDの変化を検知するとコンポーネントの表示内容が変化する．', () => {
+    it('選択されているスポットIDの変化を検知するとコンポーネントのspotNameが変化する．', () => {
         // 存在するspotIDが指定された場合，対応するspotNameに変化する
         store.state.currentSpotID = 0;
         expect(wrapper.vm.spotName).toBe('spot0');
@@ -53,7 +53,7 @@ describe('components/SpotInfo.vue', () => {
         store.state.currentSpotID = null;
         expect(wrapper.vm.spotName).toBe('no_name');
         store.state.currentSpotID = 999;
-        expect(wrapper.vm.spotName).toBe('no_name"';
+        expect(wrapper.vm.spotName).toBe('no_name');
     });
 
     it('可視化状態変数を参照して，コンポーネントの表示，非表示を切り替える', () => {
@@ -63,4 +63,18 @@ describe('components/SpotInfo.vue', () => {
         store.state.spotInfoVisible = true;
         expect(wrapper.isVisible()).toBe(true);
     });
+
+    it('stateの変化に合わせて，htmlの表示内容が切り替わる', () => {
+        // 存在するspotIDが指定された場合，対応するspotNameに変化する
+        store.state.currentSpotID = 0;
+        expect(wrapper.find('p').text()).toBe('spot0');
+        store.state.currentSpotID = 1;
+        expect(wrapper.find('p').text()).toBe('spot1');
+        // 存在しないspotIDが指定された場合，no_nameに変化する
+        store.state.currentSpotID = null;
+        expect(wrapper.find('p').text()).toBe('no_name');
+        store.state.currentSpotID = 999;
+        expect(wrapper.find('p').text()).toBe('no_name');
+    });
+
 });
