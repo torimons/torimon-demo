@@ -1,6 +1,6 @@
 <template>
     <div class="spot-info" v-show="visible">
-        <p>{{ spot_name }}</p>
+        <p>{{ spotName }}</p>
     </div>
 </template>
 

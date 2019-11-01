@@ -13,7 +13,6 @@ export default class SpotInfo extends Vue {
 
     /**
      * 現在選択されているスポットIDをvuexから取得する
-     * @param なし
      * @return 現在選択されているスポットのID
      */
     private get currentSpotID(): number {
@@ -21,8 +20,7 @@ export default class SpotInfo extends Vue {
     }
 
     /**
-     * SpotInfoコンポーネントの可視化状態をvuexから取得する算
-     * @param　なし
+     * SpotInfoコンポーネントの可視化状態をvuexから取得する．
      * @return spotInfoコンポーネントの可視化状態
      */
     private get spotInfoVisible(): boolean {
@@ -30,26 +28,22 @@ export default class SpotInfo extends Vue {
     }
 
     /**
-     * 選択されているスポットIDの変更を検知すると，表示内容を更新する
-     * @param なし
-     * @return なし
+     * 選択されているスポットIDの変更を検知すると，spotName, othersを更新して表示内容を更新する．
      */
     @Watch('currentSpotID')
     private spotIDChanged(): void {
-        let spot: any = this.$store.getters.getInfoOfCurrentSpot;
+        const spot: any = this.$store.getters.getInfoOfCurrentSpot;
         if (spot) {
             this.spotName = spot.name;
             this.others = spot.others;
         } else {
-            this.spotName = "no_name";
+            this.spotName = 'no_name';
             this.others = {};
         }
     }
 
     /**
-     * コンポーネントの表示/非表示を切り替える
-     * @param なし
-     * @return なし
+     * コンポーネントの表示/非表示を，visibleを更新して切り替える.．
      */
     @Watch('spotInfoVisible')
     private spotInfoVisibleChanged(): void {
