@@ -1,5 +1,5 @@
 import { Mutation, VuexModule, getModule, Module } from 'vuex-module-decorators';
-import store from '..';
+import store from '@/store';
 import { MapState, Spot, SpotInfo, SpotForMap, Bounds } from '@/store/types';
 
 /**
