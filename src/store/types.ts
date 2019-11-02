@@ -1,14 +1,10 @@
-export interface RootState {
-    version: string;
-}
-
 /**
  * MapViewの状態を表す型
  * stateにおいて最も上の親にあたる
  */
 export interface MapViewState {
     map: MapState;
-    spotInfoIsVisible: false;
+    spotInfoIsVisible: boolean;
 }
 
 /**
@@ -17,7 +13,7 @@ export interface MapViewState {
 export interface MapState {
     id: number;
     name: string;
-    currentSpotID: number;
+    currentSpotId: number;
     spots: Spot[];
     bounds: Bounds;
     parentSpotId?: number;
@@ -28,7 +24,7 @@ export interface MapState {
  */
 export interface Spot {
     id: number;
-    name : string;
+    name: string;
     location: Location;
     floor: number;
     gateNodeIds: number[];
@@ -50,7 +46,7 @@ export interface SpotInfo {
 }
 
 /**
- * 
+ *
  */
 export interface Bounds {
     topL: Location;

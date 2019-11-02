@@ -1,17 +1,10 @@
 import Vue from 'vue';
-import Vuex, { StoreOptions } from 'vuex';
-import { RootState } from './types';
-import { map } from './map';
+import Vuex from 'vuex';
+import { MapViewModule } from './modules/MapViewModule';
 
+interface StoreType {
+    mapView: MapViewModule;
+}
 Vue.use(Vuex);
 
-const store: StoreOptions<RootState> = {
-    state: {
-        version: '1.0.0',
-    },
-    modules: {
-        map,
-    },
-};
-
-export default new Vuex.Store<RootState>(store);
+export default new Vuex.Store<StoreType>({});
