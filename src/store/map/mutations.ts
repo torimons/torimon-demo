@@ -1,9 +1,13 @@
 import { MutationTree } from 'vuex';
-import { MapState } from '@/store/types';
+import { MapViewState } from '@/store/types';
 
-export const mutations: MutationTree<MapState> = {
-    setCurrentSpotID: (state: MapState, newSpotID: string) => {
-        state.currentSpotID = newSpotID;
+export const mutations: MutationTree<MapViewState> = {
+    /**
+     * Mapコンポーネント上でフォーカスされているSpotのIDを更新する
+     * @param 
+     */
+    setCurrentSpotID: (state: MapViewState, newSpotID: number) => {
+        state.map.currentSpotID = newSpotID;
     },
 };
 

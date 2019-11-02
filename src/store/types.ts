@@ -1,31 +1,63 @@
 export interface RootState {
-    version: string,   
+    version: string;
 }
 
-export interface MapState{
-    id: string,
-    name : string,
-    currentSpotID: string,
-    spot: Spot[]
-    bounds: {
-        top_l: Location, 
-        bot_r: Location, 
-    },
-    parent_spot_id: string,
+/**
+ * MapViewの状態を表す型
+ * stateにおいて最も上の親にあたる
+ */
+export interface MapViewState {
+    map: MapState;
+    spotInfoIsVisible: false;
 }
 
+/**
+ * 表示しているマップの情報を持つ型
+ */
+export interface MapState {
+    id: number;
+    name: string;
+    currentSpotID: number;
+    spots: Spot[];
+    bounds: Bounds;
+    parentSpotId?: number;
+}
+
+/**
+ * スポットの情報全てを表す型
+ */
 export interface Spot {
-    id: string,
-    name : string,
-    location: Location, 
-    floor: number,
-    gate_node_ids: string[],
-    parent_spot_ids: string[],
-    detail_map_id: string,
-    others: any,
+    id: number;
+    name : string;
+    location: Location;
+    floor: number;
+    gateNodeIds: number[];
+    parentSpotIds: number[];
+    detailMapId?: number;
+    others?: any;
+}
+
+/**
+ * SpotInfoコンポーネントで使うSpotの情報を表すための型
+ * NOTE: 何を持たせればいいかあまり分からず．idはいるのか？
+ */
+export interface SpotInfo {
+    id: number;
+    name: string;
+    floor: number;
+    detailMapId?: number;
+    others?: any;
+}
+
+/**
+ * 
+ */
+export interface Bounds {
+    topL: Location;
+    botR: Location;
 }
 
 export interface Location {
-    lat: number, 
-    lng: number, 
+    lat: number;
+    lng: number;
 }
