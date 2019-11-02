@@ -62,15 +62,15 @@ export class MapViewModule extends VuexModule {
      */
     get spotsForMap(): SpotForMap[] {
         const spots: Spot[] = this.map.spots;
-        let spotsForMap: SpotForMap[] = [];
-        spots.forEach(spot => {
+        const spotsForMap: SpotForMap[] = [];
+        spots.forEach((spot) => {
             spotsForMap.push({
                 id: spot.id,
                 name: spot.name,
                 location: spot.location,
                 floor: spot.floor,
             });
-        })
+        });
         return spotsForMap;
     }
 
