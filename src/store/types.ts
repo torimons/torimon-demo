@@ -46,13 +46,26 @@ export interface SpotInfo {
 }
 
 /**
- *
+ * Mapコンポーネント上でスポットのアイコンを表示するために必要な情報を持つ型
+ */
+export interface SpotForMap {
+    id: number;
+    name: string;
+    location: Location;
+    floor: number;
+}
+
+/**
+ * 地図上の範囲を左上と右下の座標で示す型
  */
 export interface Bounds {
     topL: Location;
     botR: Location;
 }
 
+/**
+ * 座標を示す型
+ */
 export interface Location {
     lat: number;
     lng: number;

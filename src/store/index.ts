@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { MapViewModule } from './modules/MapViewModule';
+import { MapViewModule } from '@/store/modules/MapViewModule';
 
 interface StoreType {
     mapView: MapViewModule;
