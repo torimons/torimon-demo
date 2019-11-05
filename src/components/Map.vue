@@ -14,60 +14,83 @@ import { mapState } from 'vuex';
 @Component
 export default class Map extends Vue {
     map: any;
-    latlng: any;
-    object: any;
+    mapInfo: any;
+    tileLayer: any;
 
-    class Marker extends Map{
-        constructor(){
-            super(map);
-            super(latlng);
-            }
-        displyMarker(){
-            //マーカーの表示
-            L.marker(this.latlng).addTo(this.map);
-        }
-        returnMarkerInfo(latlng: number){
-            let loc = geoLocation();
-            //マーカーの情報を返す
-            if(location){
-                return this.$store.getters.getMarkerInfo;
-            }else{
-            //マーカーが無い場合の処理
-            }
-        }
+    constructor(){
+        super();
+        this.mapInfo = $store.getters.Mapinfo;
+        this.map = L.map('map').setView([centerLat,centerLng], zoomLevel);
+        this.tileLayer = L.tileLayer(
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+            ).addTo(this.map)
     }
+    
+    //マーカーの初期化、ズームレベルの変更時
+    map.on('load', loadMarkers);
+    map.on('zoomlevelschange', switchMarkers);
 
-    function changeMarker(){
-        //マーカーの切り替え
-        let spot = $store.getters.getMarkerInfo;
-        if(spot){
-            map.removeLayer();
-            L.marker(latlng).addTo(map);
-        }else{
-            //スポットの情報が無い時の処理
-        }
-    }
-
-    class Object extends Map{
-        constructor(){
-            super(map);
-            super(object);
-        }
-        displayObject(){
-            //オブジェクトの表示
-        }
-        returnObjectInfo(){
-            //オブジェクトの情報を返す
-            return this.$store.getters.getObjectInfo;
-        }
-    }
-
-    function changeObject(){
-        //オブジェクトの切り替え
-    }
+    //オブジェクトの初期化、ズームレベルの変更時
+    map.on('load', loadObjects);
+    map.on('zoomlevelschange', switchObjet);
 
     //マーカーに関するコールバック関数
-    function markerCallback(){
+    //初期化時のマーカー表示
+    private loadMarkers(e){
+        displayMarkers();
+    }
+    private switchMarkers(e){
+        this.map.removeLayer(e.target);
+        displayMarkers();
+    }
+    
+    //ズームレベルに応じたマーカーの表示
+    private displayMarkers(){
+        let zoomLevel: number = this.map.getZoom();
+        let markerList: Array<number> = this.mapInfo.zoomlevel.markers; 
+        L.marker(markerList).addTo(this.map);
+    }
+
+    //オブジェクト関するコールバック関数
+    //初期化時のオブジェクト表示
+    private loadObjects(e){ 
+        displayObject();
+    }
+    private switchObjects(e){
+        this.map.removeLayer(e.target);
+        displayObject();
+    }
+
+    //ズームレベルに応じたオブジェクトの表示
+    private displayObject(){
+        //ズームレベルに応じたオブジェクトの情報を取得
+        let zoomLevel: number = this.map.getZoom();
+        let objectList: Array<number> = this.mapInfo.zoomLevel.objects;
+        //多角形や円の表示
+        for (i in objectList){
+            if (objectType[i] == 'polygon'){
+                let polygon = L.polygon(
+                    [[lat1,lng1],
+                    [lat2,lng2],
+                    [lat3,lng3],
+                    [lat4,lng4]
+                    ],{
+                        "color": "000000",
+                        "weight": 3,
+                        "fillcolor": "000000",
+                        "fillopacity": 0.5 
+                    }).addTo(this.map);
+            }else if (objectType[i] == 'circle'){
+                let circle = L.circle(
+                    [centerLat,centerLng],
+                    {
+                        "radius": 500,
+                        "color": "000000",
+                        "fillcolor": "000000",
+                        "fillopacity": 0.5
+                    }).addTo(this.map);
+            }else if{...}
+        }
     }
 </script>
 
