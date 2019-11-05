@@ -8,6 +8,7 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 export default class SpotInfo extends Vue {
 
     private spotName: string = '';
+    // othersはまだ形式が決まっていないためanyとしています．
     private others: any = {};
     private visible: boolean = false;
 
@@ -32,6 +33,7 @@ export default class SpotInfo extends Vue {
      */
     @Watch('currentSpotID')
     private spotIDChanged(): void {
+        // spotの型はまだ未定義のためanyとしています．
         const spot: any = this.$store.getters.getInfoOfCurrentSpot;
         if (spot) {
             this.spotName = spot.name;

@@ -32,6 +32,7 @@ describe('components/SpotInfo.vue', () => {
             state,
             getters: {
                 getCurrentSpotID: () => store.state.currentSpotID,
+                // spotの型はまだ未定義なのでanyとしています．
                 getInfoOfCurrentSpot:　() =>
                     store.state.map.spots.find((spot: any) => spot.id === store.getters.getCurrentSpotID),
                 getSpotInfoVisible: () => store.state.spotInfoVisible,
