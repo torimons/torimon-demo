@@ -1,16 +1,10 @@
 <template>
-    <div class="spot-info">
-            spot-info
+    <div class="spot-info" v-show="visible">
+        <p>{{ spotName }}</p>
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-
-@Component
-export default class SpotInfo extends Vue {
-}
-</script>
+<script lang="ts" src="./SpotInfo.ts"></script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
