@@ -6,10 +6,12 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import leaflet from 'leaflet/dist/leaflet.css';
-import L from leaflet;
-import store from './store';
+import store from '../store';
 import { mapState } from 'vuex';
+/*
+leafletの導入
+必要であればプラグインの導入
+*/
 
 @Component
 export default class Map extends Vue {
