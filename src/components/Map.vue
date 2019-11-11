@@ -8,88 +8,81 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import leaflet from 'leaflet/dist/leaflet.css';
 import L from leaflet;
-import store from './store'
+import store from './store';
 import { mapState } from 'vuex';
 
 @Component
 export default class Map extends Vue {
-    map: any;
-    mapInfo: any;
-    tileLayer: any;
+    /*
+    必要な情報
+    --マップ自身
+    --取得したマップの情報
+        --表示するマップ
+        --マーカーのリスト
+            --マーカーの座標
+        --オブジェクトのリスト
+            --オブジェクトの座標
+            --オブジェクトの形状
+    --omsのタイルレイヤー
+    */
 
     constructor(){
         super();
-        this.mapInfo = $store.getters.Mapinfo;
-        this.map = L.map('map').setView([centerLat,centerLng], zoomLevel);
-        this.tileLayer = L.tileLayer(
-            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-            ).addTo(this.map)
+        /*
+        osmタイルの初期化
+        表示するマップのタイルの表示
+        現在地の取得と現在地周りの表示
+        初期化時のマーカー表示
+        初期化時のオブジェクト表示
+        */
     }
-    
-    //マーカーの初期化、ズームレベルの変更時
-    map.on('load', loadMarkers);
-    map.on('zoomlevelschange', switchMarkers);
 
-    //オブジェクトの初期化、ズームレベルの変更時
-    map.on('load', loadObjects);
-    map.on('zoomlevelschange', switchObjet);
-
-    //マーカーに関するコールバック関数
-    //初期化時のマーカー表示
+    //マーカー表示
     private loadMarkers(e){
-        displayMarkers();
+        /*
+        マーカーの表示
+        */
     }
+
+    //ズームレベルが変更された際のマーカー表示
     private switchMarkers(e){
-        this.map.removeLayer(e.target);
-        displayMarkers();
+        /*
+        現在表示されてるマーカーの削除
+        マーカーの再表示
+        */
     }
     
     //ズームレベルに応じたマーカーの表示
     private displayMarkers(){
-        let zoomLevel: number = this.map.getZoom();
-        let markerList: Array<number> = this.mapInfo.zoomlevel.markers; 
-        L.marker(markerList).addTo(this.map);
+        /*
+        ズームレベルの取得
+        ズームレベルに応じたマーカー群の取得
+        取得したマーカー群の表示
+        */
     }
 
-    //オブジェクト関するコールバック関数
-    //初期化時のオブジェクト表示
+    //オブジェクトの表示
     private loadObjects(e){ 
-        displayObject();
+        /*
+        オブジェクトの表示
+        */
     }
+
+    //ズームレベルが変更された際のオブジェクトの表示
     private switchObjects(e){
-        this.map.removeLayer(e.target);
-        displayObject();
+        /*
+        現在表示されているオブジェクトの削除
+        オブジェクトの再表示
+        */
     }
 
     //ズームレベルに応じたオブジェクトの表示
     private displayObject(){
-        //ズームレベルに応じたオブジェクトの情報を取得
-        let zoomLevel: number = this.map.getZoom();
-        let objectList: Array<number> = this.mapInfo.zoomLevel.objects;
-        //多角形や円の表示
-        for (i in objectList){
-            if (objectType[i] == 'polygon'){
-                let polygon = L.polygon(
-                    [[lat1,lng1],
-                    [lat2,lng2],
-                    [lat3,lng3],
-                    [lat4,lng4]
-                    ],{
-                        "color": "000000",
-                        "weight": 3,
-                        "fillcolor": "000000",
-                        "fillopacity": 0.5 
-                    }).addTo(this.map);
-            }else if (objectType[i] == 'circle'){
-                let circle = L.circle(
-                    [centerLat,centerLng],
-                    {
-                        "radius": 500,
-                        "color": "000000",
-                        "fillcolor": "000000",
-                        "fillopacity": 0.5
-                    }).addTo(this.map);
-            }else if{...}
+        /*
+        ズームレベルの取得
+        ズームレベルに応じたオブジェクトの情報を取得
+        オブジェクトの形に応じてオブジェクトの表示
+        */
         }
     }
 </script>
