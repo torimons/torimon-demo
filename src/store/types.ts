@@ -26,7 +26,7 @@ export interface Map {
 export interface Spot {
     id: number;
     name: string;
-    location: Location;
+    coordinate: Coordinate;
     floor: number;
     /**
      * GeoJSONのジオメトリオブジェクトのJSON構造
@@ -58,7 +58,7 @@ export interface SpotInfo {
 export interface SpotForMap {
     id: number;
     name: string;
-    location: Location;
+    coordinate: Coordinate;
     floor: number;
 }
 
@@ -66,14 +66,14 @@ export interface SpotForMap {
  * 地図上の範囲を左上と右下の座標で示す型
  */
 export interface Bounds {
-    topL: Location;
-    botR: Location;
+    topL: Coordinate;
+    botR: Coordinate;
 }
 
 /**
  * 座標を示す型
  */
-export interface Location {
+export interface Coordinate {
     lat: number;
     lng: number;
 }

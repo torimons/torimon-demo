@@ -10,7 +10,7 @@ const expectedMapViewState: MapViewState = {
                 {
                     id: 0,
                     name: 'SougouGakusyuPlaza',
-                    location: {
+                    coordinate: {
                         lat: 33.595502,
                         lng: 130.218238,
                     },
@@ -72,7 +72,7 @@ const expectedMapViewState: MapViewState = {
                 {
                     id: 0,
                     name: '101',
-                    location: {
+                    coordinate: {
                         lat: 33.5954558,
                         lng: 130.2179447,
                     },
@@ -134,7 +134,7 @@ describe('components/SpotInfo.vue', () => {
             {
                 id:       expectedMapViewState.maps[0].spots[0].id,
                 name:     expectedMapViewState.maps[0].spots[0].name,
-                location: expectedMapViewState.maps[0].spots[0].location,
+                coordinate: expectedMapViewState.maps[0].spots[0].coordinate,
                 floor:    expectedMapViewState.maps[0].spots[0].floor,
             },
         ];

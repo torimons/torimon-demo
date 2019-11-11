@@ -8,7 +8,7 @@ export const sampleMaps: Map[] =  [
             {
                 id: 0,
                 name: 'SougouGakusyuPlaza',
-                location: {
+                coordinate: {
                     lat: 33.595502,
                     lng: 130.218238,
                 },
@@ -70,7 +70,7 @@ export const sampleMaps: Map[] =  [
             {
                 id: 0,
                 name: '101',
-                location: {
+                coordinate: {
                     lat: 33.5954558,
                     lng: 130.2179447,
                 },
