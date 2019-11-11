@@ -28,7 +28,7 @@ export default class Map extends Vue {
     --omsのタイルレイヤー
     */
 
-    constructor(){
+    constructor() {
         super();
         /*
         osmタイルの初期化
@@ -39,8 +39,8 @@ export default class Map extends Vue {
         */
        }
 
-    //ズームレベルや階層が変更された際のマーカー表示切り替え
-    private switchMarkers(e: Event): void{
+    // ズームレベルや階層が変更された際のマーカー表示切り替え
+    private switchMarkers(e: Event): void {
         /*
         現在表示されてるマーカーの削除
         階層やズームレベルの取得
@@ -48,8 +48,8 @@ export default class Map extends Vue {
         */
        }
 
-    //マーカーが押された際に呼び出される関数
-    private updateFocusedMarker(e: Event): void{
+    // マーカーが押された際に呼び出される関数
+    private updateFocusedMarker(e: Event): void {
         /*
         （vuexの状態更新も行う必要がある）
         押したマーカーのスポットの情報の取得
@@ -57,8 +57,8 @@ export default class Map extends Vue {
         */
        }
 
-    //ズームレベルや階層が変更された際のオブジェクトの表示切り替え
-    private switchPolygon(e: Event): void{
+    // ズームレベルや階層が変更された際のオブジェクトの表示切り替え
+    private switchPolygon(e: Event): void {
         /*
         現在表示されているオブジェクトの削除
         階層やズームレベルの取得
