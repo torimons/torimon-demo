@@ -49,7 +49,6 @@ const expectedMapViewState: MapViewState = {
                         ] ],
                     },
                     gateNodeIds: [],
-                    parentSpotIds: [],
                     detailMapId: 1,
                 },
             ],
@@ -89,7 +88,6 @@ const expectedMapViewState: MapViewState = {
                     },
                     floor: 1,
                     gateNodeIds: [],
-                    parentSpotIds: [],
                 },
             ],
             bounds: {

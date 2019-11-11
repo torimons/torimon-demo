@@ -47,7 +47,6 @@ export const sampleMaps: Map[] =  [
                     ] ],
                 },
                 gateNodeIds: [],
-                parentSpotIds: [],
                 detailMapId: 1,
             },
         ],
@@ -87,7 +86,6 @@ export const sampleMaps: Map[] =  [
                 },
                 floor: 1,
                 gateNodeIds: [],
-                parentSpotIds: [],
             },
         ],
         bounds: {
