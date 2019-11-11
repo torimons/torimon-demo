@@ -1,47 +1,38 @@
 import { Mutation, VuexModule, getModule, Module } from 'vuex-module-decorators';
 import store from '@/store';
-import { MapState, Spot, SpotInfo, SpotForMap, Bounds } from '@/store/types';
+import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds } from '@/store/types';
+import { sampleMaps } from '@/store/modules/sampleMaps';
 
 /**
  * MapViewの状態管理を行うVuexModuleクラス
  */
 @Module({ dynamic: true, store, name: 'mapView', namespaced: true })
-export class MapViewModule extends VuexModule {
+export class MapViewModule extends VuexModule implements MapViewState {
 
     /**
-     * マップの情報全般
+     * 複数のマップの情報を持つ
+     * - 大元の地図と各スポットの持つ
+     *   詳細地図(ピンチインで出てくるやつ)など含む
      * - 単体テスト以外の目視テスト等のために
-     *   MapStateで初期化
-     * - 将来的にはvuexのmutationで登録する
+     *   外部モジュールのsampleMapsで初期化
+     * 将来的にはvuexのmutationで登録する
      */
-    public map: MapState =  {
-        id: 0,
-        name: 'SougouGakusyuPlaza',
-        currentSpotId: 0,
-        spots: [
-            {
-                id: 0,
-                name: '101',
-                location: {
-                    lat: 33.5954558,
-                    lng: 130.2179447,
-                },
-                floor: 1,
-                gateNodeIds: [0],
-                parentSpotIds: [],
-            },
-        ],
-        bounds: {
-            topL: {
-                lat: 33.5954678,
-                lng: 130.2177802,
-            },
-            botR: {
-                lat: 33.5954678,
-                lng: 130.2177802,
-            },
-        },
-    };
+    public maps: Map[] = sampleMaps;
+
+    /**
+     * 大元の親のMapのID
+     */
+    public rootMapId: number = 0;
+
+    /**
+     * Mapコンポーネントで選択されているMapのID
+     */
+    public focusedMapId: number = 0;
+
+    /**
+     * Mapコンポーネントで選択されているスポットのID
+     */
+    public focusedSpotId: number = 0;
 
     /**
      * SpotInfoコンポーネントの表示非表示状態を保持
@@ -52,37 +43,38 @@ export class MapViewModule extends VuexModule {
      * Mapコンポーネントが扱うマップの範囲を返す
      * @return マップの範囲
      */
-    get mapBounds(): Bounds {
-        return this.map.bounds;
+    get rootMapBounds(): Bounds {
+        return this.maps[this.rootMapId].bounds;
     }
 
     /**
      * Mapコンポーネントがアイコン表示のために必要なスポットの情報を返す
+     * - vuex-module-decoratorsにおいて引数付きgetterはこの書き方になる
      * @return Mapコンポーネントが必要なスポットの情報
      */
-    get spotsForMap(): SpotForMap[] {
-        const spots: Spot[] = this.map.spots;
-        const spotsForMap: SpotForMap[] = [];
-        spots.forEach((spot) => {
-            spotsForMap.push({
-                id: spot.id,
-                name: spot.name,
-                location: spot.location,
-                floor: spot.floor,
+    get getSpotsForMap() {
+        return (mapId: number): SpotForMap[] =>  {
+            const spots: Spot[] = this.maps[mapId].spots;
+            const spotsForMap: SpotForMap[] = [];
+            spots.forEach((spot) => {
+                spotsForMap.push({
+                    id: spot.id,
+                    name: spot.name,
+                    location: spot.location,
+                    floor: spot.floor,
+                });
             });
-        });
-        return spotsForMap;
+            return spotsForMap;
+        };
     }
 
     /**
      * SpotInfoコンポーネントが表示する情報を返す
      * @return SpotInfoコンポーネントに必要な情報
      */
-    get infoOfCurrentSpot(): SpotInfo {
-        const currentSpotId: number = this.map.currentSpotId;
-        const spot: Spot = this.map.spots[currentSpotId];
+    get infoOfFocusedSpot(): SpotInfo {
+        const spot: Spot = this.maps[this.focusedMapId].spots[this.focusedSpotId];
         const spotInfo: SpotInfo = {
-            id: spot.id,
             name: spot.name,
             floor: spot.floor,
         };
@@ -91,31 +83,27 @@ export class MapViewModule extends VuexModule {
 
     /**
      * Mapコンポーネント上でフォーカスされているスポットのIDを更新する
-     * @param newSpotId 新しいスポットのID
+     * @param newFocusedMapId 新しくフォーカスされるマップのID
+     * @param newFocusedSpotId 新しいフォーカスされるスポットのID
      */
     @Mutation
-    public setCurrentSpotId(newSpotId: number): void {
-        this.map.currentSpotId = newSpotId;
+    public setFocusedSpot(newFocusedSpot: {mapId: number, spotId: number}): void {
+        this.focusedMapId = newFocusedSpot.mapId;
+        this.focusedSpotId = newFocusedSpot.spotId;
     }
 
     /**
-     * mapの情報をset
-     * - 単体テストの入力用の仮メソッド
+     * MapViewStateの情報を一括でset
+     * - 現状は単体テストの入力用の仮メソッド
      * @param mapState マップの状態
      */
     @Mutation
-    public setMapState(mapState: MapState): void {
-        this.map = mapState;
-    }
-
-    /**
-     * SpotInfoコンポーネントの表示状態をset
-     * - 単体テストの入力用の仮メソッド
-     * @param spotInfoIsVisible SpotInfoコンポーネントが表示状態なら真
-     */
-    @Mutation
-    public setSpotInfoIsVisible(spotInfoIsVisible: boolean): void {
-        this.spotInfoIsVisible = spotInfoIsVisible;
+    public setMapViewState(newMapViewState: MapViewState): void {
+        this.maps = newMapViewState.maps;
+        this.rootMapId = newMapViewState.rootMapId;
+        this.focusedMapId = newMapViewState.focusedMapId;
+        this.focusedSpotId = newMapViewState.focusedSpotId;
+        this.spotInfoIsVisible = newMapViewState.spotInfoIsVisible;
     }
 }
 

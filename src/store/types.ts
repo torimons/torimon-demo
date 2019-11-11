@@ -1,19 +1,20 @@
 /**
- * MapViewの状態を表す型
- * stateにおいて最も上の親にあたる
+ * MapViewコンポーネントの状態の情報を持つ型
  */
 export interface MapViewState {
-    map: MapState;
+    maps: Map[];
+    rootMapId: number;
+    focusedSpotId: number;
+    focusedMapId: number;
     spotInfoIsVisible: boolean;
 }
 
 /**
- * 表示しているマップの情報を持つ型
+ * マップの情報を持つ型
  */
-export interface MapState {
+export interface Map {
     id: number;
     name: string;
-    currentSpotId: number;
     spots: Spot[];
     bounds: Bounds;
     parentSpotId?: number;
@@ -27,21 +28,27 @@ export interface Spot {
     name: string;
     location: Location;
     floor: number;
+    /**
+     * GeoJSONのジオメトリオブジェクトのJSON構造
+     * [GeoJSON フォーマット仕様](https://s.kitazaki.name/docs/geojson-spec-ja.html#id5)
+     */
+    shape?: {
+        'type': 'Polygon' | 'MultiPolygon',
+        'coordinates': number[][][] | number[][][][],
+    };
     gateNodeIds: number[];
     parentSpotIds: number[];
     detailMapId?: number;
     others?: any;
 }
 
+
 /**
  * SpotInfoコンポーネントで使うSpotの情報を表すための型
- * NOTE: 何を持たせればいいかあまり分からず．idはいるのか？
  */
 export interface SpotInfo {
-    id: number;
     name: string;
     floor: number;
-    detailMapId?: number;
     others?: any;
 }
 
