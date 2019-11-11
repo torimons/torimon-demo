@@ -37,7 +37,7 @@ export default class Map extends Vue {
         */
     }
 
-    //マーカー表示
+    //マーカーのロード
     private loadMarkers(e){
         /*
         マーカーの表示
@@ -61,7 +61,7 @@ export default class Map extends Vue {
         */
     }
 
-    //オブジェクトの表示
+    //オブジェクトのロード
     private loadObjects(e){ 
         /*
         オブジェクトの表示
