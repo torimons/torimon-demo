@@ -37,7 +37,6 @@ export interface Spot {
         'coordinates': number[][][] | number[][][][],
     };
     gateNodeIds: number[];
-    parentSpotIds: number[];
     detailMapId?: number;
     others?: any;
 }
