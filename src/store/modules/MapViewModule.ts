@@ -58,10 +58,10 @@ export class MapViewModule extends VuexModule implements MapViewState {
             const spotsForMap: SpotForMap[] = [];
             spots.forEach((spot) => {
                 spotsForMap.push({
-                    id: spot.id,
-                    name: spot.name,
+                    id:       spot.id,
+                    name:     spot.name,
                     location: spot.location,
-                    floor: spot.floor,
+                    floor:    spot.floor,
                 });
             });
             return spotsForMap;
@@ -75,7 +75,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
     get infoOfFocusedSpot(): SpotInfo {
         const spot: Spot = this.maps[this.focusedMapId].spots[this.focusedSpotId];
         const spotInfo: SpotInfo = {
-            name: spot.name,
+            name:  spot.name,
             floor: spot.floor,
         };
         return spotInfo;
@@ -88,7 +88,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      */
     @Mutation
     public setFocusedSpot(newFocusedSpot: {mapId: number, spotId: number}): void {
-        this.focusedMapId = newFocusedSpot.mapId;
+        this.focusedMapId  = newFocusedSpot.mapId;
         this.focusedSpotId = newFocusedSpot.spotId;
     }
 
@@ -99,10 +99,10 @@ export class MapViewModule extends VuexModule implements MapViewState {
      */
     @Mutation
     public setMapViewState(newMapViewState: MapViewState): void {
-        this.maps = newMapViewState.maps;
-        this.rootMapId = newMapViewState.rootMapId;
-        this.focusedMapId = newMapViewState.focusedMapId;
-        this.focusedSpotId = newMapViewState.focusedSpotId;
+        this.maps              = newMapViewState.maps;
+        this.rootMapId         = newMapViewState.rootMapId;
+        this.focusedMapId      = newMapViewState.focusedMapId;
+        this.focusedSpotId     = newMapViewState.focusedSpotId;
         this.spotInfoIsVisible = newMapViewState.spotInfoIsVisible;
     }
 }

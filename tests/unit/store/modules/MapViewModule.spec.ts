@@ -19,32 +19,32 @@ const expectedMapViewState: MapViewState = {
                         type: 'Polygon',
                         coordinates: [[
                             [
-                            130.21780639886853,
-                            33.59551018989406,
+                                130.21780639886853,
+                                33.59551018989406,
                             ],
                             [
-                            130.21791100502014,
-                            33.595199637596735,
+                                130.21791100502014,
+                                33.595199637596735,
                             ],
                             [
-                            130.2181014418602,
-                            33.59524655564143,
+                                130.2181014418602,
+                                33.59524655564143,
                             ],
                             [
-                            130.21809339523315,
-                            33.59527783432369,
+                                130.21809339523315,
+                                33.59527783432369,
                             ],
                             [
-                            130.21865129470825,
-                            33.59543869593907,
+                                130.21865129470825,
+                                33.59543869593907,
                             ],
                             [
-                            130.2185171842575,
-                            33.595715734684546,
+                                130.2185171842575,
+                                33.595715734684546,
                             ],
                             [
-                            130.21780639886853,
-                            33.59551018989406,
+                                130.21780639886853,
+                                33.59551018989406,
                             ],
                         ] ],
                     },
@@ -132,10 +132,10 @@ describe('components/SpotInfo.vue', () => {
         const actualSpotsForMap: SpotForMap[] = mapViewStore.getSpotsForMap(0);
         const expectedSpotsForMap: SpotForMap[] = [
             {
-                id: expectedMapViewState.maps[0].spots[0].id,
-                name: expectedMapViewState.maps[0].spots[0].name,
+                id:       expectedMapViewState.maps[0].spots[0].id,
+                name:     expectedMapViewState.maps[0].spots[0].name,
                 location: expectedMapViewState.maps[0].spots[0].location,
-                floor: expectedMapViewState.maps[0].spots[0].floor,
+                floor:    expectedMapViewState.maps[0].spots[0].floor,
             },
         ];
         expect(actualSpotsForMap).toEqual(expectedSpotsForMap);
@@ -143,17 +143,17 @@ describe('components/SpotInfo.vue', () => {
 
     it('stateに登録したSpotsの情報からcurrentSpotIdを持つSpotのSpotInfo型の情報をgetterで取得する', () => {
         const actualInfoOfCurrentSpot: SpotInfo = mapViewStore.infoOfFocusedSpot;
-        const expectedFocusedMapId: number = expectedMapViewState.focusedMapId;
+        const expectedFocusedMapId: number  = expectedMapViewState.focusedMapId;
         const expectedFocusedSpotId: number = expectedMapViewState.focusedSpotId;
         const expectedInfoOfCurrentSpot: SpotInfo = {
-            name: expectedMapViewState.maps[expectedFocusedMapId].spots[expectedFocusedSpotId].name,
+            name:  expectedMapViewState.maps[expectedFocusedMapId].spots[expectedFocusedSpotId].name,
             floor: expectedMapViewState.maps[expectedFocusedMapId].spots[expectedFocusedSpotId].floor,
         };
         expect(actualInfoOfCurrentSpot).toEqual(expectedInfoOfCurrentSpot);
     });
 
     it('setterでsetしたcurrentSpotIdがmapViewStoreのstateに登録されている', () => {
-        const expectedNewFocusedMapId: number = 1;
+        const expectedNewFocusedMapId: number  = 1;
         const expectedNewFocusedSpotId: number = 0;
         mapViewStore.setFocusedSpot({mapId: expectedNewFocusedMapId, spotId: expectedNewFocusedSpotId});
         const actualFocusedSpotId: number = mapViewStore.focusedSpotId;
