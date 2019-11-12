@@ -1,5 +1,5 @@
 <template>
-    <div class="map">
+    <div id='map'>
         map
     </div>
 </template>
@@ -12,7 +12,7 @@ import { mapState } from 'vuex';
 leafletの導入
 必要であればプラグインの導入
 */
-// import leaflet from 'leaflet/dist/leaflet.css';
+import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
 @Component
@@ -46,11 +46,8 @@ export default class Map extends Vue {
      * とりあえず地図の表示を行なっています．
      */
     public mounted() {
-        const map: any = L.map( 'app', { center: L.latLng( 35.6825, 139.752778 ), zoom: 15 } ).addLayer(
+        const map: any = L.map( 'map', { center: L.latLng( 39.00,130.00 ), zoom: 15 } ).addLayer(
             L.tileLayer( 'http://{s}.tile.osm.org/{z}/{x}/{y}.png' ),
-        ).on(
-            'click'
-        ,   (p: any) => map.addLayer( L.marker( p.latlng ) ),
         );
     }
 
@@ -86,4 +83,12 @@ export default class Map extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+html,
+body,
+#map {
+  height: 100%;
+}
+body {
+  margin: 0;
+}
 </style>
