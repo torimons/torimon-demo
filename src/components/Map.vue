@@ -1,6 +1,6 @@
 <template>
     <div class="map">
-        map
+        
     </div>
 </template>
 
@@ -8,7 +8,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { mapState } from 'vuex';
 import store from '../store';
-import { leaflet } from 'leaflet/dist/leaflet.css';
+import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
 /*
@@ -30,8 +30,12 @@ export default class Map extends Vue {
             --オブジェクトの形状
     --omsのタイルレイヤー
     */
-
-    public created() {
+    private map!: L.Map;
+    private centerLat: number = 130;
+    private centerLng: number = 30;
+    private zoomLevel: number = 15;
+    private tileLayer!: L.TileLayer;
+    public mounted() {
         /*
         osmタイルの初期化
         表示するマップのタイルの表示
@@ -39,9 +43,9 @@ export default class Map extends Vue {
         初期化時のマーカー表示
         初期化時のオブジェクト表示
         */
-        this.map = L.map('map').setView([centerLat,centerLng], zoomLevel);
+        this.map = L.map('map').setView([this.centerLat, this.centerLng], this.zoomLevel);
         this.tileLayer = L.tileLayer(
-            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             ).addTo(this.map);
     }
 
@@ -76,4 +80,6 @@ export default class Map extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+html, body, #app { height: 100% }
+body { margin: 0 }
 </style>
