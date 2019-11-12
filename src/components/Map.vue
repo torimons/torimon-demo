@@ -1,7 +1,5 @@
 <template>
-    <div class="map">
-        
-    </div>
+    <div id="map">map</div>
 </template>
 
 <script lang="ts">
@@ -31,8 +29,8 @@ export default class Map extends Vue {
     --omsのタイルレイヤー
     */
     private map!: L.Map;
-    private centerLat: number = 130;
-    private centerLng: number = 30;
+    private centerLat: number = 35;
+    private centerLng: number = 139;
     private zoomLevel: number = 15;
     private tileLayer!: L.TileLayer;
     public mounted() {
@@ -43,10 +41,9 @@ export default class Map extends Vue {
         初期化時のマーカー表示
         初期化時のオブジェクト表示
         */
-        this.map = L.map('map').setView([this.centerLat, this.centerLng], this.zoomLevel);
-        this.tileLayer = L.tileLayer(
-            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            ).addTo(this.map);
+        this.map = L.map('map', { center: L.latLng( this.centerLat, this.centerLng ), zoom: this.zoomLevel }).addLayer(
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+        )
     }
 
     // ズームレベルや階層が変更された際のマーカー表示切り替え
@@ -80,6 +77,12 @@ export default class Map extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-html, body, #app { height: 100% }
-body { margin: 0 }
+html,
+body,
+#map {
+ height: 100%;
+}
+body {
+ margin: 0;
+}
 </style>
