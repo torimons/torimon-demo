@@ -12,6 +12,8 @@ import { mapState } from 'vuex';
 leafletの導入
 必要であればプラグインの導入
 */
+// import leaflet from 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 
 @Component
 export default class Map extends Vue {
@@ -37,7 +39,20 @@ export default class Map extends Vue {
         初期化時のマーカー表示
         初期化時のオブジェクト表示
         */
-       }
+
+    }
+
+    /**
+     * とりあえず地図の表示を行なっています．
+     */
+    public mounted() {
+        const map: any = L.map( 'app', { center: L.latLng( 35.6825, 139.752778 ), zoom: 15 } ).addLayer(
+            L.tileLayer( 'http://{s}.tile.osm.org/{z}/{x}/{y}.png' ),
+        ).on(
+            'click'
+        ,   (p: any) => map.addLayer( L.marker( p.latlng ) ),
+        );
+    }
 
     // ズームレベルや階層が変更された際のマーカー表示切り替え
     private switchMarkers(e: Event): void {
@@ -64,8 +79,9 @@ export default class Map extends Vue {
         階層やズームレベルの取得
         オブジェクトの再表示
         */
-       }
+
     }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
