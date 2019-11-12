@@ -6,8 +6,11 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import store from '../store';
 import { mapState } from 'vuex';
+import store from '../store';
+import { leaflet } from 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
 /*
 leafletの導入
 必要であればプラグインの導入
@@ -28,8 +31,7 @@ export default class Map extends Vue {
     --omsのタイルレイヤー
     */
 
-    constructor() {
-        super();
+    public created() {
         /*
         osmタイルの初期化
         表示するマップのタイルの表示
@@ -37,7 +39,11 @@ export default class Map extends Vue {
         初期化時のマーカー表示
         初期化時のオブジェクト表示
         */
-       }
+        this.map = L.map('map').setView([centerLat,centerLng], zoomLevel);
+        this.tileLayer = L.tileLayer(
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+            ).addTo(this.map);
+    }
 
     // ズームレベルや階層が変更された際のマーカー表示切り替え
     private switchMarkers(e: Event): void {
