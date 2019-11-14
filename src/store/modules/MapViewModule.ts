@@ -50,6 +50,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
     /**
      * Mapコンポーネントがアイコン表示のために必要なスポットの情報を返す
      * - vuex-module-decoratorsにおいて引数付きgetterはこの書き方になる
+     * @param  mapId 必要なスポットが存在するマップのID
      * @return Mapコンポーネントが必要なスポットの情報
      */
     get getSpotsForMap() {
