@@ -5,9 +5,9 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { mapState } from 'vuex';
-import store from '../store';
-import * as mapViewModule from '../store/modules/MapViewModule';
-import { SpotForMap, Coordinate } from '../store/types';
+import store from '@/store';
+import { mapViewStore } from '@/store/modules/MapViewModule';
+import { SpotForMap, Coordinate } from '@/store/types';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -86,8 +86,8 @@ export default class Map extends Vue {
     this.markers.map((marker: L.Marker) => marker.remove());
 
     // 表示するスポット一覧を取得
-    const focusedMapId: number = mapViewModule.mapViewStore.focusedMapId;
-    const spots: SpotForMap[] = mapViewModule.mapViewStore.getSpotsForMap(focusedMapId);
+    const focusedMapId: number = mapViewStore.focusedMapId;
+    const spots: SpotForMap[] = mapViewStore.getSpotsForMap(focusedMapId);
     this.addMarkers(spots);
   }
 
