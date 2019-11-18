@@ -29,6 +29,7 @@ export default class Map extends Vue {
             --オブジェクトの形状
     --omsのタイルレイヤー
     */
+    private map!: L.Map;
 
     constructor() {
         super();
@@ -39,16 +40,17 @@ export default class Map extends Vue {
         初期化時のマーカー表示
         初期化時のオブジェクト表示
         */
-
     }
 
     /**
      * とりあえず地図の表示を行なっています．
      */
     public mounted() {
-        const map: any = L.map( 'map', { center: L.latLng( 39.00,130.00 ), zoom: 15 } ).addLayer(
+        this.map = L.map( 'map', { center: L.latLng( 33.595507, 130.218285 ), zoom: 19 } ).addLayer(
             L.tileLayer( 'http://{s}.tile.osm.org/{z}/{x}/{y}.png' ),
+            // L.tileLayer( 'https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png' ),
         );
+        this.map.on('zoom', this.switchPolygon);
     }
 
     // ズームレベルや階層が変更された際のマーカー表示切り替え
@@ -76,6 +78,7 @@ export default class Map extends Vue {
         階層やズームレベルの取得
         オブジェクトの再表示
         */
+       let zoomLevel: number = this.map.getZoom();
 
     }
 }
