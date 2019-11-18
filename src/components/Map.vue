@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import MapViewModules from "../store/modules/MapViewModule";
+import { MapViewModule } from "../store/modules/MapViewModule";
 import { mapState } from "vuex";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -43,6 +43,7 @@ export default class Map extends Vue {
 
   // ズームレベルや階層が変更された際のマーカー表示切り替え
   private switchMarkers(e: Event): void {
+    let mapViewModule = new MapViewModule();
     /*
         現在表示されてるマーカーの削除
         階層やズームレベルの取得
@@ -53,7 +54,7 @@ export default class Map extends Vue {
     this.layer.remove();
 
     // 拡大率の閾値によって表示を変える
-    let spots = MapViewModule.getSpotsForMap();
+    let spots = mapViewModule.getSpotsForMap;
     this.layer = L.marker(spots.map((spot: any) => spot.coordinate));
     this.layer.addTo(this.map);
   }
