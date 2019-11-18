@@ -4,7 +4,7 @@
     </div>
 </template>
 
-<script lang="ts">
+<script lang='ts'>
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import store from '../store';
 import { mapState } from 'vuex';
@@ -30,6 +30,21 @@ export default class Map extends Vue {
     --omsのタイルレイヤー
     */
     private map!: L.Map;
+    private polygon: any = {
+        type: 'Feature',
+        geometry: {
+            type: 'Polygon',
+            coordinates: [
+                [
+                    [130.2178144454956,　33.59550795570886],
+                    [130.2178654074669,　33.59535603097975],
+                    [130.21800488233566,　33.59539848056336],
+                    [130.21795123815536,　33.59553923429634],
+                    [130.2178144454956,　33.59550795570886],
+                ],
+            ],
+        },
+    };
 
     constructor() {
         super();
@@ -51,6 +66,12 @@ export default class Map extends Vue {
             // L.tileLayer( 'https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png' ),
         );
         this.map.on('zoom', this.switchPolygon);
+
+        const geoJson: any = L.geoJSON(this.polygon);
+        geoJson.addTo(this.map);
+        // remogveLayerを呼び出すと非表示にできます
+        // this.map.removeLayer(geoJson);
+
     }
 
     // ズームレベルや階層が変更された際のマーカー表示切り替え
@@ -72,19 +93,20 @@ export default class Map extends Vue {
        }
 
     // ズームレベルや階層が変更された際のオブジェクトの表示切り替え
-    private switchPolygon(e: Event): void {
+    // Event型だとイベントリスナーとして登録できなかったため，一旦anyにしています．
+    private switchPolygon(e: any): void {
         /*
         現在表示されているオブジェクトの削除
         階層やズームレベルの取得
         オブジェクトの再表示
         */
-       let zoomLevel: number = this.map.getZoom();
+        const zoomLevel: number = this.map.getZoom();
 
     }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
 html,
 body,
