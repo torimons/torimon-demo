@@ -63,6 +63,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
                     name:     spot.name,
                     coordinate: spot.coordinate,
                     floor:    spot.floor,
+                    shape:    spot.shape,
                 });
             });
             return spotsForMap;

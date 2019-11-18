@@ -134,6 +134,7 @@ describe('components/SpotInfo.vue', () => {
                 name:     expectedMapViewState.maps[0].spots[0].name,
                 coordinate: expectedMapViewState.maps[0].spots[0].coordinate,
                 floor:    expectedMapViewState.maps[0].spots[0].floor,
+                shape:    expectedMapViewState.maps[0].spots[0].shape,
             },
         ];
         expect(actualSpotsForMap).toEqual(expectedSpotsForMap);
