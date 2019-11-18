@@ -43,18 +43,20 @@ export default class Map extends Vue {
         初期化時のマーカー表示
         初期化時のオブジェクト表示
         */
-        mapViewStore.rootMapBounds;
-        const p1 = L.point(10, 10);
-        const p2 = L.point(40, 60);
+        const rootMapTopL = mapViewStore.rootMapBounds.topL;
+        const rootMapBotR = mapViewStore.rootMapBounds.botR;
+        const p1 = L.point(rootMapTopL.lat, rootMapTopL.lng);
+        const p2 = L.point(rootMapBotR.lat, rootMapBotR.lng);
         const bounds = L.bounds(p1, p2);
-        const centerPoint = bounds.getCenter()
+        const centerPoint = bounds.getCenter();
         this.centerLat = centerPoint.x;
         this.centerLng = centerPoint.y;
-
+        
         this.map = L.map('map').setView([this.centerLat, this.centerLng], this.zoomLevel);
         this.tileLayer = L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         ).addTo(this.map);
+        L.marker([this.centerLat, this.centerLng]).bindPopup('九大').addTo(this.map);
     }
 
     // ズームレベルや階層が変更された際のマーカー表示切り替え
