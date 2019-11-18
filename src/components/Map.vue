@@ -1,13 +1,16 @@
 <template>
-  <div class="map">map</div>
+  <div id="map">map</div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { MapViewModule } from "../store/modules/MapViewModule";
-import { mapState } from "vuex";
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { mapState } from 'vuex';
+import store from '../store';
+import * as mapViewModule from '../store/modules/MapViewModule';
+import { SpotForMap, Coordinate } from '../store/types';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
 /*
 leafletの導入
 必要であればプラグインの導入
@@ -27,11 +30,22 @@ export default class Map extends Vue {
             --オブジェクトの形状
     --omsのタイルレイヤー
     */
-  private map: any = L.map("map").setView([0, 0], 1);
-  private layer: any = L.marker([0, 0]);
+  private map!: L.Map;
+  private centerLat: number = 33.59;
+  private centerLng: number = 130.21;
+  private zoomLevel: number = 15;
+  private tileLayer!: L.TileLayer;
+  private testIcon = L.icon({
+    iconUrl: 'https://pics.prcm.jp/8a00d86a1f6ad/79784880/png/79784880.png',
+    iconSize: [95, 95],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76],
+    shadowSize: [68, 95],
+    shadowAnchor: [22, 94]
+  }); 
+  private markers: L.Marker[] = []; 
 
-  constructor() {
-    super();
+  public mounted() {
     /*
         osmタイルの初期化
         表示するマップのタイルの表示
@@ -39,24 +53,35 @@ export default class Map extends Vue {
         初期化時のマーカー表示
         初期化時のオブジェクト表示
         */
+    this.map = L.map('map').setView(
+      [this.centerLat, this.centerLng],
+      this.zoomLevel,
+    );
+    this.tileLayer = L.tileLayer(
+      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    ).addTo(this.map);
+
+    this.markers = [L.marker([this.centerLat, this.centerLng], { icon: this.testIcon })];
+    this.markers.map((marker: L.Marker) => marker.addTo(this.map));
+    this.map.on('zoomstart', this.switchMarkers);
   }
 
-  // ズームレベルや階層が変更された際のマーカー表示切り替え
+  /** ズームレベルや階層が変更された際のマーカー表示切り替え
+   * @param e 発火イベント
+   */
   private switchMarkers(e: Event): void {
-    let mapViewModule = new MapViewModule();
-    /*
-        現在表示されてるマーカーの削除
-        階層やズームレベルの取得
-        マーカーの再表示
-        */
-
     // 現在表示されてるマーカーの削除
-    this.layer.remove();
+    this.markers.map((marker: L.Marker) => marker.remove());
 
-    // 拡大率の閾値によって表示を変える
-    let spots = mapViewModule.getSpotsForMap;
-    this.layer = L.marker(spots.map((spot: any) => spot.coordinate));
-    this.layer.addTo(this.map);
+    // 表示するスポット一覧を取得
+    const focusedMapId: number = mapViewModule.mapViewStore.focusedMapId;
+    const spots: SpotForMap[] = mapViewModule.mapViewStore.getSpotsForMap(focusedMapId);
+    const coordinates: Coordinate[] = spots.map(
+      (spot: SpotForMap) => spot.coordinate,
+    );
+    // mapに追加
+    this.markers = coordinates.map((coord: Coordinate) => L.marker(coord, {icon: this.testIcon}));
+    this.markers.map((marker: L.Marker) => marker.addTo(this.map));
   }
 
   // マーカーが押された際に呼び出される関数
@@ -81,4 +106,12 @@ export default class Map extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+html,
+body,
+#map {
+  height: 100%;
+}
+body {
+  margin: 0;
+}
 </style>
