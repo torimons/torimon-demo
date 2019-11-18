@@ -41,9 +41,10 @@ export default class Map extends Vue {
         初期化時のマーカー表示
         初期化時のオブジェクト表示
         */
-        this.map = L.map('map', { center: L.latLng( this.centerLat, this.centerLng ), zoom: this.zoomLevel }).addLayer(
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
-        )
+        this.map = L.map('map').setView([this.centerLat, this.centerLng], this.zoomLevel);
+        this.tileLayer = L.tileLayer(
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        ).addTo(this.map);
     }
 
     // ズームレベルや階層が変更された際のマーカー表示切り替え
@@ -53,7 +54,7 @@ export default class Map extends Vue {
         階層やズームレベルの取得
         マーカーの再表示
         */
-       }
+    }
 
     // マーカーが押された際に呼び出される関数
     private updateFocusedMarker(e: Event): void {
@@ -62,7 +63,7 @@ export default class Map extends Vue {
         押したマーカーのスポットの情報の取得
         ポップアップの表示
         */
-       }
+    }
 
     // ズームレベルや階層が変更された際のオブジェクトの表示切り替え
     private switchPolygon(e: Event): void {
@@ -71,8 +72,8 @@ export default class Map extends Vue {
         階層やズームレベルの取得
         オブジェクトの再表示
         */
-       }
     }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -80,9 +81,9 @@ export default class Map extends Vue {
 html,
 body,
 #map {
- height: 100%;
+    height: 100%;
 }
 body {
- margin: 0;
+    margin: 0;
 }
 </style>
