@@ -8,12 +8,14 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import store from '../store';
 import { mapState } from 'vuex';
+import { SpotForMap } from '../store/types';
 /*
 leafletの導入
 必要であればプラグインの導入
 */
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import { MapViewModule } from "@/store/modules/MapViewModule.ts"
 
 @Component
 export default class Map extends Vue {
@@ -30,6 +32,7 @@ export default class Map extends Vue {
     --omsのタイルレイヤー
     */
     private map!: L.Map;
+    private spotForMap!: SpotForMap[];
     private polygon: any = {
         type: 'Feature',
         geometry: {
