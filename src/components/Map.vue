@@ -35,9 +35,11 @@ export default class Map extends Vue {
   private centerLng: number = 130.21;
   private zoomLevel: number = 15;
   private tileLayer!: L.TileLayer;
+  /* */
+    //iconUrl: 'http://flat-icon-design.com/f/f_object_155/s512_f_object_155_0bg.png',
   private testIcon = L.icon({
-    iconUrl: 'http://flat-icon-design.com/f/f_object_155/s512_f_object_155_0bg.png',
-    iconSize: [95, 95],
+    iconUrl: 'http://localhost:8080/favicon.ico',
+    iconSize: [30, 30],
     iconAnchor: [22, 94],
     popupAnchor: [-3, -76],
     shadowSize: [68, 95],
@@ -81,7 +83,7 @@ export default class Map extends Vue {
   /** ズームレベルや階層が変更された際のマーカー表示切り替え
    * @param e 発火イベント
    */
-  private switchMarkers(e: Event): void {
+  private switchMarkers(e: L.LeafletEvent): void {
     // 現在表示されてるマーカーの削除して，配置
     this.markers.map((marker: L.Marker) => marker.remove());
 
