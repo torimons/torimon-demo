@@ -66,22 +66,29 @@ export default class Map extends Vue {
     this.map.on('zoomstart', this.switchMarkers);
   }
 
-  /** ズームレベルや階層が変更された際のマーカー表示切り替え
-   * @param e 発火イベント
-   */
-  private switchMarkers(e: Event): void {
-    // 現在表示されてるマーカーの削除
-    this.markers.map((marker: L.Marker) => marker.remove());
-
-    // 表示するスポット一覧を取得
-    const focusedMapId: number = mapViewModule.mapViewStore.focusedMapId;
-    const spots: SpotForMap[] = mapViewModule.mapViewStore.getSpotsForMap(focusedMapId);
+  /** spotForMapから取得したスポットにマーカーを配置する 
+   * @param spots 表示したいスポットの配列
+  */
+  private addMarkers(spots: SpotForMap[]): void {
     const coordinates: Coordinate[] = spots.map(
       (spot: SpotForMap) => spot.coordinate,
     );
     // mapに追加
     this.markers = coordinates.map((coord: Coordinate) => L.marker(coord, {icon: this.testIcon}));
     this.markers.map((marker: L.Marker) => marker.addTo(this.map));
+  }
+
+  /** ズームレベルや階層が変更された際のマーカー表示切り替え
+   * @param e 発火イベント
+   */
+  private switchMarkers(e: Event): void {
+    // 現在表示されてるマーカーの削除して，配置
+    this.markers.map((marker: L.Marker) => marker.remove());
+
+    // 表示するスポット一覧を取得
+    const focusedMapId: number = mapViewModule.mapViewStore.focusedMapId;
+    const spots: SpotForMap[] = mapViewModule.mapViewStore.getSpotsForMap(focusedMapId);
+    this.addMarkers(spots);
   }
 
   // マーカーが押された際に呼び出される関数
