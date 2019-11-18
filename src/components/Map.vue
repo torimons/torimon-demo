@@ -4,6 +4,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { mapViewStore } from '@/store/modules/MapViewModule';
 import { mapState } from 'vuex';
 import store from '../store';
 import 'leaflet/dist/leaflet.css';
@@ -42,6 +43,14 @@ export default class Map extends Vue {
         初期化時のマーカー表示
         初期化時のオブジェクト表示
         */
+        mapViewStore.rootMapBounds;
+        const p1 = L.point(10, 10);
+        const p2 = L.point(40, 60);
+        const bounds = L.bounds(p1, p2);
+        const centerPoint = bounds.getCenter()
+        this.centerLat = centerPoint.x;
+        this.centerLng = centerPoint.y;
+
         this.map = L.map('map').setView([this.centerLat, this.centerLng], this.zoomLevel);
         this.tileLayer = L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
