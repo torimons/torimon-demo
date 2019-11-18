@@ -33,6 +33,7 @@ export default class Map extends Vue {
     private centerLng: number = 139;
     private zoomLevel: number = 15;
     private tileLayer!: L.TileLayer;
+
     public mounted() {
         /*
         osmタイルの初期化
