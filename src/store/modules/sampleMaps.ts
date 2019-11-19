@@ -49,6 +49,29 @@ export const sampleMaps: Map[] =  [
                 gateNodeIds: [],
                 detailMapId: 1,
             },
+            {
+                id: 1,
+                name: 'SougouGakusyuPlaza-1F',
+                coordinate: {
+                    lat: 33.595502,
+                    lng: 130.218238,
+                },
+                floor: 1,
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.2178144454956,　33.59550795570886],
+                            [130.2178654074669,　33.59535603097975],
+                            [130.21800488233566,　33.59539848056336],
+                            [130.21795123815536,　33.59553923429634],
+                            [130.2178144454956,　33.59550795570886],
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapId: 1,
+            },
         ],
         bounds: {
             topL: {
