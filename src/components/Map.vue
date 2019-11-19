@@ -8,14 +8,15 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import store from '../store';
 import { mapState } from 'vuex';
-import { SpotForMap } from '../store/types';
+import { SpotForMap, Shape } from '../store/types';
+import { mapViewStore } from '@/store/modules/MapViewModule';
 /*
 leafletの導入
 必要であればプラグインの導入
 */
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { MapViewModule } from "@/store/modules/MapViewModule.ts"
+import { GeoJsonObject, GeometryObject, GeometryCollection, Feature, FeatureCollection } from 'geojson';
 
 @Component
 export default class Map extends Vue {
@@ -33,21 +34,6 @@ export default class Map extends Vue {
     */
     private map!: L.Map;
     private spotForMap!: SpotForMap[];
-    private polygon: any = {
-        type: 'Feature',
-        geometry: {
-            type: 'Polygon',
-            coordinates: [
-                [
-                    [130.2178144454956,　33.59550795570886],
-                    [130.2178654074669,　33.59535603097975],
-                    [130.21800488233566,　33.59539848056336],
-                    [130.21795123815536,　33.59553923429634],
-                    [130.2178144454956,　33.59550795570886],
-                ],
-            ],
-        },
-    };
 
     constructor() {
         super();
@@ -70,11 +56,42 @@ export default class Map extends Vue {
         );
         this.map.on('zoom', this.switchPolygon);
 
-        const geoJson: any = L.geoJSON(this.polygon);
+        // sampleMapのスポットのshapeを表示
+        // storeからspotの情報を取得する
+        // 現状はmapIdのgetterがないので直接指定しています．
+        const mapId = 0;
+        this.spotForMap = mapViewStore.getSpotsForMap(mapId);
+
+        const shapeGeojson = this.shapeToGeojson(this.spotForMap);
+        const geoJson: any = L.geoJSON(shapeGeojson);
         geoJson.addTo(this.map);
         // remogveLayerを呼び出すと非表示にできます
         // this.map.removeLayer(geoJson);
 
+    }
+
+    /**
+     * getSpotsForMapで取得したspotの情報から，shapeの情報だけを取り出し，
+     * leafletのgeoJsonで扱えるように変換する
+     * @params storeのgetSpotsForMapの返り値（spotForMap[]）.
+     * @return geoJson formatのデータ
+     */
+    private shapeToGeojson(spots: SpotForMap[]): GeoJsonObject {
+        let shapes: Feature[] = [];
+        for (const spot of spots) {
+            const shape = spot.shape! as GeometryObject;
+            const feature: Feature = {
+                properties: {},
+                type: 'Feature',
+                geometry: shape,
+            };
+            shapes.push(feature);
+        }
+        const features: FeatureCollection = {
+            type: 'FeatureCollection',
+            features: shapes,
+        };
+        return features as GeoJsonObject;
     }
 
     // ズームレベルや階層が変更された際のマーカー表示切り替え
