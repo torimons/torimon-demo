@@ -9,21 +9,26 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
         const event = new Event('testEvent');
     });
 
-    it('switchMarkerが呼ばれるとマーカーが切り替わる', () => {
-        const wrapper = shallowMount(Map, /*{
-            propsData: { propmap, ...} 
-        }*/);
-        console.log(wrapper);
-        //expect(wrapper.vm.markers).toBe([L.marker([wrapper.vm.centerLat, wrapper.vm.centerLng], { icon: this.testIcon })]);
+    it('switchMarkers イベント発火でマップのマーカーに切り替わる', () => {
+        const wrapper: any = shallowMount(Map, {
+            attachToDocument: true,
+        });
         // イベント発火
-        wrapper.trigger('zoomstart')
-        // 変更後の
-        const lat = mapViewStore.maps[0].spots[0].coordinate.lat
-        const lng = mapViewStore.maps[0].spots[0].coordinate.lng
-        //expect(wrapper.vm.markers).toBe([lat, lng])
+        wrapper.trigger('zoomstart');
+        // 変更後のマーカーの座標がマップのスポットの座標と一致しているか確認
+        /*
+        TODO:
+        for marker, spot in (wrapper.vm.markers, mapViewStore.map.spots){
+            marker.lat == spot.lat && ..
+            こんな感じで取得する
+        // const lat = mapViewStore.maps[0].spots[0].coordinate[lat];
+        // const lng = mapViewStore.maps[0].spots[0].coordinate[lng];
+        expect(wrapper.vm.markers).toBe([lat, lng]);
+        }
+        */
     });
 
-    it('addMarkers スポットの追加', () => {
-        
+    it('addMarkers スポットの配列を渡してマップにそのスポットのマーカーが追加される', () => {
+        // hoge
     });
 });
