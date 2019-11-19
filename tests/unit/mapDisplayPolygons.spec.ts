@@ -117,8 +117,13 @@ describe('mapコンポーネントのポリゴン表示', () => {
         mapViewStore.setMapViewState(mapViewStateTestData);
     });
 
-    it.skip('vuexのgetSpotsForMapで取得したspotの情報からshapeの情報をgeoJsonとして扱えるように変換する', () => {
+    it.skip('vuexのgetSpotsForMapで取得したspotのshape情報をgeoJsonに変換する', () => {
+        // storeに登録されたspotのデータをgetSpotForMap()で取り出す．
 
+        // 取り出したspotデータをテスト対象の関数に渡す．
+
+        // 返り値が望み通りの値になっているかを検証する．
+        
     });
 
 });
