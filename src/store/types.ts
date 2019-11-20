@@ -32,10 +32,7 @@ export interface Spot {
      * GeoJSONのジオメトリオブジェクトのJSON構造
      * [GeoJSON フォーマット仕様](https://s.kitazaki.name/docs/geojson-spec-ja.html#id5)
      */
-    shape?: {
-        'type': 'Polygon' | 'MultiPolygon',
-        'coordinates': number[][][] | number[][][][],
-    };
+    shape?: Shape;
     gateNodeIds: number[];
     detailMapId?: number;
     others?: any;
@@ -59,6 +56,7 @@ export interface SpotForMap {
     name: string;
     coordinate: Coordinate;
     floor: number;
+    shape?: Shape;
 }
 
 /**
@@ -75,4 +73,9 @@ export interface Bounds {
 export interface Coordinate {
     lat: number;
     lng: number;
+}
+
+export interface Shape {
+    type: 'Polygon' | 'MultiPolygon';
+    coordinates: number[][][] | number[][][][];
 }
