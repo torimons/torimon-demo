@@ -49,7 +49,7 @@ const expectedMapViewState: MapViewState = {
                         ] ],
                     },
                     gateNodeIds: [],
-                    detailMapId: 1,
+                    detailMapIds: [1],
                 },
             ],
             bounds: {
