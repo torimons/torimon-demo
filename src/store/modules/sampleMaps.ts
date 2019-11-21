@@ -7,12 +7,11 @@ export const sampleMaps: Map[] =  [
         spots: [
             {
                 id: 0,
-                name: 'SougouGakusyuPlaza',
+                name: 'SougouGakusyuPlazaFloor',
                 coordinate: {
                     lat: 33.595502,
                     lng: 130.218238,
                 },
-                floor: 1,
                 shape: {
                     type: 'Polygon',
                     coordinates: [[
@@ -48,6 +47,7 @@ export const sampleMaps: Map[] =  [
                 },
                 gateNodeIds: [],
                 detailMapIds: [1],
+                detailMapLevelNames: [],
             },
         ],
         bounds: {
@@ -84,7 +84,6 @@ export const sampleMaps: Map[] =  [
                         ],
                     ],
                 },
-                floor: 1,
                 gateNodeIds: [],
             },
         ],
