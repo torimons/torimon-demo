@@ -60,12 +60,15 @@ export default class Map extends Vue {
         // storeからspotの情報を取得する
         // 現状はmapIdのgetterがないので直接指定しています．
         const mapId = 0;
-        this.spotForMap = mapViewStore.getSpotsForMap(mapId);
+        const spotForMap = mapViewStore.getSpotsForMap(mapId);
 
-        const shapeGeojson = this.shapeToGeojson(this.spotForMap);
-        const geoJson: any = L.geoJSON(shapeGeojson);
-        geoJson.addTo(this.map);
-        // remogveLayerを呼び出すと非表示にできます
+        const shapeGeojson = this.shapeToGeojson(spotForMap);
+        const polygonLayer = new L.GeoJSON(shapeGeojson);
+        this.$nextTick().then(() => {
+            this.map.addLayer(polygonLayer);
+        });
+        
+        // removeLayerを呼び出すと非表示にできます
         // this.map.removeLayer(geoJson);
 
     }

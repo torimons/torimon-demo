@@ -1,6 +1,8 @@
-import { mapViewStore } from '@/store/modules/MapViewModule';
+import { mapViewStore, MapViewModule } from '@/store/modules/MapViewModule';
 import map from '@/components/Map.vue';
 import { MapViewState, Map, Bounds, SpotInfo, SpotForMap} from '@/store/types';
+import { GeoJsonObject, GeometryObject, GeometryCollection, Feature, FeatureCollection } from 'geojson';
+import { shallowMount } from '@vue/test-utils';
 
 const mapViewStateTestData: MapViewState = {
     maps : [
@@ -109,6 +111,46 @@ const mapViewStateTestData: MapViewState = {
     spotInfoIsVisible: false,
 };
 
+const expectedGeoJsonObject: FeatureCollection = {
+    type: 'FeatureCollection',
+    features: [{
+        properties: {},
+        type: 'Feature',
+        geometry: {
+            type: 'Polygon',
+            coordinates: [[
+                [
+                    130.21780639886853,
+                    33.59551018989406,
+                ],
+                [
+                    130.21791100502014,
+                    33.595199637596735,
+                ],
+                [
+                    130.2181014418602,
+                    33.59524655564143,
+                ],
+                [
+                    130.21809339523315,
+                    33.59527783432369,
+                ],
+                [
+                    130.21865129470825,
+                    33.59543869593907,
+                ],
+                [
+                    130.2185171842575,
+                    33.595715734684546,
+                ],
+                [
+                    130.21780639886853,
+                    33.59551018989406,
+                ],
+            ] ],
+        },
+    }],
+};
 
 
 describe('mapコンポーネントのポリゴン表示', () => {
@@ -117,13 +159,16 @@ describe('mapコンポーネントのポリゴン表示', () => {
         mapViewStore.setMapViewState(mapViewStateTestData);
     });
 
-    it.skip('vuexのgetSpotsForMapで取得したspotのshape情報をgeoJsonに変換する', () => {
+    it('vuexのgetSpotsForMapで取得したspotのshape情報をgeoJsonに変換する', () => {
+        const wrapper: any = shallowMount(map, {
+            attachToDocument: true,
+        });
         // storeに登録されたspotのデータをgetSpotForMap()で取り出す．
-
+        const spotsForMap = mapViewStore.getSpotsForMap(0);
         // 取り出したspotデータをテスト対象の関数に渡す．
-
+        const actualGeoJsonObject =  wrapper.vm.shapeToGeojson(spotsForMap); //アクセスの仕方がわからない
         // 返り値が望み通りの値になっているかを検証する．
-        
+        expect(actualGeoJsonObject).toStrictEqual(expectedGeoJsonObject);
     });
 
 });
