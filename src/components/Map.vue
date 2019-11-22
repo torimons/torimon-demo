@@ -15,8 +15,8 @@ leafletの導入
 必要であればプラグインの導入
 */
 import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
-import { GeoJsonObject, GeometryObject, GeometryCollection, Feature, FeatureCollection } from 'geojson';
+import L, { LeafletEvent, TileLayer } from 'leaflet';
+import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
 
 @Component
 export default class Map extends Vue {
@@ -33,7 +33,7 @@ export default class Map extends Vue {
     --omsのタイルレイヤー
     */
     private map!: L.Map;
-    private spotForMap!: SpotForMap[];
+    private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
 
     constructor() {
         super();
@@ -51,38 +51,30 @@ export default class Map extends Vue {
      */
     public mounted() {
         this.map = L.map( 'map', { center: L.latLng( 33.595507, 130.218285 ), zoom: 19 } ).addLayer(
-            L.tileLayer( 'http://{s}.tile.osm.org/{z}/{x}/{y}.png' ),
-            // L.tileLayer( 'https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png' ),
+            L.tileLayer( 'http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                maxZoom: 23,
+                maxNativeZoom: 19,
+            } ),
         );
-        this.map.on('zoom', this.switchPolygon);
-
-        // sampleMapのスポットのshapeを表示
-        // storeからspotの情報を取得する
-        // 現状はmapIdのgetterがないので直接指定しています．
-        const mapId = 0;
-        const spotForMap = mapViewStore.getSpotsForMap(mapId);
-
-        const shapeGeojson = this.shapeToGeojson(spotForMap);
-        const polygonLayer = new L.GeoJSON(shapeGeojson);
+        // sampleMapのポリゴン表示
+        // $next1ick()はテスト実行時のエラーを回避するために必要です．．
         this.$nextTick().then(() => {
-            this.map.addLayer(polygonLayer);
+            // 現状mapIdのgetterがないため直接指定しています．
+            const mapId = 0;
+            this.displayPolygons(mapId);
         });
-        
-        // removeLayerを呼び出すと非表示にできます
-        // this.map.removeLayer(geoJson);
-
     }
 
     /**
-     * getSpotsForMapで取得したspotの情報から，shapeの情報だけを取り出し，
-     * leafletのgeoJsonで扱えるように変換する
-     * @params storeのgetSpotsForMapの返り値（spotForMap[]）.
-     * @return geoJson formatのデータ
+     * storeのgetSpotsForMapで取得したspotの情報から
+     * shapeの情報を取り出してleafletで扱える形式に変換する．
+     * @params storeのgetSpotsForMapの返り値.
+     * @return geoJson形式のshapeデータ
      */
-    private shapeToGeojson(spots: SpotForMap[]): GeoJsonObject {
-        let shapes: Feature[] = [];
+    private spotShapeToGeoJson(spots: SpotForMap[]): GeoJsonObject {
+        const shapes: Feature[] = [];
         for (const spot of spots) {
-            const shape = spot.shape! as GeometryObject;
+            const shape = spot.shape as GeometryObject;
             const feature: Feature = {
                 properties: {},
                 type: 'Feature',
@@ -124,7 +116,30 @@ export default class Map extends Vue {
         オブジェクトの再表示
         */
         const zoomLevel: number = this.map.getZoom();
+    }
 
+    /**
+     * 指定されたIDを持つ地図のポリゴンを表示する
+     * polygonLayerメンバを変更して表示内容を変える．
+     * @params 地図のID
+     */
+    private displayPolygons(mapId: number): void {
+        // すでに表示されているポリゴンがある場合は先に削除する
+        if (this.polygonLayer !== undefined) {
+            this.map.removeLayer(this.polygonLayer);
+        }
+        const spotForMap = mapViewStore.getSpotsForMap(mapId);
+        const shapeGeoJson = this.spotShapeToGeoJson(spotForMap);
+        this.polygonLayer = new L.GeoJSON(shapeGeoJson, {
+            style: {
+                color: '#555555',
+                weight: 2,
+                opacity: 0.1,
+                fillColor: '#555555',
+                fillOpacity: 0.3,
+            },
+        });
+        this.map.addLayer(this.polygonLayer);
     }
 }
 </script>

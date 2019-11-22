@@ -1,8 +1,9 @@
-import { mapViewStore, MapViewModule } from '@/store/modules/MapViewModule';
+import { mapViewStore } from '@/store/modules/MapViewModule';
 import map from '@/components/Map.vue';
-import { MapViewState, Map, Bounds, SpotInfo, SpotForMap} from '@/store/types';
-import { GeoJsonObject, GeometryObject, GeometryCollection, Feature, FeatureCollection } from 'geojson';
+import { MapViewState } from '@/store/types';
+import { FeatureCollection } from 'geojson';
 import { shallowMount } from '@vue/test-utils';
+
 
 const mapViewStateTestData: MapViewState = {
     maps : [
@@ -21,35 +22,14 @@ const mapViewStateTestData: MapViewState = {
                     shape: {
                         type: 'Polygon',
                         coordinates: [[
-                            [
-                                130.21780639886853,
-                                33.59551018989406,
-                            ],
-                            [
-                                130.21791100502014,
-                                33.595199637596735,
-                            ],
-                            [
-                                130.2181014418602,
-                                33.59524655564143,
-                            ],
-                            [
-                                130.21809339523315,
-                                33.59527783432369,
-                            ],
-                            [
-                                130.21865129470825,
-                                33.59543869593907,
-                            ],
-                            [
-                                130.2185171842575,
-                                33.595715734684546,
-                            ],
-                            [
-                                130.21780639886853,
-                                33.59551018989406,
-                            ],
-                        ] ],
+                            [ 130.21780639886853, 33.59551018989406  ],
+                            [ 130.21791100502014, 33.595199637596735 ],
+                            [ 130.2181014418602,  33.59524655564143  ],
+                            [ 130.21809339523315, 33.59527783432369  ],
+                            [ 130.21865129470825, 33.59543869593907  ],
+                            [ 130.2185171842575,  33.595715734684546 ],
+                            [ 130.21780639886853, 33.59551018989406  ],
+                        ]],
                     },
                     gateNodeIds: [],
                     detailMapId: 1,
@@ -80,14 +60,12 @@ const mapViewStateTestData: MapViewState = {
                     },
                     shape: {
                         type: 'Polygon',
-                        coordinates: [
-                            [
+                        coordinates: [[
                                 [130.217816, 33.595257],
                                 [130.217783, 33.595517],
                                 [130.217915, 33.595558],
                                 [130.217942, 33.595495],
-                            ],
-                        ],
+                            ]],
                     },
                     floor: 1,
                     gateNodeIds: [],
@@ -119,56 +97,34 @@ const expectedGeoJsonObject: FeatureCollection = {
         geometry: {
             type: 'Polygon',
             coordinates: [[
-                [
-                    130.21780639886853,
-                    33.59551018989406,
-                ],
-                [
-                    130.21791100502014,
-                    33.595199637596735,
-                ],
-                [
-                    130.2181014418602,
-                    33.59524655564143,
-                ],
-                [
-                    130.21809339523315,
-                    33.59527783432369,
-                ],
-                [
-                    130.21865129470825,
-                    33.59543869593907,
-                ],
-                [
-                    130.2185171842575,
-                    33.595715734684546,
-                ],
-                [
-                    130.21780639886853,
-                    33.59551018989406,
-                ],
-            ] ],
+                [ 130.21780639886853, 33.59551018989406  ],
+                [ 130.21791100502014, 33.595199637596735 ],
+                [ 130.2181014418602,  33.59524655564143  ],
+                [ 130.21809339523315, 33.59527783432369  ],
+                [ 130.21865129470825, 33.59543869593907  ],
+                [ 130.2185171842575,  33.595715734684546 ],
+                [ 130.21780639886853, 33.59551018989406  ],
+            ]],
         },
     }],
 };
 
 
 describe('mapコンポーネントのポリゴン表示', () => {
+    let wrapper: any;
     beforeEach(() => {
-        // テスト用のデータをセット
+        // テスト用データをstoreにセット
         mapViewStore.setMapViewState(mapViewStateTestData);
-    });
-
-    it('vuexのgetSpotsForMapで取得したspotのshape情報をgeoJsonに変換する', () => {
-        const wrapper: any = shallowMount(map, {
+        wrapper = shallowMount( map, {
             attachToDocument: true,
         });
-        // storeに登録されたspotのデータをgetSpotForMap()で取り出す．
+    });
+
+    it('storeのgetter(getSpotsForMap)で取得したspotのshape情報をgeoJson形式に変換する', () => {
         const spotsForMap = mapViewStore.getSpotsForMap(0);
-        // 取り出したspotデータをテスト対象の関数に渡す．
-        const actualGeoJsonObject =  wrapper.vm.shapeToGeojson(spotsForMap); //アクセスの仕方がわからない
-        // 返り値が望み通りの値になっているかを検証する．
-        expect(actualGeoJsonObject).toStrictEqual(expectedGeoJsonObject);
+        const actualGeoJsonFormat =  wrapper.vm.spotShapeToGeoJson(spotsForMap);
+        const expectedGeoJsonFormat = expectedGeoJsonObject;
+        expect(actualGeoJsonFormat).toStrictEqual(expectedGeoJsonFormat);
     });
 
 });
