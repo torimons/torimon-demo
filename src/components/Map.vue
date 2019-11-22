@@ -57,7 +57,7 @@ export default class Map extends Vue {
             } ),
         );
         // sampleMapのポリゴン表示
-        // $next1ick()はテスト実行時のエラーを回避するために必要です．．
+        // $nextTick()はテスト実行時のエラーを回避するために使用しています．
         this.$nextTick().then(() => {
             // 現状mapIdのgetterがないため直接指定しています．
             const mapId = 0;
