@@ -68,14 +68,15 @@ export default class Map extends Vue {
     this.map.on('zoomstart', this.switchMarkers);
   }
 
-  /** spotForMapから取得したスポットにマーカーを配置する 
+  /** 現在のマーカー削除し，spotsの座標にマーカーを配置する 
    * @param spots 表示したいスポットの配列
   */
-  private addMarkers(spots: SpotForMap[]): void {
+  private replaceMarkers(spots: SpotForMap[]): void {
     const coordinates: Coordinate[] = spots.map(
       (spot: SpotForMap) => spot.coordinate,
     );
-    // mapに追加
+    // removeしてから取り除かないと描画から消えない
+    this.markers.forEach((marker: L.Marker) => marker.remove());
     this.markers = coordinates.map((coord: Coordinate) => L.marker(coord, {icon: this.testIcon}));
     this.markers.map((marker: L.Marker) => marker.addTo(this.map));
   }
@@ -84,13 +85,10 @@ export default class Map extends Vue {
    * @param e 発火イベント
    */
   private switchMarkers(e: L.LeafletEvent): void {
-    // 現在表示されてるマーカーの削除して，配置
-    this.markers.map((marker: L.Marker) => marker.remove());
-
     // 表示するスポット一覧を取得
     const focusedMapId: number = mapViewStore.focusedMapId;
     const spots: SpotForMap[] = mapViewStore.getSpotsForMap(focusedMapId);
-    this.addMarkers(spots);
+    this.replaceMarkers(spots);
   }
 
   // マーカーが押された際に呼び出される関数
