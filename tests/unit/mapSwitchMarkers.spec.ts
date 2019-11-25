@@ -1,18 +1,25 @@
 import { mapViewStore } from '@/store/modules/MapViewModule';
-import { SpotForMap, Coordinate } from '@/store/types';
+import { MapViewState, SpotForMap, Coordinate } from '@/store/types';
 import { shallowMount } from '@vue/test-utils';
 import Vue from 'vue';
 import Map from '@/components/Map.vue';
 
+
+const MapViewStoreTestData: MapViewState = {
+    // マップのテストデータ
+};
+
 describe('components/Map.vue マーカー切り替えのテスト', () => {
+    let wrapper: any;
     beforeEach(() => {
+        mapViewStore.setMapViewState(MapViewStoreTestData);
+        wrapper = shallowMount(Map, {
+            attachToDocument: true,
+        });
         const event = new Event('testEvent');
     });
 
     it('switchMarkers イベント発火でマップのマーカーに切り替わる', () => {
-        const wrapper: any = shallowMount(Map, {
-            attachToDocument: true,
-        });
         // イベント発火
         wrapper.trigger('zoomstart');
         // 変更後のマーカーの座標がマップのスポットの座標と一致しているか確認
@@ -29,6 +36,8 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
     });
 
     it('addMarkers スポットの配列を渡してマップにそのスポットのマーカーが追加される', () => {
-        // hoge
+        const actualMarkers = wrapper.addMarkers(/*追加されるマーカー*/);
+        const expectedMarkers = /*予測されるマーカー*/;
+        expect(actualMarkers).toBe(expectedMarkers);
     });
 });
