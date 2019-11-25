@@ -21,11 +21,13 @@ export default class FloorSwitchButton extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.floor-switch-button {
+  width: 2%;
+}
 .floor-switch-button ul {
   list-style: none;
   margin: 0;
   padding: 0;
-  width: 10%;
 }
 .floor-switch-button ul li span {
   display: block;
