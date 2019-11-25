@@ -1,11 +1,9 @@
 <template>
     <div class="floor-switch-button">
         <ul>
-            <li><span>1F</span></li>
-            <li><span>2F</span></li>
-            <li><span>3F</span></li>
-            <li><span>4F</span></li>
-            <li><span>5F</span></li>
+            <li v-for="floorName in floorNames" v-bind:key="floorName">
+                <span>{{ floorName }}</span>
+            </li>
         </ul>
     </div>
 </template>
@@ -16,27 +14,29 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component
 export default class FloorSwitchButton extends Vue {
+    private floorNames: string[] = [];
+    public mounted() {
+        this.floorNames = ['1F', '2F', '3F', '4F', '5F'];
+    }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.floor-switch-button {
-  width: 2%;
-}
 .floor-switch-button ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 .floor-switch-button ul li span {
-  display: block;
-  padding: .4em .8em;
-  text-decoration: none;
-  background: #fff;
-  color: #333;
-  text-align: center;
-  margin: .2em 0;
+    width: 2%;
+    display: block;
+    padding: .4em .8em;
+    text-decoration: none;
+    background: #fff;
+    color: #333;
+    text-align: center;
+    margin: .2em 0;
 }
 .floor-switch-button ul li span:hover {
   background: #eee;
