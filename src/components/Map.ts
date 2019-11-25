@@ -122,7 +122,7 @@ export default class Map extends Vue {
             this.map.removeLayer(this.polygonLayer);
         }
         const spotForMap: SpotForMap[] = mapViewStore.getSpotsForMap(mapId);
-        const shapeGeoJson: GeoJsonObject  = this.spotShapeToGeoJson(spotForMap);
+        const shapeGeoJson: GeoJsonObject = this.spotShapeToGeoJson(spotForMap);
         this.polygonLayer = new L.GeoJSON(shapeGeoJson, {
             style: {
                 color: '#555555',
