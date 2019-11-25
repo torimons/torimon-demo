@@ -1,6 +1,7 @@
 <template>
     <div class="map">
         map
+        <FloorSwitchButton/>
     </div>
 </template>
 
@@ -8,12 +9,17 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import store from '../store';
 import { mapState } from 'vuex';
+import FloorSwitchButton from '@/components/FloorSwitchButton.vue';
 /*
 leafletの導入
 必要であればプラグインの導入
 */
 
-@Component
+@Component({
+    components: {
+        FloorSwitchButton,
+    },
+})
 export default class Map extends Vue {
     /*
     必要な情報
