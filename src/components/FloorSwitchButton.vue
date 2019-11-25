@@ -25,6 +25,7 @@ export default class FloorSwitchButton extends Vue {
   list-style: none;
   margin: 0;
   padding: 0;
+  width: 10%;
 }
 .floor-switch-button ul li span {
   display: block;
@@ -32,7 +33,7 @@ export default class FloorSwitchButton extends Vue {
   text-decoration: none;
   background: #fff;
   color: #333;
-  text-align: left;
+  text-align: center;
   margin: .2em 0;
 }
 .floor-switch-button ul li span:hover {
