@@ -124,27 +124,21 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
         wrapper = shallowMount(Map, {
             attachToDocument: true,
         });
-        const event = new Event('testEvent');
     });
 
     afterEach(() => {
         wrapper.destroy();
     });
 
-    it('switchMarkers イベント発火でマップのマーカーに切り替わる', () => {
-        // イベント発火
-        wrapper.trigger('zoomstart');
-        // 変更後のマーカーの座標がマップのスポットの座標と一致しているか確認
-        /*
-        TODO:
-        for marker, spot in (wrapper.vm.markers, mapViewStore.map.spots){
-            marker.lat == spot.lat && ..
-            こんな感じで取得する
-        // const lat = mapViewStore.maps[0].spots[0].coordinate[lat];
-        // const lng = mapViewStore.maps[0].spots[0].coordinate[lng];
-        expect(wrapper.vm.markers).toBe([lat, lng]);
-        }
-        */
+    it('switchMarkersがreplaceMarkersにMapViewStateから取得した情報を渡す', () => {
+        let expectedSpots: SpotForMap[] = mapViewStore.getSpotsForMap(0);
+        let actualSpots: SpotForMap[] = [];
+        // replaceMarkersのモック
+        wrapper.vm.replaceMarkers = jest.fn((spots: SpotForMap[]) => {
+            spots.forEach(spot => actualSpots.push(spot));
+        });
+        wrapper.vm.switchMarkers();
+        expect(actualSpots).toStrictEqual(expectedSpots)
     });
 
     it('replaceMarkersに空の配列を渡してMap.vueのmarkersが空になる', () => {
@@ -157,12 +151,21 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
         const testSpots: SpotForMap[] = [
             {
                 id: 0,
-                name: 'SougouGakusyuPlaza',
+                name: 'SougouGakusyuPlaza1',
                 coordinate: {
                     lat: 33.595502,
                     lng: 130.218238,
                 },
                 floor: 1,
+            },
+            {
+                id: 1,
+                name: 'SougouGakusyuPlaza2',
+                coordinate: {
+                    lat: 33.595503,
+                    lng: 130.218239,
+                },
+                floor: 2,
             },
         ];
         wrapper.vm.replaceMarkers(testSpots);
@@ -171,6 +174,7 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
             const testLat: number = testSpots[i].coordinate.lat;
             const testLng: number = testSpots[i].coordinate.lng;
             const actLatLng = actualMarkers[i].getLatLng();
+            // testSpotとactualSpotの座標がlatLng型で一致してるか
             expect(actLatLng).toStrictEqual(L.latLng(testLat, testLng));
         }
     });

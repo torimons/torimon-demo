@@ -35,8 +35,6 @@ export default class Map extends Vue {
   private centerLng: number = 130.21;
   private zoomLevel: number = 15;
   private tileLayer!: L.TileLayer;
-  /* */
-    //iconUrl: 'http://flat-icon-design.com/f/f_object_155/s512_f_object_155_0bg.png',
   private testIcon = L.icon({
     iconUrl: 'http://localhost:8080/favicon.ico',
     iconSize: [30, 30],
