@@ -165,14 +165,18 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
 
     it('replaceMarkersに空の配列を渡してMap.vueのmarkersが空になる', () => {
         // コールバック関数は本テストに関係ないため空の関数を渡している
-        wrapper.vm.replaceMarkers([], () => {});
+        wrapper.vm.replaceMarkers([], () => {
+            // do nothing
+        });
         const actualMarkers = wrapper.vm.markers;
         expect(actualMarkers).toStrictEqual([]);
     });
 
     it('replaceMarkersに配列を渡してMap.vueのmarkersに登録される', () => {
         // コールバック関数は本テストに関係ないため空の関数を渡している
-        wrapper.vm.replaceMarkers(testSpots, () => {});
+        wrapper.vm.replaceMarkers(testSpots, () => {
+            // do nothing
+        });
         const actualMarkers = wrapper.vm.markers;
         for (let i = 0; i < actualMarkers.length; i++) {
             const testLat: number = testSpots[i].coordinate.lat;
@@ -189,10 +193,10 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
             functionCalled = true;
         });
         const actualMarkers = wrapper.vm.markers;
-        for (let i = 0; i < actualMarkers.length; i++) {
+        for (const markers of actualMarkers) {
             functionCalled = false;
             // マーカーのクリック発火
-            actualMarkers[i].fire('click');
+            markers.fire('click');
             expect(functionCalled).toBe(true);
         }
     });

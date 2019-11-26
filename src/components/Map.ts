@@ -82,7 +82,7 @@ export default class Map extends Vue {
         const focusedMapId: number = mapViewStore.focusedMapId;
         const spots: SpotForMap[] = mapViewStore.getSpotsForMap(focusedMapId);
         // 仮のコールバックを登録
-        this.replaceMarkers(spots, (e: L.LeafletEvent) => {
+        this.replaceMarkers(spots, () => {
             console.log('callback');
         });
     }
