@@ -14,7 +14,6 @@ const expectedMapViewState: MapViewState = {
                         lat: 33.595502,
                         lng: 130.218238,
                     },
-                    floor: 1,
                     shape: {
                         type: 'Polygon',
                         coordinates: [[
@@ -46,10 +45,10 @@ const expectedMapViewState: MapViewState = {
                                 130.21780639886853,
                                 33.59551018989406,
                             ],
-                        ] ],
+                        ]],
                     },
                     gateNodeIds: [],
-                    detailMapId: 1,
+                    detailMapIds: [1],
                 },
             ],
             bounds: {
@@ -62,11 +61,10 @@ const expectedMapViewState: MapViewState = {
                     lng: 130.220609,
                 },
             },
-
         },
         {
             id: 1,
-            name: 'SougouGakusyuPlaza',
+            name: 'SougouGakusyuPlaza_1F',
             spots: [
                 {
                     id: 0,
@@ -86,8 +84,45 @@ const expectedMapViewState: MapViewState = {
                             ],
                         ],
                     },
-                    floor: 1,
                     gateNodeIds: [],
+                },
+            ],
+            bounds: {
+                topL: {
+                    lat: 33.5954678,
+                    lng: 130.2177802,
+                },
+                botR: {
+                    lat: 33.5954678,
+                    lng: 130.2177802,
+                },
+            },
+        },
+        {
+            id: 2,
+            name: 'SougouGakusyuPlaza_2F',
+            spots: [
+                {
+                    id: 10,
+                    name: '201',
+                    coordinate: {
+                        lat: 33.5954558,
+                        lng: 130.2179447,
+                    },
+                    shape: {
+                        type: 'Polygon',
+                        coordinates: [
+                            [
+                                [130.217816, 33.595257],
+                                [130.217783, 33.595517],
+                                [130.217915, 33.595558],
+                                [130.217942, 33.595495],
+                            ],
+                        ],
+                    },
+                    gateNodeIds: [10],
+                    detailMapIds: [],
+                    others: {},
                 },
             ],
             bounds: {
@@ -133,7 +168,6 @@ describe('components/SpotInfo.vue', () => {
                 id:       expectedMapViewState.maps[0].spots[0].id,
                 name:     expectedMapViewState.maps[0].spots[0].name,
                 coordinate: expectedMapViewState.maps[0].spots[0].coordinate,
-                floor:    expectedMapViewState.maps[0].spots[0].floor,
                 shape:    expectedMapViewState.maps[0].spots[0].shape,
             },
         ];
@@ -146,7 +180,6 @@ describe('components/SpotInfo.vue', () => {
         const expectedFocusedSpotId: number = expectedMapViewState.focusedSpotId;
         const expectedInfoOfCurrentSpot: SpotInfo = {
             name:  expectedMapViewState.maps[expectedFocusedMapId].spots[expectedFocusedSpotId].name,
-            floor: expectedMapViewState.maps[expectedFocusedMapId].spots[expectedFocusedSpotId].floor,
         };
         expect(actualInfoOfCurrentSpot).toEqual(expectedInfoOfCurrentSpot);
     });

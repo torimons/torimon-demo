@@ -18,7 +18,6 @@ const mapViewStateTestData: MapViewState = {
                         lat: 33.595502,
                         lng: 130.218238,
                     },
-                    floor: 1,
                     shape: {
                         type: 'Polygon',
                         coordinates: [[
@@ -32,7 +31,7 @@ const mapViewStateTestData: MapViewState = {
                         ]],
                     },
                     gateNodeIds: [],
-                    detailMapId: 1,
+                    detailMapIds: [1],
                 },
             ],
             bounds: {
@@ -67,7 +66,6 @@ const mapViewStateTestData: MapViewState = {
                                 [130.217942, 33.595495],
                             ]],
                     },
-                    floor: 1,
                     gateNodeIds: [],
                 },
             ],
