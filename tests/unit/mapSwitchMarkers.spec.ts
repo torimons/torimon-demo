@@ -127,6 +127,7 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
     });
 
     afterEach(() => {
+        // Map components already initialized防止
         wrapper.destroy();
     });
 
