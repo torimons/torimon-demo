@@ -37,8 +37,8 @@ export default class Map extends Vue {
     private tileLayer!: L.TileLayer;
     private defaultIcon = L.icon({
         iconUrl: 'http://localhost:8080/leaflet/marker-icon-2x.png',
-        iconSize: [38, 95],
-        iconAnchor: [22, 94],
+        iconSize: [50, 82],
+        iconAnchor: [25, 80],
         popupAnchor: [-3, -76],
         shadowSize: [68, 95],
         shadowAnchor: [22, 94],
