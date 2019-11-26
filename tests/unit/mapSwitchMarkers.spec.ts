@@ -118,6 +118,27 @@ const MapViewStoreTestData: MapViewState = {
 
 describe('components/Map.vue マーカー切り替えのテスト', () => {
     let wrapper: any;
+    // テストデータ
+    const testSpots: SpotForMap[] = [
+        {
+            id: 0,
+            name: 'SougouGakusyuPlaza1',
+            coordinate: {
+                lat: 33.595502,
+                lng: 130.218238,
+            },
+            floor: 1,
+        },
+        {
+            id: 1,
+            name: 'SougouGakusyuPlaza2',
+            coordinate: {
+                lat: 33.595503,
+                lng: 130.218239,
+            },
+            floor: 2,
+        },
+    ];
 
     beforeEach(() => {
         mapViewStore.setMapViewState(MapViewStoreTestData);
@@ -143,33 +164,15 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
     });
 
     it('replaceMarkersに空の配列を渡してMap.vueのmarkersが空になる', () => {
-        wrapper.vm.replaceMarkers([]);
+        // コールバック関数は本テストに関係ないため空の関数を渡している
+        wrapper.vm.replaceMarkers([], () => {});
         const actualMarkers = wrapper.vm.markers;
         expect(actualMarkers).toStrictEqual([]);
     });
 
     it('replaceMarkersに配列を渡してMap.vueのmarkersに登録される', () => {
-        const testSpots: SpotForMap[] = [
-            {
-                id: 0,
-                name: 'SougouGakusyuPlaza1',
-                coordinate: {
-                    lat: 33.595502,
-                    lng: 130.218238,
-                },
-                floor: 1,
-            },
-            {
-                id: 1,
-                name: 'SougouGakusyuPlaza2',
-                coordinate: {
-                    lat: 33.595503,
-                    lng: 130.218239,
-                },
-                floor: 2,
-            },
-        ];
-        wrapper.vm.replaceMarkers(testSpots);
+        // コールバック関数は本テストに関係ないため空の関数を渡している
+        wrapper.vm.replaceMarkers(testSpots, () => {});
         const actualMarkers = wrapper.vm.markers;
         for (let i = 0; i < actualMarkers.length; i++) {
             const testLat: number = testSpots[i].coordinate.lat;
@@ -177,6 +180,20 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
             const actLatLng = actualMarkers[i].getLatLng();
             // testSpotとactualSpotの座標がlatLng型で一致してるか
             expect(actLatLng).toStrictEqual(L.latLng(testLat, testLng));
+        }
+    });
+
+    it('replaceMarkersに渡したコールバック関数が呼び出されいるか確認', () => {
+        let functionCalled: boolean;
+        wrapper.vm.replaceMarkers(testSpots, () => {
+            functionCalled = true;
+        });
+        const actualMarkers = wrapper.vm.markers;
+        for (let i = 0; i < actualMarkers.length; i++) {
+            functionCalled = false;
+            // マーカーのクリック発火
+            actualMarkers[i].fire('click');
+            expect(functionCalled).toBe(true);
         }
     });
 });
