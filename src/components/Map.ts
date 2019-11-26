@@ -3,8 +3,6 @@ import { mapState } from 'vuex';
 import store from '@/store';
 import { mapViewStore } from '@/store/modules/MapViewModule';
 import { SpotForMap, Coordinate, Shape } from '@/store/types';
-import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
 /*
 leafletの導入
 必要であればプラグインの導入
@@ -30,7 +28,7 @@ export default class Map extends Vue {
         shadowAnchor: [22, 94],
     });
     private markers: L.Marker[] = [];
-    
+
     /**
      * とりあえず地図の表示を行なっています．
      */
@@ -47,17 +45,15 @@ export default class Map extends Vue {
             this.zoomLevel,
         );
         this.tileLayer = L.tileLayer(
-            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',　{
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 23,
                 maxNativeZoom: 19,
-            }
+            },
         ).addTo(this.map);
 
         this.markers = [L.marker([this.centerLat, this.centerLng], { icon: this.defaultIcon })];
         this.markers.map((marker: L.Marker) => marker.addTo(this.map));
-        
         this.map.on('zoomstart', this.switchMarkers);
-        
         // sampleMapのポリゴン表示
         // $nextTick()はテスト実行時のエラーを回避するために使用しています．
         this.$nextTick().then(() => {
@@ -102,15 +98,6 @@ export default class Map extends Vue {
             */
     }
 
-    // ズームレベルや階層が変更された際のオブジェクトの表示切り替え
-    private switchPolygon(e: Event): void {
-        /*
-            現在表示されているオブジェクトの削除
-            階層やズームレベルの取得
-            オブジェクトの再表示
-            */
-    }    
-    
     /**
      * storeのgetSpotsForMapで取得したspotの情報から
      * shapeの情報を取り出してleafletで扱える形式に変換する．
@@ -134,7 +121,7 @@ export default class Map extends Vue {
         };
         return features as GeoJsonObject;
     }
-    
+
     /**
      * 指定されたIDを持つ地図のポリゴンを表示する
      * polygonLayerメンバを変更して表示内容を変える．
@@ -158,7 +145,7 @@ export default class Map extends Vue {
         });
         this.map.addLayer(this.polygonLayer);
     }
-    
+
     // ズームレベルや階層が変更された際のオブジェクトの表示切り替え
     // Event型だとイベントリスナーとして登録できなかったため，一旦anyにしています．
     private switchPolygon(e: any): void {
