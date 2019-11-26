@@ -8,17 +8,7 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-
-
-@Component
-export default class FloorSwitchButton extends Vue {
-    private floorNames: string[] = [];
-    public mounted() {
-        this.floorNames = ['1F', '2F', '3F', '4F', '5F'];
-    }
-}
+<script lang="ts" src='./FloorSwitchButton.ts'>
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
