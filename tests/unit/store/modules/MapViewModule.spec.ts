@@ -45,7 +45,7 @@ const expectedMapViewState: MapViewState = {
                                 130.21780639886853,
                                 33.59551018989406,
                             ],
-                        ] ],
+                        ]],
                     },
                     gateNodeIds: [],
                     detailMapIds: [1],
@@ -99,7 +99,7 @@ const expectedMapViewState: MapViewState = {
             },
         },
         {
-            id: 1,
+            id: 2,
             name: 'SougouGakusyuPlaza_2F',
             spots: [
                 {
