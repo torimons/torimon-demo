@@ -168,7 +168,6 @@ describe('components/SpotInfo.vue', () => {
                 id:       expectedMapViewState.maps[0].spots[0].id,
                 name:     expectedMapViewState.maps[0].spots[0].name,
                 coordinate: expectedMapViewState.maps[0].spots[0].coordinate,
-                floor:    expectedMapViewState.maps[0].spots[0].floor,
                 shape:    expectedMapViewState.maps[0].spots[0].shape,
             },
         ];

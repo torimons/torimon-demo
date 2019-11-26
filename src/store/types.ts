@@ -54,7 +54,6 @@ export interface SpotForMap {
     id: number;
     name: string;
     coordinate: Coordinate;
-    floor: number;
     shape?: Shape;
 }
 
