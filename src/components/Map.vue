@@ -1,7 +1,6 @@
 <template>
     <div id='map'>
         map
-        <FloorSwitchButton/>
     </div>
 </template>
 

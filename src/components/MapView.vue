@@ -1,6 +1,7 @@
 <template>
     <div id="map-view">
         <Map/>
+        <FloorSwitchButton/>
         <!-- <SpotInfo/> -->
     </div>
 </template>
@@ -9,11 +10,13 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Map from './Map.vue';
 // import SpotInfo from './SpotInfo.vue';
+import FloorSwitchButton from '@/components/FloorSwitchButton.vue';
 
 @Component({
     components: {
         Map,
         // SpotInfo,
+        FloorSwitchButton,
     },
 })
 export default class MapView extends Vue {
