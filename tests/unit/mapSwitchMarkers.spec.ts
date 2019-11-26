@@ -131,14 +131,14 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
     });
 
     it('switchMarkersがreplaceMarkersにMapViewStateから取得した情報を渡す', () => {
-        let expectedSpots: SpotForMap[] = mapViewStore.getSpotsForMap(0);
-        let actualSpots: SpotForMap[] = [];
+        const expectedSpots: SpotForMap[] = mapViewStore.getSpotsForMap(0);
+        const actualSpots: SpotForMap[] = [];
         // replaceMarkersのモック
         wrapper.vm.replaceMarkers = jest.fn((spots: SpotForMap[]) => {
-            spots.forEach(spot => actualSpots.push(spot));
+            spots.forEach((spot) => actualSpots.push(spot));
         });
         wrapper.vm.switchMarkers();
-        expect(actualSpots).toStrictEqual(expectedSpots)
+        expect(actualSpots).toStrictEqual(expectedSpots);
     });
 
     it('replaceMarkersに空の配列を渡してMap.vueのmarkersが空になる', () => {

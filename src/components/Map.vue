@@ -41,9 +41,9 @@ export default class Map extends Vue {
     iconAnchor: [22, 94],
     popupAnchor: [-3, -76],
     shadowSize: [68, 95],
-    shadowAnchor: [22, 94]
-  }); 
-  private markers: L.Marker[] = []; 
+    shadowAnchor: [22, 94],
+  });
+  private markers: L.Marker[] = [];
 
   public mounted() {
     /*
@@ -66,9 +66,9 @@ export default class Map extends Vue {
     this.map.on('zoomstart', this.switchMarkers);
   }
 
-  /** 現在のマーカー削除し，spotsの座標にマーカーを配置する 
+  /** 現在のマーカー削除し，spotsの座標にマーカーを配置する
    * @param spots 表示したいスポットの配列
-  */
+   */
   private replaceMarkers(spots: SpotForMap[]): void {
     const coordinates: Coordinate[] = spots.map(
       (spot: SpotForMap) => spot.coordinate,
