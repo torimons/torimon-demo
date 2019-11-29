@@ -40,6 +40,12 @@ export class MapViewModule extends VuexModule implements MapViewState {
     public spotInfoIsVisible: boolean = false;
 
     /**
+     * スポットの詳細マップのどの階層が表示されるかを保持
+     * #84にて作られるため仮作成
+     */
+    public floorDetailMapId: number = 0;
+
+    /**
      * Mapコンポーネントが扱うマップの範囲を返す
      * @return マップの範囲
      */
@@ -81,6 +87,19 @@ export class MapViewModule extends VuexModule implements MapViewState {
             floor: spot.floor,
         };
         return spotInfo;
+    }
+    
+    /**
+     * スポットの詳細マップのどの階層が表示されているかをMapIdで返す
+     * 無ければ例外を返す
+     */
+    get getFloorMap(){
+        if(this.floorDetailMapId != null){
+            return this.floorDetailMapId;
+        }
+        else{
+            throw new Error("詳細マップがありません");
+        }
     }
 
     /**
