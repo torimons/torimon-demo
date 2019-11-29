@@ -4,7 +4,7 @@ import { shallowMount } from '@vue/test-utils';
 import Vue from 'vue';
 import Map from '@/components/Map.vue';
 import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
+import L, { map } from 'leaflet';
 
 
 const MapViewStoreTestData: MapViewState = {
@@ -153,12 +153,20 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
     });
 
     it('switchMarkersがreplaceMarkersにMapViewStateから取得した情報を渡す', () => {
-        const expectedSpots: SpotForMap[] = mapViewStore.getSpotsForMap(0);
+        /*
+        switchMarkersはstoreのfocusedMapIdをみているので，
+        getSpotsForMapにも同じ値(今回は初期値0)を与える.
+        複数のマップに対してテストする場合，
+        mapViewStore.setFocusedSpotなどで強制的にfocusedMapIdを変更する必要がある
+        */
+        const mapId = MapViewStoreTestData.focusedMapId;
+        const expectedSpots: SpotForMap[] = mapViewStore.getSpotsForMap(mapId);
         const actualSpots: SpotForMap[] = [];
         // replaceMarkersのモック
         wrapper.vm.replaceMarkers = jest.fn((spots: SpotForMap[]) => {
             spots.forEach((spot) => actualSpots.push(spot));
         });
+
         wrapper.vm.switchMarkers();
         expect(actualSpots).toStrictEqual(expectedSpots);
     });

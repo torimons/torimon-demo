@@ -84,9 +84,9 @@ export default class Map extends Vue {
         const focusedMapId: number = mapViewStore.focusedMapId;
         const spots: SpotForMap[] = mapViewStore.getSpotsForMap(focusedMapId);
         // 仮のコールバックを登録
-        this.replaceMarkers(spots, () => {
-            console.log('callback');
-        });
+        // this.replaceMarkers(spots, () => {
+        //     console.log('callback');
+        // });
     }
 
     // マーカーが押された際に呼び出される関数
