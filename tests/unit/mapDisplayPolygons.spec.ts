@@ -84,8 +84,10 @@ const mapViewStateTestData: MapViewState = {
         },
     ],
     rootMapId: 0,
-    focusedMapId: 0,
-    focusedSpotId: 0,
+    focusedSpot: {
+        mapId: 0,
+        spotId: 0,
+    },
     spotInfoIsVisible: false,
 };
 

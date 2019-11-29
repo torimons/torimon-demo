@@ -25,14 +25,12 @@ export class MapViewModule extends VuexModule implements MapViewState {
     public rootMapId: number = 0;
 
     /**
-     * Mapコンポーネントで選択されているMapのID
+     * Mapコンポーネントで選択されているMap，およびスポットのID
      */
-    public focusedMapId: number = 0;
-
-    /**
-     * Mapコンポーネントで選択されているスポットのID
-     */
-    public focusedSpotId: number = 0;
+    public focusedSpot = {
+        mapId: 0,
+        spotId: 0,
+    }
 
     /**
      * SpotInfoコンポーネントの表示非表示状態を保持
@@ -75,7 +73,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * @return SpotInfoコンポーネントに必要な情報
      */
     get infoOfFocusedSpot(): SpotInfo {
-        const spot: Spot = this.maps[this.focusedMapId].spots[this.focusedSpotId];
+        const spot: Spot = this.maps[this.focusedSpot.mapId].spots[this.focusedSpot.spotId];
         const spotInfo: SpotInfo = {
             name:  spot.name,
             floor: spot.floor,
@@ -90,8 +88,8 @@ export class MapViewModule extends VuexModule implements MapViewState {
      */
     @Mutation
     public setFocusedSpot(newFocusedSpot: {mapId: number, spotId: number}): void {
-        this.focusedMapId  = newFocusedSpot.mapId;
-        this.focusedSpotId = newFocusedSpot.spotId;
+        this.focusedSpot.mapId  = newFocusedSpot.mapId;
+        this.focusedSpot.spotId = newFocusedSpot.spotId;
     }
 
     /**
@@ -101,11 +99,11 @@ export class MapViewModule extends VuexModule implements MapViewState {
      */
     @Mutation
     public setMapViewState(newMapViewState: MapViewState): void {
-        this.maps              = newMapViewState.maps;
-        this.rootMapId         = newMapViewState.rootMapId;
-        this.focusedMapId      = newMapViewState.focusedMapId;
-        this.focusedSpotId     = newMapViewState.focusedSpotId;
-        this.spotInfoIsVisible = newMapViewState.spotInfoIsVisible;
+        this.maps               = newMapViewState.maps;
+        this.rootMapId          = newMapViewState.rootMapId;
+        this.focusedSpot.mapId  = newMapViewState.focusedSpot.mapId;
+        this.focusedSpot.spotId = newMapViewState.focusedSpot.spotId;
+        this.spotInfoIsVisible  = newMapViewState.spotInfoIsVisible;
     }
 }
 
