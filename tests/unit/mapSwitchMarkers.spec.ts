@@ -21,7 +21,6 @@ const MapViewStoreTestData: MapViewState = {
                         lat: 33.595502,
                         lng: 130.218238,
                     },
-                    floor: 1,
                     shape: {
                         type: 'Polygon',
                         coordinates: [[
@@ -56,7 +55,7 @@ const MapViewStoreTestData: MapViewState = {
                         ] ],
                     },
                     gateNodeIds: [],
-                    detailMapId: 1,
+                    detailMapIds: [1],
                 },
             ],
             bounds: {
@@ -93,7 +92,6 @@ const MapViewStoreTestData: MapViewState = {
                             ],
                         ],
                     },
-                    floor: 1,
                     gateNodeIds: [],
                 },
             ],
@@ -128,7 +126,6 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
                 lat: 33.595502,
                 lng: 130.218238,
             },
-            floor: 1,
         },
         {
             id: 1,
@@ -137,7 +134,6 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
                 lat: 33.595503,
                 lng: 130.218239,
             },
-            floor: 2,
         },
     ];
 
