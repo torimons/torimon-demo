@@ -1,6 +1,6 @@
 import { Mutation, VuexModule, getModule, Module } from 'vuex-module-decorators';
 import store from '@/store';
-import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds } from '@/store/types';
+import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds, displayLevelType } from '@/store/types';
 import { sampleMaps } from '@/store/modules/sampleMaps';
 
 /**
@@ -38,6 +38,11 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * SpotInfoコンポーネントの表示非表示状態を保持
      */
     public spotInfoIsVisible: boolean = false;
+
+    /**
+     * ズームレベルに応じて切り替わる表示レベルを保持
+     */
+    public displayLevel: displayLevelType = 'default';
 
     /**
      * Mapコンポーネントが扱うマップの範囲を返す
@@ -82,6 +87,14 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
+     * ズームレベルによって変化する表示レベルを返す
+     * @return 表示レベル('default' or 'detail')
+     */
+    get getDisplayLevel(): string {
+        return this.displayLevel;
+    }
+
+    /**
      * Mapコンポーネント上でフォーカスされているスポットのIDを更新する
      * @param newFocusedMapId 新しくフォーカスされるマップのID
      * @param newFocusedSpotId 新しいフォーカスされるスポットのID
@@ -104,6 +117,15 @@ export class MapViewModule extends VuexModule implements MapViewState {
         this.focusedMapId      = newMapViewState.focusedMapId;
         this.focusedSpotId     = newMapViewState.focusedSpotId;
         this.spotInfoIsVisible = newMapViewState.spotInfoIsVisible;
+    }
+
+    /**
+     * ズームレベルで変化する表示レベルをsetする
+     * @param newDisplayLevel setする表示レベル('default' or 'detail')
+     */
+    @Mutation
+    public setDisplayLevel(newDisplayLevel: displayLevelType): void {
+        this.displayLevel = newDisplayLevel;
     }
 }
 

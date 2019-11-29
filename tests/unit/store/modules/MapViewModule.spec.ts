@@ -1,5 +1,5 @@
 import { mapViewStore } from '@/store/modules/MapViewModule';
-import { MapViewState, Map, Bounds, SpotInfo, SpotForMap} from '@/store/types';
+import { MapViewState, Map, Bounds, SpotInfo, SpotForMap, displayLevelType } from '@/store/types';
 
 const expectedMapViewState: MapViewState = {
     maps : [
@@ -192,4 +192,15 @@ describe('components/SpotInfo.vue', () => {
         expect(actualFocusedSpotId).toBe(expectedNewFocusedSpotId);
     });
 
+    it('setしたnewDisplayLevelがstateに登録されている', () => {
+        const newDisplayLevel: displayLevelType = 'default';
+        mapViewStore.setDisplayLevel(newDisplayLevel);
+        expect(mapViewStore.displayLevel).toBe(newDisplayLevel);
+    });
+
+    it('setterでstateに登録したdisplayLevelをgetterで取得する', () => {
+        const newDisplayLevel: displayLevelType = 'detail';
+        mapViewStore.setDisplayLevel(newDisplayLevel);
+        expect(mapViewStore.getDisplayLevel).toBe(newDisplayLevel);
+    });
 });

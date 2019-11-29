@@ -77,3 +77,8 @@ export interface Shape {
     type: 'Polygon' | 'MultiPolygon';
     coordinates: number[][][] | number[][][][];
 }
+
+/**
+ * ズームレベルで切り替わる表示レベルの種類
+ */
+export type displayLevelType = 'default' | 'detail';
