@@ -156,8 +156,8 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
         const mapId = MapViewStoreTestData.focusedMapId;
         const expectedSpots: SpotForMap[] = mapViewStore.getSpotsForMap(mapId);
         const actualSpots: SpotForMap[] = [];
-        // replaceMarkersのモック
-        (mapInstance as any).replaceMarkers = jest.fn((spots: SpotForMap[]) => {
+        // replaceMarkersWithのモック
+        (mapInstance as any).replaceMarkersWith = jest.fn((spots: SpotForMap[]) => {
             spots.forEach((spot) => actualSpots.push(spot));
         });
 
@@ -165,9 +165,9 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
         expect(actualSpots).toStrictEqual(expectedSpots);
     });
 
-    it('replaceMarkersに配列を渡してMapのmarkersに登録', () => {
+    it('replaceMarkersWithに配列を渡してMapのmarkersに登録', () => {
         // コールバック関数は本テストに関係ないため空の関数を渡している
-        (mapInstance as any).replaceMarkers(testSpots, () => {
+        (mapInstance as any).replaceMarkersWith(testSpots, () => {
             // do nothing
         });
         const actualMarkers = (mapInstance as any).markers;
@@ -182,7 +182,7 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
 
     it('replaceMarkersに渡したコールバック関数が呼び出されいるか確認', () => {
         let functionCalled: boolean;
-        (mapInstance as any).replaceMarkers(testSpots, () => {
+        (mapInstance as any).replaceMarkersWith(testSpots, () => {
             functionCalled = true;
         });
         const actualMarkers = (mapInstance as any).markers;

@@ -64,10 +64,11 @@ export default class Map extends Vue {
     }
 
     /** 現在のマーカー削除し，spotsの座標にマーカーを配置する
-     * @param spots 表示したいスポットの配列
+     * @param newSpots 新しく表示したいスポットの配列
+     * @param callback スポットがクリックされた時に呼び出すコールバック
      */
-    private replaceMarkers(spots: SpotForMap[], callback: (e: L.LeafletEvent) => void): void {
-        const coordinates: Coordinate[] = spots.map(
+    private replaceMarkersWith(newSpots: SpotForMap[], callback: (e: L.LeafletEvent) => void): void {
+        const coordinates: Coordinate[] = newSpots.map(
             (spot: SpotForMap) => spot.coordinate,
         );
         // removeしてから取り除かないと描画から消えない
@@ -84,9 +85,9 @@ export default class Map extends Vue {
         const focusedMapId: number = mapViewStore.focusedMapId;
         const spots: SpotForMap[] = mapViewStore.getSpotsForMap(focusedMapId);
         // 仮のコールバックを登録
-        // this.replaceMarkers(spots, () => {
-        //     console.log('callback');
-        // });
+        this.replaceMarkersWith(spots, () => {
+            // do nothing
+        });
     }
 
     // マーカーが押された際に呼び出される関数
