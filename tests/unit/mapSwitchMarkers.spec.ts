@@ -2,7 +2,7 @@ import { mapViewStore } from '@/store/modules/MapViewModule';
 import { MapViewState, SpotForMap, Coordinate } from '@/store/types';
 import { shallowMount } from '@vue/test-utils';
 import Vue from 'vue';
-import Map from '@/components/Map.vue';
+import Map from '@/components/Map.ts';
 import 'leaflet/dist/leaflet.css';
 import L, { map } from 'leaflet';
 
@@ -117,7 +117,8 @@ const MapViewStoreTestData: MapViewState = {
 
 
 describe('components/Map.vue マーカー切り替えのテスト', () => {
-    let wrapper: any;
+    // mapにするとleafletのmapと被ってshadowed name warningがでるので仕方なく...
+    const mapInstance: Map = new Map();
     // テストデータ
     const testSpots: SpotForMap[] = [
         {
@@ -142,15 +143,8 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
 
     beforeEach(() => {
         mapViewStore.setMapViewState(MapViewStoreTestData);
-        wrapper = shallowMount(Map, {
-            attachToDocument: true,
-        });
     });
 
-    afterEach(() => {
-        // Map components already initialized防止
-        wrapper.destroy();
-    });
 
     it('switchMarkersがreplaceMarkersにMapViewStateから取得した情報を渡す', () => {
         /*
@@ -163,29 +157,20 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
         const expectedSpots: SpotForMap[] = mapViewStore.getSpotsForMap(mapId);
         const actualSpots: SpotForMap[] = [];
         // replaceMarkersのモック
-        wrapper.vm.replaceMarkers = jest.fn((spots: SpotForMap[]) => {
+        (mapInstance as any).replaceMarkers = jest.fn((spots: SpotForMap[]) => {
             spots.forEach((spot) => actualSpots.push(spot));
         });
 
-        wrapper.vm.switchMarkers();
+        (mapInstance as any).switchMarkers();
         expect(actualSpots).toStrictEqual(expectedSpots);
     });
 
-    it('replaceMarkersに空の配列を渡してMap.vueのmarkersが空になる', () => {
+    it('replaceMarkersに配列を渡してMapのmarkersに登録', () => {
         // コールバック関数は本テストに関係ないため空の関数を渡している
-        wrapper.vm.replaceMarkers([], () => {
+        (mapInstance as any).replaceMarkers(testSpots, () => {
             // do nothing
         });
-        const actualMarkers = wrapper.vm.markers;
-        expect(actualMarkers).toStrictEqual([]);
-    });
-
-    it('replaceMarkersに配列を渡してMap.vueのmarkersに登録される', () => {
-        // コールバック関数は本テストに関係ないため空の関数を渡している
-        wrapper.vm.replaceMarkers(testSpots, () => {
-            // do nothing
-        });
-        const actualMarkers = wrapper.vm.markers;
+        const actualMarkers = (mapInstance as any).markers;
         for (let i = 0; i < actualMarkers.length; i++) {
             const testLat: number = testSpots[i].coordinate.lat;
             const testLng: number = testSpots[i].coordinate.lng;
@@ -197,10 +182,10 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
 
     it('replaceMarkersに渡したコールバック関数が呼び出されいるか確認', () => {
         let functionCalled: boolean;
-        wrapper.vm.replaceMarkers(testSpots, () => {
+        (mapInstance as any).replaceMarkers(testSpots, () => {
             functionCalled = true;
         });
-        const actualMarkers = wrapper.vm.markers;
+        const actualMarkers = (mapInstance as any).markers;
         for (const markers of actualMarkers) {
             functionCalled = false;
             // マーカーのクリック発火
