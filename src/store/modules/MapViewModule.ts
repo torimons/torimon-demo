@@ -40,6 +40,15 @@ export class MapViewModule extends VuexModule implements MapViewState {
     public spotInfoIsVisible: boolean = false;
 
     /**
+     * - 画面上で表示されている
+     * - 半径〇〇内で最も画面中央に近い
+     * - 詳細マップを持っている
+     * スポットのIDを保持する変数
+     */
+    public idOfCenterSpotWithDetailMap: number = 0;
+
+
+    /**
      * Mapコンポーネントが扱うマップの範囲を返す
      * @return マップの範囲
      */
@@ -82,6 +91,19 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
+     * - 画面上で表示されている
+     * - 半径〇〇内で最も画面中央に近い
+     * - 詳細マップを持っている
+     * スポットのIDを返す
+     * @return スポットID
+     */
+    get getIdOfCenterSpotWithDetailMap() {
+        return (): number => {
+            return this.idOfCenterSpotWithDetailMap;
+        }
+    }
+
+    /**
      * Mapコンポーネント上でフォーカスされているスポットのIDを更新する
      * @param newFocusedMapId 新しくフォーカスされるマップのID
      * @param newFocusedSpotId 新しいフォーカスされるスポットのID
@@ -91,6 +113,19 @@ export class MapViewModule extends VuexModule implements MapViewState {
         this.focusedMapId  = newFocusedSpot.mapId;
         this.focusedSpotId = newFocusedSpot.spotId;
     }
+
+    /**
+     * - 画面上で表示されている
+     * - 半径〇〇内で最も画面中央に近い
+     * - 詳細マップを持っている
+     * スポットのIDを更新する
+     * @param idOfCenterSpotWithDetailMap 上記のスポットのID
+     */
+    @Mutation
+    public setIdOfCenterSpotWithDetailMap(idOfCenterSpotWithDetailMap: number): void {
+        this.idOfCenterSpotWithDetailMap = idOfCenterSpotWithDetailMap;    
+    }
+    
 
     /**
      * MapViewStateの情報を一括でset
