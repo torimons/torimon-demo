@@ -41,7 +41,6 @@ export class MapViewModule extends VuexModule implements MapViewState {
 
     /**
      * スポットの詳細マップのどの階層が表示されるかを保持
-     * #84にて作られるため仮作成
      */
     public focusedDetailMapId: number | null = 0;
 
@@ -92,11 +91,10 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * @return mapId
      */
     get getFocusedDetailMapId(): number {
-        if (this.focusedDetailMapId != null) {
-            return this.focusedDetailMapId;
-        } else {
+        if (this.focusedDetailMapId == null) {
             throw new Error('詳細マップがありません');
         }
+        return this.focusedDetailMapId;
     }
 
     /**
