@@ -200,7 +200,6 @@ describe('store/modules/MapViewModule.ts', () => {
         }).toThrow(Error);
     });
 
-
     it('setterでsetしたcurrentSpotIdがmapViewStoreのstateに登録されている', () => {
         const expectedNewFocusedMapId: number  = 1;
         const expectedNewFocusedSpotId: number = 0;
