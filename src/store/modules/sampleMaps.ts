@@ -12,7 +12,6 @@ export const sampleMaps: Map[] =  [
                     lat: 33.595502,
                     lng: 130.218238,
                 },
-                floor: 1,
                 shape: {
                     type: 'Polygon',
                     coordinates: [[
@@ -47,7 +46,8 @@ export const sampleMaps: Map[] =  [
                     ] ],
                 },
                 gateNodeIds: [],
-                detailMapId: 1,
+                detailMapIds: [1],
+                detailMapLevelNames: [],
             },
         ],
         bounds: {
@@ -64,7 +64,7 @@ export const sampleMaps: Map[] =  [
     },
     {
         id: 1,
-        name: 'SougouGakusyuPlaza',
+        name: 'SougouGakusyuPlaza_1F',
         spots: [
             {
                 id: 0,
@@ -84,8 +84,45 @@ export const sampleMaps: Map[] =  [
                         ],
                     ],
                 },
-                floor: 1,
                 gateNodeIds: [],
+            },
+        ],
+        bounds: {
+            topL: {
+                lat: 33.5954678,
+                lng: 130.2177802,
+            },
+            botR: {
+                lat: 33.5954678,
+                lng: 130.2177802,
+            },
+        },
+    },
+    {
+        id: 1,
+        name: 'SougouGakusyuPlaza_2F',
+        spots: [
+            {
+                id: 10,
+                name: '201',
+                coordinate: {
+                    lat: 33.5954558,
+                    lng: 130.2179447,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.217816, 33.595257],
+                            [130.217783, 33.595517],
+                            [130.217915, 33.595558],
+                            [130.217942, 33.595495],
+                        ],
+                    ],
+                },
+                gateNodeIds: [10],
+                detailMapIds: [],
+                others: {},
             },
         ],
         bounds: {

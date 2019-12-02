@@ -20,9 +20,9 @@ export default class App extends Vue {}
 html,
 body,
 #app {
- height: 100%;
+  height: 100%;
 }
 body {
- margin: 0;
+  margin: 0;
 }
 </style>

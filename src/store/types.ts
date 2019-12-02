@@ -27,17 +27,14 @@ export interface Spot {
     id: number;
     name: string;
     coordinate: Coordinate;
-    floor: number;
     /**
      * GeoJSONのジオメトリオブジェクトのJSON構造
      * [GeoJSON フォーマット仕様](https://s.kitazaki.name/docs/geojson-spec-ja.html#id5)
      */
-    shape?: {
-        'type': 'Polygon' | 'MultiPolygon',
-        'coordinates': number[][][] | number[][][][],
-    };
+    shape?: Shape;
     gateNodeIds: number[];
-    detailMapId?: number;
+    detailMapIds?: number[];
+    detailMapLevelNames?: string[];
     others?: any;
 }
 
@@ -47,7 +44,6 @@ export interface Spot {
  */
 export interface SpotInfo {
     name: string;
-    floor: number;
     others?: any;
 }
 
@@ -58,7 +54,7 @@ export interface SpotForMap {
     id: number;
     name: string;
     coordinate: Coordinate;
-    floor: number;
+    shape?: Shape;
 }
 
 /**
@@ -75,4 +71,9 @@ export interface Bounds {
 export interface Coordinate {
     lat: number;
     lng: number;
+}
+
+export interface Shape {
+    type: 'Polygon' | 'MultiPolygon';
+    coordinates: number[][][] | number[][][][];
 }

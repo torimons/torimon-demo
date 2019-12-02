@@ -1,19 +1,19 @@
 <template>
     <div id="map-view">
         <Map/>
-        <SpotInfo/>
+        <!-- <SpotInfo/> -->
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Map from './Map.vue';
-import SpotInfo from './SpotInfo.vue';
+// import SpotInfo from './SpotInfo.vue';
 
 @Component({
     components: {
         Map,
-        SpotInfo,
+        // SpotInfo,
     },
 })
 export default class MapView extends Vue {
@@ -25,9 +25,9 @@ export default class MapView extends Vue {
 html,
 body,
 #map-view {
- height: 100%;
+  height: 100%;
 }
 body {
- margin: 0;
+  margin: 0;
 }
 </style>
