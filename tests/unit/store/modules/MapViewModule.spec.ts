@@ -143,10 +143,11 @@ const expectedMapViewState: MapViewState = {
     focusedSpotId: 0,
     spotInfoIsVisible: false,
     idOfCenterSpotWithDetailMap: 0,
+    focusedDetailMapId: null,
 };
 
 
-describe('components/SpotInfo.vue', () => {
+describe('store/modules/MapViewModule.ts', () => {
     beforeEach(() => {
         // stateを入力するためにテスト用のmutationsを用意するしかなかった
         // 直接stateをモックしたり入力にできないか調べたい
@@ -200,6 +201,21 @@ describe('components/SpotInfo.vue', () => {
         }).toThrowError(SpotNotFoundError);
     });
 
+    it('表示されている詳細マップのMapIdをgetFoucusedDetailMapIdで取得する', () => {
+        const expectedDetailMapId: number = 0;
+        mapViewStore.setFocusedDetailMapId(expectedDetailMapId);
+        const actualFocusedDetailMapId: number = mapViewStore.getFocusedDetailMapId;
+        expect(actualFocusedDetailMapId).toEqual(expectedDetailMapId);
+    });
+
+    it('詳細マップがない場合、getFocusedDetailMapIdはNullを取得し例外を投げる', () => {
+        const detailMapIdNull = null;
+        mapViewStore.setFocusedDetailMapId(detailMapIdNull);
+        expect(() => {
+            const _ = mapViewStore.getFocusedDetailMapId;
+        }).toThrow(Error);
+    });
+
     it('setterでsetしたcurrentSpotIdがmapViewStoreのstateに登録されている', () => {
         const expectedNewFocusedMapId: number  = 1;
         const expectedNewFocusedSpotId: number = 0;
@@ -212,5 +228,12 @@ describe('components/SpotInfo.vue', () => {
         const expectedNewIdOfCenterSpotWithDetailMap = 1;
         mapViewStore.setIdOfCenterSpotWithDetailMap(expectedNewIdOfCenterSpotWithDetailMap);
         expect(mapViewStore.getIdOfCenterSpotWithDetailMap()).toBe(expectedNewIdOfCenterSpotWithDetailMap);
+    });
+
+    it('setterでsetしたfocusedDetailMapIdがmapViewStoreのstoreに登録されている', () => {
+        const expectedFocusedDetailMapId: number = 1;
+        mapViewStore.setFocusedDetailMapId(expectedFocusedDetailMapId);
+        const actualFocusedDetailMapId: number | null = mapViewStore.focusedDetailMapId;
+        expect(actualFocusedDetailMapId).toBe(expectedFocusedDetailMapId);
     });
 });
