@@ -141,6 +141,7 @@ const expectedMapViewState: MapViewState = {
     focusedMapId: 0,
     focusedSpotId: 0,
     spotInfoIsVisible: false,
+    idOfCenterSpotWithDetailMap: 0,
 };
 
 
@@ -184,6 +185,11 @@ describe('components/SpotInfo.vue', () => {
         expect(actualInfoOfCurrentSpot).toEqual(expectedInfoOfCurrentSpot);
     });
 
+    it('stateに登録したidOfCenterSpotWithDetailMapを取得する', () => {
+        const expectedIdOfCenterSpotWithDetailMap = expectedMapViewState.idOfCenterSpotWithDetailMap;
+        expect(mapViewStore.getIdOfCenterSpotWithDetailMap()).toBe(expectedIdOfCenterSpotWithDetailMap);
+    });
+
     it('setterでsetしたcurrentSpotIdがmapViewStoreのstateに登録されている', () => {
         const expectedNewFocusedMapId: number  = 1;
         const expectedNewFocusedSpotId: number = 0;
@@ -192,4 +198,9 @@ describe('components/SpotInfo.vue', () => {
         expect(actualFocusedSpotId).toBe(expectedNewFocusedSpotId);
     });
 
+    it('setterでsetしたidOfCenterSpotWithDetailMapがmapViewStoreのstateに登録されている', () => {
+        const expectedNewIdOfCenterSpotWithDetailMap = 1;
+        mapViewStore.setIdOfCenterSpotWithDetailMap(expectedNewIdOfCenterSpotWithDetailMap);
+        expect(mapViewStore.getIdOfCenterSpotWithDetailMap()).toBe(expectedNewIdOfCenterSpotWithDetailMap);
+    });
 });

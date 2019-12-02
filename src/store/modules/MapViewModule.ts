@@ -100,7 +100,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
     get getIdOfCenterSpotWithDetailMap() {
         return (): number => {
             return this.idOfCenterSpotWithDetailMap;
-        }
+        };
     }
 
     /**
@@ -123,9 +123,8 @@ export class MapViewModule extends VuexModule implements MapViewState {
      */
     @Mutation
     public setIdOfCenterSpotWithDetailMap(idOfCenterSpotWithDetailMap: number): void {
-        this.idOfCenterSpotWithDetailMap = idOfCenterSpotWithDetailMap;    
+        this.idOfCenterSpotWithDetailMap = idOfCenterSpotWithDetailMap;
     }
-    
 
     /**
      * MapViewStateの情報を一括でset
