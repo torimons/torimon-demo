@@ -25,14 +25,12 @@ export class MapViewModule extends VuexModule implements MapViewState {
     public rootMapId: number = 0;
 
     /**
-     * Mapコンポーネントで選択されているMapのID
+     * Mapコンポーネントで選択されているMap，およびスポットのID
      */
-    public focusedMapId: number = 0;
-
-    /**
-     * Mapコンポーネントで選択されているスポットのID
-     */
-    public focusedSpotId: number = 0;
+    public focusedSpot: {mapId: number, spotId: number} = {
+        mapId: 0,
+        spotId: 0,
+    };
 
     /**
      * SpotInfoコンポーネントの表示非表示状態を保持
@@ -80,7 +78,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * @return SpotInfoコンポーネントに必要な情報
      */
     get infoOfFocusedSpot(): SpotInfo {
-        const spot: Spot = this.maps[this.focusedMapId].spots[this.focusedSpotId];
+        const spot: Spot = this.maps[this.focusedSpot.mapId].spots[this.focusedSpot.spotId];
         const spotInfo: SpotInfo = {
             name:  spot.name,
         };
@@ -101,13 +99,12 @@ export class MapViewModule extends VuexModule implements MapViewState {
 
     /**
      * Mapコンポーネント上でフォーカスされているスポットのIDを更新する
-     * @param newFocusedMapId 新しくフォーカスされるマップのID
-     * @param newFocusedSpotId 新しいフォーカスされるスポットのID
+     * @param newFocusedSpot 新しくフォーカスされるスポット
+     * 中にmapId, spotIdを持つ
      */
     @Mutation
     public setFocusedSpot(newFocusedSpot: {mapId: number, spotId: number}): void {
-        this.focusedMapId  = newFocusedSpot.mapId;
-        this.focusedSpotId = newFocusedSpot.spotId;
+        this.focusedSpot = newFocusedSpot;
     }
 
     /**
@@ -117,13 +114,14 @@ export class MapViewModule extends VuexModule implements MapViewState {
      */
     @Mutation
     public setMapViewState(newMapViewState: MapViewState): void {
-        this.maps              = newMapViewState.maps;
-        this.rootMapId         = newMapViewState.rootMapId;
-        this.focusedMapId      = newMapViewState.focusedMapId;
-        this.focusedSpotId     = newMapViewState.focusedSpotId;
-        this.spotInfoIsVisible = newMapViewState.spotInfoIsVisible;
+        this.maps               = newMapViewState.maps;
+        this.rootMapId          = newMapViewState.rootMapId;
+        this.focusedSpot.mapId  = newMapViewState.focusedSpot.mapId;
+        this.focusedSpot.spotId = newMapViewState.focusedSpot.spotId;
+        this.spotInfoIsVisible  = newMapViewState.spotInfoIsVisible;
         this.focusedDetailMapId = newMapViewState.focusedDetailMapId;
     }
+  
     /**
      * 詳細マップ持ちスポットのうち表示されている階層のmapIDをset
      * @param detailMapId 表示されている階層のmapID

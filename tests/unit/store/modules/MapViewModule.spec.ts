@@ -138,8 +138,10 @@ const expectedMapViewState: MapViewState = {
         },
     ],
     rootMapId: 0,
-    focusedMapId: 0,
-    focusedSpotId: 0,
+    focusedSpot: {
+        mapId: 0,
+        spotId: 0,
+    },
     spotInfoIsVisible: false,
     focusedDetailMapId: null,
 };
@@ -175,16 +177,26 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(actualSpotsForMap).toEqual(expectedSpotsForMap);
     });
 
-    it('stateに登録したSpotsの情報からcurrentSpotIdを持つSpotのSpotInfo型の情報をgetterで取得する', () => {
-        const actualInfoOfCurrentSpot: SpotInfo = mapViewStore.infoOfFocusedSpot;
-        const expectedFocusedMapId: number  = expectedMapViewState.focusedMapId;
-        const expectedFocusedSpotId: number = expectedMapViewState.focusedSpotId;
-        const expectedInfoOfCurrentSpot: SpotInfo = {
+    it('stateに登録したSpotsの情報からFocusedSpotIdを持つSpotのSpotInfo型の情報をgetterで取得する', () => {
+        const actualInfoOfFocusedSpot: SpotInfo = mapViewStore.infoOfFocusedSpot;
+        const expectedFocusedMapId: number  = expectedMapViewState.focusedSpot.mapId;
+        const expectedFocusedSpotId: number = expectedMapViewState.focusedSpot.spotId;
+        const expectedInfoOfFocusedSpot: SpotInfo = {
             name:  expectedMapViewState.maps[expectedFocusedMapId].spots[expectedFocusedSpotId].name,
         };
-        expect(actualInfoOfCurrentSpot).toEqual(expectedInfoOfCurrentSpot);
+        expect(actualInfoOfFocusedSpot).toEqual(expectedInfoOfFocusedSpot);
     });
 
+    it('setterでsetしたFocusedSpotがmapViewStoreのstateに登録されている', () => {
+        const expectedNewFocusedSpot: {mapId: number, spotId: number} = {
+            mapId: 1,
+            spotId: 0,
+        };
+        mapViewStore.setFocusedSpot(expectedNewFocusedSpot);
+        const actualFocusedSpot: {mapId: number, spotId: number} = mapViewStore.focusedSpot;
+        expect(actualFocusedSpot).toBe(expectedNewFocusedSpot);
+    });
+      
     it('表示されている詳細マップのMapIdをgetFoucusedDetailMapIdで取得する', () => {
         const expectedDetailMapId: number = 0;
         mapViewStore.setFocusedDetailMapId(expectedDetailMapId);
@@ -198,14 +210,6 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(() => {
             const _ = mapViewStore.getFocusedDetailMapId;
         }).toThrow(Error);
-    });
-
-    it('setterでsetしたcurrentSpotIdがmapViewStoreのstateに登録されている', () => {
-        const expectedNewFocusedMapId: number  = 1;
-        const expectedNewFocusedSpotId: number = 0;
-        mapViewStore.setFocusedSpot({mapId: expectedNewFocusedMapId, spotId: expectedNewFocusedSpotId});
-        const actualFocusedSpotId: number = mapViewStore.focusedSpotId;
-        expect(actualFocusedSpotId).toBe(expectedNewFocusedSpotId);
     });
 
     it('setterでsetしたfocusedDetailMapIdがmapViewStoreのstoreに登録されている', () => {
