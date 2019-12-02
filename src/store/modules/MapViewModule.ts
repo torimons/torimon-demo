@@ -43,7 +43,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * スポットの詳細マップのどの階層が表示されるかを保持
      * #84にて作られるため仮作成
      */
-    public focusedDetailMapId: number = 0;
+    public focusedDetailMapId: number | null = 0;
 
     /**
      * Mapコンポーネントが扱うマップの範囲を返す
@@ -124,13 +124,14 @@ export class MapViewModule extends VuexModule implements MapViewState {
         this.focusedMapId      = newMapViewState.focusedMapId;
         this.focusedSpotId     = newMapViewState.focusedSpotId;
         this.spotInfoIsVisible = newMapViewState.spotInfoIsVisible;
+        this.focusedDetailMapId = newMapViewState.focusedDetailMapId;
     }
     /**
      * 詳細マップ持ちスポットのうち表示されている階層のmapIDをset
      * @param detailMapId 表示されている階層のmapID
      */
     @Mutation
-    public setFocusedDetailMapId(detailMapId: number): void {
+    public setFocusedDetailMapId(detailMapId: number | null): void {
         this.focusedDetailMapId = detailMapId;
     }
 }
