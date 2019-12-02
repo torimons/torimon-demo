@@ -1,6 +1,7 @@
 import { Mutation, VuexModule, getModule, Module } from 'vuex-module-decorators';
 import store from '@/store';
 import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds } from '@/store/types';
+import { SpotNotFoundError } from '@/store/errors';
 import { sampleMaps } from '@/store/modules/sampleMaps';
 
 /**
@@ -44,8 +45,9 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * - 半径〇〇内で最も画面中央に近い
      * - 詳細マップを持っている
      * スポットのIDを保持する変数
+     * 条件に当てはまるスポットがない場合nullを持つ
      */
-    public idOfCenterSpotWithDetailMap: number = 0;
+    public idOfCenterSpotWithDetailMap: number | null = null;
 
 
     /**
@@ -96,9 +98,13 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * - 詳細マップを持っている
      * スポットのIDを返す
      * @return スポットID
+     * @throws {SpotNotFoundError} 条件に該当するスポットが存在しない場合送出
      */
     get getIdOfCenterSpotWithDetailMap() {
         return (): number => {
+            if(this.idOfCenterSpotWithDetailMap === null) {
+                throw new SpotNotFoundError();
+            }
             return this.idOfCenterSpotWithDetailMap;
         };
     }
