@@ -27,10 +27,10 @@ export class MapViewModule extends VuexModule implements MapViewState {
     /**
      * Mapコンポーネントで選択されているMap，およびスポットのID
      */
-    public focusedSpot = {
+    public focusedSpot: {mapId: number, spotId: number} = {
         mapId: 0,
         spotId: 0,
-    }
+    };
 
     /**
      * SpotInfoコンポーネントの表示非表示状態を保持
