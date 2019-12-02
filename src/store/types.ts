@@ -88,7 +88,6 @@ export interface Node {
     mapId: number;
     spotId: number;
     coordinate: Coordinate;
-    floor: string;
 }
 
 /*
