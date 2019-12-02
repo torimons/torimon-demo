@@ -7,7 +7,7 @@ export interface MapViewState {
     focusedSpotId: number;
     focusedMapId: number;
     spotInfoIsVisible: boolean;
-    focusedDetailMapId: number | null;
+    lastViewedDetailMapId: number | null;
 }
 
 /**

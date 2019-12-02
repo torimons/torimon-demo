@@ -85,7 +85,7 @@ const mapViewStateTestData: MapViewState = {
     focusedMapId: 0,
     focusedSpotId: 0,
     spotInfoIsVisible: false,
-    focusedDetailMapId: null,
+    lastViewedDetailMapId: null,
 };
 
 const expectedGeoJsonObject: FeatureCollection = {
