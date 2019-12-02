@@ -14,7 +14,6 @@ const expectedMapViewState: MapViewState = {
                         lat: 33.595502,
                         lng: 130.218238,
                     },
-                    floor: 1,
                     shape: {
                         type: 'Polygon',
                         coordinates: [[
@@ -46,10 +45,10 @@ const expectedMapViewState: MapViewState = {
                                 130.21780639886853,
                                 33.59551018989406,
                             ],
-                        ] ],
+                        ]],
                     },
                     gateNodeIds: [],
-                    detailMapId: 1,
+                    detailMapIds: [1],
                 },
             ],
             bounds: {
@@ -62,11 +61,10 @@ const expectedMapViewState: MapViewState = {
                     lng: 130.220609,
                 },
             },
-
         },
         {
             id: 1,
-            name: 'SougouGakusyuPlaza',
+            name: 'SougouGakusyuPlaza_1F',
             spots: [
                 {
                     id: 0,
@@ -86,8 +84,45 @@ const expectedMapViewState: MapViewState = {
                             ],
                         ],
                     },
-                    floor: 1,
                     gateNodeIds: [],
+                },
+            ],
+            bounds: {
+                topL: {
+                    lat: 33.5954678,
+                    lng: 130.2177802,
+                },
+                botR: {
+                    lat: 33.5954678,
+                    lng: 130.2177802,
+                },
+            },
+        },
+        {
+            id: 2,
+            name: 'SougouGakusyuPlaza_2F',
+            spots: [
+                {
+                    id: 10,
+                    name: '201',
+                    coordinate: {
+                        lat: 33.5954558,
+                        lng: 130.2179447,
+                    },
+                    shape: {
+                        type: 'Polygon',
+                        coordinates: [
+                            [
+                                [130.217816, 33.595257],
+                                [130.217783, 33.595517],
+                                [130.217915, 33.595558],
+                                [130.217942, 33.595495],
+                            ],
+                        ],
+                    },
+                    gateNodeIds: [10],
+                    detailMapIds: [],
+                    others: {},
                 },
             ],
             bounds: {
@@ -108,10 +143,11 @@ const expectedMapViewState: MapViewState = {
         spotId: 0,
     },
     spotInfoIsVisible: false,
+    focusedDetailMapId: null,
 };
 
 
-describe('components/SpotInfo.vue', () => {
+describe('store/modules/MapViewModule.ts', () => {
     beforeEach(() => {
         // stateを入力するためにテスト用のmutationsを用意するしかなかった
         // 直接stateをモックしたり入力にできないか調べたい
@@ -135,7 +171,6 @@ describe('components/SpotInfo.vue', () => {
                 id:       expectedMapViewState.maps[0].spots[0].id,
                 name:     expectedMapViewState.maps[0].spots[0].name,
                 coordinate: expectedMapViewState.maps[0].spots[0].coordinate,
-                floor:    expectedMapViewState.maps[0].spots[0].floor,
                 shape:    expectedMapViewState.maps[0].spots[0].shape,
             },
         ];
@@ -148,7 +183,6 @@ describe('components/SpotInfo.vue', () => {
         const expectedFocusedSpotId: number = expectedMapViewState.focusedSpot.spotId;
         const expectedInfoOfFocusedSpot: SpotInfo = {
             name:  expectedMapViewState.maps[expectedFocusedMapId].spots[expectedFocusedSpotId].name,
-            floor: expectedMapViewState.maps[expectedFocusedMapId].spots[expectedFocusedSpotId].floor,
         };
         expect(actualInfoOfFocusedSpot).toEqual(expectedInfoOfFocusedSpot);
     });
@@ -161,6 +195,28 @@ describe('components/SpotInfo.vue', () => {
         mapViewStore.setFocusedSpot(expectedNewFocusedSpot);
         const actualFocusedSpot: {mapId: number, spotId: number} = mapViewStore.focusedSpot;
         expect(actualFocusedSpot).toBe(expectedNewFocusedSpot);
+    });
+      
+    it('表示されている詳細マップのMapIdをgetFoucusedDetailMapIdで取得する', () => {
+        const expectedDetailMapId: number = 0;
+        mapViewStore.setFocusedDetailMapId(expectedDetailMapId);
+        const actualFocusedDetailMapId: number = mapViewStore.getFocusedDetailMapId;
+        expect(actualFocusedDetailMapId).toEqual(expectedDetailMapId);
+    });
+
+    it('詳細マップがない場合、getFocusedDetailMapIdはNullを取得し例外を投げる', () => {
+        const detailMapIdNull = null;
+        mapViewStore.setFocusedDetailMapId(detailMapIdNull);
+        expect(() => {
+            const _ = mapViewStore.getFocusedDetailMapId;
+        }).toThrow(Error);
+    });
+
+    it('setterでsetしたfocusedDetailMapIdがmapViewStoreのstoreに登録されている', () => {
+        const expectedFocusedDetailMapId: number = 1;
+        mapViewStore.setFocusedDetailMapId(expectedFocusedDetailMapId);
+        const actualFocusedDetailMapId: number | null = mapViewStore.focusedDetailMapId;
+        expect(actualFocusedDetailMapId).toBe(expectedFocusedDetailMapId);
     });
 
 });

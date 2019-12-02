@@ -38,6 +38,12 @@ export class MapViewModule extends VuexModule implements MapViewState {
     public spotInfoIsVisible: boolean = false;
 
     /**
+     * スポットの詳細マップのどの階層が表示されるかを保持
+     * #84にて作られるため仮作成
+     */
+    public focusedDetailMapId: number | null = 0;
+
+    /**
      * Mapコンポーネントが扱うマップの範囲を返す
      * @return マップの範囲
      */
@@ -60,7 +66,6 @@ export class MapViewModule extends VuexModule implements MapViewState {
                     id:       spot.id,
                     name:     spot.name,
                     coordinate: spot.coordinate,
-                    floor:    spot.floor,
                     shape:    spot.shape,
                 });
             });
@@ -76,9 +81,20 @@ export class MapViewModule extends VuexModule implements MapViewState {
         const spot: Spot = this.maps[this.focusedSpot.mapId].spots[this.focusedSpot.spotId];
         const spotInfo: SpotInfo = {
             name:  spot.name,
-            floor: spot.floor,
         };
         return spotInfo;
+    }
+    /**
+     * スポットの詳細マップのどの階層が表示されているかをMapIdで返す
+     * 無ければ例外を返す
+     * @return mapId
+     */
+    get getFocusedDetailMapId(): number {
+        if (this.focusedDetailMapId != null) {
+            return this.focusedDetailMapId;
+        } else {
+            throw new Error('詳細マップがありません');
+        }
     }
 
     /**
@@ -103,6 +119,16 @@ export class MapViewModule extends VuexModule implements MapViewState {
         this.focusedSpot.mapId  = newMapViewState.focusedSpot.mapId;
         this.focusedSpot.spotId = newMapViewState.focusedSpot.spotId;
         this.spotInfoIsVisible  = newMapViewState.spotInfoIsVisible;
+        this.focusedDetailMapId = newMapViewState.focusedDetailMapId;
+    }
+  
+    /**
+     * 詳細マップ持ちスポットのうち表示されている階層のmapIDをset
+     * @param detailMapId 表示されている階層のmapID
+     */
+    @Mutation
+    public setFocusedDetailMapId(detailMapId: number | null): void {
+        this.focusedDetailMapId = detailMapId;
     }
 }
 
