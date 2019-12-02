@@ -1,5 +1,6 @@
 import { mapViewStore } from '@/store/modules/MapViewModule';
 import { MapViewState, Map, Bounds, SpotInfo, SpotForMap} from '@/store/types';
+import { SpotNotFoundError } from '@/store/errors';
 
 const expectedMapViewState: MapViewState = {
     maps : [
@@ -185,9 +186,18 @@ describe('components/SpotInfo.vue', () => {
         expect(actualInfoOfCurrentSpot).toEqual(expectedInfoOfCurrentSpot);
     });
 
-    it('stateに登録したidOfCenterSpotWithDetailMapを取得する', () => {
+    it('stateに登録したidOfCenterSpotWithDetailMapがnumberの場合，その値を取得する', () => {
         const expectedIdOfCenterSpotWithDetailMap = expectedMapViewState.idOfCenterSpotWithDetailMap;
         expect(mapViewStore.getIdOfCenterSpotWithDetailMap()).toBe(expectedIdOfCenterSpotWithDetailMap);
+    });
+
+    it('stateに登録したidOfCenterSpotWithDetailMapがnullの場合，SpotNotFoundErrorを送出する', () => {
+        const expectedMapViewStateWithNullIdOfCenterSpotWithDetailMap = Object.assign({}, expectedMapViewState);
+        expectedMapViewStateWithNullIdOfCenterSpotWithDetailMap.idOfCenterSpotWithDetailMap = null;
+        mapViewStore.setMapViewState(expectedMapViewStateWithNullIdOfCenterSpotWithDetailMap);
+        expect(() => {
+            mapViewStore.getIdOfCenterSpotWithDetailMap();
+        }).toThrowError(SpotNotFoundError);
     });
 
     it('setterでsetしたcurrentSpotIdがmapViewStoreのstateに登録されている', () => {

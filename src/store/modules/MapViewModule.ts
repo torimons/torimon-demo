@@ -102,7 +102,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      */
     get getIdOfCenterSpotWithDetailMap() {
         return (): number => {
-            if(this.idOfCenterSpotWithDetailMap === null) {
+            if (this.idOfCenterSpotWithDetailMap === null) {
                 throw new SpotNotFoundError();
             }
             return this.idOfCenterSpotWithDetailMap;
@@ -144,6 +144,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
         this.focusedMapId      = newMapViewState.focusedMapId;
         this.focusedSpotId     = newMapViewState.focusedSpotId;
         this.spotInfoIsVisible = newMapViewState.spotInfoIsVisible;
+        this.idOfCenterSpotWithDetailMap = newMapViewState.idOfCenterSpotWithDetailMap;
     }
 }
 
