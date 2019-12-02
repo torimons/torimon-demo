@@ -81,4 +81,4 @@ export interface Shape {
 /**
  * ズームレベルで切り替わる表示レベルの種類
  */
-export type displayLevelType = 'default' | 'detail';
+export type DisplayLevelType = 'default' | 'detail';

@@ -1,6 +1,6 @@
 import { Mutation, VuexModule, getModule, Module } from 'vuex-module-decorators';
 import store from '@/store';
-import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds, displayLevelType } from '@/store/types';
+import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds, DisplayLevelType } from '@/store/types';
 import { sampleMaps } from '@/store/modules/sampleMaps';
 
 /**
@@ -42,7 +42,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
     /**
      * ズームレベルに応じて切り替わる表示レベルを保持
      */
-    public displayLevel: displayLevelType = 'default';
+    public displayLevel: DisplayLevelType = 'default';
 
     /**
      * Mapコンポーネントが扱うマップの範囲を返す
@@ -106,6 +106,15 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
+     * ズームレベルで変化する表示レベルをsetする
+     * @param newDisplayLevel setする表示レベル('default' or 'detail')
+     */
+    @Mutation
+    public setDisplayLevel(newDisplayLevel: DisplayLevelType): void {
+        this.displayLevel = newDisplayLevel;
+    }
+
+    /**
      * MapViewStateの情報を一括でset
      * - 現状は単体テストの入力用の仮メソッド
      * @param mapState マップの状態
@@ -117,15 +126,6 @@ export class MapViewModule extends VuexModule implements MapViewState {
         this.focusedMapId      = newMapViewState.focusedMapId;
         this.focusedSpotId     = newMapViewState.focusedSpotId;
         this.spotInfoIsVisible = newMapViewState.spotInfoIsVisible;
-    }
-
-    /**
-     * ズームレベルで変化する表示レベルをsetする
-     * @param newDisplayLevel setする表示レベル('default' or 'detail')
-     */
-    @Mutation
-    public setDisplayLevel(newDisplayLevel: displayLevelType): void {
-        this.displayLevel = newDisplayLevel;
     }
 }
 
