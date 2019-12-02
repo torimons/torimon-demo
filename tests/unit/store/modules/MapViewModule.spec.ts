@@ -51,6 +51,8 @@ const expectedMapViewState: MapViewState = {
                     detailMapIds: [1],
                 },
             ],
+            nodes: [],
+            edges: [],
             bounds: {
                 topL: {
                     lat: 33.596643,
@@ -87,6 +89,8 @@ const expectedMapViewState: MapViewState = {
                     gateNodeIds: [],
                 },
             ],
+            nodes: [],
+            edges: [],
             bounds: {
                 topL: {
                     lat: 33.5954678,
@@ -125,6 +129,8 @@ const expectedMapViewState: MapViewState = {
                     others: {},
                 },
             ],
+            nodes: [],
+            edges: [],
             bounds: {
                 topL: {
                     lat: 33.5954678,
