@@ -142,18 +142,18 @@ describe('components/SpotInfo.vue', () => {
         expect(actualSpotsForMap).toEqual(expectedSpotsForMap);
     });
 
-    it('stateに登録したSpotsの情報からcurrentSpotIdを持つSpotのSpotInfo型の情報をgetterで取得する', () => {
-        const actualInfoOfCurrentSpot: SpotInfo = mapViewStore.infoOfFocusedSpot;
+    it('stateに登録したSpotsの情報からFocusedSpotIdを持つSpotのSpotInfo型の情報をgetterで取得する', () => {
+        const actualInfoOfFocusedSpot: SpotInfo = mapViewStore.infoOfFocusedSpot;
         const expectedFocusedMapId: number  = expectedMapViewState.focusedSpot.mapId;
         const expectedFocusedSpotId: number = expectedMapViewState.focusedSpot.spotId;
-        const expectedInfoOfCurrentSpot: SpotInfo = {
+        const expectedInfoOfFocusedSpot: SpotInfo = {
             name:  expectedMapViewState.maps[expectedFocusedMapId].spots[expectedFocusedSpotId].name,
             floor: expectedMapViewState.maps[expectedFocusedMapId].spots[expectedFocusedSpotId].floor,
         };
-        expect(actualInfoOfCurrentSpot).toEqual(expectedInfoOfCurrentSpot);
+        expect(actualInfoOfFocusedSpot).toEqual(expectedInfoOfFocusedSpot);
     });
 
-    it('setterでsetしたcurrentSpotIdがmapViewStoreのstateに登録されている', () => {
+    it('setterでsetしたFocusedSpotIdがmapViewStoreのstateに登録されている', () => {
         const expectedNewFocusedMapId: number  = 1;
         const expectedNewFocusedSpotId: number = 0;
         mapViewStore.setFocusedSpot({mapId: expectedNewFocusedMapId, spotId: expectedNewFocusedSpotId});
