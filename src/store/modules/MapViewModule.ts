@@ -83,13 +83,12 @@ export class MapViewModule extends VuexModule implements MapViewState {
 
     /**
      * Mapコンポーネント上でフォーカスされているスポットのIDを更新する
-     * @param newFocusedMapId 新しくフォーカスされるマップのID
-     * @param newFocusedSpotId 新しいフォーカスされるスポットのID
+     * @param newFocusedSpot 新しくフォーカスされるスポット
+     * 中にmapId, spotIdを持つ
      */
     @Mutation
     public setFocusedSpot(newFocusedSpot: {mapId: number, spotId: number}): void {
-        this.focusedSpot.mapId  = newFocusedSpot.mapId;
-        this.focusedSpot.spotId = newFocusedSpot.spotId;
+        this.focusedSpot = newFocusedSpot;
     }
 
     /**
