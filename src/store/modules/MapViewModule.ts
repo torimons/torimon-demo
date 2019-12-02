@@ -93,7 +93,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * 無ければ例外を返す
      * @return mapId
      */
-    get getFocusedDetailMapId() {
+    get getFocusedDetailMapId(): number {
         if (this.focusedDetailMapId != null) {
             return this.focusedDetailMapId;
         } else {

@@ -155,7 +155,7 @@ describe('store/modules/MapViewModule.ts', () => {
     it('表示されている詳細マップのMapIdをgetFoucusedDetailMapIdで取得する', () => {
         const expectedDetailMapId = 0;
         mapViewStore.setFocusedDetailMapId(expectedDetailMapId);
-        const actualFocusedDetailMapId = mapViewStore.getFocusedDetailMapId;
+        const actualFocusedDetailMapId: number = mapViewStore.getFocusedDetailMapId;
         expect(actualFocusedDetailMapId).toEqual(expectedDetailMapId);
     });
 
