@@ -68,7 +68,6 @@ export class MapViewModule extends VuexModule implements MapViewState {
                     id:       spot.id,
                     name:     spot.name,
                     coordinate: spot.coordinate,
-                    floor:    spot.floor,
                     shape:    spot.shape,
                 });
             });
@@ -84,7 +83,6 @@ export class MapViewModule extends VuexModule implements MapViewState {
         const spot: Spot = this.maps[this.focusedMapId].spots[this.focusedSpotId];
         const spotInfo: SpotInfo = {
             name:  spot.name,
-            floor: spot.floor,
         };
         return spotInfo;
     }
