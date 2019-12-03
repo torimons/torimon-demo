@@ -58,13 +58,13 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * @return Mapコンポーネントが必要なスポットの情報
      */
     get getSpotsForMap() {
-        return (mapId: number): SpotForMap[] =>  {
+        return (mapId: number): SpotForMap[] => {
             const spots: Spot[] = this.maps[mapId].spots;
             const spotsForMap: SpotForMap[] = [];
             spots.forEach((spot) => {
                 spotsForMap.push({
-                    id:       spot.id,
-                    name:     spot.name,
+                    id: spot.id,
+                    name: spot.name,
                     coordinate: spot.coordinate,
                     shape:    spot.shape,
                 });
@@ -121,7 +121,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
         this.spotInfoIsVisible  = newMapViewState.spotInfoIsVisible;
         this.focusedDetailMapId = newMapViewState.focusedDetailMapId;
     }
-  
+
     /**
      * 詳細マップ持ちスポットのうち表示されている階層のmapIDをset
      * @param detailMapId 表示されている階層のmapID

@@ -196,7 +196,7 @@ describe('store/modules/MapViewModule.ts', () => {
         const actualFocusedSpot: {mapId: number, spotId: number} = mapViewStore.focusedSpot;
         expect(actualFocusedSpot).toBe(expectedNewFocusedSpot);
     });
-      
+
     it('表示されている詳細マップのMapIdをgetFoucusedDetailMapIdで取得する', () => {
         const expectedDetailMapId: number = 0;
         mapViewStore.setFocusedDetailMapId(expectedDetailMapId);
