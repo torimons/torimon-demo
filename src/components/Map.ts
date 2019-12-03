@@ -146,16 +146,4 @@ export default class Map extends Vue {
         });
         this.map.addLayer(this.polygonLayer);
     }
-
-    // ズームレベルや階層が変更された際のオブジェクトの表示切り替え
-    // Event型だとイベントリスナーとして登録できなかったため，一旦anyにしています．
-    private switchPolygon(e: any): void {
-        /*
-        現在表示されているオブジェクトの削除
-        階層やズームレベルの取得
-        オブジェクトの再表示
-        */
-        const zoomLevel: number = this.map.getZoom();
-    }
-
 }
