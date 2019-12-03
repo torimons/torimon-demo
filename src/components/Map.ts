@@ -44,9 +44,8 @@ export default class Map extends Vue {
             },
         ).addTo(this.map);
 
-        this.markers = [L.marker([this.centerLat, this.centerLng], { icon: this.defaultIcon })];
-        this.markers.map((marker: L.Marker) => marker.addTo(this.map));
-        this.map.on('zoomstart', this.switchMarkers);
+        const rootMapSpots: SpotForMap[] = mapViewStore.getSpotsForMap(mapViewStore.rootMapId);
+        this.replaceMarkersWith(rootMapSpots, () => { /*何もしない*/ });
         // sampleMapのポリゴン表示
         // $nextTick()はテスト実行時のエラーを回避するために使用しています．
         this.$nextTick().then(() => {
