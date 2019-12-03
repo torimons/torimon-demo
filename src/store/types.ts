@@ -95,6 +95,6 @@ export interface Node {
  */
 export interface Edge {
     id: number;
-    nodeIds: {nodeA: number, nodeB: number};
+    nodeIds: {A: number, B: number};
     distance: number;
 }
