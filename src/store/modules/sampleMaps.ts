@@ -1,4 +1,4 @@
-import { Map } from '@/store/types';
+import { Map, Coordinate } from '@/store/types';
 
 export const sampleMaps: Map[] =  [
     {
@@ -135,5 +135,20 @@ export const sampleMaps: Map[] =  [
                 lng: 130.2177802,
             },
         },
+    },
+];
+
+export const sampleNodeList: Coordinate[] =  [
+    {
+        lat: 33.595502,
+        lng: 130.218238,
+    },
+    {
+        lat: 33.596502,
+        lng: 130.218238,
+    },
+    {
+        lat: 33.596502,
+        lng: 130.219238,
     },
 ];

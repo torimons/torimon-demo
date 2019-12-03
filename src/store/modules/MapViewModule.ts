@@ -1,7 +1,7 @@
 import { Mutation, VuexModule, getModule, Module } from 'vuex-module-decorators';
 import store from '@/store';
-import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds } from '@/store/types';
-import { sampleMaps } from '@/store/modules/sampleMaps';
+import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds, Coordinate } from '@/store/types';
+import { sampleMaps, sampleNodeList } from '@/store/modules/sampleMaps';
 
 /**
  * MapViewの状態管理を行うVuexModuleクラス
@@ -84,6 +84,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
         };
         return spotInfo;
     }
+
     /**
      * スポットの詳細マップのどの階層が表示されているかをMapIdで返す
      * 無ければ例外を返す
@@ -95,6 +96,20 @@ export class MapViewModule extends VuexModule implements MapViewState {
         } else {
             throw new Error('詳細マップがありません');
         }
+    }
+
+    /**
+     * 始点と終点を入力することで経路となるノードの配列を取得
+     * @param originId: 始点のノードId
+     * @param destinationId: 終点のノードId
+     * @return nodesForMap: 経路となるノードの配列
+     * 現在仮作成の為、idを渡すとテスト用の配列を返す仕様になっている
+     */
+    get getNodesForMap() {
+        return (originId: number, destinationId: number): Coordinate[] => {
+            const nodesForMap: Coordinate[] = sampleNodeList;
+            return nodesForMap;
+        };
     }
 
     /**

@@ -15,6 +15,7 @@ import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojs
 export default class Map extends Vue {
     private map!: L.Map;
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
+    private edgeLayer?: any; // any型は仮
     private centerLat: number = 33.59;
     private centerLng: number = 130.21;
     private zoomLevel: number = 15;
@@ -61,6 +62,11 @@ export default class Map extends Vue {
             const mapId = 0;
             this.displayPolygons(mapId);
         });
+        // sampleMapの経路（エッジ）表示
+        // 初期パラメータは適当に指定
+        const originId: number = 0;
+        const destinationId: number = 1;
+        this.displayEdge(originId, destinationId);
     }
 
     /** 現在のマーカー削除し，spotsの座標にマーカーを配置する
@@ -145,5 +151,23 @@ export default class Map extends Vue {
             },
         });
         this.map.addLayer(this.polygonLayer);
+    }
+
+    /**
+     * 指定されたnode間の経路（edge）を表示する
+     * @param originId: 始点
+     * @param destinationId: 終点
+     */
+    private displayEdge(originId: number, destinationId: number): void {
+        // 既に表示している経路がある場合は先に削除する
+        if (this.edgeLayer !== undefined) {
+            this.map.removeLayer(this.edgeLayer);
+        }
+        const nodesForMap: Coordinate[] = mapViewStore.getNodesForMap(originId, destinationId);
+        this.edgeLayer = L.polyline(nodesForMap, {
+            color: '#555555',
+            weight: 5,
+            opacity: 0.7,
+        }).addTo(this.map);
     }
 }
