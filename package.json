@@ -34,5 +34,10 @@
         "@vue/test-utils": "1.0.0-beta.29",
         "typescript": "~3.5.3",
         "vue-template-compiler": "^2.6.10"
+    },
+    "jest": {
+        "moduleNameMapper": {
+            "\\.(css)$": "/node_modules/jest-css-modules"
+        }
     }
 }
