@@ -90,10 +90,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * 無ければ例外を返す
      * @return mapId
      */
-    get getLastViewedDetailMapId(): number {
-        if (this.lastViewedDetailMapId == null) {
-            throw new Error('詳細マップがありません');
-        }
+    get getLastViewedDetailMapId(): number | null {
         return this.lastViewedDetailMapId;
     }
 

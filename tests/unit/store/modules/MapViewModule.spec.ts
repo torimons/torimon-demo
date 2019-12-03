@@ -185,20 +185,17 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(actualInfoOfCurrentSpot).toEqual(expectedInfoOfCurrentSpot);
     });
 
-    it('表示されている詳細マップのMapIdをgetFoucusedDetailMapIdで取得する', () => {
-        const expectedDetailMapId: number = 0;
-        mapViewStore.setLastViewedDetailMapId(expectedDetailMapId);
-        const actualFocusedDetailMapId: number = mapViewStore.getLastViewedDetailMapId;
-        expect(actualFocusedDetailMapId).toEqual(expectedDetailMapId);
+    it('表示されている詳細マップのMapIdをgetLastViewedDetailMapIdで取得する', () => {
+        const expectedLastViewedDetailMapId: number = 0;
+        mapViewStore.setLastViewedDetailMapId(expectedLastViewedDetailMapId);
+        const actualFocusedDetailMapId: number | null = mapViewStore.getLastViewedDetailMapId;
+        expect(actualFocusedDetailMapId).toEqual(expectedLastViewedDetailMapId);
     });
 
-    it('詳細マップがない場合、getFocusedDetailMapIdはNullを取得し例外を投げる', () => {
-        /**
-         * で取得するメンバ変数はnullである
-         */
-        expect(() => {
-            const _ = mapViewStore.getLastViewedDetailMapId;
-        }).toThrow(Error);
+    it('詳細マップがない場合、getLastViewedDetailMapIdはNullを取得する', () => {
+        const expectedLastViewedDetailMapId: null = null;
+        const actualFocusedDetailMapId: number | null = mapViewStore.getLastViewedDetailMapId;
+        expect(actualFocusedDetailMapId).toEqual(expectedLastViewedDetailMapId);
     });
 
     it('setterでsetしたcurrentSpotIdがmapViewStoreのstateに登録されている', () => {
@@ -209,7 +206,7 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(actualFocusedSpotId).toBe(expectedNewFocusedSpotId);
     });
 
-    it('setterでsetしたfocusedDetailMapIdがmapViewStoreのstoreに登録されている', () => {
+    it('setterでsetしたlastViewedDetailMapIdがmapViewStoreのstoreに登録されている', () => {
         const expectedFocusedDetailMapId: number = 1;
         mapViewStore.setLastViewedDetailMapId(expectedFocusedDetailMapId);
         const actualFocusedDetailMapId: number | null = mapViewStore.lastViewedDetailMapId;
