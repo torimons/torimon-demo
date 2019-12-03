@@ -1,8 +1,8 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import store from '../store';
 import { mapState } from 'vuex';
-import { SpotForMap, Shape } from '../store/types';
+import store from '@/store';
 import { mapViewStore } from '@/store/modules/MapViewModule';
+import { SpotForMap, Coordinate, Shape } from '@/store/types';
 /*
 leafletの導入
 必要であればプラグインの導入
@@ -13,42 +13,47 @@ import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojs
 
 @Component
 export default class Map extends Vue {
-    /*
-    必要な情報
-    --マップ自身
-    --取得したマップの情報
-        --表示するマップ
-        --マーカーのリスト
-            --マーカーの座標
-        --オブジェクトのリスト
-            --オブジェクトの座標
-            --オブジェクトの形状
-    --omsのタイルレイヤー
-    */
     private map!: L.Map;
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
-
-    constructor() {
-        super();
-        /*
-        osmタイルの初期化
-        表示するマップのタイルの表示
-        現在地の取得と現在地周りの表示
-        初期化時のマーカー表示
-        初期化時のオブジェクト表示
-        */
-    }
+    private centerLat: number = 33.59;
+    private centerLng: number = 130.21;
+    private zoomLevel: number = 15;
+    private tileLayer!: L.TileLayer;
+    private defaultIcon = L.icon({
+        iconUrl: 'http://localhost:8080/leaflet/marker-icon-2x.png',
+        iconSize: [50, 82],
+        iconAnchor: [25, 80],
+        popupAnchor: [-3, -76],
+        shadowSize: [68, 95],
+        shadowAnchor: [22, 94],
+    });
+    private markers: L.Marker[] = [];
 
     /**
      * とりあえず地図の表示を行なっています．
      */
     public mounted() {
-        this.map = L.map( 'map', { center: L.latLng( 33.595507, 130.218285 ), zoom: 19 } ).addLayer(
-            L.tileLayer( 'http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        /*
+            osmタイルの初期化
+            表示するマップのタイルの表示
+            現在地の取得と現在地周りの表示
+            初期化時のマーカー表示
+            初期化時のオブジェクト表示
+            */
+        this.map = L.map('map').setView(
+            [this.centerLat, this.centerLng],
+            this.zoomLevel,
+        );
+        this.tileLayer = L.tileLayer(
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 23,
                 maxNativeZoom: 19,
-            } ),
-        );
+            },
+        ).addTo(this.map);
+
+        this.markers = [L.marker([this.centerLat, this.centerLng], { icon: this.defaultIcon })];
+        this.markers.map((marker: L.Marker) => marker.addTo(this.map));
+        this.map.on('zoomstart', this.switchMarkers);
         // sampleMapのポリゴン表示
         // $nextTick()はテスト実行時のエラーを回避するために使用しています．
         this.$nextTick().then(() => {
@@ -56,6 +61,42 @@ export default class Map extends Vue {
             const mapId = 0;
             this.displayPolygons(mapId);
         });
+    }
+
+    /** 現在のマーカー削除し，spotsの座標にマーカーを配置する
+     * @param newSpots 新しく表示したいスポットの配列
+     * @param callback スポットがクリックされた時に呼び出すコールバック
+     */
+    private replaceMarkersWith(newSpots: SpotForMap[], callback: (e: L.LeafletEvent) => void): void {
+        const coordinates: Coordinate[] = newSpots.map(
+            (spot: SpotForMap) => spot.coordinate,
+        );
+        // removeしてから取り除かないと描画から消えない
+        this.markers.forEach((marker: L.Marker) => marker.remove());
+        this.markers = coordinates.map((coord: Coordinate) => L.marker(coord, {icon: this.defaultIcon}));
+        this.markers.map((marker: L.Marker) => marker.addTo(this.map).on('click', callback));
+    }
+
+    /** ズームレベルや階層が変更された際のマーカー表示切り替え
+     * @param e 発火イベント
+     */
+    private switchMarkers(e: L.LeafletEvent): void {
+        // 表示するスポット一覧を取得
+        const focusedMapId: number = mapViewStore.focusedSpot.mapId;
+        const spots: SpotForMap[] = mapViewStore.getSpotsForMap(focusedMapId);
+        // 仮のコールバックを登録
+        this.replaceMarkersWith(spots, () => {
+            // do nothing
+        });
+    }
+
+    // マーカーが押された際に呼び出される関数
+    private updateFocusedMarker(e: Event): void {
+        /*
+            （vuexの状態更新も行う必要がある）
+            押したマーカーのスポットの情報の取得
+            ポップアップの表示
+            */
     }
 
     /**
@@ -80,35 +121,6 @@ export default class Map extends Vue {
             features: shapes,
         };
         return features as GeoJsonObject;
-    }
-
-    // ズームレベルや階層が変更された際のマーカー表示切り替え
-    private switchMarkers(e: Event): void {
-        /*
-        現在表示されてるマーカーの削除
-        階層やズームレベルの取得
-        マーカーの再表示
-        */
-       }
-
-    // マーカーが押された際に呼び出される関数
-    private updateFocusedMarker(e: Event): void {
-        /*
-        （vuexの状態更新も行う必要がある）
-        押したマーカーのスポットの情報の取得
-        ポップアップの表示
-        */
-       }
-
-    // ズームレベルや階層が変更された際のオブジェクトの表示切り替え
-    // Event型だとイベントリスナーとして登録できなかったため，一旦anyにしています．
-    private switchPolygon(e: any): void {
-        /*
-        現在表示されているオブジェクトの削除
-        階層やズームレベルの取得
-        オブジェクトの再表示
-        */
-        const zoomLevel: number = this.map.getZoom();
     }
 
     /**

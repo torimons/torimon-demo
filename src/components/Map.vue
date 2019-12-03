@@ -6,14 +6,16 @@
 
 <script lang='ts' src='./Map.ts'></script>
 
+
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
 <style scoped>
 html,
 body,
 #map {
-  height: 100%;
+    height: 100%;
 }
 body {
-  margin: 0;
+    margin: 0;
+    height: 100%;
 }
 </style>
