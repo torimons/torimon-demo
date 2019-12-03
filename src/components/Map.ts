@@ -18,7 +18,7 @@ export default class Map extends Vue {
     private tileLayer!: L.TileLayer;
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
     private defaultIcon = L.icon({
-        iconUrl: 'http://localhost:8080/leaflet/marker-icon-2x.png',
+        iconUrl: 'https://raw.githubusercontent.com/torimons/torimon/master/public/leaflet/marker-icon-2x.png',
         iconSize: [50, 82],
         iconAnchor: [25, 80],
         popupAnchor: [-3, -76],
