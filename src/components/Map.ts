@@ -17,15 +17,26 @@ export default class Map extends Vue {
     private zoomLevel: number = 15;
     private tileLayer!: L.TileLayer;
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
-    private defaultIcon = L.icon({
+    private defaultSpotIcon = L.icon({
         iconUrl: 'https://raw.githubusercontent.com/torimons/torimon/master/public/leaflet/marker-icon-2x.png',
         iconSize: [50, 82],
         iconAnchor: [25, 80],
         popupAnchor: [-3, -76],
         shadowSize: [68, 95],
         shadowAnchor: [22, 94],
+        className: 'spot',
     });
-    private markers: L.Marker[] = [];
+    private currentLocationIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/torimons/torimon/master/public/leaflet/marker-icon-2x.png',
+        iconSize: [50, 82],
+        iconAnchor: [25, 80],
+        popupAnchor: [-3, -76],
+        shadowSize: [68, 95],
+        shadowAnchor: [22, 94],
+        className: 'currentLocation',
+    });
+    private spotMarkers: L.Marker[] = [];
+    private currentLocationMarker: L.Marker = L.marker([0, 0]);
 
     /**
      * とりあえず地図の表示を行なっています．
@@ -45,13 +56,32 @@ export default class Map extends Vue {
         ).addTo(this.map);
 
         const rootMapSpots: SpotForMap[] = mapViewStore.getSpotsForMap(mapViewStore.rootMapId);
-        this.replaceMarkersWith(rootMapSpots, () => { /*何もしない*/ });
+        this.replaceMarkersWith(rootMapSpots, this.defaultSpotIcon, () => { /*何もしない*/ });
         // sampleMapのポリゴン表示
         // $nextTick()はテスト実行時のエラーを回避するために使用しています．
         this.$nextTick().then(() => {
             // 現状mapIdのgetterがないため直接指定しています．
             this.displayPolygons(mapViewStore.rootMapId);
         });
+        const options = {
+            enableHighAccuracy: true,
+            timeout: 10000, // milliseconds
+            maximumAge: 0, // 0 = the device cannot use a cached position
+        };
+        navigator.geolocation.watchPosition(
+            (pos: Position) => {
+                this.currentLocationMarker.remove();
+                this.currentLocationMarker = L.marker(
+                    [pos.coords.latitude, pos.coords.longitude],
+                    { icon: this.currentLocationIcon },
+                );
+                this.currentLocationMarker.addTo(this.map);
+            },
+            (error: PositionError) => {
+                throw error;
+            },
+            options,
+        );
     }
 
     /**
@@ -69,27 +99,21 @@ export default class Map extends Vue {
      * @param newSpots 新しく表示したいスポットの配列
      * @param callback スポットがクリックされた時に呼び出すコールバック
      */
-    private replaceMarkersWith(newSpots: SpotForMap[], callback: (e: L.LeafletEvent) => void): void {
+    private replaceMarkersWith(newSpots: SpotForMap[], icon: L.Icon, callback: (e: L.LeafletEvent) => void): void {
         const coordinates: Coordinate[] = newSpots.map(
             (spot: SpotForMap) => spot.coordinate,
         );
         // removeしてから取り除かないと描画から消えない
-        this.markers.forEach((marker: L.Marker) => marker.remove());
-        this.markers = coordinates.map((coord: Coordinate) => L.marker(coord, {icon: this.defaultIcon}));
-        this.markers.map((marker: L.Marker) => marker.addTo(this.map).on('click', callback));
+        this.spotMarkers.forEach((marker: L.Marker) => marker.remove());
+        this.spotMarkers = coordinates.map((coord: Coordinate) => L.marker(coord, {icon}));
+        this.spotMarkers.map((marker: L.Marker) => marker.addTo(this.map).on('click', callback));
     }
 
     /** ズームレベルや階層が変更された際のマーカー表示切り替え
      * @param e 発火イベント
      */
     private switchMarkers(e: L.LeafletEvent): void {
-        // 表示するスポット一覧を取得
-        const focusedMapId: number = mapViewStore.focusedSpot.mapId;
-        const spots: SpotForMap[] = mapViewStore.getSpotsForMap(focusedMapId);
-        // 仮のコールバックを登録
-        this.replaceMarkersWith(spots, () => {
-            // do nothing
-        });
+        // ズームレベルや階層が変更された際のマーカー表示切り替え
     }
 
     // マーカーが押された際に呼び出される関数
