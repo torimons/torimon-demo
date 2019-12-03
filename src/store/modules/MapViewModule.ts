@@ -121,7 +121,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
         this.spotInfoIsVisible  = newMapViewState.spotInfoIsVisible;
         this.focusedDetailMapId = newMapViewState.focusedDetailMapId;
     }
-  
+
     /**
      * 詳細マップ持ちスポットのうち表示されている階層のmapIDをset
      * @param detailMapId 表示されている階層のmapID

@@ -82,7 +82,7 @@ export default class Map extends Vue {
      */
     private switchMarkers(e: L.LeafletEvent): void {
         // 表示するスポット一覧を取得
-        const focusedMapId: number = mapViewStore.focusedMapId;
+        const focusedMapId: number = mapViewStore.focusedSpot.mapId;
         const spots: SpotForMap[] = mapViewStore.getSpotsForMap(focusedMapId);
         // 仮のコールバックを登録
         this.replaceMarkersWith(spots, () => {

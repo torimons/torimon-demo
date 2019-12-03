@@ -108,9 +108,12 @@ const MapViewStoreTestData: MapViewState = {
         },
     ],
     rootMapId: 0,
-    focusedMapId: 0,
-    focusedSpotId: 0,
+    focusedSpot: {
+        mapId: 0,
+        spotId: 0,
+    },
     spotInfoIsVisible: false,
+    focusedDetailMapId: 0,
 };
 
 
@@ -144,12 +147,12 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
 
     it('switchMarkersがreplaceMarkersにMapViewStateから取得した情報を渡す', () => {
         /*
-        switchMarkersはstoreのfocusedMapIdをみているので，
+        switchMarkersはstoreのfocusedSpotのmapIdをみているので，
         getSpotsForMapにも同じ値(今回は初期値0)を与える.
         複数のマップに対してテストする場合，
-        mapViewStore.setFocusedSpotなどで強制的にfocusedMapIdを変更する必要がある
+        mapViewStore.setFocusedSpotなどで強制的にfocusedSpotを変更する必要がある
         */
-        const mapId = MapViewStoreTestData.focusedMapId;
+        const mapId = MapViewStoreTestData.focusedSpot.mapId;
         const expectedSpots: SpotForMap[] = mapViewStore.getSpotsForMap(mapId);
         const actualSpots: SpotForMap[] = [];
         // replaceMarkersWithのモック
