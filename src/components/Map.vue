@@ -25,7 +25,7 @@ export default class Map extends Vue {
     private tileLayer!: L.TileLayer;
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
     private defaultSpotIcon = L.icon({
-        iconUrl: 'https://raw.githubusercontent.com/torimons/torimon/master/public/leaflet/icons/marker-icon-2x.png',
+        iconUrl: 'http://localhost:8081/leaflet/icons/marker-icon-2x.png',
         iconSize: [50, 82],
         iconAnchor: [25, 80],
         popupAnchor: [-3, -76],
@@ -34,10 +34,10 @@ export default class Map extends Vue {
         className: 'spot',
     });
     private currentLocationIcon = L.icon({
-        iconUrl: 'https://raw.githubusercontent.com/torimons/torimon/master/public/leaflet/icons/currentLocation.png',
-        iconSize: [50, 82],
-        iconAnchor: [25, 80],
-        popupAnchor: [-3, -76],
+        iconUrl: 'http://localhost:8081/leaflet/icons/currentLocation.png',
+        iconSize: [50, 50],
+        iconAnchor: [25, 25],
+        popupAnchor: [0, 0],
         shadowSize: [68, 95],
         shadowAnchor: [22, 94],
         className: 'currentLocation',
