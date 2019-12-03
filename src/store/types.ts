@@ -7,7 +7,6 @@ export interface MapViewState {
     focusedSpotId: number;
     focusedMapId: number;
     spotInfoIsVisible: boolean;
-    lastViewedDetailMapId: number | null;
 }
 
 /**
@@ -36,6 +35,7 @@ export interface Spot {
     gateNodeIds: number[];
     detailMapIds?: number[];
     detailMapLevelNames?: string[];
+    lastViewedDetailMapId: number | null;
     others?: any;
 }
 

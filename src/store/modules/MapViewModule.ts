@@ -40,11 +40,6 @@ export class MapViewModule extends VuexModule implements MapViewState {
     public spotInfoIsVisible: boolean = false;
 
     /**
-     * スポットのどの階層の詳細マップが表示されるかを保持
-     */
-    public lastViewedDetailMapId: number | null = 0;
-
-    /**
      * Mapコンポーネントが扱うマップの範囲を返す
      * @return マップの範囲
      */
@@ -86,12 +81,17 @@ export class MapViewModule extends VuexModule implements MapViewState {
         return spotInfo;
     }
     /**
-     * スポットの詳細マップのどの階層が表示されているかをMapIdで返す
-     * 無ければ例外を返す
-     * @return mapId
+     * スポットのもつ詳細マップのうち、最後に参照された詳細マップのIdを返す
+     * @param parentSpot スポットが、どのマップのどのスポットかを示す情報
+     * @return lastViewdDetailMapId スポットが持つ詳細マップのうち、最後に参照された詳細マップのId
      */
-    get getLastViewedDetailMapId(): number | null {
-        return this.lastViewedDetailMapId;
+    get getLastViewedDetailMapId() {
+        return (parentSpot: {parentMapId: number, spotId: number}): number | null => {
+            const parentMap: Map = this.maps[parentSpot.parentMapId];
+            const spot: Spot = parentMap.spots[parentSpot.spotId];
+            const lastViewedDetailMapId: number | null = spot.lastViewedDetailMapId;
+            return lastViewedDetailMapId;
+        };
     }
 
     /**
@@ -106,6 +106,19 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
+     * 詳細マップ持ちスポットが最後に表示していた詳細マップのIdをセットする
+     * @param detailMapId 最後に参照された詳細マップのId
+     * @param parentSpot どのマップのどのスポットかを示す情報
+     */
+    @Mutation
+    public setLastViewedDetailMapId(payload: {detailMapId: number, parentSpot: { parentMapId: number, spotId: number }}): void {
+        // detailMapIdがそのスポットに存在するかどうかをチェック。
+        // 存在しない場合は例外を投げる
+        // const detailMapIds?: number[] = this.maps[parentSpot.parentMapId].spots[parentSpot.spotId].detailMapIds;
+        this.maps[payload.parentSpot.parentMapId].spots[payload.parentSpot.spotId].lastViewedDetailMapId = payload.detailMapId;
+    }
+
+    /**
      * MapViewStateの情報を一括でset
      * - 現状は単体テストの入力用の仮メソッド
      * @param mapState マップの状態
@@ -117,15 +130,6 @@ export class MapViewModule extends VuexModule implements MapViewState {
         this.focusedMapId      = newMapViewState.focusedMapId;
         this.focusedSpotId     = newMapViewState.focusedSpotId;
         this.spotInfoIsVisible = newMapViewState.spotInfoIsVisible;
-        this.lastViewedDetailMapId = newMapViewState.lastViewedDetailMapId;
-    }
-    /**
-     * 詳細マップ持ちスポットのうち表示されている階層のmapIDをset
-     * @param detailMapId 表示されている階層のmapID
-     */
-    @Mutation
-    public setLastViewedDetailMapId(detailMapId: number | null): void {
-        this.lastViewedDetailMapId = detailMapId;
     }
 }
 

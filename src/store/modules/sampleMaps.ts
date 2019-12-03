@@ -48,6 +48,7 @@ export const sampleMaps: Map[] =  [
                 gateNodeIds: [],
                 detailMapIds: [1],
                 detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
             },
         ],
         bounds: {
@@ -85,6 +86,7 @@ export const sampleMaps: Map[] =  [
                     ],
                 },
                 gateNodeIds: [],
+                lastViewedDetailMapId: null,
             },
         ],
         bounds: {
@@ -122,6 +124,7 @@ export const sampleMaps: Map[] =  [
                 },
                 gateNodeIds: [10],
                 detailMapIds: [],
+                lastViewedDetailMapId: null,
                 others: {},
             },
         ],

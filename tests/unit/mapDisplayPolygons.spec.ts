@@ -32,6 +32,7 @@ const mapViewStateTestData: MapViewState = {
                     },
                     gateNodeIds: [],
                     detailMapIds: [1],
+                    lastViewedDetailMapId: null,
                 },
             ],
             bounds: {
@@ -67,6 +68,7 @@ const mapViewStateTestData: MapViewState = {
                             ]],
                     },
                     gateNodeIds: [],
+                    lastViewedDetailMapId: null,
                 },
             ],
             bounds: {
@@ -85,7 +87,6 @@ const mapViewStateTestData: MapViewState = {
     focusedMapId: 0,
     focusedSpotId: 0,
     spotInfoIsVisible: false,
-    lastViewedDetailMapId: null,
 };
 
 const expectedGeoJsonObject: FeatureCollection = {
