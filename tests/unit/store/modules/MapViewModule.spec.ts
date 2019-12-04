@@ -76,6 +76,23 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(actualLastViewedDetailMapId).toEqual(expectedLastViewedDetailMapId);
     });
 
+    it('スポットに存在しない詳細マップをlastViewDetaiMapIdにセットしようとすると例外が発生する', () => {
+        const wrongDetailMapId: number = 999;
+        const parentMapId: number = 0;
+        const spotId: number = 0;
+        const parentSpot = {
+            parentMapId: parentMapId,
+            spotId: spotId,
+        }
+        const payload = {
+            detailMapId: wrongDetailMapId,
+            parentSpot: parentSpot,
+        }
+        expect(() => {
+            mapViewStore.setLastViewedDetailMapId(payload);
+        }).toThrow(Error);
+    });
+
     it('setterでsetしたcurrentSpotIdがmapViewStoreのstateに登録されている', () => {
         const expectedNewFocusedMapId: number  = 1;
         const expectedNewFocusedSpotId: number = 0;
