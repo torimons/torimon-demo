@@ -62,11 +62,11 @@ export default class Map extends Vue {
             const mapId = 0;
             this.displayPolygons(mapId);
         });
-        // sampleMapの経路（エッジ）表示
+        // sampleNodeListの経路（エッジ）表示
         // 初期パラメータは適当に指定
-        const originId: number = 0;
-        const destinationId: number = 1;
-        this.displayEdge(originId, destinationId);
+        const startPointId: number = 0;
+        const endPointId: number = 1;
+        this.displayEdge(startPointId, endPointId);
     }
 
     /** 現在のマーカー削除し，spotsの座標にマーカーを配置する
@@ -155,15 +155,15 @@ export default class Map extends Vue {
 
     /**
      * 指定されたnode間の経路（edge）を表示する
-     * @param originId: 始点
-     * @param destinationId: 終点
+     * @param startPointId: 始点
+     * @param endPointId: 終点
      */
-    private displayEdge(originId: number, destinationId: number): void {
+    private displayEdge(startPointId: number, endPointId: number): void {
         // 既に表示している経路がある場合は先に削除する
         if (this.edgeLayer !== undefined) {
             this.map.removeLayer(this.edgeLayer);
         }
-        const nodesForMap: Coordinate[] = mapViewStore.getNodesForMap(originId, destinationId);
+        const nodesForMap: Coordinate[] = mapViewStore.getNodesForMap(startPointId, endPointId);
         this.edgeLayer = L.polyline(nodesForMap, {
             color: '#555555',
             weight: 5,
