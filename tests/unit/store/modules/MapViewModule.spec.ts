@@ -46,32 +46,33 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(actualInfoOfCurrentSpot).toEqual(expectedInfoOfCurrentSpot);
     });
 
-    it.skip('表示されている詳細マップのMapIdをgetLastViewedDetailMapIdで取得する', () => {
-        const expectedMapViewStateWithLastViewedDetailMapId = Object.assign({}, expectedMapViewState);
-        mapViewStore.setMapViewState(expectedMapViewStateWithLastViewedDetailMapId);
-        const expectedLastViewedDetailMapId: number = 0;
-        const testParentSpot = {
-            parentMapId: 0,
-            spotId: 0,
+    it('表示された詳細マップのMapIdをgetLastViewedDetailMapIdで取得する', () => {
+        const expectedLastViewedDetailMapId: number = 1;
+        const parentMapId: number = 0;
+        const spotId: number = 0;
+        const parentSpot = {
+            parentMapId: parentMapId,
+            spotId: spotId,
         };
-        const testPayLoad = {
+        const payload = {
             detailMapId: expectedLastViewedDetailMapId,
-            parentSpot: testParentSpot,
+            parentSpot: parentSpot,
         };
-        console.log(mapViewStore.maps[testParentSpot.parentMapId].spots[testParentSpot.spotId].lastViewedDetailMapId)
-        mapViewStore.setLastViewedDetailMapId(testPayLoad);
-        const actualLastViewedDetailMapId: number | null = mapViewStore.getLastViewedDetailMapId(testParentSpot);
+        mapViewStore.setLastViewedDetailMapId(payload);
+        const actualLastViewedDetailMapId: number | null = mapViewStore.getLastViewedDetailMapId(parentSpot);
         expect(actualLastViewedDetailMapId).toEqual(expectedLastViewedDetailMapId);
     });
 
-    it.skip('詳細マップがない場合、getLastViewedDetailMapIdはNullを取得する', () => {
+    it('詳細マップを参照していない場合、getLastViewedDetailMapIdはNullを取得する', () => {
+        // lastViewdDetailMapIdの初期値はnullであるため，詳細マップを参照していない場合はnullが返る．
         const expectedLastViewedDetailMapId: null = null;
-        const testParentSpot = {
-            parentMapId: 0,
-            spotId: 0,
+        const parentMapId: number = 0;
+        const spotId: number = 0;
+        const parentSpot = {
+            parentMapId: parentMapId,
+            spotId: spotId,
         };
-        console.log(mapViewStore.maps[testParentSpot.parentMapId].spots[testParentSpot.spotId].lastViewedDetailMapId)
-        const actualLastViewedDetailMapId: number | null = mapViewStore.getLastViewedDetailMapId(testParentSpot);
+        const actualLastViewedDetailMapId: number | null = mapViewStore.getLastViewedDetailMapId(parentSpot);
         expect(actualLastViewedDetailMapId).toEqual(expectedLastViewedDetailMapId);
     });
 
@@ -83,20 +84,20 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(actualFocusedSpotId).toBe(expectedNewFocusedSpotId);
     });
 
-    it.skip('setterでsetしたlastViewedDetailMapIdがmapViewStoreのstoreに登録されている', () => {
-        const expectedMapViewStateWithLastViewedDetailMapId = Object.assign({}, expectedMapViewState);
-        mapViewStore.setMapViewState(expectedMapViewStateWithLastViewedDetailMapId);
-        const expectedDetailMapId: number = 0;
+    it('setterでsetしたlastViewedDetailMapIdがmapViewStoreのstoreに登録されている', () => {
+        const expectedDetailMapId: number = 1;
+        const parentMapId: number = 0;
+        const spotId: number = 0;
         const testParentSpot = {
-            parentMapId: 0,
-            spotId: 0,
+            parentMapId: parentMapId,
+            spotId: spotId,
         };
-        const testPayLoad = {
+        const payLoad = {
             detailMapId: expectedDetailMapId,
             parentSpot: testParentSpot,
         };
-        mapViewStore.setLastViewedDetailMapId(testPayLoad);
-        const actualDetailMapId: number | null = mapViewStore.maps[testPayLoad.parentSpot.parentMapId].spots[testPayLoad.parentSpot.spotId].lastViewedDetailMapId;
+        mapViewStore.setLastViewedDetailMapId(payLoad);
+        const actualDetailMapId: number | null = mapViewStore.maps[parentMapId].spots[spotId].lastViewedDetailMapId;
         expect(actualDetailMapId).toBe(expectedDetailMapId);
     });
 
