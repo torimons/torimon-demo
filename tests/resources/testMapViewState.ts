@@ -1,4 +1,4 @@
-import { MapViewState } from '@/store/types'
+import { MapViewState } from '@/store/types';
 
 export const testMapViewState: MapViewState = {
     maps : [

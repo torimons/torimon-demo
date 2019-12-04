@@ -1,6 +1,6 @@
 import { mapViewStore } from '@/store/modules/MapViewModule';
 import { MapViewState, Map, Bounds, SpotInfo, SpotForMap} from '@/store/types';
-import {testMapViewState } from '../../../resources/testMapViewState';
+import { testMapViewState } from '../../../resources/testMapViewState';
 import { cloneDeep } from 'lodash';
 
 const expectedMapViewState: MapViewState = cloneDeep(testMapViewState);
@@ -9,8 +9,8 @@ describe('store/modules/MapViewModule.ts', () => {
     beforeEach(() => {
         // stateを入力するためにテスト用のmutationsを用意するしかなかった
         // 直接stateをモックしたり入力にできないか調べたい
-        const expectedMapViewState: MapViewState = cloneDeep(testMapViewState);
-        mapViewStore.setMapViewState(expectedMapViewState);
+        const mapViewState = cloneDeep(testMapViewState);
+        mapViewStore.setMapViewState(mapViewState);
     });
 
     it('stateに登録したSpotInfoコンポーネントの表示状態をgetterで取得する', () => {
@@ -50,16 +50,13 @@ describe('store/modules/MapViewModule.ts', () => {
         const expectedLastViewedDetailMapId: number = 1;
         const parentMapId: number = 0;
         const spotId: number = 0;
-        const parentSpot = {
-            parentMapId: parentMapId,
-            spotId: spotId,
-        };
         const payload = {
             detailMapId: expectedLastViewedDetailMapId,
-            parentSpot: parentSpot,
+            parentSpot: { parentMapId, spotId },
         };
         mapViewStore.setLastViewedDetailMapId(payload);
-        const actualLastViewedDetailMapId: number | null = mapViewStore.getLastViewedDetailMapId(parentSpot);
+        const actualLastViewedDetailMapId: number | null
+            = mapViewStore.getLastViewedDetailMapId({ parentMapId, spotId });
         expect(actualLastViewedDetailMapId).toEqual(expectedLastViewedDetailMapId);
     });
 
@@ -68,10 +65,7 @@ describe('store/modules/MapViewModule.ts', () => {
         const expectedLastViewedDetailMapId: null = null;
         const parentMapId: number = 0;
         const spotId: number = 0;
-        const parentSpot = {
-            parentMapId: parentMapId,
-            spotId: spotId,
-        };
+        const parentSpot = { parentMapId, spotId };
         const actualLastViewedDetailMapId: number | null = mapViewStore.getLastViewedDetailMapId(parentSpot);
         expect(actualLastViewedDetailMapId).toEqual(expectedLastViewedDetailMapId);
     });
@@ -80,14 +74,10 @@ describe('store/modules/MapViewModule.ts', () => {
         const wrongDetailMapId: number = 999;
         const parentMapId: number = 0;
         const spotId: number = 0;
-        const parentSpot = {
-            parentMapId: parentMapId,
-            spotId: spotId,
-        }
         const payload = {
             detailMapId: wrongDetailMapId,
-            parentSpot: parentSpot,
-        }
+            parentSpot: { parentMapId, spotId },
+        };
         expect(() => {
             mapViewStore.setLastViewedDetailMapId(payload);
         }).toThrow(Error);
@@ -105,13 +95,9 @@ describe('store/modules/MapViewModule.ts', () => {
         const expectedDetailMapId: number = 1;
         const parentMapId: number = 0;
         const spotId: number = 0;
-        const testParentSpot = {
-            parentMapId: parentMapId,
-            spotId: spotId,
-        };
         const payLoad = {
             detailMapId: expectedDetailMapId,
-            parentSpot: testParentSpot,
+            parentSpot: { parentMapId, spotId },
         };
         mapViewStore.setLastViewedDetailMapId(payLoad);
         const actualDetailMapId: number | null = mapViewStore.maps[parentMapId].spots[spotId].lastViewedDetailMapId;

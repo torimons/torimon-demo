@@ -112,7 +112,11 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * @param parentSpot どのマップのどのスポットかを示す情報
      */
     @Mutation
-    public setLastViewedDetailMapId(payload: {detailMapId: number, parentSpot: { parentMapId: number, spotId: number }}): void {
+    public setLastViewedDetailMapId(
+        payload: {
+            detailMapId: number,
+            parentSpot: { parentMapId: number, spotId: number };
+        }): void {
         const detailMapId = payload.detailMapId;
         const parentMapId = payload.parentSpot.parentMapId;
         const spotId = payload.parentSpot.spotId;

@@ -68,6 +68,7 @@ const mapViewStateTestData: MapViewState = {
                             ]],
                     },
                     gateNodeIds: [],
+                    detailMapIds: [],
                     lastViewedDetailMapId: null,
                 },
             ],
