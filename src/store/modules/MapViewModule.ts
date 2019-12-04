@@ -106,16 +106,22 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
-     * 詳細マップ持ちスポットが最後に表示していた詳細マップのIdをセットする
+     * 詳細マップ持ちスポットが最後に表示していた詳細マップのIdをセットする.
+     * mutationは複数の引数を受け取れないため，実際に渡すときはpayloadオブジェクトとしてまとめて渡す必要がある．
      * @param detailMapId 最後に参照された詳細マップのId
      * @param parentSpot どのマップのどのスポットかを示す情報
      */
     @Mutation
     public setLastViewedDetailMapId(payload: {detailMapId: number, parentSpot: { parentMapId: number, spotId: number }}): void {
-        // detailMapIdがそのスポットに存在するかどうかをチェック。
-        // 存在しない場合は例外を投げる
-        // const detailMapIds?: number[] = this.maps[parentSpot.parentMapId].spots[parentSpot.spotId].detailMapIds;
-        this.maps[payload.parentSpot.parentMapId].spots[payload.parentSpot.spotId].lastViewedDetailMapId = payload.detailMapId;
+        const detailMapId = payload.detailMapId;
+        const parentMapId = payload.parentSpot.parentMapId;
+        const spotId = payload.parentSpot.spotId;
+        // detailMapIdがそのスポットに存在しない場合，例外を投げる
+        if (!this.maps[parentMapId].spots[spotId].detailMapIds.includes(detailMapId)) {
+            // エラー定義ファイルがマージされた時点でエラーは書き換えます．
+            throw new Error('Detail Map does not exist...');
+        }
+        this.maps[parentMapId].spots[spotId].lastViewedDetailMapId = detailMapId;
     }
 
     /**
