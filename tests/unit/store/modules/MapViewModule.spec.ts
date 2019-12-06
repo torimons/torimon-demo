@@ -60,11 +60,7 @@ describe('store/modules/MapViewModule.ts', () => {
         const expectedLastViewedDetailMapId: number = 1;
         const parentMapId: number = 0;
         const spotId: number = 0;
-        const payload = {
-            detailMapId: expectedLastViewedDetailMapId,
-            parentSpot: { parentMapId, spotId },
-        };
-        mapViewStore.setLastViewedDetailMapId(payload);
+        mapViewStore.maps[parentMapId].spots[spotId].lastViewedDetailMapId = expectedLastViewedDetailMapId;
         const actualLastViewedDetailMapId: number | null
             = mapViewStore.getLastViewedDetailMapId({ parentMapId, spotId });
         expect(actualLastViewedDetailMapId).toEqual(expectedLastViewedDetailMapId);

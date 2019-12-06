@@ -80,8 +80,9 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
     /**
      * スポットのもつ詳細マップのうち、最後に参照された詳細マップのIdを返す
-     * @param parentSpot スポットが、どのマップのどのスポットかを示す情報
-     * @return lastViewdDetailMapId スポットが持つ詳細マップのうち、最後に参照された詳細マップのId
+     * @param parentSpot どのマップのどのスポットかを示す情報.
+     * @return lastViewdDetailMapId スポットが持つ詳細マップのうち、最後に参照された詳細マップのId．
+     * 存在しない場合はnullを返す．
      */
     get getLastViewedDetailMapId() {
         return (parentSpot: {parentMapId: number, spotId: number}): number | null => {
@@ -107,6 +108,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * mutationは複数の引数を受け取れないため，実際に渡すときはpayloadオブジェクトとしてまとめて渡す必要がある．
      * @param detailMapId 最後に参照された詳細マップのId
      * @param parentSpot どのマップのどのスポットかを示す情報
+     * @thorow スポットに存在しない詳細マップをセットしようとすると例外を投げる
      */
     @Mutation
     public setLastViewedDetailMapId(
