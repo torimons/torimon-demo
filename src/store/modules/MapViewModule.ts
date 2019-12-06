@@ -108,7 +108,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * mutationは複数の引数を受け取れないため，実際に渡すときはpayloadオブジェクトとしてまとめて渡す必要がある．
      * @param detailMapId 最後に参照された詳細マップのId
      * @param parentSpot どのマップのどのスポットかを示す情報
-     * @thorow スポットに存在しない詳細マップをセットしようとすると例外を投げる
+     * @throw スポットに存在しない詳細マップをセットしようとすると例外を投げる
      */
     @Mutation
     public setLastViewedDetailMapId(
