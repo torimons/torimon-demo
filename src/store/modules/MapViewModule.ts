@@ -128,6 +128,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
         this.focusedMapId      = newMapViewState.focusedMapId;
         this.focusedSpotId     = newMapViewState.focusedSpotId;
         this.spotInfoIsVisible = newMapViewState.spotInfoIsVisible;
+        this.displayLevel      = newMapViewState.displayLevel;
     }
 }
 
