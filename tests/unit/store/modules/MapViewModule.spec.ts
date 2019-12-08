@@ -85,6 +85,7 @@ const expectedMapViewState: MapViewState = {
                         ],
                     },
                     gateNodeIds: [],
+                    detailMapIds: [],
                 },
             ],
             bounds: {
@@ -185,6 +186,26 @@ describe('store/modules/MapViewModule.ts', () => {
             name:  expectedMapViewState.maps[expectedFocusedMapId].spots[expectedFocusedSpotId].name,
         };
         expect(actualInfoOfFocusedSpot).toEqual(expectedInfoOfFocusedSpot);
+    });
+
+    it('hasDetailMaps()で詳細マップを持つかどうかを判定する', () => {
+        // 詳細マップを持っている場合
+        const expectedValWithDetailMaps: boolean = true;
+        const parentSpotWithDetailMaps = {
+            parentMapId: 0,
+            spotId: 0,
+        };
+        const actualValWithDetailMaps: boolean = mapViewStore.hasDetailMaps(parentSpotWithDetailMaps);
+        expect(actualValWithDetailMaps).toBe(expectedValWithDetailMaps);
+
+        // 詳細マップを持っていない場合
+        const expectedValWithoutDetailMaps: boolean = false;
+        const parentSpotWithoutDetailMaps = {
+            parentMapId: 1,
+            spotId: 0,
+        };
+        const actualValWithoutDetailMaps: boolean = mapViewStore.hasDetailMaps(parentSpotWithoutDetailMaps);
+        expect(actualValWithoutDetailMaps).toBe(expectedValWithoutDetailMaps);
     });
 
     it('setterでsetしたFocusedSpotがmapViewStoreのstateに登録されている', () => {

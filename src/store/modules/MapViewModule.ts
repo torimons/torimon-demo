@@ -84,6 +84,29 @@ export class MapViewModule extends VuexModule implements MapViewState {
         };
         return spotInfo;
     }
+
+    /**
+     * 指定されたスポットが詳細マップを持つかどうかを判定する
+     * @param parentSpot マップのIdとスポットのId
+     * @return スポットが詳細マップを持つならばtrue, 持たないならばfalse
+     */
+    get hasDetailMaps() {
+        return (
+            panretSpot: {
+                parentMapId: number,
+                spotId: number,
+            },
+        ): boolean => {
+            const map: Map = this.maps[panretSpot.parentMapId];
+            const spot: Spot = map.spots[panretSpot.spotId];
+            if (spot.detailMapIds.length > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+    }
+
     /**
      * スポットの詳細マップのどの階層が表示されているかをMapIdで返す
      * 無ければ例外を返す

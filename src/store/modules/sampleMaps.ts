@@ -85,6 +85,7 @@ export const sampleMaps: Map[] =  [
                     ],
                 },
                 gateNodeIds: [],
+                detailMapIds: [],
             },
         ],
         bounds: {
