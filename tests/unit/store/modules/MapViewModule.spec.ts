@@ -141,6 +141,7 @@ const expectedMapViewState: MapViewState = {
     focusedMapId: 0,
     focusedSpotId: 0,
     spotInfoIsVisible: false,
+    displayLevel: 'default',
 };
 
 
@@ -193,14 +194,14 @@ describe('components/SpotInfo.vue', () => {
     });
 
     it('setしたnewDisplayLevelがstateに登録されている', () => {
-        const newDisplayLevel: DisplayLevelType = 'default';
+        const newDisplayLevel: DisplayLevelType = 'detail';
         mapViewStore.setDisplayLevel(newDisplayLevel);
         expect(mapViewStore.displayLevel).toBe(newDisplayLevel);
     });
 
     it('setterでstateに登録したdisplayLevelをgetterで取得する', () => {
-        const newDisplayLevel: DisplayLevelType = 'detail';
-        mapViewStore.setDisplayLevel(newDisplayLevel);
-        expect(mapViewStore.getDisplayLevel).toBe(newDisplayLevel);
+        // テストデータの初期値はdefault
+        const expectedDisplayLevel: DisplayLevelType = 'default';
+        expect(mapViewStore.getDisplayLevel()).toBe(expectedDisplayLevel);
     });
 });
