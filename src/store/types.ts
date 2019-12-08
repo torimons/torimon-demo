@@ -4,10 +4,13 @@
 export interface MapViewState {
     maps: Map[];
     rootMapId: number;
-    focusedSpotId: number;
-    focusedMapId: number;
+    focusedSpot: {
+        mapId: number,
+        spotId: number,
+    };
     spotInfoIsVisible: boolean;
     displayLevel: DisplayLevelType;
+    focusedDetailMapId: number | null;
 }
 
 /**
