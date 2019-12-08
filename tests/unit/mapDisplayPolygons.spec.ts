@@ -88,6 +88,7 @@ const mapViewStateTestData: MapViewState = {
     },
     spotInfoIsVisible: false,
     focusedDetailMapId: null,
+    displayLevel: 'default',
 };
 
 const expectedGeoJsonObject: FeatureCollection = {
