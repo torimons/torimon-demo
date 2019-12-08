@@ -90,8 +90,10 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * ズームレベルによって変化する表示レベルを返す
      * @return 表示レベル('default' or 'detail')
      */
-    get getDisplayLevel(): string {
-        return this.displayLevel;
+    get getDisplayLevel() {
+        return (): DisplayLevelType => {
+            return this.displayLevel;
+        };
     }
 
     /**
