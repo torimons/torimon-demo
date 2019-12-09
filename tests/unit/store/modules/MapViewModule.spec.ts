@@ -2,6 +2,7 @@ import { mapViewStore } from '@/store/modules/MapViewModule';
 import { MapViewState, Map, Bounds, SpotInfo, SpotForMap} from '@/store/types';
 import { testMapViewState } from '../../../resources/testMapViewState';
 import { cloneDeep } from 'lodash';
+import { NoDetailMapError } from '@/store/errors';
 
 const expectedMapViewState: MapViewState = cloneDeep(testMapViewState);
 
@@ -86,7 +87,7 @@ describe('store/modules/MapViewModule.ts', () => {
         };
         expect(() => {
             mapViewStore.setLastViewedDetailMapId(payload);
-        }).toThrow(Error);
+        }).toThrow(NoDetailMapError);
     });
 
     it('setterでsetしたlastViewedDetailMapIdがmapViewStoreのstoreに登録されている', () => {
