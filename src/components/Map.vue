@@ -8,10 +8,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { mapViewStore } from '@/store/modules/MapViewModule';
 import { SpotForMap, Coordinate, Bounds } from '@/store/types';
-/*
-leafletの導入
-必要であればプラグインの導入
-*/
+import { GeolocationWrapper } from '@/components/GeolocationWrapper.ts';
 import 'leaflet/dist/leaflet.css';
 import L, { LeafletEvent, TileLayer } from 'leaflet';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
@@ -75,20 +72,20 @@ export default class Map extends Vue {
             timeout: 10000, // milliseconds
             maximumAge: 0, // 0 = the device cannot use a cached position
         };
-        // navigator.geolocation.watchPosition(
-        //     (pos: Position) => {
-        //         this.currentLocationMarker.remove();
-        //         this.currentLocationMarker = L.marker(
-        //             [pos.coords.latitude, pos.coords.longitude],
-        //             { icon: this.currentLocationIcon },
-        //         );
-        //         this.currentLocationMarker.addTo(this.map);
-        //     },
-        //     (error: PositionError) => {
-        //         throw error;
-        //     },
-        //     options,
-        // );
+        GeolocationWrapper.watchPosition(
+            (pos: Position) => {
+                this.currentLocationMarker.remove();
+                this.currentLocationMarker = L.marker(
+                    [pos.coords.latitude, pos.coords.longitude],
+                    { icon: this.currentLocationIcon },
+                );
+                this.currentLocationMarker.addTo(this.map);
+            },
+            (error: PositionError) => {
+                throw error;
+            },
+            options,
+        );
     }
 
     /**

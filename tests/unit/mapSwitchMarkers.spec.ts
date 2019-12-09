@@ -1,6 +1,7 @@
 import { mapViewStore } from '@/store/modules/MapViewModule';
 import { MapViewState, SpotForMap, Coordinate } from '@/store/types';
 import { shallowMount } from '@vue/test-utils';
+import { GeolocationWrapper } from '@/components/GeolocationWrapper';
 import Vue from 'vue';
 import Map from '@/components/Map.vue';
 import 'leaflet/dist/leaflet.css';
@@ -118,8 +119,6 @@ const MapViewStoreTestData: MapViewState = {
 
 
 describe('components/Map.vue マーカー切り替えのテスト', () => {
-    // mapにするとleafletのmapと被ってshadowed name warningがでるので仕方なく...
-    const mapInstance: Map = new Map();
     let wrapper: any;
     // テストデータ
     const testSpots: SpotForMap[] = [
@@ -143,6 +142,7 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
 
     beforeEach(() => {
         mapViewStore.setMapViewState(MapViewStoreTestData);
+        GeolocationWrapper.watchPosition = jest.fn();
         wrapper = shallowMount(Map, {
             attachToDocument: true,
         });
