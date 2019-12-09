@@ -61,12 +61,12 @@ export default class Map extends Vue {
             // 現状mapIdのgetterがないため直接指定しています．
             const mapId = 0;
             this.displayPolygons(mapId);
+            // sampleNodeListの経路（エッジ）表示
+            // 初期パラメータは適当に指定
+            const startPointId: number = 0;
+            const endPointId: number = 1;
+            this.displayEdge(startPointId, endPointId);
         });
-        // sampleNodeListの経路（エッジ）表示
-        // 初期パラメータは適当に指定
-        const startPointId: number = 0;
-        const endPointId: number = 1;
-        this.displayEdge(startPointId, endPointId);
     }
 
     /** 現在のマーカー削除し，spotsの座標にマーカーを配置する
