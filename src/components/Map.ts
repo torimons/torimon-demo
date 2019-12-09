@@ -145,5 +145,5 @@ export default class Map extends Vue {
             },
         });
         this.map.addLayer(this.polygonLayer);
-    }
+    };
 }
