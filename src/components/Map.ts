@@ -97,13 +97,13 @@ export default class Map extends Vue {
      * @param callback スポットがクリックされた時に呼び出すコールバック
      */
     private replaceMarkersWith(newSpots: SpotForMap[], icon: L.Icon, callback: (e: L.LeafletEvent) => void): void {
-        // const coordinates: Coordinate[] = newSpots.map(
-        //     (spot: SpotForMap) => spot.coordinate,
-        // );
-        // // removeしてから取り除かないと描画から消えない
-        // this.spotMarkers.forEach((marker: L.Marker) => marker.remove());
-        // this.spotMarkers = coordinates.map((coord: Coordinate) => L.marker(coord, {icon}));
-        // this.spotMarkers.map((marker: L.Marker) => marker.addTo(this.map).on('click', callback));
+        const coordinates: Coordinate[] = newSpots.map(
+            (spot: SpotForMap) => spot.coordinate,
+        );
+        // removeしてから取り除かないと描画から消えない
+        this.spotMarkers.forEach((marker: L.Marker) => marker.remove());
+        this.spotMarkers = coordinates.map((coord: Coordinate) => L.marker(coord, {icon}));
+        this.spotMarkers.map((marker: L.Marker) => marker.addTo(this.map).on('click', callback));
     }
 
     /** ズームレベルや階層が変更された際のマーカー表示切り替え
