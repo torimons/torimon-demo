@@ -1,10 +1,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { mapViewStore } from '@/store/modules/MapViewModule';
 import { SpotForMap, Coordinate, Bounds } from '@/store/types';
-/*
-leafletの導入
-必要であればプラグインの導入
-*/
+import { GeolocationWrapper } from '@/components/GeolocationWrapper.ts';
 import 'leaflet/dist/leaflet.css';
 import L, { LeafletEvent, TileLayer } from 'leaflet';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
@@ -18,7 +15,7 @@ export default class Map extends Vue {
     private tileLayer!: L.TileLayer;
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
     private defaultSpotIcon = L.icon({
-        iconUrl: 'https://raw.githubusercontent.com/torimons/torimon/master/public/leaflet/icons/marker-icon-2x.png',
+        iconUrl: 'http://localhost:8081/leaflet/icons/marker-icon-2x.png',
         iconSize: [50, 82],
         iconAnchor: [25, 80],
         popupAnchor: [-3, -76],
@@ -27,10 +24,10 @@ export default class Map extends Vue {
         className: 'spot',
     });
     private currentLocationIcon = L.icon({
-        iconUrl: 'https://raw.githubusercontent.com/torimons/torimon/master/public/leaflet/icons/currentLocation.png',
-        iconSize: [50, 82],
-        iconAnchor: [25, 80],
-        popupAnchor: [-3, -76],
+        iconUrl: 'http://localhost:8081/leaflet/icons/currentLocation.png',
+        iconSize: [50, 50],
+        iconAnchor: [25, 25],
+        popupAnchor: [0, 0],
         shadowSize: [68, 95],
         shadowAnchor: [22, 94],
         className: 'currentLocation',
@@ -68,7 +65,7 @@ export default class Map extends Vue {
             timeout: 10000, // milliseconds
             maximumAge: 0, // 0 = the device cannot use a cached position
         };
-        navigator.geolocation.watchPosition(
+        GeolocationWrapper.watchPosition(
             (pos: Position) => {
                 this.currentLocationMarker.remove();
                 this.currentLocationMarker = L.marker(
@@ -100,13 +97,13 @@ export default class Map extends Vue {
      * @param callback スポットがクリックされた時に呼び出すコールバック
      */
     private replaceMarkersWith(newSpots: SpotForMap[], icon: L.Icon, callback: (e: L.LeafletEvent) => void): void {
-        const coordinates: Coordinate[] = newSpots.map(
-            (spot: SpotForMap) => spot.coordinate,
-        );
-        // removeしてから取り除かないと描画から消えない
-        this.spotMarkers.forEach((marker: L.Marker) => marker.remove());
-        this.spotMarkers = coordinates.map((coord: Coordinate) => L.marker(coord, {icon}));
-        this.spotMarkers.map((marker: L.Marker) => marker.addTo(this.map).on('click', callback));
+        // const coordinates: Coordinate[] = newSpots.map(
+        //     (spot: SpotForMap) => spot.coordinate,
+        // );
+        // // removeしてから取り除かないと描画から消えない
+        // this.spotMarkers.forEach((marker: L.Marker) => marker.remove());
+        // this.spotMarkers = coordinates.map((coord: Coordinate) => L.marker(coord, {icon}));
+        // this.spotMarkers.map((marker: L.Marker) => marker.addTo(this.map).on('click', callback));
     }
 
     /** ズームレベルや階層が変更された際のマーカー表示切り替え
