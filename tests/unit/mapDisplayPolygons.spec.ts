@@ -35,6 +35,8 @@ const mapViewStateTestData: MapViewState = {
                     detailMapIds: [1],
                 },
             ],
+            nodes: [],
+            edges: [],
             bounds: {
                 topL: {
                     lat: 33.596643,
@@ -70,6 +72,8 @@ const mapViewStateTestData: MapViewState = {
                     gateNodeIds: [],
                 },
             ],
+            nodes: [],
+            edges: [],
             bounds: {
                 topL: {
                     lat: 33.5954678,
