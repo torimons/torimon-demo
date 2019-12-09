@@ -157,6 +157,7 @@ export default class Map extends Vue {
      * 指定されたnode間の経路（edge）を表示する
      * @param startPointId: 始点
      * @param endPointId: 終点
+     * 経路検索機能によって引数の変更が考えられる
      */
     private displayEdge(startPointId: number, endPointId: number): void {
         // 既に表示している経路がある場合は先に削除する

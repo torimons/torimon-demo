@@ -103,7 +103,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * @param startPointId: 始点のノードId
      * @param endPointId: 終点のノードId
      * @return nodesForMap: 経路となるノードの配列
-     * 現在仮作成の為、idを渡すとテスト用の配列を返す仕様になっている
+     * 仮作成の為、idを渡すとテスト用の配列であるtestNodeListを返す仕様になっている
      */
     get getNodesForMap() {
         return (startPointId: number, endPointId: number): Coordinate[] => {
