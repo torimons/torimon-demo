@@ -50,6 +50,8 @@ export const sampleMaps: Map[] =  [
                 detailMapLevelNames: [],
             },
         ],
+        nodes: [],
+        edges: [],
         bounds: {
             topL: {
                 lat: 33.596643,
@@ -88,6 +90,8 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
             },
         ],
+        nodes: [],
+        edges: [],
         bounds: {
             topL: {
                 lat: 33.5954678,
@@ -126,6 +130,8 @@ export const sampleMaps: Map[] =  [
                 others: {},
             },
         ],
+        nodes: [],
+        edges: [],
         bounds: {
             topL: {
                 lat: 33.5954678,
