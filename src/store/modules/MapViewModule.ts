@@ -2,6 +2,7 @@ import { Mutation, VuexModule, getModule, Module } from 'vuex-module-decorators'
 import store from '@/store';
 import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds } from '@/store/types';
 import { sampleMaps } from '@/store/modules/sampleMaps';
+import { NoDetailMapError } from '../errors';
 
 /**
  * MapViewの状態管理を行うVuexModuleクラス
@@ -122,7 +123,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
         // detailMapIdがそのスポットに存在しない場合，例外を投げる
         if (!this.maps[parentMapId].spots[spotId].detailMapIds.includes(detailMapId)) {
             // エラー定義ファイルがマージされた時点でエラーは書き換えます．
-            throw new Error('Detail Map does not exist...');
+            throw new NoDetailMapError('Detail Map does not exist...');
         }
         this.maps[parentMapId].spots[spotId].lastViewedDetailMapId = detailMapId;
     }
