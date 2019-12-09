@@ -3,7 +3,7 @@ import map from '@/components/Map.vue';
 import { MapViewState } from '@/store/types';
 import { FeatureCollection } from 'geojson';
 import { shallowMount } from '@vue/test-utils';
-import { GeolocationWrapper } from '@/components/GeolocationWrapper';
+import { GeolocationWrapper } from '@/components/GeolocationWrapper.ts';
 
 
 const mapViewStateTestData: MapViewState = {
