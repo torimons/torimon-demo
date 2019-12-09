@@ -86,19 +86,32 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
-     * 指定されたスポットが詳細マップを持つかどうかを判定する
+     * 指定されたスポットが詳細マップを持つかどうかを判定する．
+     * 存在しないMapIdやSpotIdを指定すると例外を投げる．
      * @param parentSpot マップのIdとスポットのId
      * @return スポットが詳細マップを持つならばtrue, 持たないならばfalse
+     * @throw Error Mapが存在しない場合に発生
+     * @throw Error Spotが存在しない場合に発生
      */
-    get hasDetailMaps() {
+    get spotHasDetailMaps() {
         return (
-            panretSpot: {
+            parentSpot: {
                 parentMapId: number,
                 spotId: number,
             },
         ): boolean => {
-            const map: Map = this.maps[panretSpot.parentMapId];
-            const spot: Spot = map.spots[panretSpot.spotId];
+            const map: Map | undefined = this.maps.find((m: Map) => m.id === parentSpot.parentMapId);
+            if (map === undefined) {
+                // errors.tsがマージされたらmapNotFoundErrorに置き換える
+                throw new Error('Map Not Found...');
+            }
+
+            const spot: Spot | undefined = map.spots.find((s: Spot) => s.id === parentSpot.spotId);
+            if (spot === undefined) {
+                // errors.tsがマージされたらspotNotFoundErrorに置き換える
+                throw new Error('Spot Not Found...');
+            }
+
             if (spot.detailMapIds.length > 0) {
                 return true;
             } else {

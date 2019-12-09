@@ -188,24 +188,44 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(actualInfoOfFocusedSpot).toEqual(expectedInfoOfFocusedSpot);
     });
 
-    it('hasDetailMaps()で詳細マップを持つかどうかを判定する', () => {
+    it('spotHasDetailMaps()で詳細マップを持つかどうかを判定する', () => {
         // 詳細マップを持っている場合
         const expectedValWithDetailMaps: boolean = true;
         const parentSpotWithDetailMaps = {
             parentMapId: 0,
             spotId: 0,
         };
-        const actualValWithDetailMaps: boolean = mapViewStore.hasDetailMaps(parentSpotWithDetailMaps);
+        const actualValWithDetailMaps: boolean = mapViewStore.spotHasDetailMaps(parentSpotWithDetailMaps);
         expect(actualValWithDetailMaps).toBe(expectedValWithDetailMaps);
 
         // 詳細マップを持っていない場合
         const expectedValWithoutDetailMaps: boolean = false;
         const parentSpotWithoutDetailMaps = {
-            parentMapId: 1,
+            parentMapId: 2,
+            spotId: 10,
+        };
+        const actualValWithoutDetailMaps: boolean = mapViewStore.spotHasDetailMaps(parentSpotWithoutDetailMaps);
+        expect(actualValWithoutDetailMaps).toBe(expectedValWithoutDetailMaps);
+    });
+
+    it('spotHasDetailMaps()の例外処理', () => {
+        // マップが存在しない場合
+        const parentSpotWithDetailMaps = {
+            parentMapId: 999,
             spotId: 0,
         };
-        const actualValWithoutDetailMaps: boolean = mapViewStore.hasDetailMaps(parentSpotWithoutDetailMaps);
-        expect(actualValWithoutDetailMaps).toBe(expectedValWithoutDetailMaps);
+        expect(() => {
+            const _ = mapViewStore.spotHasDetailMaps(parentSpotWithDetailMaps);
+        }).toThrow(Error);
+
+        // スポットが存在しない場合
+        const parentSpotWithoutDetailMaps = {
+            parentMapId: 0,
+            spotId: 999,
+        };
+        expect(() => {
+            const _ = mapViewStore.spotHasDetailMaps(parentSpotWithoutDetailMaps);
+        }).toThrow(Error);
     });
 
     it('setterでsetしたFocusedSpotがmapViewStoreのstateに登録されている', () => {
