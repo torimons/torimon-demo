@@ -51,6 +51,8 @@ export const testMapViewState: MapViewState = {
                     lastViewedDetailMapId: null,
                 },
             ],
+            nodes: [],
+            edges: [],
             bounds: {
                 topL: {
                     lat: 33.596643,
@@ -89,6 +91,8 @@ export const testMapViewState: MapViewState = {
                     lastViewedDetailMapId: null,
                 },
             ],
+            nodes: [],
+            edges: [],
             bounds: {
                 topL: {
                     lat: 33.5954678,
@@ -128,6 +132,8 @@ export const testMapViewState: MapViewState = {
                     others: {},
                 },
             ],
+            nodes: [],
+            edges: [],
             bounds: {
                 topL: {
                     lat: 33.5954678,
@@ -146,5 +152,6 @@ export const testMapViewState: MapViewState = {
         spotId: 0,
     },
     spotInfoIsVisible: false,
+    idOfCenterSpotWithDetailMap: 0,
 };
 

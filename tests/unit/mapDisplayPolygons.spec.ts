@@ -35,6 +35,8 @@ const mapViewStateTestData: MapViewState = {
                     lastViewedDetailMapId: null,
                 },
             ],
+            nodes: [],
+            edges: [],
             bounds: {
                 topL: {
                     lat: 33.596643,
@@ -72,6 +74,8 @@ const mapViewStateTestData: MapViewState = {
                     lastViewedDetailMapId: null,
                 },
             ],
+            nodes: [],
+            edges: [],
             bounds: {
                 topL: {
                     lat: 33.5954678,
@@ -90,6 +94,7 @@ const mapViewStateTestData: MapViewState = {
         spotId: 0,
     },
     spotInfoIsVisible: false,
+    idOfCenterSpotWithDetailMap: 0,
 };
 
 const expectedGeoJsonObject: FeatureCollection = {

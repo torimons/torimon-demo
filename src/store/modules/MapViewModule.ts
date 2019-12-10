@@ -39,6 +39,15 @@ export class MapViewModule extends VuexModule implements MapViewState {
     public spotInfoIsVisible: boolean = false;
 
     /**
+     * - 画面上で表示されている
+     * - 半径〇〇内で最も画面中央に近い
+     * - 詳細マップを持っている
+     * スポットのIDを保持する変数
+     * 条件に当てはまるスポットがない場合nullを持つ
+     */
+    public idOfCenterSpotWithDetailMap: number | null = null;
+
+    /**
      * Mapコンポーネントが扱うマップの範囲を返す
      * @return マップの範囲
      */
@@ -79,6 +88,42 @@ export class MapViewModule extends VuexModule implements MapViewState {
         };
         return spotInfo;
     }
+
+    /**
+     * 指定されたスポットが詳細マップを持つかどうかを判定する．
+     * 存在しないMapIdやSpotIdを指定すると例外を投げる．
+     * @param parentSpot マップのIdとスポットのId
+     * @return スポットが詳細マップを持つならばtrue, 持たないならばfalse
+     * @throw Error Mapが存在しない場合に発生
+     * @throw Error Spotが存在しない場合に発生
+     */
+    get spotHasDetailMaps() {
+        return (
+            targetSpot: {
+                parentMapId: number,
+                spotId: number,
+            },
+        ): boolean => {
+            const map: Map | undefined = this.maps.find((m: Map) => m.id === targetSpot.parentMapId);
+            if (map === undefined) {
+                // errors.tsがマージされたらmapNotFoundErrorに置き換える
+                throw new Error('Map Not Found...');
+            }
+
+            const spot: Spot | undefined = map.spots.find((s: Spot) => s.id === targetSpot.spotId);
+            if (spot === undefined) {
+                // errors.tsがマージされたらspotNotFoundErrorに置き換える
+                throw new Error('Spot Not Found...');
+            }
+
+            if (spot.detailMapIds.length > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+    }
+
     /**
      * スポットのもつ詳細マップのうち、最後に参照された詳細マップのIdを返す
      * @param parentSpot どのマップのどのスポットかを示す情報.
@@ -91,6 +136,20 @@ export class MapViewModule extends VuexModule implements MapViewState {
             const spot: Spot = parentMap.spots[parentSpot.spotId];
             const lastViewedDetailMapId: number | null = spot.lastViewedDetailMapId;
             return lastViewedDetailMapId;
+        };
+    }
+
+    /**
+     * - 画面上で表示されている
+     * - 半径〇〇内で最も画面中央に近い
+     * - 詳細マップを持っている
+     * スポットのIDを返す
+     * 条件に当てはまるスポットがない状態である場合nullを返す
+     * @return スポットIDかnull
+     */
+    get getIdOfCenterSpotWithDetailMap() {
+        return (): number | null => {
+            return this.idOfCenterSpotWithDetailMap;
         };
     }
 
@@ -129,17 +188,42 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
+     * - 画面上で表示されている
+     * - 半径〇〇内で最も画面中央に近い
+     * - 詳細マップを持っている
+     * スポットのIDを更新する
+     * @param idOfCenterSpotWithDetailMap 上記のスポットのID
+     */
+    @Mutation
+    public setIdOfCenterSpotWithDetailMap(idOfCenterSpotWithDetailMap: number): void {
+        this.idOfCenterSpotWithDetailMap = idOfCenterSpotWithDetailMap;
+    }
+
+    /**
+     * - 画面上で表示されている
+     * - 半径〇〇内で最も画面中央に近い
+     * - 詳細マップを持っている
+     * スポットが存在していない状態にする
+     */
+    @Mutation
+    public setNonExistentOfCenterSpotWithDetailMap(): void {
+        this.idOfCenterSpotWithDetailMap = null;
+    }
+
+    /**
      * MapViewStateの情報を一括でset
      * - 現状は単体テストの入力用の仮メソッド
      * @param mapState マップの状態
      */
     @Mutation
     public setMapViewState(newMapViewState: MapViewState): void {
-        this.maps               = newMapViewState.maps;
-        this.rootMapId          = newMapViewState.rootMapId;
+        this.maps              = newMapViewState.maps;
+        this.rootMapId         = newMapViewState.rootMapId;
+        this.spotInfoIsVisible  = newMapViewState.spotInfoIsVisible;
         this.focusedSpot.mapId  = newMapViewState.focusedSpot.mapId;
         this.focusedSpot.spotId = newMapViewState.focusedSpot.spotId;
         this.spotInfoIsVisible  = newMapViewState.spotInfoIsVisible;
+        this.idOfCenterSpotWithDetailMap = newMapViewState.idOfCenterSpotWithDetailMap;
     }
 }
 
