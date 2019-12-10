@@ -10,6 +10,7 @@ export interface MapViewState {
     };
     spotInfoIsVisible: boolean;
     displayLevel: DisplayLevelType;
+    idOfCenterSpotWithDetailMap: number | null;
     focusedDetailMapId: number | null;
 }
 
@@ -20,6 +21,8 @@ export interface Map {
     id: number;
     name: string;
     spots: Spot[];
+    nodes: Node[];
+    edges: Edge[];
     bounds: Bounds;
     parentSpotId?: number;
 }
@@ -80,6 +83,25 @@ export interface Coordinate {
 export interface Shape {
     type: 'Polygon' | 'MultiPolygon';
     coordinates: number[][][] | number[][][][];
+}
+
+/*
+ * ノードの情報を示す型
+ */
+export interface Node {
+    id: number;
+    mapId: number;
+    spotId: number;
+    coordinate: Coordinate;
+}
+
+/*
+ * エッジの情報を示す型
+ */
+export interface Edge {
+    id: number;
+    nodeIds: {A: number, B: number};
+    distance: number;
 }
 
 /**

@@ -58,6 +58,8 @@ const MapViewStoreTestData: MapViewState = {
                     detailMapIds: [1],
                 },
             ],
+            nodes: [],
+            edges: [],
             bounds: {
                 topL: {
                     lat: 33.596643,
@@ -95,6 +97,8 @@ const MapViewStoreTestData: MapViewState = {
                     gateNodeIds: [],
                 },
             ],
+            nodes: [],
+            edges: [],
             bounds: {
                 topL: {
                     lat: 33.5954678,
@@ -115,8 +119,8 @@ const MapViewStoreTestData: MapViewState = {
     spotInfoIsVisible: false,
     focusedDetailMapId: 0,
     displayLevel: 'default',
+    idOfCenterSpotWithDetailMap: 0,
 };
-
 
 describe('components/Map.vue マーカー切り替えのテスト', () => {
     // mapにするとleafletのmapと被ってshadowed name warningがでるので仕方なく...

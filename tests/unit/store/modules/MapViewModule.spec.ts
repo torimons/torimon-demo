@@ -51,6 +51,8 @@ const expectedMapViewState: MapViewState = {
                     detailMapIds: [1],
                 },
             ],
+            nodes: [],
+            edges: [],
             bounds: {
                 topL: {
                     lat: 33.596643,
@@ -87,6 +89,8 @@ const expectedMapViewState: MapViewState = {
                     gateNodeIds: [],
                 },
             ],
+            nodes: [],
+            edges: [],
             bounds: {
                 topL: {
                     lat: 33.5954678,
@@ -125,6 +129,8 @@ const expectedMapViewState: MapViewState = {
                     others: {},
                 },
             ],
+            nodes: [],
+            edges: [],
             bounds: {
                 topL: {
                     lat: 33.5954678,
@@ -144,6 +150,7 @@ const expectedMapViewState: MapViewState = {
     },
     spotInfoIsVisible: false,
     displayLevel: 'default',
+    idOfCenterSpotWithDetailMap: 0,
     focusedDetailMapId: null,
 };
 
@@ -198,6 +205,11 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(actualFocusedSpot).toBe(expectedNewFocusedSpot);
     });
 
+    it('stateに登録したidOfCenterSpotWithDetailMapを取得する', () => {
+        const expectedId: number | null = expectedMapViewState.idOfCenterSpotWithDetailMap;
+        expect(mapViewStore.getIdOfCenterSpotWithDetailMap()).toBe(expectedId);
+    });
+
     it('表示されている詳細マップのMapIdをgetFoucusedDetailMapIdで取得する', () => {
         const expectedDetailMapId: number = 0;
         mapViewStore.setFocusedDetailMapId(expectedDetailMapId);
@@ -211,6 +223,17 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(() => {
             const _ = mapViewStore.getFocusedDetailMapId;
         }).toThrow(Error);
+    });
+
+    it('setIdOfCenterSpotWithDetailMap()でsetしたidOfCenterSpotWithDetailMapがmapViewStoreのstateに登録されている', () => {
+        const expectedIdOfCenterSpotWithDetailMap = 1;
+        mapViewStore.setIdOfCenterSpotWithDetailMap(expectedIdOfCenterSpotWithDetailMap);
+        expect(mapViewStore.idOfCenterSpotWithDetailMap).toBe(expectedIdOfCenterSpotWithDetailMap);
+    });
+
+    it('setNonExistentOfCenterSpotWithDetailMap()でmapViewStoreのidOfCenterSpotWithDetailMapにnullが登録されている', () => {
+        mapViewStore.setNonExistentOfCenterSpotWithDetailMap();
+        expect(mapViewStore.idOfCenterSpotWithDetailMap).toBe(null);
     });
 
     it('setterでsetしたfocusedDetailMapIdがmapViewStoreのstoreに登録されている', () => {
