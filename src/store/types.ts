@@ -39,7 +39,7 @@ export interface Spot {
      */
     shape?: Shape;
     gateNodeIds: number[];
-    detailMapIds?: number[];
+    detailMapIds: number[];
     detailMapLevelNames?: string[];
     others?: any;
 }

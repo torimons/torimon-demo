@@ -87,6 +87,7 @@ export const sampleMaps: Map[] =  [
                     ],
                 },
                 gateNodeIds: [],
+                detailMapIds: [],
             },
         ],
         nodes: [],
