@@ -2,7 +2,10 @@ import { Mutation, VuexModule, getModule, Module } from 'vuex-module-decorators'
 import store from '@/store';
 import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds } from '@/store/types';
 import { sampleMaps } from '@/store/modules/sampleMaps';
-import { NoDetailMapError } from '../errors';
+import { NoDetailMapsError } from '../errors/NoDetailMapsError';
+import { NoDetailMapIdInSpotError } from '../errors/NoDetailMapIdInSpotError';
+import { MapNotFoundError } from '../errors/MapNotFoundError';
+import { SpotNotFoundError } from '../errors/SpotNotFoundError';
 
 /**
  * MapViewの状態管理を行うVuexModuleクラス
@@ -90,12 +93,37 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
+     * マップIdとスポットIdで指定されたスポットを返す．
+     * 存在しないマップIdやスポットIdを指定すると例外を投げる．
+     * @param targetSpot マップIdとスポットId
+     * @return スポット
+     * @throw MapNotFoundError Mapが存在しない場合に発生
+     * @throw SpotNotFoundError Spotが存在しない場合に発生
+     */
+    get getSpotById() {
+        return (
+            targetSpot: {
+                parentMapId: number,
+                spotId: number,
+            },
+        ): Spot => {
+            const map: Map | undefined = this.maps.find((m: Map) => m.id === targetSpot.parentMapId);
+            if (map === undefined) {
+                throw new MapNotFoundError('Map Not Found...');
+            }
+
+            const spot: Spot | undefined = map.spots.find((s: Spot) => s.id === targetSpot.spotId);
+            if (spot === undefined) {
+                throw new SpotNotFoundError('Spot Not Found...');
+            }
+            return spot;
+        };
+    }
+
+    /**
      * 指定されたスポットが詳細マップを持つかどうかを判定する．
-     * 存在しないMapIdやSpotIdを指定すると例外を投げる．
-     * @param parentSpot マップのIdとスポットのId
+     * @param targetSpot マップのIdとスポットのId
      * @return スポットが詳細マップを持つならばtrue, 持たないならばfalse
-     * @throw Error Mapが存在しない場合に発生
-     * @throw Error Spotが存在しない場合に発生
      */
     get spotHasDetailMaps() {
         return (
@@ -104,18 +132,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
                 spotId: number,
             },
         ): boolean => {
-            const map: Map | undefined = this.maps.find((m: Map) => m.id === targetSpot.parentMapId);
-            if (map === undefined) {
-                // errors.tsがマージされたらmapNotFoundErrorに置き換える
-                throw new Error('Map Not Found...');
-            }
-
-            const spot: Spot | undefined = map.spots.find((s: Spot) => s.id === targetSpot.spotId);
-            if (spot === undefined) {
-                // errors.tsがマージされたらspotNotFoundErrorに置き換える
-                throw new Error('Spot Not Found...');
-            }
-
+            const spot = this.getSpotById(targetSpot);
             if (spot.detailMapIds.length > 0) {
                 return true;
             } else {
@@ -128,12 +145,15 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * スポットのもつ詳細マップのうち、最後に参照された詳細マップのIdを返す
      * @param parentSpot どのマップのどのスポットかを示す情報.
      * @return lastViewdDetailMapId スポットが持つ詳細マップのうち、最後に参照された詳細マップのId．
-     * 存在しない場合はnullを返す．
+     * まだ参照されていない場合はnullを返す．
+     * @throw NoDetailMapsError スポットが詳細マップを持っていない場合に発生.
      */
     get getLastViewedDetailMapId() {
         return (parentSpot: {parentMapId: number, spotId: number}): number | null => {
-            const parentMap: Map = this.maps[parentSpot.parentMapId];
-            const spot: Spot = parentMap.spots[parentSpot.spotId];
+            if (this.spotHasDetailMaps(parentSpot) === false) {
+                throw new NoDetailMapsError('this spot has no detail maps...');
+            }
+            const spot = this.getSpotById(parentSpot);
             const lastViewedDetailMapId: number | null = spot.lastViewedDetailMapId;
             return lastViewedDetailMapId;
         };
@@ -179,12 +199,14 @@ export class MapViewModule extends VuexModule implements MapViewState {
         const detailMapId = payload.detailMapId;
         const parentMapId = payload.parentSpot.parentMapId;
         const spotId = payload.parentSpot.spotId;
+        const spot = this.getSpotById(payload.parentSpot);
         // detailMapIdがそのスポットに存在しない場合，例外を投げる
-        if (!this.maps[parentMapId].spots[spotId].detailMapIds.includes(detailMapId)) {
-            // エラー定義ファイルがマージされた時点でエラーは書き換えます．
-            throw new NoDetailMapError('Detail Map does not exist...');
+        if (spot.detailMapIds.includes(detailMapId)) {
+            throw new NoDetailMapIdInSpotError('Detail Map does not exist...');
         }
-        this.maps[parentMapId].spots[spotId].lastViewedDetailMapId = detailMapId;
+        const mapIndex: number = this.maps.findIndex((m: Map) => m.id === parentMapId);
+        const spotIndex: number = this.maps[mapIndex].spots.findIndex((s: Spot) => s.id === spotId);
+        this.maps[mapIndex].spots[spotIndex].lastViewedDetailMapId = detailMapId;
     }
 
     /**
