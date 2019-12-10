@@ -226,7 +226,7 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(mapViewStore.displayLevel).toBe(newDisplayLevel);
     });
 
-    it('setterでstateに登録したdisplayLevelをgetterで取得する', () => {
+    it('stateのdisplayLevelをgetterで取得する', () => {
         // テストデータの初期値はdefault
         const expectedDisplayLevel: DisplayLevelType = 'default';
         expect(mapViewStore.getDisplayLevel()).toBe(expectedDisplayLevel);
