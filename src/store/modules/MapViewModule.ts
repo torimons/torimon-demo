@@ -95,18 +95,18 @@ export class MapViewModule extends VuexModule implements MapViewState {
      */
     get spotHasDetailMaps() {
         return (
-            parentSpot: {
+            targetSpot: {
                 parentMapId: number,
                 spotId: number,
             },
         ): boolean => {
-            const map: Map | undefined = this.maps.find((m: Map) => m.id === parentSpot.parentMapId);
+            const map: Map | undefined = this.maps.find((m: Map) => m.id === targetSpot.parentMapId);
             if (map === undefined) {
                 // errors.tsがマージされたらmapNotFoundErrorに置き換える
                 throw new Error('Map Not Found...');
             }
 
-            const spot: Spot | undefined = map.spots.find((s: Spot) => s.id === parentSpot.spotId);
+            const spot: Spot | undefined = map.spots.find((s: Spot) => s.id === targetSpot.spotId);
             if (spot === undefined) {
                 // errors.tsがマージされたらspotNotFoundErrorに置き換える
                 throw new Error('Spot Not Found...');
