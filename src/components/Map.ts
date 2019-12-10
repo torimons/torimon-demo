@@ -14,7 +14,7 @@ export default class Map extends Vue {
     private zoomLevel: number = 15;
     private tileLayer!: L.TileLayer;
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
-    private defaultSpotIcon = L.icon({
+    private defaultSpotIcon: L.Icon = L.icon({
         iconUrl: 'http://localhost:8081/leaflet/icons/marker-icon-2x.png',
         iconSize: [50, 82],
         iconAnchor: [25, 80],
@@ -23,7 +23,7 @@ export default class Map extends Vue {
         shadowAnchor: [22, 94],
         className: 'spot',
     });
-    private currentLocationIcon = L.icon({
+    private currentLocationIcon: L.Icon = L.icon({
         iconUrl: 'http://localhost:8081/leaflet/icons/currentLocation.png',
         iconSize: [50, 50],
         iconAnchor: [25, 25],
@@ -33,7 +33,7 @@ export default class Map extends Vue {
         className: 'currentLocation',
     });
     private spotMarkers: L.Marker[] = [];
-    private currentLocationMarker: L.Marker = L.marker([0, 0]);
+    private currentLocationMarker: L.Marker = L.marker([0, 0], { icon: this.currentLocationIcon });
 
     /**
      * とりあえず地図の表示を行なっています．
@@ -65,14 +65,16 @@ export default class Map extends Vue {
             timeout: 10000, // milliseconds
             maximumAge: 0, // 0 = the device cannot use a cached position
         };
-        GeolocationWrapper.watchPosition(
+        this.currentLocationMarker.addTo(this.map);
+        this.bindMarkerToCurrentPosition(this.currentLocationMarker, options);
+    }
+
+    private bindMarkerToCurrentPosition(marker: L.Marker, options: PositionOptions): number {
+        return GeolocationWrapper.watchPosition(
             (pos: Position) => {
-                this.currentLocationMarker.remove();
-                this.currentLocationMarker = L.marker(
+                marker.setLatLng(
                     [pos.coords.latitude, pos.coords.longitude],
-                    { icon: this.currentLocationIcon },
                 );
-                this.currentLocationMarker.addTo(this.map);
             },
             (error: PositionError) => {
                 throw error;
@@ -168,5 +170,5 @@ export default class Map extends Vue {
             },
         });
         this.map.addLayer(this.polygonLayer);
-    };
+    }
 }
