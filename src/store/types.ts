@@ -9,6 +9,7 @@ export interface MapViewState {
         spotId: number,
     };
     spotInfoIsVisible: boolean;
+    displayLevel: DisplayLevelType;
     idOfCenterSpotWithDetailMap: number | null;
     focusedDetailMapId: number | null;
 }
@@ -102,3 +103,8 @@ export interface Edge {
     nodeIds: {A: number, B: number};
     distance: number;
 }
+
+/**
+ * ズームレベルで切り替わる表示レベルの種類
+ */
+export type DisplayLevelType = 'default' | 'detail';

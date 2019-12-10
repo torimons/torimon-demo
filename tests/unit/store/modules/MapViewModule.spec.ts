@@ -1,5 +1,5 @@
 import { mapViewStore } from '@/store/modules/MapViewModule';
-import { MapViewState, Map, Bounds, SpotInfo, SpotForMap} from '@/store/types';
+import { MapViewState, Map, Bounds, SpotInfo, SpotForMap, DisplayLevelType } from '@/store/types';
 
 const expectedMapViewState: MapViewState = {
     maps : [
@@ -150,6 +150,7 @@ const expectedMapViewState: MapViewState = {
         spotId: 0,
     },
     spotInfoIsVisible: false,
+    displayLevel: 'default',
     idOfCenterSpotWithDetailMap: 0,
     focusedDetailMapId: null,
 };
@@ -281,5 +282,17 @@ describe('store/modules/MapViewModule.ts', () => {
         mapViewStore.setFocusedDetailMapId(expectedFocusedDetailMapId);
         const actualFocusedDetailMapId: number | null = mapViewStore.focusedDetailMapId;
         expect(actualFocusedDetailMapId).toBe(expectedFocusedDetailMapId);
+    });
+
+    it('setしたnewDisplayLevelがstateに登録されている', () => {
+        const newDisplayLevel: DisplayLevelType = 'detail';
+        mapViewStore.setDisplayLevel(newDisplayLevel);
+        expect(mapViewStore.displayLevel).toBe(newDisplayLevel);
+    });
+
+    it('stateのdisplayLevelをgetterで取得する', () => {
+        // テストデータの初期値はdefault
+        const expectedDisplayLevel: DisplayLevelType = 'default';
+        expect(mapViewStore.getDisplayLevel()).toBe(expectedDisplayLevel);
     });
 });

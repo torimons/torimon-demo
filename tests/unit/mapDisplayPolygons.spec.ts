@@ -94,6 +94,7 @@ const mapViewStateTestData: MapViewState = {
     spotInfoIsVisible: false,
     idOfCenterSpotWithDetailMap: 0,
     focusedDetailMapId: null,
+    displayLevel: 'default',
 };
 
 const expectedGeoJsonObject: FeatureCollection = {

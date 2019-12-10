@@ -119,6 +119,7 @@ const MapViewStoreTestData: MapViewState = {
     },
     spotInfoIsVisible: false,
     focusedDetailMapId: 0,
+    displayLevel: 'default',
     idOfCenterSpotWithDetailMap: 0,
 };
 
