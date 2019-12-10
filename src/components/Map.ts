@@ -82,7 +82,7 @@ export default class Map extends Vue {
                 enableHighAccuracy: true,
                 timeout: 10000, // milliseconds
                 maximumAge: 0, // 0 = the device cannot use a cached position
-            }
+            },
         );
     }
 
