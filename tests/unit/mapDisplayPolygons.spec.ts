@@ -91,6 +91,7 @@ const mapViewStateTestData: MapViewState = {
         spotId: 0,
     },
     spotInfoIsVisible: false,
+    idOfCenterSpotWithDetailMap: 0,
     focusedDetailMapId: null,
 };
 
