@@ -60,16 +60,15 @@ export default class Map extends Vue {
             // 現状mapIdのgetterがないため直接指定しています．
             this.displayPolygons(mapViewStore.rootMapId);
         });
-        const options = {
-            enableHighAccuracy: true,
-            timeout: 10000, // milliseconds
-            maximumAge: 0, // 0 = the device cannot use a cached position
-        };
         this.currentLocationMarker.addTo(this.map);
-        this.bindMarkerToCurrentPosition(this.currentLocationMarker, options);
+        this.bindMarkerToCurrentPosition(this.currentLocationMarker);
     }
 
-    private bindMarkerToCurrentPosition(marker: L.Marker, options: PositionOptions): number {
+    /**
+     * マーカーがデバイスの現在位置に常に表示されるようにする
+     * @param marker 現在位置に表示し続けたいマーカーオブジェクト
+     */
+    private bindMarkerToCurrentPosition(marker: L.Marker): number {
         return GeolocationWrapper.watchPosition(
             (pos: Position) => {
                 marker.setLatLng(
@@ -79,7 +78,11 @@ export default class Map extends Vue {
             (error: PositionError) => {
                 throw error;
             },
-            options,
+            {
+                enableHighAccuracy: true,
+                timeout: 10000, // milliseconds
+                maximumAge: 0, // 0 = the device cannot use a cached position
+            }
         );
     }
 
