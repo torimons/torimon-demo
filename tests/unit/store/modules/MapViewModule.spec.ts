@@ -150,6 +150,7 @@ const expectedMapViewState: MapViewState = {
         spotId: 0,
     },
     spotInfoIsVisible: false,
+    idOfCenterSpotWithDetailMap: 0,
     focusedDetailMapId: null,
 };
 
@@ -244,6 +245,11 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(actualFocusedSpot).toBe(expectedNewFocusedSpot);
     });
 
+    it('stateに登録したidOfCenterSpotWithDetailMapを取得する', () => {
+        const expectedId: number | null = expectedMapViewState.idOfCenterSpotWithDetailMap;
+        expect(mapViewStore.getIdOfCenterSpotWithDetailMap()).toBe(expectedId);
+    });
+
     it('表示されている詳細マップのMapIdをgetFoucusedDetailMapIdで取得する', () => {
         const expectedDetailMapId: number = 0;
         mapViewStore.setFocusedDetailMapId(expectedDetailMapId);
@@ -259,11 +265,21 @@ describe('store/modules/MapViewModule.ts', () => {
         }).toThrow(Error);
     });
 
+    it('setIdOfCenterSpotWithDetailMap()でsetしたidOfCenterSpotWithDetailMapがmapViewStoreのstateに登録されている', () => {
+        const expectedIdOfCenterSpotWithDetailMap = 1;
+        mapViewStore.setIdOfCenterSpotWithDetailMap(expectedIdOfCenterSpotWithDetailMap);
+        expect(mapViewStore.idOfCenterSpotWithDetailMap).toBe(expectedIdOfCenterSpotWithDetailMap);
+    });
+
+    it('setNonExistentOfCenterSpotWithDetailMap()でmapViewStoreのidOfCenterSpotWithDetailMapにnullが登録されている', () => {
+        mapViewStore.setNonExistentOfCenterSpotWithDetailMap();
+        expect(mapViewStore.idOfCenterSpotWithDetailMap).toBe(null);
+    });
+
     it('setterでsetしたfocusedDetailMapIdがmapViewStoreのstoreに登録されている', () => {
         const expectedFocusedDetailMapId: number = 1;
         mapViewStore.setFocusedDetailMapId(expectedFocusedDetailMapId);
         const actualFocusedDetailMapId: number | null = mapViewStore.focusedDetailMapId;
         expect(actualFocusedDetailMapId).toBe(expectedFocusedDetailMapId);
     });
-
 });

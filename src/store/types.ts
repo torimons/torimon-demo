@@ -9,6 +9,7 @@ export interface MapViewState {
         spotId: number,
     };
     spotInfoIsVisible: boolean;
+    idOfCenterSpotWithDetailMap: number | null;
     focusedDetailMapId: number | null;
 }
 
