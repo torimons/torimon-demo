@@ -89,7 +89,7 @@ describe('store/modules/MapViewModule.ts', () => {
             spotId: 0,
         };
         expect(() => {
-            mapViewStore.getSpotById(targetSpotWithWrongMapId);
+            const _ = mapViewStore.getSpotById(targetSpotWithWrongMapId);
         }).toThrow(MapNotFoundError);
 
         // 存在しないスポットIdを指定した場合
@@ -98,7 +98,7 @@ describe('store/modules/MapViewModule.ts', () => {
             spotId: 999,
         };
         expect(() => {
-            mapViewStore.getSpotById(targetSpotWithWrongSpotId);
+            const _ = mapViewStore.getSpotById(targetSpotWithWrongSpotId);
         }).toThrow(SpotNotFoundError);
     });
 
@@ -152,7 +152,7 @@ describe('store/modules/MapViewModule.ts', () => {
         }).toThrow(NoDetailMapIdInSpotError);
     });
 
-    it('setterでsetしたlastViewedDetailMapIdがmapViewStoreのstoreに登録されている', () => {
+    it('setLastViewedDetailMapIdでセットしたIdがmapViewStoreに登録されている', () => {
         const expectedDetailMapId: number = 1;
 
         // setterで値をセット

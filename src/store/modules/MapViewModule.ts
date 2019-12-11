@@ -111,6 +111,13 @@ export class MapViewModule extends VuexModule implements MapViewState {
         return spotInfo;
     }
 
+    /**
+     * マップ配列から,マップIdとスポットIdで指定されたスポットを取得する．
+     * 関数内で外部に定義したgetSpotByIdの本体を呼び出す．
+     * @param targetSpot マップIdとスポットIdのオブジェクト
+     * @throw MapNotFoundError 指定されたマップが見つからない場合に発生
+     * @throw SpotNotFoundError 指定されたスポットが見つからない場合に発生
+     */
     get getSpotById() {
         return (
             targetSpot: {
@@ -187,10 +194,9 @@ export class MapViewModule extends VuexModule implements MapViewState {
 
     /**
      * 詳細マップ持ちスポットが最後に表示していた詳細マップのIdをセットする.
-     * mutationは複数の引数を受け取れないため，実際に渡すときはpayloadオブジェクトとしてまとめて渡す必要がある．
      * @param detailMapId 最後に参照された詳細マップのId
      * @param parentSpot どのマップのどのスポットかを示す情報
-     * @throw スポットに存在しない詳細マップをセットしようとすると例外を投げる
+     * @throw NoDetailMapIdInSpotError スポットに存在しない詳細マップをセットしようとすると例外が発生
      */
     @Mutation
     public setLastViewedDetailMapId(
