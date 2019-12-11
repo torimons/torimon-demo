@@ -111,6 +111,17 @@ export class MapViewModule extends VuexModule implements MapViewState {
         return spotInfo;
     }
 
+    get getSpotById() {
+        return (
+            targetSpot: {
+                parentMapId: number,
+                spotId: number,
+            },
+        ): Spot => {
+            return getSpotById(this.maps, targetSpot);
+        };
+    }
+
     /**
      * 指定されたスポットが詳細マップを持つかどうかを判定する．
      * @param targetSpot マップのIdとスポットのId
@@ -142,7 +153,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
     get getLastViewedDetailMapId() {
         return (parentSpot: {parentMapId: number, spotId: number}): number | null => {
             if (this.spotHasDetailMaps(parentSpot) === false) {
-                throw new NoDetailMapsError('this spot has no detail maps...');
+                throw new NoDetailMapsError('This spot has no detail maps...');
             }
             const spot = getSpotById(this.maps, parentSpot);
             const lastViewedDetailMapId: number | null = spot.lastViewedDetailMapId;

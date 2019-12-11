@@ -3,7 +3,9 @@ import { MapViewState, Map, Bounds, SpotInfo, SpotForMap, Spot } from '@/store/t
 import { testMapViewState } from '../../../resources/testMapViewState';
 import { cloneDeep } from 'lodash';
 import { NoDetailMapsError } from '@/store/errors/NoDetailMapsError';
+import { MapNotFoundError } from '@/store/errors/MapNotFoundError';
 import { NoDetailMapIdInSpotError } from '@/store/errors/NoDetailMapIdInSpotError';
+import { SpotNotFoundError } from '@/store/errors/SpotNotFoundError';
 
 const expectedMapViewState: MapViewState = cloneDeep(testMapViewState);
 
@@ -68,24 +70,36 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(actualValWithoutDetailMaps).toBe(expectedValWithoutDetailMaps);
     });
 
-    it('spotHasDetailMaps()の例外処理', () => {
-        // マップが存在しない場合
-        const targetSpotWithDetailMaps = {
+    it('getSpotById()で指定のスポットを取得する', () => {
+        const targetSpot = {
+            parentMapId: 0,
+            spotId: 0,
+        };
+        const mapIndex = mapViewStore.maps.findIndex((m: Map) => m.id === targetSpot.parentMapId);
+        const spotIndex = mapViewStore.maps[mapIndex].spots.findIndex((s: Spot) => s.id === targetSpot.spotId);
+        const expectedSpot: Spot = mapViewStore.maps[mapIndex].spots[spotIndex];
+        const actualSpot: Spot = mapViewStore.getSpotById(targetSpot);
+        expect(actualSpot).toStrictEqual(expectedSpot);
+    });
+
+    it('getSpotById()に存在しないマップIdやスポットIdを渡すと例外が発生する', () => {
+        // 存在しないマップIdを指定した場合
+        const targetSpotWithWrongMapId = {
             parentMapId: 999,
             spotId: 0,
         };
         expect(() => {
-            const _ = mapViewStore.spotHasDetailMaps(targetSpotWithDetailMaps);
-        }).toThrow(Error);
+            mapViewStore.getSpotById(targetSpotWithWrongMapId);
+        }).toThrow(MapNotFoundError);
 
-        // スポットが存在しない場合
-        const targetSpotWithoutDetailMaps = {
+        // 存在しないスポットIdを指定した場合
+        const targetSpotWithWrongSpotId = {
             parentMapId: 0,
             spotId: 999,
         };
         expect(() => {
-            const _ = mapViewStore.spotHasDetailMaps(targetSpotWithoutDetailMaps);
-        }).toThrow(Error);
+            mapViewStore.getSpotById(targetSpotWithWrongSpotId);
+        }).toThrow(SpotNotFoundError);
     });
 
     it('setterでsetしたFocusedSpotがmapViewStoreのstateに登録されている', () => {
@@ -98,14 +112,25 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(actualFocusedSpot).toBe(expectedNewFocusedSpot);
     });
 
-    it('表示された詳細マップのMapIdをgetLastViewedDetailMapIdで取得する', () => {
-        const expectedLastViewedDetailMapId: number = 1;
-        const parentMapId: number = 0;
-        const spotId: number = 0;
-        mapViewStore.maps[parentMapId].spots[spotId].lastViewedDetailMapId = expectedLastViewedDetailMapId;
-        const actualLastViewedDetailMapId: number | null
-            = mapViewStore.getLastViewedDetailMapId({ parentMapId, spotId });
+    it('getLastViewedDetailMapIdでスポットの参照された詳細マップIdを取得する', () => {
+        // lastViewdDetailMapIdの初期値はnullである
+        const expectedLastViewedDetailMapId: null = null;
+        const targetSpot = {
+            parentMapId: 0,
+            spotId: 0,
+        };
+        const actualLastViewedDetailMapId: number | null = mapViewStore.getLastViewedDetailMapId(targetSpot);
         expect(actualLastViewedDetailMapId).toEqual(expectedLastViewedDetailMapId);
+    });
+
+    it('getLastViewdDetailMapIdで，詳細マップを持たないスポットが指定された場合，例外を投げる', () => {
+        const targetSpotWithWrongSpotId = {
+            parentMapId: 2,
+            spotId: 10,
+        };
+        expect(() => {
+            const _ = mapViewStore.getLastViewedDetailMapId(targetSpotWithWrongSpotId);
+        }).toThrow(NoDetailMapsError);
     });
 
     it('stateに登録したidOfCenterSpotWithDetailMapを取得する', () => {
@@ -113,23 +138,14 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(mapViewStore.getIdOfCenterSpotWithDetailMap()).toBe(expectedId);
     });
 
-    it('詳細マップを参照していない場合、getLastViewedDetailMapIdはNullを取得する', () => {
-        // lastViewdDetailMapIdの初期値はnullであるため，詳細マップを参照していない場合はnullが返る．
-        const expectedLastViewedDetailMapId: null = null;
-        const parentMapId: number = 0;
-        const spotId: number = 0;
-        const parentSpot = { parentMapId, spotId };
-        const actualLastViewedDetailMapId: number | null = mapViewStore.getLastViewedDetailMapId(parentSpot);
-        expect(actualLastViewedDetailMapId).toEqual(expectedLastViewedDetailMapId);
-    });
-
     it('スポットに存在しない詳細マップをlastViewDetaiMapIdにセットしようとすると例外が発生する', () => {
         const wrongDetailMapId: number = 999;
-        const parentMapId: number = 0;
-        const spotId: number = 0;
         const payload = {
             detailMapId: wrongDetailMapId,
-            parentSpot: { parentMapId, spotId },
+            parentSpot: {
+                parentMapId: 0,
+                spotId: 0,
+            },
         };
         expect(() => {
             mapViewStore.setLastViewedDetailMapId(payload);
@@ -138,13 +154,20 @@ describe('store/modules/MapViewModule.ts', () => {
 
     it('setterでsetしたlastViewedDetailMapIdがmapViewStoreのstoreに登録されている', () => {
         const expectedDetailMapId: number = 1;
+
+        // setterで値をセット
         const parentMapId: number = 0;
         const spotId: number = 0;
         const payLoad = {
             detailMapId: expectedDetailMapId,
-            parentSpot: { parentMapId, spotId },
+            parentSpot: {
+                parentMapId: 0,
+                spotId: 0,
+            },
         };
         mapViewStore.setLastViewedDetailMapId(payLoad);
+
+        // 正しくセットされたかをチェック
         const mapIndex: number = mapViewStore.maps.findIndex((m: Map) => m.id === parentMapId);
         const spotIndex: number = mapViewStore.maps[mapIndex].spots.findIndex((s: Spot) => s.id === spotId);
         const actualDetailMapId: number | null = mapViewStore.maps[mapIndex].spots[spotIndex].lastViewedDetailMapId;
