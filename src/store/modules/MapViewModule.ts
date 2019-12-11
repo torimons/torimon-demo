@@ -1,7 +1,7 @@
 import { Mutation, VuexModule, getModule, Module } from 'vuex-module-decorators';
 import store from '@/store';
-import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds, Coordinate } from '@/store/types';
-import { sampleMaps, testNodeList } from '@/store/modules/sampleMaps';
+import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds, Coordinate, Node } from '@/store/types';
+import { sampleMaps } from '@/store/modules/sampleMaps';
 
 /**
  * MapViewの状態管理を行うVuexModuleクラス
@@ -99,16 +99,46 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
-     * 始点と終点を入力することで経路となるノードの配列を取得
-     * @param startPointId: 始点のノードId
-     * @param endPointId: 終点のノードId
-     * @return nodesForMap: 経路となるノードの配列
-     * 仮作成の為、idを渡すとテスト用の配列であるtestNodeListを返す仕様になっている
+     * 経由するノードidの配列を入力することで経路となるノードの配列を取得
+     * @param nodeIds: 経路となるノードidの配列
+     * @return nodesForNavigation: 経路となるノードの配列
      */
-    get getNodesForMap() {
-        return (startPointId: number, endPointId: number): Coordinate[] => {
-            const nodesForMap: Coordinate[] = testNodeList;
-            return nodesForMap;
+    get getNodesForNavigation() {
+        return (nodeIds: number[]): Coordinate[] => {
+            // getterの中身は経路探索に依存しているため、現状テスト用のものを使用
+            // ノードidの配列を入力として必要なノードを検索、配列として返すメソッドが必要
+            const nodes: Node[] = [
+                {
+                    id: 0,
+                    mapId: 0,
+                    spotId: 0,
+                    coordinate: {
+                        lat: 33.595502,
+                        lng: 130.218238,
+                    },
+                },
+                {
+                    id: 1,
+                    mapId: 0,
+                    spotId: 1,
+                    coordinate: {
+                    lat: 33.596502,
+                    lng: 130.218238,
+                    },
+                },
+                {
+                    id: 2,
+                    mapId: 0,
+                    spotId: 2,
+                    coordinate: {
+                    lat: 33.596502,
+                    lng: 130.219238,
+                    },
+                },
+            ];
+            const nodesForNavigation: Coordinate[] = [];
+            nodes.forEach((node: Node) => nodesForNavigation.push(node.coordinate));
+            return nodesForNavigation;
         };
     }
 

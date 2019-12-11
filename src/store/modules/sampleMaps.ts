@@ -143,18 +143,3 @@ export const sampleMaps: Map[] =  [
         },
     },
 ];
-
-export const testNodeList: Coordinate[] =  [
-    {
-        lat: 33.595502,
-        lng: 130.218238,
-    },
-    {
-        lat: 33.596502,
-        lng: 130.218238,
-    },
-    {
-        lat: 33.596502,
-        lng: 130.219238,
-    },
-];

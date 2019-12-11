@@ -15,7 +15,7 @@ import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojs
 export default class Map extends Vue {
     private map!: L.Map;
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
-    private edgeLayer?: any; // any型は仮
+    private routeLine?: L.Polyline;
     private centerLat: number = 33.59;
     private centerLng: number = 130.21;
     private zoomLevel: number = 15;
@@ -61,11 +61,9 @@ export default class Map extends Vue {
             // 現状mapIdのgetterがないため直接指定しています．
             const mapId = 0;
             this.displayPolygons(mapId);
-            // sampleNodeListの経路（エッジ）表示
+            // 経路（エッジ）表示
             // 初期パラメータは適当に指定
-            const startPointId: number = 0;
-            const endPointId: number = 1;
-            this.displayEdge(startPointId, endPointId);
+            this.displayRouteLine([]);
         });
     }
 
@@ -154,21 +152,21 @@ export default class Map extends Vue {
     }
 
     /**
-     * 指定されたnode間の経路（edge）を表示する
-     * @param startPointId: 始点
-     * @param endPointId: 終点
-     * 経路検索機能によって引数の変更が考えられる
+     * 指定されたnode間の経路を表示する
+     * @param nodeIds: 経由するノードidの配列
      */
-    private displayEdge(startPointId: number, endPointId: number): void {
+    private displayRouteLine(nodeIds: number[]): void {
         // 既に表示している経路がある場合は先に削除する
-        if (this.edgeLayer !== undefined) {
-            this.map.removeLayer(this.edgeLayer);
+        if (this.routeLine !== undefined) {
+            this.map.removeLayer(this.routeLine);
         }
-        const nodesForMap: Coordinate[] = mapViewStore.getNodesForMap(startPointId, endPointId);
-        this.edgeLayer = L.polyline(nodesForMap, {
+        const nodesForNavigation: Coordinate[] = mapViewStore.getNodesForNavigation(nodeIds);
+        this.routeLine = L.polyline(nodesForNavigation, {
             color: '#555555',
             weight: 5,
             opacity: 0.7,
-        }).addTo(this.map);
+        });
+        this.routeLine.addTo(this.map);
     }
+
 }
