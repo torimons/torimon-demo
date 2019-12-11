@@ -1,5 +1,5 @@
 import { mapViewStore } from '@/store/modules/MapViewModule';
-import { MapViewState, Map, Bounds, SpotInfo, SpotForMap, Spot } from '@/store/types';
+import { MapViewState, Map, Bounds, SpotInfo, SpotForMap, Spot, DisplayLevelType } from '@/store/types';
 import { testMapViewState } from '../../../resources/testMapViewState';
 import { cloneDeep } from 'lodash';
 import { NoDetailMapsError } from '@/store/errors/NoDetailMapsError';
@@ -183,5 +183,17 @@ describe('store/modules/MapViewModule.ts', () => {
     it('setNonExistentOfCenterSpotWithDetailMap()でmapViewStoreのidOfCenterSpotWithDetailMapにnullが登録されている', () => {
         mapViewStore.setNonExistentOfCenterSpotWithDetailMap();
         expect(mapViewStore.idOfCenterSpotWithDetailMap).toBe(null);
+    });
+
+    it('setしたnewDisplayLevelがstateに登録されている', () => {
+        const newDisplayLevel: DisplayLevelType = 'detail';
+        mapViewStore.setDisplayLevel(newDisplayLevel);
+        expect(mapViewStore.displayLevel).toBe(newDisplayLevel);
+    });
+
+    it('stateのdisplayLevelをgetterで取得する', () => {
+        // テストデータの初期値はdefault
+        const expectedDisplayLevel: DisplayLevelType = 'default';
+        expect(mapViewStore.getDisplayLevel()).toBe(expectedDisplayLevel);
     });
 });

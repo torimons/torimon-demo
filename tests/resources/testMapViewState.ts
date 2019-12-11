@@ -152,6 +152,7 @@ export const testMapViewState: MapViewState = {
         spotId: 0,
     },
     spotInfoIsVisible: false,
+    displayLevel: 'default',
     idOfCenterSpotWithDetailMap: 0,
 };
 

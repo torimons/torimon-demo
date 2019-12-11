@@ -1,6 +1,6 @@
 import { Mutation, VuexModule, getModule, Module } from 'vuex-module-decorators';
 import store from '@/store';
-import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds } from '@/store/types';
+import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds, DisplayLevelType } from '@/store/types';
 import { sampleMaps } from '@/store/modules/sampleMaps';
 import { NoDetailMapsError } from '../errors/NoDetailMapsError';
 import { NoDetailMapIdInSpotError } from '../errors/NoDetailMapIdInSpotError';
@@ -68,6 +68,11 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * 条件に当てはまるスポットがない場合nullを持つ
      */
     public idOfCenterSpotWithDetailMap: number | null = null;
+
+    /**
+     * ズームレベルに応じて切り替わる表示レベルを保持
+     */
+    public displayLevel: DisplayLevelType = 'default';
 
     /**
      * Mapコンポーネントが扱うマップの範囲を返す
@@ -169,6 +174,16 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
+     * ズームレベルによって変化する表示レベルを返す
+     * @return 表示レベル('default' or 'detail')
+     */
+    get getDisplayLevel() {
+        return (): DisplayLevelType => {
+            return this.displayLevel;
+        };
+    }
+
+    /**
      * - 画面上で表示されている
      * - 半径〇〇内で最も画面中央に近い
      * - 詳細マップを持っている
@@ -218,6 +233,15 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
+     * ズームレベルで変化する表示レベルをsetする
+     * @param newDisplayLevel setする表示レベル('default' or 'detail')
+     */
+    @Mutation
+    public setDisplayLevel(newDisplayLevel: DisplayLevelType): void {
+        this.displayLevel = newDisplayLevel;
+    }
+
+    /**
      * - 画面上で表示されている
      * - 半径〇〇内で最も画面中央に近い
      * - 詳細マップを持っている
@@ -254,6 +278,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
         this.focusedSpot.spotId = newMapViewState.focusedSpot.spotId;
         this.spotInfoIsVisible  = newMapViewState.spotInfoIsVisible;
         this.idOfCenterSpotWithDetailMap = newMapViewState.idOfCenterSpotWithDetailMap;
+        this.displayLevel       = newMapViewState.displayLevel;
     }
 }
 

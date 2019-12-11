@@ -8,7 +8,7 @@ import L, { map } from 'leaflet';
 import { cloneDeep } from 'lodash';
 import { testMapViewState } from '../resources/testMapViewState';
 
-const MapViewStoreTestData: MapViewState = cloneDeep(testMapViewState);
+const mapViewStoreTestData: MapViewState = cloneDeep(testMapViewState);
 
 describe('components/Map.vue マーカー切り替えのテスト', () => {
     // mapにするとleafletのmapと被ってshadowed name warningがでるので仕方なく...
@@ -34,7 +34,7 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
     ];
 
     beforeEach(() => {
-        mapViewStore.setMapViewState(MapViewStoreTestData);
+        mapViewStore.setMapViewState(mapViewStoreTestData);
     });
 
 
@@ -45,7 +45,7 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
         複数のマップに対してテストする場合，
         mapViewStore.setFocusedSpotなどで強制的にfocusedSpotを変更する必要がある
         */
-        const mapId = MapViewStoreTestData.focusedSpot.mapId;
+        const mapId = mapViewStoreTestData.focusedSpot.mapId;
         const expectedSpots: SpotForMap[] = mapViewStore.getSpotsForMap(mapId);
         const actualSpots: SpotForMap[] = [];
         // replaceMarkersWithのモック
