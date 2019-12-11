@@ -168,7 +168,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
     get getIdOfCenterSpotWithDetailMap() {
         return (): number | null => {
             return this.idOfCenterSpotWithDetailMap;
-        }
+        };
     }
 
      /* 経由するノードidの配列を入力することで経路となるノードの配列を取得
