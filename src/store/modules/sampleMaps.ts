@@ -1,4 +1,4 @@
-import { Map, Coordinate } from '@/store/types';
+import { Map } from '@/store/types';
 
 export const sampleMaps: Map[] =  [
     {
