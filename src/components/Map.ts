@@ -9,11 +9,12 @@ import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojs
 @Component
 export default class Map extends Vue {
     private map!: L.Map;
-    private centerLat: number = 35;
-    private centerLng: number = 139;
+    private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
+    private routeLine?: L.Polyline;
+    private centerLat: number = 33.59;
+    private centerLng: number = 130.21;
     private zoomLevel: number = 15;
     private tileLayer!: L.TileLayer;
-    private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
     private defaultSpotIcon: L.Icon = L.icon({
         iconUrl: 'http://localhost:8081/leaflet/icons/marker-icon-2x.png',
         iconSize: [50, 82],
@@ -58,7 +59,11 @@ export default class Map extends Vue {
         // $nextTick()はテスト実行時のエラーを回避するために使用しています．
         this.$nextTick().then(() => {
             // 現状mapIdのgetterがないため直接指定しています．
-            this.displayPolygons(mapViewStore.rootMapId);
+            const mapId = 0;
+            this.displayPolygons(mapId);
+            // 経路（エッジ）表示
+            // 初期パラメータは適当に指定
+            this.displayRouteLine([]);
         });
         this.currentLocationMarker.addTo(this.map);
         this.bindMarkerToCurrentPosition(this.currentLocationMarker);
@@ -174,4 +179,23 @@ export default class Map extends Vue {
         });
         this.map.addLayer(this.polygonLayer);
     }
+
+    /**
+     * 指定されたnode間の経路を表示する
+     * @param nodeIds: 経由するノードidの配列
+     */
+    private displayRouteLine(nodeIds: number[]): void {
+        // 既に表示している経路がある場合は先に削除する
+        if (this.routeLine !== undefined) {
+            this.map.removeLayer(this.routeLine);
+        }
+        const nodesForNavigation: Coordinate[] = mapViewStore.getNodesForNavigation(nodeIds);
+        this.routeLine = L.polyline(nodesForNavigation, {
+            color: '#555555',
+            weight: 5,
+            opacity: 0.7,
+        });
+        this.routeLine.addTo(this.map);
+    }
+
 }

@@ -1,6 +1,6 @@
 import { Mutation, VuexModule, getModule, Module } from 'vuex-module-decorators';
 import store from '@/store';
-import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds, DisplayLevelType } from '@/store/types';
+import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds, DisplayLevelType, Coordinate, Node } from '@/store/types';
 import { sampleMaps } from '@/store/modules/sampleMaps';
 
 /**
@@ -168,6 +168,49 @@ export class MapViewModule extends VuexModule implements MapViewState {
     get getIdOfCenterSpotWithDetailMap() {
         return (): number | null => {
             return this.idOfCenterSpotWithDetailMap;
+        }
+    }
+
+     /* 経由するノードidの配列を入力することで経路となるノードの配列を取得
+     * @param nodeIds: 経路となるノードidの配列
+     * @return nodesForNavigation: 経路となるノードの配列
+     */
+    get getNodesForNavigation() {
+        return (nodeIds: number[]): Coordinate[] => {
+            // getterの中身は経路探索に依存しているため、現状テスト用のものを使用
+            // ノードidの配列を入力として必要なノードを検索、配列として返すメソッドが必要
+            const nodes: Node[] = [
+                {
+                    id: 0,
+                    mapId: 0,
+                    spotId: 0,
+                    coordinate: {
+                        lat: 33.595502,
+                        lng: 130.218238,
+                    },
+                },
+                {
+                    id: 1,
+                    mapId: 0,
+                    spotId: 1,
+                    coordinate: {
+                    lat: 33.596502,
+                    lng: 130.218238,
+                    },
+                },
+                {
+                    id: 2,
+                    mapId: 0,
+                    spotId: 2,
+                    coordinate: {
+                    lat: 33.596502,
+                    lng: 130.219238,
+                    },
+                },
+            ];
+            const nodesForNavigation: Coordinate[] = [];
+            nodes.forEach((node: Node) => nodesForNavigation.push(node.coordinate));
+            return nodesForNavigation;
         };
     }
 
