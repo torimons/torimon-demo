@@ -3,6 +3,7 @@ import map from '@/components/Map.vue';
 import { MapViewState } from '@/store/types';
 import { FeatureCollection } from 'geojson';
 import { shallowMount } from '@vue/test-utils';
+import { GeolocationWrapper } from '@/components/GeolocationWrapper.ts';
 
 
 const mapViewStateTestData: MapViewState = {
@@ -69,6 +70,7 @@ const mapViewStateTestData: MapViewState = {
                             ]],
                     },
                     gateNodeIds: [],
+                    detailMapIds: [],
                 },
             ],
             nodes: [],
@@ -91,7 +93,9 @@ const mapViewStateTestData: MapViewState = {
         spotId: 0,
     },
     spotInfoIsVisible: false,
+    idOfCenterSpotWithDetailMap: 0,
     focusedDetailMapId: null,
+    displayLevel: 'default',
 };
 
 const expectedGeoJsonObject: FeatureCollection = {
@@ -120,6 +124,7 @@ describe('mapコンポーネントのポリゴン表示', () => {
     beforeEach(() => {
         // テスト用データをstoreにセット
         mapViewStore.setMapViewState(mapViewStateTestData);
+        GeolocationWrapper.watchPosition = jest.fn();
         wrapper = shallowMount( map, {
             attachToDocument: true,
         });

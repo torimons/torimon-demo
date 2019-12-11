@@ -1,7 +1,7 @@
 import { Mutation, VuexModule, getModule, Module } from 'vuex-module-decorators';
 import store from '@/store';
-import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds, Coordinate } from '@/store/types';
-import { sampleMaps, testNodeList } from '@/store/modules/sampleMaps';
+import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds, DisplayLevelType } from '@/store/types';
+import { sampleMaps } from '@/store/modules/sampleMaps';
 
 /**
  * MapViewの状態管理を行うVuexModuleクラス
@@ -38,10 +38,24 @@ export class MapViewModule extends VuexModule implements MapViewState {
     public spotInfoIsVisible: boolean = false;
 
     /**
+     * - 画面上で表示されている
+     * - 半径〇〇内で最も画面中央に近い
+     * - 詳細マップを持っている
+     * スポットのIDを保持する変数
+     * 条件に当てはまるスポットがない場合nullを持つ
+     */
+    public idOfCenterSpotWithDetailMap: number | null = null;
+
+    /**
      * スポットの詳細マップのどの階層が表示されるかを保持
      * #84にて作られるため仮作成
      */
     public focusedDetailMapId: number | null = 0;
+
+    /**
+     * ズームレベルに応じて切り替わる表示レベルを保持
+     */
+    public displayLevel: DisplayLevelType = 'default';
 
     /**
      * Mapコンポーネントが扱うマップの範囲を返す
@@ -86,6 +100,41 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
+     * 指定されたスポットが詳細マップを持つかどうかを判定する．
+     * 存在しないMapIdやSpotIdを指定すると例外を投げる．
+     * @param parentSpot マップのIdとスポットのId
+     * @return スポットが詳細マップを持つならばtrue, 持たないならばfalse
+     * @throw Error Mapが存在しない場合に発生
+     * @throw Error Spotが存在しない場合に発生
+     */
+    get spotHasDetailMaps() {
+        return (
+            targetSpot: {
+                parentMapId: number,
+                spotId: number,
+            },
+        ): boolean => {
+            const map: Map | undefined = this.maps.find((m: Map) => m.id === targetSpot.parentMapId);
+            if (map === undefined) {
+                // errors.tsがマージされたらmapNotFoundErrorに置き換える
+                throw new Error('Map Not Found...');
+            }
+
+            const spot: Spot | undefined = map.spots.find((s: Spot) => s.id === targetSpot.spotId);
+            if (spot === undefined) {
+                // errors.tsがマージされたらspotNotFoundErrorに置き換える
+                throw new Error('Spot Not Found...');
+            }
+
+            if (spot.detailMapIds.length > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+    }
+
+    /**
      * スポットの詳細マップのどの階層が表示されているかをMapIdで返す
      * 無ければ例外を返す
      * @return mapId
@@ -99,16 +148,26 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
-     * 始点と終点を入力することで経路となるノードの配列を取得
-     * @param startPointId: 始点のノードId
-     * @param endPointId: 終点のノードId
-     * @return nodesForMap: 経路となるノードの配列
-     * 仮作成の為、idを渡すとテスト用の配列であるtestNodeListを返す仕様になっている
+     * ズームレベルによって変化する表示レベルを返す
+     * @return 表示レベル('default' or 'detail')
      */
-    get getNodesForMap() {
-        return (startPointId: number, endPointId: number): Coordinate[] => {
-            const nodesForMap: Coordinate[] = testNodeList;
-            return nodesForMap;
+    get getDisplayLevel() {
+        return (): DisplayLevelType => {
+            return this.displayLevel;
+        };
+    }
+
+    /**
+     * - 画面上で表示されている
+     * - 半径〇〇内で最も画面中央に近い
+     * - 詳細マップを持っている
+     * スポットのIDを返す
+     * 条件に当てはまるスポットがない状態である場合nullを返す
+     * @return スポットIDかnull
+     */
+    get getIdOfCenterSpotWithDetailMap() {
+        return (): number | null => {
+            return this.idOfCenterSpotWithDetailMap;
         };
     }
 
@@ -123,18 +182,52 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
+     * ズームレベルで変化する表示レベルをsetする
+     * @param newDisplayLevel setする表示レベル('default' or 'detail')
+     */
+    @Mutation
+    public setDisplayLevel(newDisplayLevel: DisplayLevelType): void {
+        this.displayLevel = newDisplayLevel;
+    }
+
+    /**
+     * - 画面上で表示されている
+     * - 半径〇〇内で最も画面中央に近い
+     * - 詳細マップを持っている
+     * スポットのIDを更新する
+     * @param idOfCenterSpotWithDetailMap 上記のスポットのID
+     */
+    @Mutation
+    public setIdOfCenterSpotWithDetailMap(idOfCenterSpotWithDetailMap: number): void {
+        this.idOfCenterSpotWithDetailMap = idOfCenterSpotWithDetailMap;
+    }
+
+    /**
+     * - 画面上で表示されている
+     * - 半径〇〇内で最も画面中央に近い
+     * - 詳細マップを持っている
+     * スポットが存在していない状態にする
+     */
+    @Mutation
+    public setNonExistentOfCenterSpotWithDetailMap(): void {
+        this.idOfCenterSpotWithDetailMap = null;
+    }
+
+    /**
      * MapViewStateの情報を一括でset
      * - 現状は単体テストの入力用の仮メソッド
      * @param mapState マップの状態
      */
     @Mutation
     public setMapViewState(newMapViewState: MapViewState): void {
-        this.maps               = newMapViewState.maps;
-        this.rootMapId          = newMapViewState.rootMapId;
+        this.maps              = newMapViewState.maps;
+        this.rootMapId         = newMapViewState.rootMapId;
+        this.spotInfoIsVisible  = newMapViewState.spotInfoIsVisible;
         this.focusedSpot.mapId  = newMapViewState.focusedSpot.mapId;
         this.focusedSpot.spotId = newMapViewState.focusedSpot.spotId;
-        this.spotInfoIsVisible  = newMapViewState.spotInfoIsVisible;
+        this.idOfCenterSpotWithDetailMap = newMapViewState.idOfCenterSpotWithDetailMap;
         this.focusedDetailMapId = newMapViewState.focusedDetailMapId;
+        this.displayLevel       = newMapViewState.displayLevel;
     }
 
     /**
