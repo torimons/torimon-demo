@@ -1,8 +1,9 @@
 import { mapViewStore } from '@/store/modules/MapViewModule';
-import { MapViewState, Map, Bounds, SpotInfo, SpotForMap} from '@/store/types';
+import { MapViewState, Map, Bounds, SpotInfo, SpotForMap, Spot } from '@/store/types';
 import { testMapViewState } from '../../../resources/testMapViewState';
 import { cloneDeep } from 'lodash';
 import { NoDetailMapsError } from '@/store/errors/NoDetailMapsError';
+import { NoDetailMapIdInSpotError } from '@/store/errors/NoDetailMapIdInSpotError';
 
 const expectedMapViewState: MapViewState = cloneDeep(testMapViewState);
 
@@ -132,7 +133,7 @@ describe('store/modules/MapViewModule.ts', () => {
         };
         expect(() => {
             mapViewStore.setLastViewedDetailMapId(payload);
-        }).toThrow(NoDetailMapsError);
+        }).toThrow(NoDetailMapIdInSpotError);
     });
 
     it('setterでsetしたlastViewedDetailMapIdがmapViewStoreのstoreに登録されている', () => {
@@ -144,7 +145,9 @@ describe('store/modules/MapViewModule.ts', () => {
             parentSpot: { parentMapId, spotId },
         };
         mapViewStore.setLastViewedDetailMapId(payLoad);
-        const actualDetailMapId: number | null = mapViewStore.maps[parentMapId].spots[spotId].lastViewedDetailMapId;
+        const mapIndex: number = mapViewStore.maps.findIndex((m: Map) => m.id === parentMapId);
+        const spotIndex: number = mapViewStore.maps[mapIndex].spots.findIndex((s: Spot) => s.id === spotId);
+        const actualDetailMapId: number | null = mapViewStore.maps[mapIndex].spots[spotIndex].lastViewedDetailMapId;
         expect(actualDetailMapId).toBe(expectedDetailMapId);
     });
 

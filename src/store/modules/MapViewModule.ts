@@ -8,6 +8,25 @@ import { MapNotFoundError } from '../errors/MapNotFoundError';
 import { SpotNotFoundError } from '../errors/SpotNotFoundError';
 
 /**
+ * マップ配列から,マップIdとスポットIdで指定されたスポットを取得する
+ * @param maps MapViewModuleのマップ配列
+ * @param targetSpot マップIdとスポットIdのオブジェクト
+ * @throw MapNotFoundError 指定されたマップが見つからない場合に発生
+ * @throw SpotNotFoundError 指定されたスポットが見つからない場合に発生
+ */
+function getSpotById(maps: Map[], targetSpot: {parentMapId: number, spotId: number}): Spot {
+    const map: Map | undefined = maps.find((m: Map) => m.id === targetSpot.parentMapId);
+    if (map === undefined) {
+        throw new MapNotFoundError('Map dose not found...');
+    }
+    const spot: Spot | undefined = map.spots.find((s: Spot) => s.id === targetSpot.spotId);
+    if (spot === undefined) {
+        throw new SpotNotFoundError('Spot dose not found...');
+    }
+    return spot;
+}
+
+/**
  * MapViewの状態管理を行うVuexModuleクラス
  */
 @Module({ dynamic: true, store, name: 'mapView', namespaced: true })
@@ -73,7 +92,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
                     id: spot.id,
                     name: spot.name,
                     coordinate: spot.coordinate,
-                    shape:    spot.shape,
+                    shape: spot.shape,
                 });
             });
             return spotsForMap;
@@ -93,34 +112,6 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
-     * マップIdとスポットIdで指定されたスポットを返す．
-     * 存在しないマップIdやスポットIdを指定すると例外を投げる．
-     * @param targetSpot マップIdとスポットId
-     * @return スポット
-     * @throw MapNotFoundError Mapが存在しない場合に発生
-     * @throw SpotNotFoundError Spotが存在しない場合に発生
-     */
-    get getSpotById() {
-        return (
-            targetSpot: {
-                parentMapId: number,
-                spotId: number,
-            },
-        ): Spot => {
-            const map: Map | undefined = this.maps.find((m: Map) => m.id === targetSpot.parentMapId);
-            if (map === undefined) {
-                throw new MapNotFoundError('Map Not Found...');
-            }
-
-            const spot: Spot | undefined = map.spots.find((s: Spot) => s.id === targetSpot.spotId);
-            if (spot === undefined) {
-                throw new SpotNotFoundError('Spot Not Found...');
-            }
-            return spot;
-        };
-    }
-
-    /**
      * 指定されたスポットが詳細マップを持つかどうかを判定する．
      * @param targetSpot マップのIdとスポットのId
      * @return スポットが詳細マップを持つならばtrue, 持たないならばfalse
@@ -132,7 +123,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
                 spotId: number,
             },
         ): boolean => {
-            const spot = this.getSpotById(targetSpot);
+            const spot = getSpotById(this.maps, targetSpot);
             if (spot.detailMapIds.length > 0) {
                 return true;
             } else {
@@ -153,7 +144,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
             if (this.spotHasDetailMaps(parentSpot) === false) {
                 throw new NoDetailMapsError('this spot has no detail maps...');
             }
-            const spot = this.getSpotById(parentSpot);
+            const spot = getSpotById(this.maps, parentSpot);
             const lastViewedDetailMapId: number | null = spot.lastViewedDetailMapId;
             return lastViewedDetailMapId;
         };
@@ -199,9 +190,9 @@ export class MapViewModule extends VuexModule implements MapViewState {
         const detailMapId = payload.detailMapId;
         const parentMapId = payload.parentSpot.parentMapId;
         const spotId = payload.parentSpot.spotId;
-        const spot = this.getSpotById(payload.parentSpot);
+        const spot = getSpotById(this.maps, payload.parentSpot);
         // detailMapIdがそのスポットに存在しない場合，例外を投げる
-        if (spot.detailMapIds.includes(detailMapId)) {
+        if (!spot.detailMapIds.includes(detailMapId)) {
             throw new NoDetailMapIdInSpotError('Detail Map does not exist...');
         }
         const mapIndex: number = this.maps.findIndex((m: Map) => m.id === parentMapId);
