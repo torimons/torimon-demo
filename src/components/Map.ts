@@ -11,8 +11,8 @@ export default class Map extends Vue {
     private map!: L.Map;
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
     private routeLine?: L.Polyline;
-    private centerLat: number = 33.59;
-    private centerLng: number = 130.21;
+    private centerLat: number = 35;
+    private centerLng: number = 139;
     private zoomLevel: number = 15;
     private tileLayer!: L.TileLayer;
     private defaultSpotIcon: L.Icon = L.icon({
@@ -58,9 +58,7 @@ export default class Map extends Vue {
         // sampleMapのポリゴン表示
         // $nextTick()はテスト実行時のエラーを回避するために使用しています．
         this.$nextTick().then(() => {
-            // 現状mapIdのgetterがないため直接指定しています．
-            const mapId = 0;
-            this.displayPolygons(mapId);
+            this.displayPolygons(mapViewStore.rootMapId);
             // 経路（エッジ）表示
             // 初期パラメータは適当に指定
             this.displayRouteLine([]);
