@@ -17,11 +17,11 @@ import { SpotNotFoundError } from '../errors/SpotNotFoundError';
 function getSpotById(maps: Map[], targetSpot: {parentMapId: number, spotId: number}): Spot {
     const map: Map | undefined = maps.find((m: Map) => m.id === targetSpot.parentMapId);
     if (map === undefined) {
-        throw new MapNotFoundError('Map dose not found...');
+        throw new MapNotFoundError('Map does not found...');
     }
     const spot: Spot | undefined = map.spots.find((s: Spot) => s.id === targetSpot.spotId);
     if (spot === undefined) {
-        throw new SpotNotFoundError('Spot dose not found...');
+        throw new SpotNotFoundError('Spot does not found...');
     }
     return spot;
 }
@@ -276,7 +276,6 @@ export class MapViewModule extends VuexModule implements MapViewState {
         this.spotInfoIsVisible  = newMapViewState.spotInfoIsVisible;
         this.focusedSpot.mapId  = newMapViewState.focusedSpot.mapId;
         this.focusedSpot.spotId = newMapViewState.focusedSpot.spotId;
-        this.spotInfoIsVisible  = newMapViewState.spotInfoIsVisible;
         this.idOfCenterSpotWithDetailMap = newMapViewState.idOfCenterSpotWithDetailMap;
         this.displayLevel       = newMapViewState.displayLevel;
     }

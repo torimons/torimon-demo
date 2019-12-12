@@ -5,6 +5,7 @@ import { FeatureCollection } from 'geojson';
 import { shallowMount } from '@vue/test-utils';
 import { cloneDeep } from 'lodash';
 import { testMapViewState } from '../resources/testMapViewState';
+import { GeolocationWrapper } from '@/components/GeolocationWrapper.ts';
 
 const mapViewStateTestData: MapViewState = cloneDeep(testMapViewState);
 
@@ -34,6 +35,7 @@ describe('mapコンポーネントのポリゴン表示', () => {
     beforeEach(() => {
         // テスト用データをstoreにセット
         mapViewStore.setMapViewState(mapViewStateTestData);
+        GeolocationWrapper.watchPosition = jest.fn();
         wrapper = shallowMount( map, {
             attachToDocument: true,
         });
