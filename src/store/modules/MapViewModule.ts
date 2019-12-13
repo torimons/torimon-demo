@@ -2,6 +2,29 @@ import { Mutation, VuexModule, getModule, Module } from 'vuex-module-decorators'
 import store from '@/store';
 import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds, DisplayLevelType, Coordinate, Node } from '@/store/types';
 import { sampleMaps } from '@/store/modules/sampleMaps';
+import { NoDetailMapsError } from '../errors/NoDetailMapsError';
+import { NoDetailMapIdInSpotError } from '../errors/NoDetailMapIdInSpotError';
+import { MapNotFoundError } from '../errors/MapNotFoundError';
+import { SpotNotFoundError } from '../errors/SpotNotFoundError';
+
+/**
+ * マップ配列から,マップIdとスポットIdで指定されたスポットを取得する
+ * @param maps MapViewModuleのマップ配列
+ * @param targetSpot マップIdとスポットIdのオブジェクト
+ * @throw MapNotFoundError 指定されたマップが見つからない場合に発生
+ * @throw SpotNotFoundError 指定されたスポットが見つからない場合に発生
+ */
+function getSpotById(maps: Map[], targetSpot: {parentMapId: number, spotId: number}): Spot {
+    const map: Map | undefined = maps.find((m: Map) => m.id === targetSpot.parentMapId);
+    if (map === undefined) {
+        throw new MapNotFoundError('Map does not found...');
+    }
+    const spot: Spot | undefined = map.spots.find((s: Spot) => s.id === targetSpot.spotId);
+    if (spot === undefined) {
+        throw new SpotNotFoundError('Spot does not found...');
+    }
+    return spot;
+}
 
 /**
  * MapViewの状態管理を行うVuexModuleクラス
@@ -47,12 +70,6 @@ export class MapViewModule extends VuexModule implements MapViewState {
     public idOfCenterSpotWithDetailMap: number | null = null;
 
     /**
-     * スポットの詳細マップのどの階層が表示されるかを保持
-     * #84にて作られるため仮作成
-     */
-    public focusedDetailMapId: number | null = 0;
-
-    /**
      * ズームレベルに応じて切り替わる表示レベルを保持
      */
     public displayLevel: DisplayLevelType = 'default';
@@ -80,7 +97,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
                     id: spot.id,
                     name: spot.name,
                     coordinate: spot.coordinate,
-                    shape:    spot.shape,
+                    shape: spot.shape,
                 });
             });
             return spotsForMap;
@@ -100,12 +117,27 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
+     * マップ配列から,マップIdとスポットIdで指定されたスポットを取得する．
+     * 関数内で外部に定義したgetSpotByIdの本体を呼び出す．
+     * @param targetSpot マップIdとスポットIdのオブジェクト
+     * @throw MapNotFoundError 指定されたマップが見つからない場合に発生
+     * @throw SpotNotFoundError 指定されたスポットが見つからない場合に発生
+     */
+    get getSpotById() {
+        return (
+            targetSpot: {
+                parentMapId: number,
+                spotId: number,
+            },
+        ): Spot => {
+            return getSpotById(this.maps, targetSpot);
+        };
+    }
+
+    /**
      * 指定されたスポットが詳細マップを持つかどうかを判定する．
-     * 存在しないMapIdやSpotIdを指定すると例外を投げる．
-     * @param parentSpot マップのIdとスポットのId
+     * @param targetSpot マップのIdとスポットのId
      * @return スポットが詳細マップを持つならばtrue, 持たないならばfalse
-     * @throw Error Mapが存在しない場合に発生
-     * @throw Error Spotが存在しない場合に発生
      */
     get spotHasDetailMaps() {
         return (
@@ -114,18 +146,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
                 spotId: number,
             },
         ): boolean => {
-            const map: Map | undefined = this.maps.find((m: Map) => m.id === targetSpot.parentMapId);
-            if (map === undefined) {
-                // errors.tsがマージされたらmapNotFoundErrorに置き換える
-                throw new Error('Map Not Found...');
-            }
-
-            const spot: Spot | undefined = map.spots.find((s: Spot) => s.id === targetSpot.spotId);
-            if (spot === undefined) {
-                // errors.tsがマージされたらspotNotFoundErrorに置き換える
-                throw new Error('Spot Not Found...');
-            }
-
+            const spot = getSpotById(this.maps, targetSpot);
             if (spot.detailMapIds.length > 0) {
                 return true;
             } else {
@@ -135,16 +156,21 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
-     * スポットの詳細マップのどの階層が表示されているかをMapIdで返す
-     * 無ければ例外を返す
-     * @return mapId
+     * スポットのもつ詳細マップのうち、最後に参照された詳細マップのIdを返す
+     * @param parentSpot どのマップのどのスポットかを示す情報.
+     * @return lastViewdDetailMapId スポットが持つ詳細マップのうち、最後に参照された詳細マップのId．
+     * まだ参照されていない場合はnullを返す．
+     * @throw NoDetailMapsError スポットが詳細マップを持っていない場合に発生.
      */
-    get getFocusedDetailMapId(): number {
-        if (this.focusedDetailMapId != null) {
-            return this.focusedDetailMapId;
-        } else {
-            throw new Error('詳細マップがありません');
-        }
+    get getLastViewedDetailMapId() {
+        return (parentSpot: {parentMapId: number, spotId: number}): number | null => {
+            if (this.spotHasDetailMaps(parentSpot) === false) {
+                throw new NoDetailMapsError('This spot has no detail maps...');
+            }
+            const spot = getSpotById(this.maps, parentSpot);
+            const lastViewedDetailMapId: number | null = spot.lastViewedDetailMapId;
+            return lastViewedDetailMapId;
+        };
     }
 
     /**
@@ -225,6 +251,31 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
+     * 詳細マップ持ちスポットが最後に表示していた詳細マップのIdをセットする.
+     * @param detailMapId 最後に参照された詳細マップのId
+     * @param parentSpot どのマップのどのスポットかを示す情報
+     * @throw NoDetailMapIdInSpotError スポットに存在しない詳細マップをセットしようとすると例外が発生
+     */
+    @Mutation
+    public setLastViewedDetailMapId(
+        payload: {
+            detailMapId: number,
+            parentSpot: { parentMapId: number, spotId: number };
+        }): void {
+        const detailMapId = payload.detailMapId;
+        const parentMapId = payload.parentSpot.parentMapId;
+        const spotId = payload.parentSpot.spotId;
+        const spot = getSpotById(this.maps, payload.parentSpot);
+        // detailMapIdがそのスポットに存在しない場合，例外を投げる
+        if (!spot.detailMapIds.includes(detailMapId)) {
+            throw new NoDetailMapIdInSpotError('Detail Map does not exist...');
+        }
+        const mapIndex: number = this.maps.findIndex((m: Map) => m.id === parentMapId);
+        const spotIndex: number = this.maps[mapIndex].spots.findIndex((s: Spot) => s.id === spotId);
+        this.maps[mapIndex].spots[spotIndex].lastViewedDetailMapId = detailMapId;
+    }
+
+    /**
      * ズームレベルで変化する表示レベルをsetする
      * @param newDisplayLevel setする表示レベル('default' or 'detail')
      */
@@ -269,17 +320,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
         this.focusedSpot.mapId  = newMapViewState.focusedSpot.mapId;
         this.focusedSpot.spotId = newMapViewState.focusedSpot.spotId;
         this.idOfCenterSpotWithDetailMap = newMapViewState.idOfCenterSpotWithDetailMap;
-        this.focusedDetailMapId = newMapViewState.focusedDetailMapId;
         this.displayLevel       = newMapViewState.displayLevel;
-    }
-
-    /**
-     * 詳細マップ持ちスポットのうち表示されている階層のmapIDをset
-     * @param detailMapId 表示されている階層のmapID
-     */
-    @Mutation
-    public setFocusedDetailMapId(detailMapId: number | null): void {
-        this.focusedDetailMapId = detailMapId;
     }
 }
 

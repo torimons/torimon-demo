@@ -11,7 +11,6 @@ export interface MapViewState {
     spotInfoIsVisible: boolean;
     displayLevel: DisplayLevelType;
     idOfCenterSpotWithDetailMap: number | null;
-    focusedDetailMapId: number | null;
 }
 
 /**
@@ -42,6 +41,7 @@ export interface Spot {
     gateNodeIds: number[];
     detailMapIds: number[];
     detailMapLevelNames?: string[];
+    lastViewedDetailMapId: number | null;
     others?: any;
 }
 
