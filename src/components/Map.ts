@@ -1,4 +1,4 @@
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import { mapViewStore } from '@/store/modules/MapViewModule';
 import { SpotForMap, Coordinate, Bounds, DisplayLevelType } from '@/store/types';
 import { GeolocationWrapper } from '@/components/GeolocationWrapper.ts';
@@ -56,7 +56,7 @@ export default class Map extends Vue {
 
         // 初期スポット配置，displayLevelを変更するコールバックをテスト用に登録
         const rootMapSpots: SpotForMap[] = mapViewStore.getSpotsForMap(mapViewStore.rootMapId);
-        this.replaceMarkersWith(rootMapSpots, this.defaultSpotIcon, this.changeDislayLevel);
+        this.replaceMarkersWith(rootMapSpots, this.defaultSpotIcon, () => {/**/});
 
         // sampleMapのポリゴン表示
         // $nextTick()はテスト実行時のエラーを回避するために使用しています．
@@ -122,42 +122,12 @@ export default class Map extends Vue {
     }
 
     /**
-     * stateの変化を監視して呼ばれるコールバック
+     * 表示するMapIdの変化を監視して呼ばれるコールバック
      */
+    @Watch('mapIdToDisplay')
     private switchMarkers(): void {
-        /**
-         * 表示するマーカー
-         * ルートマップのスポット
-         * 詳細モードの時詳細マップ(あれば)
-         * 階層変化
-         */
-
-        // 表示するマーカーの配列，必ずルートマップのスポットは表示する
-        let displayMarkers: SpotForMap[] = mapViewStore.getSpotsForMap(mapViewStore.rootMapId);
-        const newDisplayLevel: DisplayLevelType = mapViewStore.getDisplayLevel();
-        const idOfCenterSpotWithDetailMap: number | null = mapViewStore.getIdOfCenterSpotWithDetailMap();
-        // 詳細マップ表示 かつ 表示条件を満たすスポットが存在する
-        if (newDisplayLevel === 'detail' && idOfCenterSpotWithDetailMap !== null) {
-            const targetSpot = { parentMapId: 0, spotId: idOfCenterSpotWithDetailMap };
-            if (mapViewStore.spotHasDetailMaps(targetSpot)) {
-                const detailMapId = mapViewStore.getLastViewedDetailMapId(targetSpot);
-                if (detailMapId !== null) {
-                    const detailMapSpots: SpotForMap[] = mapViewStore.getSpotsForMap(detailMapId);
-                    displayMarkers = displayMarkers.concat(detailMapSpots);
-                }
-            }
-        }
-        this.replaceMarkersWith(displayMarkers, this.defaultSpotIcon, () => {/*donothing*/});
-    }
-
-    /** テスト用のマーカーコールバック関数，displayLevelをdetailに変更する
-     */
-    private changeDislayLevel(): void {
-        console.log('changing display level');
-        mapViewStore.setDisplayLevel('detail');
-        const payload = { detailMapId: 1, parentSpot: { parentMapId: 0, spotId: 0 } };
-        mapViewStore.setLastViewedDetailMapId(payload);
-        mapViewStore.setIdOfCenterSpotWithDetailMap(0);
+        const displayMarkers: SpotForMap[] = mapViewStore.getSpotsForMap(this.mapIdToDisplay);
+        this.replaceMarkersWith(displayMarkers, this.defaultSpotIcon, () => {/**/});
     }
 
     // マーカーが押された際に呼び出される関数
