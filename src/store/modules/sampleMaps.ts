@@ -106,7 +106,7 @@ export const sampleMaps: Map[] =  [
         },
     },
     {
-        id: 1,
+        id: 2,
         name: 'SougouGakusyuPlaza_2F',
         spots: [
             {
@@ -128,6 +128,30 @@ export const sampleMaps: Map[] =  [
                     ],
                 },
                 gateNodeIds: [10],
+                detailMapIds: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
+            {
+                id: 16,
+                name: '207',
+                coordinate: {
+                    lat: 33.59557274705605,
+                    lng: 130.2184957265854,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.2184420824051,  33.59550572152362],
+                            [130.2185869216919,  33.59554593684934],
+                            [130.2185493707657,  33.59563530417269],
+                            [130.21840453147888, 33.59559062052259],
+                            [130.2184420824051,  33.59550572152362],
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
                 detailMapIds: [],
                 lastViewedDetailMapId: null,
                 others: {},
