@@ -35,6 +35,7 @@ export default class Map extends Vue {
     });
     private spotMarkers: L.Marker[] = [];
     private currentLocationMarker: L.Marker = L.marker([0, 0], { icon: this.currentLocationIcon });
+    private mapIdToDisplay: number = mapViewStore.rootMapId;
 
     /**
      * とりあえず地図の表示を行なっています．
