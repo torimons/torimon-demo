@@ -1,6 +1,7 @@
 import { mapViewStore } from '@/store/modules/MapViewModule';
 import { MapViewState, SpotForMap, Coordinate } from '@/store/types';
 import { shallowMount } from '@vue/test-utils';
+import { GeolocationWrapper } from '@/components/GeolocationWrapper';
 import Vue from 'vue';
 import Map from '@/components/Map.vue';
 import 'leaflet/dist/leaflet.css';
@@ -25,6 +26,7 @@ describe('components/Map.vue zoomlevel切り替えのテスト', () => {
 
     beforeEach(() => {
         mapViewStore.setMapViewState(mapViewStoreTestData);
+        GeolocationWrapper.watchPosition = jest.fn();
         wrapper = shallowMount(Map, {
             attachToDocument: true,
         });
