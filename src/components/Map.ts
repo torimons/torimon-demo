@@ -34,6 +34,7 @@ export default class Map extends Vue {
     });
     private spotMarkers: L.Marker[] = [];
     private currentLocationMarker: L.Marker = L.marker([0, 0], { icon: this.currentLocationIcon });
+    private zoomLevelThreshold: number = 19;
 
     /**
      * とりあえず地図の表示を行なっています．
@@ -62,6 +63,8 @@ export default class Map extends Vue {
         });
         this.currentLocationMarker.addTo(this.map);
         this.bindMarkerToCurrentPosition(this.currentLocationMarker);
+
+        this.map.on('zoomend', this.updateDisplayLevel);
     }
 
     /**
@@ -116,6 +119,18 @@ export default class Map extends Vue {
      */
     private switchMarkers(e: L.LeafletEvent): void {
         // ズームレベルや階層が変更された際のマーカー表示切り替え
+    }
+
+    /** ズームレベルが変更された時にstateのdisplayLevelを更新する
+     * @param e リーフレットのイベント
+     */
+    private updateDisplayLevel(): void {
+        const currentZoomLevel = this.map.getZoom();
+        if (currentZoomLevel >= this.zoomLevelThreshold) {
+            mapViewStore.setDisplayLevel('detail');
+        } else {
+            mapViewStore.setDisplayLevel('default');
+        }
     }
 
     // マーカーが押された際に呼び出される関数
