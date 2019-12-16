@@ -34,7 +34,7 @@ export default class Map extends Vue {
     });
     private spotMarkers: L.Marker[] = [];
     private currentLocationMarker: L.Marker = L.marker([0, 0], { icon: this.currentLocationIcon });
-    private zoomLevelThreshold: number = 19;
+    private zoomLevelThreshold: number = 19; // とりあえず仮で閾値決めてます
 
     /**
      * とりあえず地図の表示を行なっています．
@@ -64,6 +64,7 @@ export default class Map extends Vue {
         this.currentLocationMarker.addTo(this.map);
         this.bindMarkerToCurrentPosition(this.currentLocationMarker);
 
+        // マップのズームが変更された時のコールバック登録
         this.map.on('zoomend', this.updateDisplayLevel);
     }
 
