@@ -1,23 +1,25 @@
 <template>
-	<div id="floor-switch-button">
-    <v-container class="pa-0">
-      <v-row
-        no-gutters
-      >
-        <v-col>
-          <v-btn-toggle
-            tile
-          >
-            <v-btn
-              v-for="floorName in floorNames"
-              v-bind:key="floorName"
+	<div id="floor-switch-button" v-show="isVisible">
+        <v-container class="pa-0">
+            <v-row
+                no-gutters
             >
-            {{ floorName }}
-            </v-btn>
-          </v-btn-toggle>
-        </v-col>
-      </v-row>
-    </v-container>
+                <v-col>
+                    <v-btn-toggle
+                        tile
+                        mandatory
+                        v-model="floorIndex"
+                    >
+                        <v-btn
+                            v-for="floorName in floorNames"
+                            v-bind:key="floorName"
+                        >
+                        {{ floorName }}
+                        </v-btn>
+                    </v-btn-toggle>
+                </v-col>
+            </v-row>
+        </v-container>
 	</div>
 </template>
 

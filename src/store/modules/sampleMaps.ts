@@ -46,8 +46,8 @@ export const sampleMaps: Map[] =  [
                     ] ],
                 },
                 gateNodeIds: [],
-                detailMapIds: [1],
-                detailMapLevelNames: [],
+                detailMapIds: [1, 2],
+                detailMapLevelNames: ['1F', '2F'],
                 lastViewedDetailMapId: null,
             },
         ],
@@ -88,7 +88,8 @@ export const sampleMaps: Map[] =  [
                     ],
                 },
                 gateNodeIds: [],
-                detailMapIds: [1],
+                detailMapIds: [],
+                detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
             },
         ],
@@ -106,7 +107,7 @@ export const sampleMaps: Map[] =  [
         },
     },
     {
-        id: 1,
+        id: 2,
         name: 'SougouGakusyuPlaza_2F',
         spots: [
             {
@@ -129,6 +130,7 @@ export const sampleMaps: Map[] =  [
                 },
                 gateNodeIds: [10],
                 detailMapIds: [],
+                detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
                 others: {},
             },
