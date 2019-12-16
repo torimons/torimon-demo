@@ -42,7 +42,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      */
     public maps: Map[] = sampleMaps;
 
-    /**
+    /*
      * 大元の親のMapのID
      */
     public rootMapId: number = 0;
@@ -260,7 +260,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * スポットが存在していない状態にする
      */
     @Mutation
-    public setNonExistentOfCenterSpotWithDetailMap(): void {
+    public setNonExistentOfCenterSpotInRootMap(): void {
         this.IdOfCenterSpotInRootMap = null;
     }
 

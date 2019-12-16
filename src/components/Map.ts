@@ -5,7 +5,7 @@ import { GeolocationWrapper } from '@/components/GeolocationWrapper.ts';
 import 'leaflet/dist/leaflet.css';
 import L, { LeafletEvent, TileLayer } from 'leaflet';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
-import { findNearest } from 'geolib';
+import { findNearest, getDistance } from 'geolib';
 import { GeolibInputCoordinates } from 'geolib/es/types';
 
 @Component
@@ -133,14 +133,21 @@ export default class Map extends Vue {
 
     /**
      * マップ移動時に画面中央に最も近い&ある一定距離以内に存在するスポットをIdOfCenterSpotInRootMapにセットする．
+     * 現状は200m以内の場合にスポットIdをセット．200mより離れている場合はnull．
      * @params leafletのイベント
      */
     private updateIdOfCenterSpotInRootMap(e: L.LeafletEvent): void {
-        const centerPos: L.LatLng = this.map.getCenter();
+        const centerPos: Coordinate = this.map.getCenter();
         const mapIndex: number = mapViewStore.maps.findIndex((m) => m.id === mapViewStore.rootMapId);
         const spots: Spot[] = mapViewStore.maps[mapIndex].spots;
         const nearestSpotId: number = this.getNearestSpotId(centerPos, spots);
-        mapViewStore.setIdOfCenterSpotInRootMap(nearestSpotId);
+        // 距離のチェック
+        const isNear: boolean = this.twoPointsIsNear(centerPos, spots[nearestSpotId].coordinate);
+        if (isNear === true) {
+            mapViewStore.setIdOfCenterSpotInRootMap(nearestSpotId);
+        } else {
+           mapViewStore.setNonExistentOfCenterSpotInRootMap();
+        }
     }
 
     /**
@@ -148,16 +155,32 @@ export default class Map extends Vue {
      * @param spots 基準点と比較したいスポットの配列
      * @return nearestSpotId 基準点に一番近いスポットのId
      */
-    private getNearestSpotId(point: L.LatLng, spots: Spot[]): number {
+    private getNearestSpotId(point: Coordinate, spots: Spot[]): number {
         const spotPositions: Coordinate[] = [];
         for (const spot of spots) {
             const coordinate = spot.coordinate;
             spotPositions.push(coordinate);
         }
         const nearestSpotPos: GeolibInputCoordinates = findNearest(point, spotPositions);
-        const nearstSpotIndex: number = spots.findIndex((s) => s.coordinate === nearestSpotPos);
-        const nearestSpotId: number = spots[nearstSpotIndex].id;
+        const nearestSpotIndex: number = spots.findIndex((s) => s.coordinate === nearestSpotPos);
+        const nearestSpotId: number = spots[nearestSpotIndex].id;
         return nearestSpotId;
+    }
+
+    /**
+     * 2点間の距離のチェックを行い，閾値以下（近い）ならばtrue,閾値より大きい（遠い）ならばfalseを返す.
+     * 距離の単位はメートル．
+     * @param pointA 距離チェックを行いたい座標
+     * @param pointB 距離チェックを行いたい座標
+     */
+    private twoPointsIsNear(pointA: Coordinate, pointB: Coordinate): boolean {
+        const distanceThreshold: number = 200;
+        const distance = getDistance(pointA, pointB);
+        if (distance <= distanceThreshold) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
