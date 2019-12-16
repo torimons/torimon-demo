@@ -1,10 +1,12 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { mapViewStore } from '@/store/modules/MapViewModule';
-import { SpotForMap, Coordinate, Bounds } from '@/store/types';
+import { SpotForMap, Coordinate, Bounds, Spot } from '@/store/types';
 import { GeolocationWrapper } from '@/components/GeolocationWrapper.ts';
 import 'leaflet/dist/leaflet.css';
 import L, { LeafletEvent, TileLayer } from 'leaflet';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
+import { findNearest } from 'geolib';
+import { GeolibInputCoordinates } from 'geolib/es/types';
 
 @Component
 export default class Map extends Vue {
@@ -51,6 +53,8 @@ export default class Map extends Vue {
                 maxNativeZoom: 19,
             },
         ).addTo(this.map);
+
+        this.map.on('move', this.updateIdOfCenterSpotInRootMap);
 
         const rootMapSpots: SpotForMap[] = mapViewStore.getSpotsForMap(mapViewStore.rootMapId);
         this.replaceMarkersWith(rootMapSpots, this.defaultSpotIcon, () => { /*何もしない*/ });
@@ -125,6 +129,35 @@ export default class Map extends Vue {
             押したマーカーのスポットの情報の取得
             ポップアップの表示
             */
+    }
+
+    /**
+     * マップ移動時に画面中央に最も近い&ある一定距離以内に存在するスポットをIdOfCenterSpotInRootMapにセットする．
+     * @params leafletのイベント
+     */
+    private updateIdOfCenterSpotInRootMap(e: L.LeafletEvent): void {
+        const centerPos: L.LatLng = this.map.getCenter();
+        const mapIndex: number = mapViewStore.maps.findIndex((m) => m.id === mapViewStore.rootMapId);
+        const spots: Spot[] = mapViewStore.maps[mapIndex].spots;
+        const nearestSpotId: number = this.getNearestSpotId(centerPos, spots);
+        mapViewStore.setIdOfCenterSpotInRootMap(nearestSpotId);
+    }
+
+    /**
+     * @param point 基準点
+     * @param spots 基準点と比較したいスポットの配列
+     * @return nearestSpotId 基準点に一番近いスポットのId
+     */
+    private getNearestSpotId(point: L.LatLng, spots: Spot[]): number {
+        const spotPositions: Coordinate[] = [];
+        for (const spot of spots) {
+            const coordinate = spot.coordinate;
+            spotPositions.push(coordinate);
+        }
+        const nearestSpotPos: GeolibInputCoordinates = findNearest(point, spotPositions);
+        const nearstSpotIndex: number = spots.findIndex((s) => s.coordinate === nearestSpotPos);
+        const nearestSpotId: number = spots[nearstSpotIndex].id;
+        return nearestSpotId;
     }
 
     /**

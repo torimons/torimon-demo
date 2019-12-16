@@ -67,7 +67,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * スポットのIDを保持する変数
      * 条件に当てはまるスポットがない場合nullを持つ
      */
-    public idOfCenterSpotWithDetailMap: number | null = null;
+    public IdOfCenterSpotInRootMap: number | null = null;
 
     /**
      * ズームレベルに応じて切り替わる表示レベルを保持
@@ -191,9 +191,9 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * 条件に当てはまるスポットがない状態である場合nullを返す
      * @return スポットIDかnull
      */
-    get getIdOfCenterSpotWithDetailMap() {
+    get getIdOfCenterSpotInRootMap() {
         return (): number | null => {
-            return this.idOfCenterSpotWithDetailMap;
+            return this.IdOfCenterSpotInRootMap;
         };
     }
 
@@ -246,11 +246,11 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * - 半径〇〇内で最も画面中央に近い
      * - 詳細マップを持っている
      * スポットのIDを更新する
-     * @param idOfCenterSpotWithDetailMap 上記のスポットのID
+     * @param IdOfCenterSpotInRootMap 上記のスポットのID
      */
     @Mutation
-    public setIdOfCenterSpotWithDetailMap(idOfCenterSpotWithDetailMap: number): void {
-        this.idOfCenterSpotWithDetailMap = idOfCenterSpotWithDetailMap;
+    public setIdOfCenterSpotInRootMap(IdOfCenterSpotInRootMap: number): void {
+        this.IdOfCenterSpotInRootMap = IdOfCenterSpotInRootMap;
     }
 
     /**
@@ -261,7 +261,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      */
     @Mutation
     public setNonExistentOfCenterSpotWithDetailMap(): void {
-        this.idOfCenterSpotWithDetailMap = null;
+        this.IdOfCenterSpotInRootMap = null;
     }
 
     /**
@@ -276,7 +276,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
         this.spotInfoIsVisible  = newMapViewState.spotInfoIsVisible;
         this.focusedSpot.mapId  = newMapViewState.focusedSpot.mapId;
         this.focusedSpot.spotId = newMapViewState.focusedSpot.spotId;
-        this.idOfCenterSpotWithDetailMap = newMapViewState.idOfCenterSpotWithDetailMap;
+        this.IdOfCenterSpotInRootMap = newMapViewState.IdOfCenterSpotInRootMap;
         this.displayLevel       = newMapViewState.displayLevel;
     }
 }
