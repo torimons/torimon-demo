@@ -221,6 +221,30 @@ export const sampleMaps: Map[] =  [
                 lastViewedDetailMapId: null,
                 others: {},
             },
+            {
+                id: 18,
+                name: '209',
+                coordinate: {
+                    lat: 33.595251024025295,
+                    lng: 130.21800220012665,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.21798074245453, 33.595219745333296],
+                            [130.21803975105286, 33.59523761887296],
+                            [130.21802365779877, 33.59527783432369],
+                            [130.21796464920044, 33.59525996079234],
+                            [130.21798074245453, 33.595219745333296],
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
         ],
         nodes: [],
         edges: [],
