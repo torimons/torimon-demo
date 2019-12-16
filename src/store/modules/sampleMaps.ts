@@ -132,6 +132,47 @@ export const sampleMaps: Map[] =  [
                 lastViewedDetailMapId: null,
                 others: {},
             },
+            /* template
+            {
+                id: 16,
+                name: '207',
+                coordinate: {
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
+            */
+            {
+                id: 15,
+                name: '206',
+                coordinate: {
+                    lat: 33.59536273354698,
+                    lng: 130.2179592847824,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.2179056406021,  33.595291239469766],
+                            [130.2180504798889,  33.59533592327497],
+                            [130.21800756454468, 33.59543869593907],
+                            [130.21786272525787, 33.59539401218712],
+                            [130.2179056406021,  33.595291239469766],
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
             {
                 id: 16,
                 name: '207',
