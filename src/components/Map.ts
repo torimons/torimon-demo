@@ -56,7 +56,7 @@ export default class Map extends Vue {
 
         // 初期スポット配置，displayLevelを変更するコールバックをテスト用に登録
         const rootMapSpots: SpotForMap[] = mapViewStore.getSpotsForMap(mapViewStore.rootMapId);
-        this.replaceMarkersWith(rootMapSpots, this.defaultSpotIcon, () => {/**/});
+        this.replaceMarkersWith(rootMapSpots, this.defaultSpotIcon, this.updateFocusedMarker);
 
         // sampleMapのポリゴン表示
         // $nextTick()はテスト実行時のエラーを回避するために使用しています．
@@ -66,12 +66,6 @@ export default class Map extends Vue {
         });
         this.currentLocationMarker.addTo(this.map);
         this.bindMarkerToCurrentPosition(this.currentLocationMarker);
-
-        // storeのwatch登録
-        store.watch(
-            (state, getters) => state.mapView.displayLevel,
-            (newVal, oldVal) => this.switchMarkers(),
-        );
     }
 
     /**
@@ -121,17 +115,16 @@ export default class Map extends Vue {
         this.spotMarkers.map((marker: L.Marker) => marker.addTo(this.map).on('click', callback));
     }
 
-    /**
-     * 表示するMapIdの変化を監視して呼ばれるコールバック
+    /** 表示するMapIdの変化を監視して呼ばれるコールバック
      */
     @Watch('mapIdToDisplay')
     private switchMarkers(): void {
         const displayMarkers: SpotForMap[] = mapViewStore.getSpotsForMap(this.mapIdToDisplay);
-        this.replaceMarkersWith(displayMarkers, this.defaultSpotIcon, () => {/**/});
+        this.replaceMarkersWith(displayMarkers, this.defaultSpotIcon, this.updateFocusedMarker);
     }
 
     // マーカーが押された際に呼び出される関数
-    private updateFocusedMarker(e: Event): void {
+    private updateFocusedMarker(e: L.LeafletEvent): void {
         /*
             （vuexの状態更新も行う必要がある）
             押したマーカーのスポットの情報の取得
