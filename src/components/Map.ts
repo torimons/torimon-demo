@@ -124,7 +124,6 @@ export default class Map extends Vue {
     }
 
     /** ズームレベルが変更された時にstateのdisplayLevelを更新する
-     * @param e リーフレットのイベント
      */
     private updateDisplayLevel(): void {
         const currentZoomLevel = this.map.getZoom();

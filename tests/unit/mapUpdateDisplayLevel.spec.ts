@@ -42,13 +42,13 @@ describe('components/Map.vue zoomlevel切り替えのテスト', () => {
         wrapper.vm.map.getZoom = setReturnOfGetZoom(18);
         // 閾値(19)未満の場合，displayLevelはdefault
         wrapper.vm.updateDisplayLevel();
-        const currentLargeDisplayLevel = mapViewStore.getDisplayLevel();
-        expect(currentLargeDisplayLevel).toBe('default');
+        const currentDisplayLevelZoomOut = mapViewStore.getDisplayLevel();
+        expect(currentDisplayLevelZoomOut).toBe('default');
 
         // 閾値(19)以上の場合，displayLevelはdetail
         wrapper.vm.map.getZoom = setReturnOfGetZoom(19);
         wrapper.vm.updateDisplayLevel();
-        const currentSmallDisplayLevel = mapViewStore.getDisplayLevel();
-        expect(currentSmallDisplayLevel).toBe('detail');
+        const currentDisplayLevelZoomIn = mapViewStore.getDisplayLevel();
+        expect(currentDisplayLevelZoomIn).toBe('detail');
     });
 });
