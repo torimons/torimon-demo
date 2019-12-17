@@ -5,7 +5,7 @@ import { DisplayLevelType } from '@/store/types';
 @Component
 export default class FloorSwitchButton extends Vue {
 
-    // floorNamesとfloorMapIdsは表示の関係上,要素を逆順で保持します．
+    // floorNamesとfloorMapIdsは表示の関係上,要素を逆順で保持する．
     private floorNames: string[] = [];
     private floorMapIds: number[] = [];
 
@@ -60,7 +60,7 @@ export default class FloorSwitchButton extends Vue {
      * 下の階が下に表示されるようにセットする．
      */
     @Watch('idOfCenterSpotWithDetailMap')
-    private updateFloorSwitchButtonContent(): void {
+    private updateContentOfFloorSwitchButton(): void {
         const parentMapId: number = mapViewStore.rootMapId;
         const spotId: number | null = mapViewStore.idOfCenterSpotWithDetailMap;
         if (spotId === null) {
@@ -74,8 +74,7 @@ export default class FloorSwitchButton extends Vue {
         }
         this.floorMapIds = spot.detailMapIds.slice().reverse();
         this.floorNames = spot.detailMapLevelNames.slice().reverse();
-
-        const lastViewedDetailMapId = mapViewStore.getLastViewedDetailMapId({parentMapId, spotId});
+        const lastViewedDetailMapId: number | null = mapViewStore.getLastViewedDetailMapId({parentMapId, spotId});
         // 最後に参照された階層（詳細マップ）が存在する場合，その階層が選択された状態にする．
         // 存在しない場合は初期階にあたる階にセットする．
         if (lastViewedDetailMapId != null) {
@@ -99,10 +98,10 @@ export default class FloorSwitchButton extends Vue {
     @Watch('displayLevel')
     private changeButtonIsVisible(): void {
         const displayLevel = mapViewStore.getDisplayLevel();
-        if (displayLevel === 'default') {
-            this.isVisible = false;
-        } else {
+        if (displayLevel === 'detail') {
             this.isVisible = true;
+        } else {
+            this.isVisible = false;
         }
     }
 }

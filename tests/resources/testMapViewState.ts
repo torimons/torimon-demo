@@ -47,8 +47,24 @@ export const testMapViewState: MapViewState = {
                         ]],
                     },
                     gateNodeIds: [],
-                    detailMapIds: [1],
-                    detailMapLevelNames: ['1F'],
+                    detailMapIds: [1, 2],
+                    detailMapLevelNames: ['1F', '2F'],
+                    lastViewedDetailMapId: null,
+                },
+                {
+                    id: 1,
+                    name: 'SpotForTest',
+                    coordinate: {
+                        lat: 33.595502,
+                        lng: 130.218238,
+                    },
+                    shape: {
+                        type: 'Polygon',
+                        coordinates: [[[]]],
+                    },
+                    gateNodeIds: [],
+                    detailMapIds: [],
+                    detailMapLevelNames: [],
                     lastViewedDetailMapId: null,
                 },
             ],
@@ -156,6 +172,6 @@ export const testMapViewState: MapViewState = {
     },
     spotInfoIsVisible: false,
     displayLevel: 'default',
-    idOfCenterSpotWithDetailMap: 0,
+    idOfCenterSpotWithDetailMap: null,
 };
 
