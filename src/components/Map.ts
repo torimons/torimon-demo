@@ -115,12 +115,13 @@ export default class Map extends Vue {
         this.spotMarkers.map((marker: L.Marker) => marker.addTo(this.map).on('click', callback));
     }
 
-    /** 表示するMapIdの変化を監視して呼ばれるコールバック
+    /**
+     * 引数のmapIdのマーカーを表示する
+     * @param mapId 表示するmapのid
      */
-    @Watch('mapIdToDisplay')
-    private switchMarkers(): void {
-        const displayMarkers: SpotForMap[] = mapViewStore.getSpotsForMap(this.mapIdToDisplay);
-        this.replaceMarkersWith(displayMarkers, this.defaultSpotIcon, this.updateFocusedMarker);
+    private displaySpotMarkers(mapId: number): void {
+        const markersToDisplay: SpotForMap[] = mapViewStore.getSpotsForMap(mapId);
+        this.replaceMarkersWith(markersToDisplay, this.defaultSpotIcon, this.updateFocusedMarker);
     }
 
     // マーカーが押された際に呼び出される関数
