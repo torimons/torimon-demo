@@ -59,7 +59,7 @@ describe('mapコンポーネントのポリゴン表示', () => {
         expect(actualSpotId1).toBe(exepctedNearestSpotId1);
         // 別の中央の座標を設定して中央に最も近いスポットのIdを取得する
         const center2: Coordinate = {lat: 33.595, lng: 130.218};
-        const exepctedNearestSpotId2 = 0;
+        const exepctedNearestSpotId2: number = 0;
         const actualSpotId2: number = wrapper.vm.getNearestSpotId(center2, spots);
         expect(actualSpotId2).toBe(exepctedNearestSpotId2);
     });
