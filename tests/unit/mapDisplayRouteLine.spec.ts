@@ -16,18 +16,17 @@ describe('mapコンポーネントの経路表示', () => {
         });
     });
 
-    it('displayRouteLineはgetNodesForNavigationを呼び出し経路を表示する', () => {
+    it('displayRouteLinesはgetNodesForNavigationを呼び出し経路を表示する', () => {
         // Vue.nextTick().thenは'_addLayer' of nullのエラー回避
         Vue.nextTick().then(() => {
             // getterが仮作成のためテスト用データはMapViewStateに直接埋め込んでいる物を使用
             const testData: Coordinate[][] = mapViewStore.getNodesForNavigation([]);
-            const expectedRouteLines: L.Polyline[] = [];
-            testData.forEach((waypoint: Coordinate[]) => expectedRouteLines.push(L.polyline(waypoint, {
+            const expectedRouteLines: L.Polyline[] = testData.map((waypoint: Coordinate[]) => (L.polyline(waypoint, {
                 color: '#555555',
                 weight: 5,
                 opacity: 0.7,
             })));
-            const actualRouteLines: L.Polyline = wrapper.vm.displayRouteLine(mapViewStore.getNodesForNavigation([]));
+            const actualRouteLines: L.Polyline = wrapper.vm.displayRouteLines(mapViewStore.getNodesForNavigation([]));
             expect(actualRouteLines).toStrictEqual(expectedRouteLines);
         });
     });

@@ -62,9 +62,9 @@ export default class Map extends Vue {
             // 現状mapIdのgetterがないため直接指定しています．
             this.displayPolygons(mapViewStore.rootMapId);
             // 経路（エッジ）表示
-            this.routeLines = this.displayRouteLine(mapViewStore.getNodesForNavigation([]));
+            this.routeLines = this.displayRouteLines(mapViewStore.getNodesForNavigation([]));
             // 経路レイヤーが消去されているか確認
-            // this.routeLines = this.displayRouteLine([]);
+            // this.routeLines = this.displayRouteLines([]);
         });
         this.currentLocationMarker.addTo(this.map);
         this.bindMarkerToCurrentPosition(this.currentLocationMarker);
@@ -186,13 +186,11 @@ export default class Map extends Vue {
      * @param wayPoints: 2点間の経路の経由地（配列）の配列
      * @return routeLines: 2点間の経路線の配列
      */
-    private displayRouteLine(wayPoints: Coordinate[][]): Polyline[] {
+    private displayRouteLines(wayPoints: Coordinate[][]): Polyline[] {
         if (this.routeLayer !== undefined) {
             this.map.removeLayer(this.routeLayer);
         }
-        const routeLines: L.Polyline[] = [];
-        wayPoints.forEach((wayPoint: Coordinate[]) =>
-            routeLines.push(L.polyline(wayPoint, {
+        const routeLines: Polyline[] = wayPoints.map((wayPoint: Coordinate[]) => (L.polyline(wayPoint, {
                 color: '#555555',
                 weight: 5,
                 opacity: 0.7,
