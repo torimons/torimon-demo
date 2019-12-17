@@ -7,12 +7,12 @@
                 <v-col>
                     <v-btn-toggle
                         tile
-                        mandatory
-                        v-model="floorIndex"
+                        v-model="buttonIndex"
                     >
                         <v-btn
                             v-for="floorName in floorNames"
                             v-bind:key="floorName"
+                            @click="updateLastViewedDetailMapIdOnClick(floorName)"
                         >
                         {{ floorName }}
                         </v-btn>
