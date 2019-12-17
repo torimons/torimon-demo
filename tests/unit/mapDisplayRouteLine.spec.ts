@@ -1,3 +1,4 @@
+import { Component, Vue } from 'vue-property-decorator';
 import { mapViewStore } from '@/store/modules/MapViewModule';
 import map from '@/components/Map.vue';
 import { MapViewState, Coordinate, Node } from '@/store/types';
@@ -16,37 +17,18 @@ describe('mapコンポーネントの経路表示', () => {
     });
 
     it('displayRouteLineはgetNodesForNavigationを呼び出し経路を表示する', () => {
-        // getterが仮作成のためテスト用データはMapViewStateに直接埋め込んでいる物を使用
-        const expectedNodeArray: Coordinate[] = [
-            {
-                lat: 33.595502,
-                lng: 130.218238,
-            },
-            {
-                lat: 33.596502,
-                lng: 130.218238,
-            },
-            {
-                lat: 33.596502,
-                lng: 130.219238,
-            },
-        ];
-        const expectedRouteLine: L.Polyline = L.polyline(expectedNodeArray, {
-            color: '#555555',
-            weight: 5,
-            opacity: 0.7,
-        });
-        // マップのレイヤー上でテストを行うと煩雑になるため今回は関数をモックしてます
-        wrapper.vm.displayRouteLine = jest.fn(() => {
-            const nodesForNavigation: Coordinate[] = mapViewStore.getNodesForNavigation([]);
-            const routeLine = L.polyline(nodesForNavigation, {
+        // Vue.nextTick().thenは'_addLayer' of nullのエラー回避
+        Vue.nextTick().then(() => {
+            // getterが仮作成のためテスト用データはMapViewStateに直接埋め込んでいる物を使用
+            const testData: Coordinate[][] = mapViewStore.getNodesForNavigation([]);
+            const expectedRouteLines: L.Polyline[] = [];
+            testData.forEach((waypoint: Coordinate[]) => expectedRouteLines.push(L.polyline(waypoint, {
                 color: '#555555',
                 weight: 5,
                 opacity: 0.7,
-            });
-            return routeLine;
+            })));
+            const actualRouteLines: L.Polyline = wrapper.vm.displayRouteLine(mapViewStore.getNodesForNavigation([]));
+            expect(actualRouteLines).toStrictEqual(expectedRouteLines);
         });
-        const actualRouteLine: L.Polyline = wrapper.vm.displayRouteLine();
-        expect(actualRouteLine).toStrictEqual(expectedRouteLine);
     });
 });
