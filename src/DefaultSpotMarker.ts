@@ -16,10 +16,15 @@ export default class DefaulSpotMarker extends L.Marker {
     }
 
     public addTo(map: L.Map | L.LayerGroup<any>): this {
-        return super.addTo(map).on('click', this.callback);
+        return super.addTo(map).on('click', this.updateFocusedMarker);
     }
 
-    private callback(): void {
-        // updateFocusedMarker
+    // マーカーが押された際に呼び出される関数
+    private updateFocusedMarker(): void {
+        /*
+            （vuexの状態更新も行う必要がある）
+            押したマーカーのスポットの情報の取得
+            ポップアップの表示
+            */
     }
 }
