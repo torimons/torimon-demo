@@ -6,7 +6,7 @@ import 'leaflet/dist/leaflet.css';
 import L, { LeafletEvent, TileLayer } from 'leaflet';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
 import CurrentLocationMarker from '@/CurrentLocationMarker';
-import DefaulSpotMarker from '@/DefaultSpotMarker';
+import DefaultSpotMarker from '@/DefaultSpotMarker';
 
 @Component
 export default class Map extends Vue {
@@ -69,7 +69,7 @@ export default class Map extends Vue {
         );
         // removeしてから取り除かないと描画から消えない
         this.spotMarkers.forEach((marker: L.Marker) => marker.remove());
-        this.spotMarkers = coordinates.map((coord: Coordinate) => new DefaulSpotMarker(coord));
+        this.spotMarkers = coordinates.map((coord: Coordinate) => new DefaultSpotMarker(coord));
         this.spotMarkers.map((marker: L.Marker) => marker.addTo(this.map));
     }
 
