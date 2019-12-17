@@ -102,7 +102,8 @@ export default class Map extends Vue {
         return { lat: centerLat, lng: centerLng };
     }
 
-    /** 現在のマーカー削除し，spotsの座標にマーカーを配置する
+    /**
+     * 現在のマーカー削除し，spotsの座標にマーカーを配置する
      * @param newSpots 新しく表示したいスポットの配列
      * @param callback スポットがクリックされた時に呼び出すコールバック
      */
@@ -116,14 +117,16 @@ export default class Map extends Vue {
         this.spotMarkers.map((marker: L.Marker) => marker.addTo(this.map).on('click', callback));
     }
 
-    /** ズームレベルや階層が変更された際のマーカー表示切り替え
+    /**
+     * ズームレベルや階層が変更された際のマーカー表示切り替え
      * @param e 発火イベント
      */
     private switchMarkers(e: L.LeafletEvent): void {
         // ズームレベルや階層が変更された際のマーカー表示切り替え
     }
 
-    /** ズームレベルが変更された時にstateのdisplayLevelを更新する
+    /**
+     * ズームレベルが変更された時にstateのdisplayLevelを更新する
      */
     private updateDisplayLevel(): void {
         const currentZoomLevel = this.map.getZoom();

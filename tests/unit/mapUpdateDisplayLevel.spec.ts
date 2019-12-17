@@ -11,7 +11,8 @@ import { testMapViewState } from '../resources/testMapViewState';
 
 const mapViewStoreTestData: MapViewState = cloneDeep(testMapViewState);
 
-/** モック用の関数，paramに与えた値を返す関数を返す
+/**
+ * モック用の関数，paramに与えた値を返す関数を返す
  * @param n 返して欲しい値
  * @return nを返す関数
  */
