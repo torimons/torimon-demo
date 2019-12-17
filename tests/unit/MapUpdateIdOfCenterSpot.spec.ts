@@ -35,7 +35,7 @@ describe('mapコンポーネントのポリゴン表示', () => {
         wrapper.destroy();
     });
 
-    it('twoPointsIsNearのテスト', () => {
+    it('twoPointsIsNearで2点間の遠近を判定する', () => {
         const basePoint: Coordinate = {lat: 33.595562, lng: 130.213603};
         const nearPoint: Coordinate = {lat: 33.595510, lng: 130.214806};
         const farPoint: Coordinate = {lat: 40.000000, lng: 140.000000};

@@ -133,7 +133,7 @@ export default class Map extends Vue {
 
     /**
      * マップ移動時に画面中央に最も近い&ある一定距離以内に存在するスポットをIdOfCenterSpotInRootMapにセットする．
-     * 現状は200m以内の場合にスポットIdをセット．200mより離れている場合はnull．
+     * 一定距離内であればスポットIdを，一定距離外であればnullをセット．距離の判定はtwoPointsIsNearが行う．
      * @params leafletのイベント
      */
     private updateIdOfCenterSpotInRootMap(e: L.LeafletEvent): void {
@@ -146,22 +146,23 @@ export default class Map extends Vue {
         if (isNear === true) {
             mapViewStore.setIdOfCenterSpotInRootMap(nearestSpotId);
         } else {
-           mapViewStore.setNonExistentOfCenterSpotInRootMap();
+            mapViewStore.setNonExistentOfCenterSpotInRootMap();
         }
     }
 
     /**
+     * スポット群から基準点に最も近いスポットのIdを返す．
      * @param point 基準点
      * @param spots 基準点と比較したいスポットの配列
      * @return nearestSpotId 基準点に一番近いスポットのId
      */
-    private getNearestSpotId(point: Coordinate, spots: Spot[]): number {
+    private getNearestSpotId(basePoint: Coordinate, spots: Spot[]): number {
         const spotPositions: Coordinate[] = [];
         for (const spot of spots) {
             const coordinate = spot.coordinate;
             spotPositions.push(coordinate);
         }
-        const nearestSpotPos: GeolibInputCoordinates = findNearest(point, spotPositions);
+        const nearestSpotPos: GeolibInputCoordinates = findNearest(basePoint, spotPositions);
         const nearestSpotIndex: number = spots.findIndex((s) => s.coordinate === nearestSpotPos);
         const nearestSpotId: number = spots[nearestSpotIndex].id;
         return nearestSpotId;
