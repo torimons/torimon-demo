@@ -82,4 +82,12 @@ describe('mapコンポーネントのポリゴン表示', () => {
         expect(actualCenterSpotId2).toBe(expectedCenterSpotId2);
     });
 
+    it('moveイベントでupdateIdOfCenterSpotInRootMapが呼び出されているか確認', () => {
+        const center: Coordinate = {lat: 33.595, lng: 130.700};
+        wrapper.vm.map.getCenter = setReturnOfGetCenter(center);
+        wrapper.vm.map.fire('move');
+        const expectedCenterSpotId: number = 1;
+        const actualCenterSpotId: number | null = mapViewStore.IdOfCenterSpotInRootMap;
+        expect(actualCenterSpotId).toBe(expectedCenterSpotId);
+    });
 });
