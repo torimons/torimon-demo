@@ -197,6 +197,6 @@ export const testMapViewState: MapViewState = {
     },
     spotInfoIsVisible: false,
     displayLevel: 'default',
-    IdOfCenterSpotInRootMap: 0,
+    idOfCenterSpotInRootMap: 0,
 };
 

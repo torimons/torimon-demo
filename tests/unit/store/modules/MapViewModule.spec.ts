@@ -139,8 +139,8 @@ describe('store/modules/MapViewModule.ts', () => {
         }).toThrow(NoDetailMapsError);
     });
 
-    it('stateに登録したIdOfCenterSpotInRootMapを取得する', () => {
-        const expectedId: number | null = expectedMapViewState.IdOfCenterSpotInRootMap;
+    it('stateに登録したidOfCenterSpotInRootMapを取得する', () => {
+        const expectedId: number | null = expectedMapViewState.idOfCenterSpotInRootMap;
         expect(mapViewStore.getIdOfCenterSpotInRootMap()).toBe(expectedId);
     });
 
@@ -183,12 +183,12 @@ describe('store/modules/MapViewModule.ts', () => {
     it('setIdOfCenterSpotInRootMap()でsetしたIdOfCenterSpotInRootMapがmapViewStoreのstateに登録されている', () => {
         const expectedIdOfCenterSpotInRootMap = 1;
         mapViewStore.setIdOfCenterSpotInRootMap(expectedIdOfCenterSpotInRootMap);
-        expect(mapViewStore.IdOfCenterSpotInRootMap).toBe(expectedIdOfCenterSpotInRootMap);
+        expect(mapViewStore.idOfCenterSpotInRootMap).toBe(expectedIdOfCenterSpotInRootMap);
     });
 
     it('setNonExistentOfCenterSpotWithDetailMap()でmapViewStoreのIdOfCenterSpotInRootMapにnullが登録されている', () => {
         mapViewStore.setNonExistentOfCenterSpotInRootMap();
-        expect(mapViewStore.IdOfCenterSpotInRootMap).toBe(null);
+        expect(mapViewStore.idOfCenterSpotInRootMap).toBe(null);
     });
 
     it('setしたnewDisplayLevelがstateに登録されている', () => {

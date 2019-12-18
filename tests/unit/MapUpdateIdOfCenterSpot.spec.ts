@@ -36,9 +36,9 @@ describe('mapコンポーネントのポリゴン表示', () => {
     });
 
     it('twoPointsIsNearで2点間の遠近を判定する', () => {
-        const basePoint: Coordinate = {lat: 33.595562, lng: 130.213603};
-        const nearPoint: Coordinate = {lat: 33.595510, lng: 130.214806};
-        const farPoint: Coordinate = {lat: 40.000000, lng: 140.000000};
+        const basePoint: Coordinate = {lat: 33.000000, lng: 130.000000};
+        const nearPoint: Coordinate = {lat: 33.000000, lng: 130.002140}; // basePointから約200mの地点
+        const farPoint: Coordinate = {lat: 33.000000, lng: 140.002150}; // basePointから約201mの地点
         // 閾値は200(m)でセットしている
         // 2点間の距離が閾値以下の場合
         const expectedValNear: boolean = true;
@@ -70,7 +70,7 @@ describe('mapコンポーネントのポリゴン表示', () => {
         wrapper.vm.map.getCenter = setReturnOfGetCenter(center1);
         wrapper.vm.updateIdOfCenterSpotInRootMap();
         const expectedCenterSpotId1: number = 1;
-        const actualCenterSpotId1: number | null = mapViewStore.IdOfCenterSpotInRootMap;
+        const actualCenterSpotId1: number | null = mapViewStore.idOfCenterSpotInRootMap;
         expect(actualCenterSpotId1).toBe(expectedCenterSpotId1);
 
         // 一定範囲内にスポットが存在しない場合はnullをセットする．
@@ -78,7 +78,7 @@ describe('mapコンポーネントのポリゴン表示', () => {
         wrapper.vm.map.getCenter = setReturnOfGetCenter(center2);
         wrapper.vm.updateIdOfCenterSpotInRootMap();
         const expectedCenterSpotId2: null = null;
-        const actualCenterSpotId2: number | null = mapViewStore.IdOfCenterSpotInRootMap;
+        const actualCenterSpotId2: number | null = mapViewStore.idOfCenterSpotInRootMap;
         expect(actualCenterSpotId2).toBe(expectedCenterSpotId2);
     });
 
@@ -87,7 +87,7 @@ describe('mapコンポーネントのポリゴン表示', () => {
         wrapper.vm.map.getCenter = setReturnOfGetCenter(center);
         wrapper.vm.map.fire('move');
         const expectedCenterSpotId: number = 1;
-        const actualCenterSpotId: number | null = mapViewStore.IdOfCenterSpotInRootMap;
+        const actualCenterSpotId: number | null = mapViewStore.idOfCenterSpotInRootMap;
         expect(actualCenterSpotId).toBe(expectedCenterSpotId);
     });
 });

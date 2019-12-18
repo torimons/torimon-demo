@@ -67,7 +67,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * スポットのIDを保持する変数
      * 条件に当てはまるスポットがない場合nullを持つ
      */
-    public IdOfCenterSpotInRootMap: number | null = null;
+    public idOfCenterSpotInRootMap: number | null = null;
 
     /**
      * ズームレベルに応じて切り替わる表示レベルを保持
@@ -193,7 +193,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      */
     get getIdOfCenterSpotInRootMap() {
         return (): number | null => {
-            return this.IdOfCenterSpotInRootMap;
+            return this.idOfCenterSpotInRootMap;
         };
     }
 
@@ -246,11 +246,11 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * - 半径〇〇内で最も画面中央に近い
      * - 詳細マップを持っている
      * スポットのIDを更新する
-     * @param IdOfCenterSpotInRootMap 上記のスポットのID
+     * @param idOfCenterSpotInRootMap 上記のスポットのID
      */
     @Mutation
-    public setIdOfCenterSpotInRootMap(IdOfCenterSpotInRootMap: number): void {
-        this.IdOfCenterSpotInRootMap = IdOfCenterSpotInRootMap;
+    public setIdOfCenterSpotInRootMap(idOfCenterSpotInRootMap: number): void {
+        this.idOfCenterSpotInRootMap = idOfCenterSpotInRootMap;
     }
 
     /**
@@ -261,7 +261,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      */
     @Mutation
     public setNonExistentOfCenterSpotInRootMap(): void {
-        this.IdOfCenterSpotInRootMap = null;
+        this.idOfCenterSpotInRootMap = null;
     }
 
     /**
@@ -276,7 +276,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
         this.spotInfoIsVisible  = newMapViewState.spotInfoIsVisible;
         this.focusedSpot.mapId  = newMapViewState.focusedSpot.mapId;
         this.focusedSpot.spotId = newMapViewState.focusedSpot.spotId;
-        this.IdOfCenterSpotInRootMap = newMapViewState.IdOfCenterSpotInRootMap;
+        this.idOfCenterSpotInRootMap = newMapViewState.idOfCenterSpotInRootMap;
         this.displayLevel       = newMapViewState.displayLevel;
     }
 }

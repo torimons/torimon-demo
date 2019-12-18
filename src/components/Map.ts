@@ -133,7 +133,7 @@ export default class Map extends Vue {
     }
 
     /**
-     * マップ移動時に画面中央に最も近い&ある一定距離以内に存在するスポットをIdOfCenterSpotInRootMapにセットする．
+     * マップ移動時に画面中央に最も近い&ある一定距離以内に存在するスポットをidOfCenterSpotInRootMapにセットする．
      * 一定距離内であればスポットIdを，一定距離外であればnullをセット．距離の判定はtwoPointsIsNearが行う．
      * @params leafletのイベント
      */
