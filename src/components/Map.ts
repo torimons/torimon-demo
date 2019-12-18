@@ -14,7 +14,6 @@ export default class Map extends Vue {
     private zoomLevel: number = 15;
     private tileLayer!: L.TileLayer;
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
-    private routeLines?: L.Polyline[];
     private routeLayer?: L.Layer;
     private defaultSpotIcon: L.Icon = L.icon({
         iconUrl: 'http://localhost:8081/leaflet/icons/marker-icon-2x.png',
@@ -62,7 +61,7 @@ export default class Map extends Vue {
             // 現状mapIdのgetterがないため直接指定しています．
             this.displayPolygons(mapViewStore.rootMapId);
             // 経路（エッジ）表示
-            this.routeLines = this.displayRouteLines(mapViewStore.getNodesForNavigation([]));
+            this.displayRouteLines(mapViewStore.getNodesForNavigation([]));
             // 経路レイヤーが消去されているか確認
             // this.routeLines = this.displayRouteLines([]);
         });
@@ -186,7 +185,7 @@ export default class Map extends Vue {
      * @param wayPoints: 2点間の経路の経由地（配列）の配列
      * @return routeLines: 2点間の経路線の配列
      */
-    private displayRouteLines(wayPoints: Coordinate[][]): Polyline[] {
+    private displayRouteLines(wayPoints: Coordinate[][]): void {
         if (this.routeLayer !== undefined) {
             this.map.removeLayer(this.routeLayer);
         }
@@ -196,7 +195,6 @@ export default class Map extends Vue {
                 opacity: 0.7,
             })));
         this.routeLayer = L.layerGroup(routeLines).addTo(this.map);
-        return routeLines;
     }
 
 }
