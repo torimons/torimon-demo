@@ -205,7 +205,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
         return (nodeIds: number[]): Coordinate[][] => {
             // getterの中身は経路探索に依存しているため、現状テスト用のものを使用
             // ノードidの配列を入力として必要なノードを検索、配列として返すメソッドが必要
-            const testNodes1: Node[] = [
+            const testRoutes: Node[][] = [[
                 {
                     id: 0,
                     mapId: 0,
@@ -233,8 +233,8 @@ export class MapViewModule extends VuexModule implements MapViewState {
                     lng: 130.219238,
                     },
                 },
-            ];
-            const testNodes2: Node[] = [
+            ],
+            [
                 {
                     id: 0,
                     mapId: 0,
@@ -262,14 +262,12 @@ export class MapViewModule extends VuexModule implements MapViewState {
                     lng: 130.218238,
                     },
                 },
-            ];
+            ]];
             const nodesForNavigation: Coordinate[][] = [];
-            const route1: Coordinate[] = [];
-            const route2: Coordinate[] = [];
-            testNodes1.forEach((testNode1: Node) => route1.push(testNode1.coordinate));
-            testNodes2.forEach((testNode2: Node) => route2.push(testNode2.coordinate));
-            nodesForNavigation.push(route1);
-            nodesForNavigation.push(route2);
+            testRoutes.forEach((route: Node[]) => {
+                const wayPoints: Coordinate[] = route.map((wayPoint: Node) => wayPoint.coordinate);
+                nodesForNavigation.push(wayPoints);
+            });
             return nodesForNavigation;
         };
     }
