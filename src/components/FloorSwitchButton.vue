@@ -7,7 +7,7 @@
                 <v-col>
                     <v-btn-toggle
                         tile
-                        v-model="buttonIndex"
+                        v-model="selectedFloorButtonIndex"
                     >
                         <v-btn
                             v-for="floorName in floorNames"

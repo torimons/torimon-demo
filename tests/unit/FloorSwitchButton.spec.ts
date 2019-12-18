@@ -31,7 +31,7 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
         wrapper.destroy();
     });
 
-    it('updateLastViewedDetailMapIdOnClickでlastViewedDtailmapIdを更新する', () => {
+    it('updateLastViewedDetailMapIdOnClickでlastViewedDetailMapIdを更新する', () => {
         // 中心付近にスポットが存在しない場合
         // ボタンが表示されないため実際に実行される予定はないがテスト
         mapViewStore.setNonExistentOfCenterSpotWithDetailMap();
@@ -57,23 +57,39 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
     });
 
     it('中心付近のスポットの切り替わりに合わせて階層ボタンの内容を切り替える', () => {
-        // 中心付近にrootMapの詳細マップ持ちスポットが存在する場合
+        // 中心付近にrootMapの詳細マップ持ちスポットが存在する場合．
+        // まだ一度も参照されていないスポットの場合，初期階が選択された状態となる．
         mapViewStore.setIdOfCenterSpotWithDetailMap(0);
         expect(wrapper.vm.floorNames).toEqual(['2F', '1F']);
         expect(wrapper.vm.floorMapIds).toEqual([2, 1]);
-        expect(wrapper.vm.buttonIndex).toBe(1);
+        expect(wrapper.vm.selectedFloorButtonIndex).toBe(1);
 
-        // 中心付近にrootMapのスポットが存在するが，詳細マップを持たない場合
+        // 中心付近にrootMapのスポットが存在するが，詳細マップを持たない場合．
         mapViewStore.setIdOfCenterSpotWithDetailMap(1);
         expect(wrapper.vm.floorNames).toEqual([]);
         expect(wrapper.vm.floorMapIds).toEqual([]);
-        expect(wrapper.vm.buttonIndex).toBe(0);
+        expect(wrapper.vm.selectedFloorButtonIndex).toBe(0);
 
-        // 中心付近にrootMapのスポットが存在しない場合
+        // 一度参照したスポットを再度参照する場合．
+        // 階層ボタンは最後に参照された階層が選択された状態となる．2階が参照された状態にしてテスト
+        const payload = {
+            detailMapId: 2,
+            parentSpot: {
+                parentMapId: 0,
+                spotId: 0,
+            },
+        };
+        mapViewStore.setLastViewedDetailMapId(payload);
+        mapViewStore.setIdOfCenterSpotWithDetailMap(0);
+        expect(wrapper.vm.floorNames).toEqual(['2F', '1F']);
+        expect(wrapper.vm.floorMapIds).toEqual([2, 1]);
+        expect(wrapper.vm.selectedFloorButtonIndex).toBe(0);
+
+        // 中心付近にrootMapのスポットが存在しない場合．
         mapViewStore.setNonExistentOfCenterSpotWithDetailMap();
         expect(wrapper.vm.floorNames).toEqual([]);
         expect(wrapper.vm.floorMapIds).toEqual([]);
-        expect(wrapper.vm.buttonIndex).toBe(0);
+        expect(wrapper.vm.selectedFloorButtonIndex).toBe(0);
     });
 
     it('displayLevelに合わせて階層ボタンの表示/非表示を切り替える', () => {
