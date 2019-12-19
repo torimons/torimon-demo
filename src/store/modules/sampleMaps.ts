@@ -50,6 +50,30 @@ export const sampleMaps: Map[] =  [
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
             },
+            {
+                id: 1,
+                name: 'WestBuilding2',
+                coordinate: {
+                    lat: 33.59600170923035,
+                    lng: 130.21851181983948,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [[
+                        [130.21777153015137, 33.59563083580872],
+                        [130.21852791309357, 33.5958453170181],
+                        [130.21932184696198, 33.59591681063602],
+                        [130.21930038928986, 33.59628321449781],
+                        [130.21841526031494, 33.59618937951075],
+                        [130.21755158901215, 33.59601511426391],
+                         [130.21777153015137, 33.59563083580872],
+                    ] ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [2],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+            },
         ],
         nodes: [],
         edges: [],
@@ -147,7 +171,7 @@ export const sampleMaps: Map[] =  [
         },
     },
     {
-        id: 20,
+        id: 5,
         name: 'West_2F',
         spots: [
             {
