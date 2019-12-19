@@ -46,32 +46,51 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
         wrapper.destroy();
     });
 
-    it('replaceMarkersWithに配列を渡してMapのmarkersに登録', () => {
+    it('createMarkersに配列を渡してMapのmarkersに登録', () => {
         // コールバック関数は本テストに関係ないため空の関数を渡している
-        wrapper.vm.replaceMarkersWith(testSpots, wrapper.vm.defaultSpotIcon, () => {
+        wrapper.vm.createMarkers(testSpots, wrapper.vm.defaultSpotIcon, () => {
             // do nothing
         });
-        const actualMarkers = wrapper.vm.spotMarkers;
+        const actualMarkers: L.Marker[] = wrapper.vm.spotMarkers;
         for (let i = 0; i < actualMarkers.length; i++) {
             const testLat: number = testSpots[i].coordinate.lat;
             const testLng: number = testSpots[i].coordinate.lng;
-            const actLatLng = actualMarkers[i].getLatLng();
+            const actLatLng: L.LatLng = actualMarkers[i].getLatLng();
             // testSpotとactualSpotの座標がlatLng型で一致してるか
             expect(actLatLng).toStrictEqual(L.latLng(testLat, testLng));
         }
     });
 
-    it('replaceMarkersに渡したコールバック関数が呼び出されいるか確認', () => {
+    it('createMarkersに渡したコールバック関数が呼び出されいるか確認', () => {
         let functionCalled: boolean;
-        wrapper.vm.replaceMarkersWith(testSpots, wrapper.vm.defaultSpotIcon, () => {
+        wrapper.vm.createMarkers(testSpots, wrapper.vm.defaultSpotIcon, () => {
             functionCalled = true;
         });
-        const actualMarkers = wrapper.vm.spotMarkers;
+        const actualMarkers: L.Marker[] = wrapper.vm.spotMarkers;
         for (const markers of actualMarkers) {
             functionCalled = false;
             // マーカーのクリック発火
             markers.fire('click');
             expect(functionCalled).toBe(true);
         }
+    });
+
+    it('updateDisplayOfSpotMarkersに渡したマップIDのスポットがcreateMarkersに渡されているか確認', () => {
+        // replaceMarkersWithをモックして引数の確認だけ行う
+        let actualMarkers!: SpotForMap[];
+        wrapper.vm.createMarkers = jest.fn((givenMarkers: SpotForMap[]) => {
+            actualMarkers = givenMarkers;
+        });
+
+        // ルートマップでの確認
+        const rootMapId: number = mapViewStore.rootMapId;
+        const expectedRootMapSpots: SpotForMap[] = mapViewStore.getSpotsForMap(rootMapId);
+        wrapper.vm.updateDisplayOfSpotMarkers(rootMapId);
+        expect(actualMarkers).toStrictEqual(expectedRootMapSpots);
+        // mapId=1での確認
+        const detailMapId: number = 1;
+        const expectedDetailMapSpots: SpotForMap[] = mapViewStore.getSpotsForMap(detailMapId);
+        wrapper.vm.updateDisplayOfSpotMarkers(detailMapId);
+        expect(actualMarkers).toStrictEqual(expectedDetailMapSpots);
     });
 });
