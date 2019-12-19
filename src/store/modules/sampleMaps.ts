@@ -395,12 +395,12 @@ export const sampleMaps: Map[] =  [
         edges: [],
         bounds: {
             topL: {
-                lat: ,
-                lng: ,
+                lat: 33.596314492804154,
+                lng: 130.2175408601761,
             },
             botR: {
-                lat: ,
-                lng: ,
+                lat: 33.59563530417269,
+                lng: 130.2193433046341,
             },
         },
     },
