@@ -16,7 +16,7 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
     let vuetify: any;
 
     beforeEach(() => {
-        vuetify = new Vuetify()
+        vuetify = new Vuetify();
         localVue = createLocalVue();
         localVue.use(Vuetify);
         wrapper = mount(FloorSwitchButton, {
