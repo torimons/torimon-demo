@@ -7,6 +7,7 @@
                 <v-col>
                     <v-btn-toggle
                         tile
+                        mandatory
                         v-model="selectedFloorButtonIndex"
                     >
                         <v-btn
