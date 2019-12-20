@@ -1,7 +1,6 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { mapViewStore } from '@/store/modules/MapViewModule';
 import { DisplayLevelType } from '@/store/types';
-import store from '@/store';
 
 @Component
 export default class FloorSwitchButton extends Vue {
@@ -11,7 +10,7 @@ export default class FloorSwitchButton extends Vue {
     private floorMapIds: number[] = [];
 
     // 階層ボタンの見た目に関するメンバ
-    private selectedFloorButtonIndex: number = 0;
+    private selectedFloorButtonIndex: number | undefined = 0;
     private isVisible: boolean = false;
 
     /**
@@ -20,7 +19,7 @@ export default class FloorSwitchButton extends Vue {
     private clearButtonContent(): void {
         this.floorNames = [];
         this.floorMapIds = [];
-        this.selectedFloorButtonIndex = 0;
+        this.selectedFloorButtonIndex = undefined;
     }
 
     /**

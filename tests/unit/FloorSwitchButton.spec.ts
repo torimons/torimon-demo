@@ -1,6 +1,6 @@
 import { mapViewStore } from '@/store/modules/MapViewModule';
 import { MapViewState } from '@/store/types';
-import { createLocalVue, shallowMount } from '@vue/test-utils';
+import { createLocalVue, mount } from '@vue/test-utils';
 import { GeolocationWrapper } from '@/components/GeolocationWrapper';
 import FloorSwitchButton from '@/components/FloorSwitchButton.vue';
 import 'leaflet/dist/leaflet.css';
@@ -13,12 +13,15 @@ const mapViewStoreTestData: MapViewState = cloneDeep(testMapViewState);
 describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
     let wrapper: any;
     let localVue: any;
+    let vuetify: any;
 
     beforeEach(() => {
+        vuetify = new Vuetify()
         localVue = createLocalVue();
         localVue.use(Vuetify);
-        wrapper = shallowMount(FloorSwitchButton, {
+        wrapper = mount(FloorSwitchButton, {
             localVue,
+            vuetify,
             attachToDocument: true,
         });
         const mapViewState = cloneDeep(testMapViewState);
@@ -63,13 +66,11 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
         expect(wrapper.vm.floorNames).toEqual(['2F', '1F']);
         expect(wrapper.vm.floorMapIds).toEqual([2, 1]);
         expect(wrapper.vm.selectedFloorButtonIndex).toBe(1);
-
         // 中心付近にrootMapのスポットが存在するが，詳細マップを持たない場合．
         mapViewStore.setIdOfCenterSpotWithDetailMap(1);
         expect(wrapper.vm.floorNames).toEqual([]);
         expect(wrapper.vm.floorMapIds).toEqual([]);
-        expect(wrapper.vm.selectedFloorButtonIndex).toBe(0);
-
+        expect(wrapper.vm.selectedFloorButtonIndex).toBe(undefined);
         // 一度参照したスポットを再度参照する場合．
         // 階層ボタンは最後に参照された階層が選択された状態となる．2階が参照された状態にしてテスト
         const payload = {
@@ -89,17 +90,26 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
         mapViewStore.setNonExistentOfCenterSpotWithDetailMap();
         expect(wrapper.vm.floorNames).toEqual([]);
         expect(wrapper.vm.floorMapIds).toEqual([]);
-        expect(wrapper.vm.selectedFloorButtonIndex).toBe(0);
+        expect(wrapper.vm.selectedFloorButtonIndex).toBe(undefined);
     });
 
     it('displayLevelに合わせて階層ボタンの表示/非表示を切り替える', () => {
         // displayLevelの初期値はdefaultであるため，先にdetailに切り替えている．
-       // displayLevelがdetailのとき
+        // displayLevelがdetailのとき
         mapViewStore.setDisplayLevel('detail');
         expect(wrapper.vm.isVisible).toBe(true);
         // displayLevelがdefaultのとき
         mapViewStore.setDisplayLevel('default');
         expect(wrapper.vm.isVisible).toBe(false);
+    });
+
+    it('階層ボタンがhtml上に表示されているかをチェック', () => {
+        // 初期状態では表示されていない
+        expect(wrapper.find('.v-btn').exists()).toBe(false);
+        // 詳細マップレベルかつ，rootMapに属するスポットが中心に近いとき表示される
+        mapViewStore.setDisplayLevel('detail');
+        mapViewStore.setIdOfCenterSpotWithDetailMap(0);
+        expect(wrapper.find('.v-btn').exists()).toBe(true);
     });
 
 });
