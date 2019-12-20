@@ -14,6 +14,7 @@ export default class Map extends Vue {
     private zoomLevel: number = 15;
     private tileLayer!: L.TileLayer;
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
+    private routeLines?: L.Polyline[];
     private routeLayer?: L.Layer;
     private defaultSpotIcon: L.Icon = L.icon({
         iconUrl: 'http://localhost:8081/leaflet/icons/marker-icon-2x.png',
@@ -181,20 +182,27 @@ export default class Map extends Vue {
     }
 
     /**
-     * 指定されたnode間の経路を表示する
+     * 指定された経由地の配列を受け取りを経路として表示する
      * @param wayPoints: 2点間の経路の経由地（配列）の配列
-     * @return routeLines: 2点間の経路線の配列
      */
     private displayRouteLines(wayPoints: Coordinate[][]): void {
         if (this.routeLayer !== undefined) {
             this.map.removeLayer(this.routeLayer);
         }
-        const routeLines: Polyline[] = wayPoints.map((wayPoint: Coordinate[]) => (L.polyline(wayPoint, {
+        this.routeLines = wayPoints.map((wayPoint: Coordinate[]) => (L.polyline(wayPoint, {
                 color: '#555555',
                 weight: 5,
                 opacity: 0.7,
             })));
-        this.routeLayer = L.layerGroup(routeLines).addTo(this.map);
+        this.routeLayer = L.layerGroup(this.routeLines);
+        this.addRouteToMap(this.routeLayer);
     }
 
+    /**
+     * 経路をmapに追加する
+     * @param routeLayer: mapに追加する経路のレイヤー
+     */
+    private addRouteToMap(routeLayer: L.Layer): void {
+        this.map.addLayer(routeLayer);
+    }
 }
