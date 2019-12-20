@@ -15,7 +15,7 @@ describe('mapコンポーネントの経路表示', () => {
         });
     });
 
-    // 
+    // expectで直接比較を行うと'_leaflet_id'が異なりテストが落ちるのでそれぞれの'_latLngs'と'_options'を比較するものに変更
     it('displayRouteLinesはgetNodesForNavigationを呼び出し経路を表示する', () => {
         // '_addLayer' of nullのエラー回避のためaddRouteToMapをmock
         wrapper.vm.addRouteToMap = jest.fn();
