@@ -18,6 +18,7 @@ export default class Map extends Vue {
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
     private spotMarkers: L.Marker[] = [];
     private currentLocationMarker: CurrentLocationMarker = new CurrentLocationMarker([0, 0]);
+    private zoomLevelThreshold: number = 19; // とりあえず仮で閾値決めてます
     private mapIdToDisplay: number = mapViewStore.rootMapId;
 
     /**
@@ -46,6 +47,9 @@ export default class Map extends Vue {
             this.displayPolygons(mapViewStore.rootMapId);
         });
         this.currentLocationMarker.addTo(this.map);
+
+        // マップのズームが変更された時のコールバック登録
+        this.map.on('zoomend', this.updateDisplayLevel);
     }
 
     /**
@@ -59,7 +63,8 @@ export default class Map extends Vue {
         return { lat: centerLat, lng: centerLng };
     }
 
-    /** 現在のマーカー削除し，spotsの座標にマーカーを配置する
+    /**
+     * 現在のマーカー削除し，spotsの座標にマーカーを配置する
      * @param newSpots 新しく表示したいスポットの配列
      * @param callback スポットがクリックされた時に呼び出すコールバック
      */
@@ -73,11 +78,33 @@ export default class Map extends Vue {
         this.spotMarkers.map((marker: L.Marker) => marker.addTo(this.map));
     }
 
-    /** ズームレベルや階層が変更された際のマーカー表示切り替え
+    /**
+     * ズームレベルや階層が変更された際のマーカー表示切り替え
      * @param e 発火イベント
      */
     private switchMarkers(e: L.LeafletEvent): void {
         // ズームレベルや階層が変更された際のマーカー表示切り替え
+    }
+
+    /**
+     * ズームレベルが変更された時にstateのdisplayLevelを更新する
+     */
+    private updateDisplayLevel(): void {
+        const currentZoomLevel = this.map.getZoom();
+        if (currentZoomLevel >= this.zoomLevelThreshold) {
+            mapViewStore.setDisplayLevel('detail');
+        } else {
+            mapViewStore.setDisplayLevel('default');
+        }
+    }
+
+    // マーカーが押された際に呼び出される関数
+    private updateFocusedMarker(e: Event): void {
+        /*
+            （vuexの状態更新も行う必要がある）
+            押したマーカーのスポットの情報の取得
+            ポップアップの表示
+            */
     }
 
     /**
