@@ -48,9 +48,7 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
 
     it('replaceMarkersWithに配列を渡してMapのmarkersに登録', () => {
         // コールバック関数は本テストに関係ないため空の関数を渡している
-        wrapper.vm.replaceMarkersWith(testSpots, wrapper.vm.defaultSpotIcon, () => {
-            // do nothing
-        });
+        wrapper.vm.replaceMarkersWith(testSpots);
         const actualMarkers = wrapper.vm.spotMarkers;
         for (let i = 0; i < actualMarkers.length; i++) {
             const testLat: number = testSpots[i].coordinate.lat;
@@ -58,20 +56,6 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
             const actLatLng = actualMarkers[i].getLatLng();
             // testSpotとactualSpotの座標がlatLng型で一致してるか
             expect(actLatLng).toStrictEqual(L.latLng(testLat, testLng));
-        }
-    });
-
-    it('replaceMarkersに渡したコールバック関数が呼び出されいるか確認', () => {
-        let functionCalled: boolean;
-        wrapper.vm.replaceMarkersWith(testSpots, wrapper.vm.defaultSpotIcon, () => {
-            functionCalled = true;
-        });
-        const actualMarkers = wrapper.vm.spotMarkers;
-        for (const markers of actualMarkers) {
-            functionCalled = false;
-            // マーカーのクリック発火
-            markers.fire('click');
-            expect(functionCalled).toBe(true);
         }
     });
 });

@@ -5,6 +5,8 @@ import { GeolocationWrapper } from '@/components/GeolocationWrapper.ts';
 import 'leaflet/dist/leaflet.css';
 import L, { LeafletEvent, TileLayer } from 'leaflet';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
+import CurrentLocationMarker from '@/CurrentLocationMarker';
+import DefaultSpotMarker from '@/DefaultSpotMarker';
 
 @Component
 export default class Map extends Vue {
@@ -14,26 +16,8 @@ export default class Map extends Vue {
     private zoomLevel: number = 15;
     private tileLayer!: L.TileLayer;
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
-    private defaultSpotIcon: L.Icon = L.icon({
-        iconUrl: 'https://github.com/torimons/torimon/blob/master/public/leaflet/icons/marker-icon-2x.png?raw=true',
-        iconSize: [50, 82],
-        iconAnchor: [25, 80],
-        popupAnchor: [-3, -76],
-        shadowSize: [68, 95],
-        shadowAnchor: [22, 94],
-        className: 'spot',
-    });
-    private currentLocationIcon: L.Icon = L.icon({
-        iconUrl: 'https://github.com/torimons/torimon/blob/master/public/leaflet/icons/currentLocation.png?raw=true',
-        iconSize: [40, 40],
-        iconAnchor: [25, 25],
-        popupAnchor: [0, 0],
-        shadowSize: [68, 95],
-        shadowAnchor: [22, 94],
-        className: 'currentLocation',
-    });
     private spotMarkers: L.Marker[] = [];
-    private currentLocationMarker: L.Marker = L.marker([0, 0], { icon: this.currentLocationIcon });
+    private currentLocationMarker: CurrentLocationMarker = new CurrentLocationMarker([0, 0]);
     private zoomLevelThreshold: number = 19; // とりあえず仮で閾値決めてます
     private mapIdToDisplay: number = mapViewStore.rootMapId;
 
@@ -55,7 +39,7 @@ export default class Map extends Vue {
         ).addTo(this.map);
 
         const rootMapSpots: SpotForMap[] = mapViewStore.getSpotsForMap(mapViewStore.rootMapId);
-        this.replaceMarkersWith(rootMapSpots, this.defaultSpotIcon, () => { /*何もしない*/ });
+        this.replaceMarkersWith(rootMapSpots);
         // sampleMapのポリゴン表示
         // $nextTick()はテスト実行時のエラーを回避するために使用しています．
         this.$nextTick().then(() => {
@@ -63,32 +47,9 @@ export default class Map extends Vue {
             this.displayPolygons(mapViewStore.rootMapId);
         });
         this.currentLocationMarker.addTo(this.map);
-        this.bindMarkerToCurrentPosition(this.currentLocationMarker);
 
         // マップのズームが変更された時のコールバック登録
         this.map.on('zoomend', this.updateDisplayLevel);
-    }
-
-    /**
-     * マーカーがデバイスの現在位置に常に表示されるようにする
-     * @param marker 現在位置に表示し続けたいマーカーオブジェクト
-     */
-    private bindMarkerToCurrentPosition(marker: L.Marker): number {
-        return GeolocationWrapper.watchPosition(
-            (pos: Position) => {
-                marker.setLatLng(
-                    [pos.coords.latitude, pos.coords.longitude],
-                );
-            },
-            (error: PositionError) => {
-                throw error;
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 10000, // milliseconds
-                maximumAge: 0, // 0 = the device cannot use a cached position
-            },
-        );
     }
 
     /**
@@ -107,14 +68,14 @@ export default class Map extends Vue {
      * @param newSpots 新しく表示したいスポットの配列
      * @param callback スポットがクリックされた時に呼び出すコールバック
      */
-    private replaceMarkersWith(newSpots: SpotForMap[], icon: L.Icon, callback: (e: L.LeafletEvent) => void): void {
+    private replaceMarkersWith(newSpots: SpotForMap[]): void {
         const coordinates: Coordinate[] = newSpots.map(
             (spot: SpotForMap) => spot.coordinate,
         );
         // removeしてから取り除かないと描画から消えない
         this.spotMarkers.forEach((marker: L.Marker) => marker.remove());
-        this.spotMarkers = coordinates.map((coord: Coordinate) => L.marker(coord, {icon}));
-        this.spotMarkers.map((marker: L.Marker) => marker.addTo(this.map).on('click', callback));
+        this.spotMarkers = coordinates.map((coord: Coordinate) => new DefaultSpotMarker(coord));
+        this.spotMarkers.map((marker: L.Marker) => marker.addTo(this.map));
     }
 
     /**
