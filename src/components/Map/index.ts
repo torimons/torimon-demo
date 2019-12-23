@@ -1,7 +1,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { mapViewStore } from '@/store/modules/MapViewModule';
 import { SpotForMap, Coordinate, Bounds } from '@/store/types';
-import { GeolocationWrapper } from '@/components/GeolocationWrapper.ts';
+import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper';
 import 'leaflet/dist/leaflet.css';
 import L, { LeafletEvent, TileLayer } from 'leaflet';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
