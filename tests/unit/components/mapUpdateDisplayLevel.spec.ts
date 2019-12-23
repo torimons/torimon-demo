@@ -7,7 +7,7 @@ import Map from '@/components/Map.vue';
 import 'leaflet/dist/leaflet.css';
 import L, { map } from 'leaflet';
 import { cloneDeep } from 'lodash';
-import { testMapViewState } from '../resources/testMapViewState';
+import { testMapViewState } from '../../resources/testMapViewState';
 
 const mapViewStoreTestData: MapViewState = cloneDeep(testMapViewState);
 
