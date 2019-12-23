@@ -45,7 +45,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
     /**
      * 大元の親のMapのID
      */
-    public rootMapId: number = 0;
+    public rootMapId: number = 3;
 
     /**
      * Mapコンポーネントで選択されているMap，およびスポットのID

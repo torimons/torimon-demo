@@ -130,7 +130,7 @@ export const sampleMaps: Map[] =  [
         },
     },
     {
-        id: 1,
+        id: 2,
         name: 'SougouGakusyuPlaza_2F',
         spots: [
             {
@@ -171,7 +171,7 @@ export const sampleMaps: Map[] =  [
         },
     },
     {
-        id: 5,
+        id: 3,
         name: 'West_2F',
         spots: [
             {
