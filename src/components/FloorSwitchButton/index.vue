@@ -1,11 +1,27 @@
 <template>
-    <div id="floor-switch-button">
-        <ul>
-            <li v-for="floorName in floorNames" v-bind:key="floorName">
-                <span>{{ floorName }}</span>
-            </li>
-        </ul>
-    </div>
+	<div id="floor-switch-button" v-show="isVisible">
+        <v-container class="pa-0">
+            <v-row
+                no-gutters
+            >
+                <v-col>
+                    <v-btn-toggle
+                        tile
+                        mandatory
+                        v-model="selectedFloorButtonIndex"
+                    >
+                        <v-btn
+                            v-for="floorName in floorNames"
+                            v-bind:key="floorName"
+                            @click="updateLastViewedDetailMapIdOnClick(floorName)"
+                        >
+                        {{ floorName }}
+                        </v-btn>
+                    </v-btn-toggle>
+                </v-col>
+            </v-row>
+        </v-container>
+	</div>
 </template>
 
 <script lang="ts" src='./index.ts'>
@@ -14,30 +30,13 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #floor-switch-button {
-    width: 2%;
-    border: solid;
     position:absolute;
-    left: 20px;
-    bottom: 20px;
+    left: 10px;
+    bottom: 10px;
     z-index: 1000;
-    position: absolute;
 }
-#floor-switch-button ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-#floor-switch-button ul li span {
-    display: block;
-    padding: .4em .8em;
-    text-decoration: none;
-    background: #fff;
-    color: #333;
-    text-align: center;
-    margin: .2em 0;
-}
-#floor-switch-button ul li span:hover {
-    background: #eee;
-    text-align: center;
+
+.v-btn-toggle {
+  flex-direction: column;
 }
 </style>
