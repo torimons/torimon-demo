@@ -4,7 +4,7 @@ import { MapViewState } from '@/store/types';
 import { FeatureCollection } from 'geojson';
 import { shallowMount } from '@vue/test-utils';
 import { cloneDeep } from 'lodash';
-import { testMapViewState } from '../../resources/testMapViewState';
+import { testMapViewState } from '../../../resources/testMapViewState';
 import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper';
 
 const mapViewStateTestData: MapViewState = cloneDeep(testMapViewState);
