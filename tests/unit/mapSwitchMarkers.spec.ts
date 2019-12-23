@@ -76,7 +76,7 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
     });
 
     it('updateDisplayOfSpotMarkersに渡したマップIDのスポットがcreateMarkersに渡されているか確認', () => {
-        // replaceMarkersWithをモックして引数の確認だけ行う
+        // createMarkersをモックして引数の確認だけ行う
         let actualMarkers!: SpotForMap[];
         wrapper.vm.createMarkers = jest.fn((givenMarkers: SpotForMap[]) => {
             actualMarkers = givenMarkers;
