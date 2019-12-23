@@ -98,15 +98,6 @@ export default class Map extends Vue {
         }
     }
 
-    // マーカーが押された際に呼び出される関数
-    private updateFocusedMarker(e: L.LeafletEvent): void {
-        /*
-            （vuexの状態更新も行う必要がある）
-            押したマーカーのスポットの情報の取得
-            ポップアップの表示
-            */
-    }
-
     /**
      * storeのgetSpotsForMapで取得したspotの情報から
      * shapeの情報を取り出してleafletで扱える形式に変換する．
