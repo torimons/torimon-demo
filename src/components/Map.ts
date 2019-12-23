@@ -40,8 +40,7 @@ export default class Map extends Vue {
         ).addTo(this.map);
 
         // 初期スポット配置，displayLevelを変更するコールバックをテスト用に登録
-        const rootMapSpots: SpotForMap[] = mapViewStore.getSpotsForMap(mapViewStore.rootMapId);
-        this.createMarkers(rootMapSpots, this.defaultSpotIcon);
+        this.updateDisplayOfSpotMarkers(mapViewStore.rootMapId);
 
         // sampleMapのポリゴン表示
         // $nextTick()はテスト実行時のエラーを回避するために使用しています．
@@ -69,23 +68,31 @@ export default class Map extends Vue {
     /**
      * 引数のnewSpotsの座標にマーカーを作成し，spotMarkersに入れる
      * @param newSpots 新しく表示したいスポットの配列
-     * @param icon スポットに渡すオプションのicon
+     * @return マーカーの配列
      */
-    private createMarkers(newSpots: SpotForMap[], icon: L.Icon): void {
+    private createMarkers(newSpots: SpotForMap[]): L.Marker[] {
         const coordinates: Coordinate[] = newSpots.map((spot: SpotForMap) => spot.coordinate);
-        this.spotMarkers = coordinates.map((coord: Coordinate) => L.marker(coord, {icon}));
+        return coordinates.map((coord: Coordinate) => new DefaultSpotMarker(coord));
     }
 
     /**
      * ズームレベルや階層が変更された際のマーカー表示切り替え
-     * @param e 発火イベント
+     * @param 新しく表示するマップのid
      */
     private updateDisplayOfSpotMarkers(mapId: number): void {
         // removeしてから取り除かないと描画から消えない
         this.spotMarkers.forEach((marker: L.Marker) => marker.remove());
         const markersToDisplay: SpotForMap[] = mapViewStore.getSpotsForMap(mapId);
-        this.createMarkers(markersToDisplay, this.defaultSpotIcon);
-        this.spotMarkers.map((marker: L.Marker) => marker.addTo(this.map));
+        this.spotMarkers = this.createMarkers(markersToDisplay);
+        this.addMarkersToMap(this.spotMarkers);
+    }
+
+    /**
+     * マーカーをマップに追加する．テストで
+     * @param マップに追加するマーカーの配列
+     */
+    private addMarkersToMap(objectToAdd: L.Marker[]) {
+        objectToAdd.map((marker: L.Marker) => marker.addTo(this.map));
     }
 
     /**

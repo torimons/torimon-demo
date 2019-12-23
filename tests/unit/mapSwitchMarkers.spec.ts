@@ -39,6 +39,7 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
         wrapper = shallowMount(Map, {
             attachToDocument: true,
         });
+        wrapper.vm.addMarkersToMap = jest.fn();
     });
 
     afterEach(() => {
@@ -48,9 +49,7 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
 
     it('createMarkersに配列を渡してMapのmarkersに登録', () => {
         // コールバック関数は本テストに関係ないため空の関数を渡している
-        wrapper.vm.createMarkers(testSpots, wrapper.vm.defaultSpotIcon, () => {
-            // do nothing
-        });
+        wrapper.vm.createMarkers(testSpots);
         const actualMarkers: L.Marker[] = wrapper.vm.spotMarkers;
         for (let i = 0; i < actualMarkers.length; i++) {
             const testLat: number = testSpots[i].coordinate.lat;
@@ -61,22 +60,9 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
         }
     });
 
-    it('createMarkersに渡したコールバック関数が呼び出されいるか確認', () => {
-        let functionCalled: boolean;
-        wrapper.vm.createMarkers(testSpots, wrapper.vm.defaultSpotIcon, () => {
-            functionCalled = true;
-        });
-        const actualMarkers: L.Marker[] = wrapper.vm.spotMarkers;
-        for (const markers of actualMarkers) {
-            functionCalled = false;
-            // マーカーのクリック発火
-            markers.fire('click');
-            expect(functionCalled).toBe(true);
-        }
-    });
-
     it('updateDisplayOfSpotMarkersに渡したマップIDのスポットがcreateMarkersに渡されているか確認', () => {
         // createMarkersをモックして引数の確認だけ行う
+
         let actualMarkers!: SpotForMap[];
         wrapper.vm.createMarkers = jest.fn((givenMarkers: SpotForMap[]) => {
             actualMarkers = givenMarkers;
@@ -88,6 +74,8 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
         wrapper.vm.updateDisplayOfSpotMarkers(rootMapId);
         expect(actualMarkers).toStrictEqual(expectedRootMapSpots);
         // mapId=1での確認
+        // createMarkersをモックしていてspotMarkersがundefinedになるため
+        wrapper.vm.spotMarkers = [];
         const detailMapId: number = 1;
         const expectedDetailMapSpots: SpotForMap[] = mapViewStore.getSpotsForMap(detailMapId);
         wrapper.vm.updateDisplayOfSpotMarkers(detailMapId);
