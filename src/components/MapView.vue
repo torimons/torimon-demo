@@ -1,8 +1,10 @@
 <template>
     <div id="map-view">
+      <v-app>
         <Map/>
         <FloorSwitchButton/>
         <!-- <SpotInfo/> -->
+      </v-app>
     </div>
 </template>
 
