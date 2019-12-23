@@ -5,8 +5,8 @@ import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper';
 import 'leaflet/dist/leaflet.css';
 import L, { LeafletEvent, TileLayer } from 'leaflet';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
-import CurrentLocationMarker from '@/CurrentLocationMarker';
-import DefaultSpotMarker from '@/DefaultSpotMarker';
+import CurrentLocationMarker from '@/components/Map/Marker/CurrentLocationMarker';
+import DefaultSpotMarker from '@/components/Map/Marker/DefaultSpotMarker';
 
 @Component
 export default class Map extends Vue {
