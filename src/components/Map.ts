@@ -40,7 +40,8 @@ export default class Map extends Vue {
         ).addTo(this.map);
 
         // 初期スポット配置，displayLevelを変更するコールバックをテスト用に登録
-        this.updateDisplayOfSpotMarkers(mapViewStore.rootMapId);
+        const rootMapSpots = mapViewStore.getSpotsForMap(mapViewStore.rootMapId);
+        this.displaySpotMarkers(rootMapSpots);
 
         // sampleMapのポリゴン表示
         // $nextTick()はテスト実行時のエラーを回避するために使用しています．
@@ -66,33 +67,23 @@ export default class Map extends Vue {
     }
 
     /**
-     * 引数のnewSpotsの座標にマーカーを作成し，spotMarkersに入れる
-     * @param newSpots 新しく表示したいスポットの配列
-     * @return マーカーの配列
-     */
-    private createMarkers(newSpots: SpotForMap[]): L.Marker[] {
-        const coordinates: Coordinate[] = newSpots.map((spot: SpotForMap) => spot.coordinate);
-        return coordinates.map((coord: Coordinate) => new DefaultSpotMarker(coord));
-    }
-
-    /**
      * ズームレベルや階層が変更された際のマーカー表示切り替え
-     * @param 新しく表示するマップのid
+     * @param 新しく表示するスポットの配列
      */
-    private updateDisplayOfSpotMarkers(mapId: number): void {
+    private displaySpotMarkers(spotsToDisplay: SpotForMap[]): void {
         // removeしてから取り除かないと描画から消えない
         this.spotMarkers.forEach((marker: L.Marker) => marker.remove());
-        const markersToDisplay: SpotForMap[] = mapViewStore.getSpotsForMap(mapId);
-        this.spotMarkers = this.createMarkers(markersToDisplay);
+        const coordinates: Coordinate[] = spotsToDisplay.map((spot: SpotForMap) => spot.coordinate);
+        this.spotMarkers = coordinates.map((coord: Coordinate) => new DefaultSpotMarker(coord));
         this.addMarkersToMap(this.spotMarkers);
     }
 
     /**
-     * マーカーをマップに追加する．テストで
+     * マーカーをマップに追加する．単体テストでモックするためにdisplaySpotMarkersから分離
      * @param マップに追加するマーカーの配列
      */
-    private addMarkersToMap(objectToAdd: L.Marker[]) {
-        objectToAdd.map((marker: L.Marker) => marker.addTo(this.map));
+    private addMarkersToMap(markersToAdd: L.Marker[]) {
+        markersToAdd.map((marker: L.Marker) => marker.addTo(this.map));
     }
 
     /**
