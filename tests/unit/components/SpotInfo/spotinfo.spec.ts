@@ -1,6 +1,6 @@
 import { createLocalVue, shallowMount } from '@vue/test-utils';
 import Vuex from 'vuex';
-import SpotInfo from '@/components/SpotInfo';
+import SpotInfo from '@/components/SpotInfo/index.vue';
 
 const state = {
     currentSpotID: null,

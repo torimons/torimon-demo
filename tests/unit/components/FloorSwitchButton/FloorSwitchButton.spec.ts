@@ -2,7 +2,7 @@ import { mapViewStore } from '@/store/modules/MapViewModule';
 import { MapViewState } from '@/store/types';
 import { createLocalVue, mount } from '@vue/test-utils';
 import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper';
-import FloorSwitchButton from '@/components/FloorSwitchButton';
+import FloorSwitchButton from '@/components/FloorSwitchButton/index.vue';
 import 'leaflet/dist/leaflet.css';
 import { cloneDeep } from 'lodash';
 import { testMapViewState } from '../../../resources/testMapViewState';

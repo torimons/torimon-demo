@@ -1,5 +1,5 @@
 import { mapViewStore } from '@/store/modules/MapViewModule';
-import map from '@/components/Map';
+import map from '@/components/Map/index.vue';
 import { MapViewState } from '@/store/types';
 import { FeatureCollection } from 'geojson';
 import { shallowMount } from '@vue/test-utils';
