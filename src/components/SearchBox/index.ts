@@ -1,7 +1,13 @@
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Watch, Vue } from 'vue-property-decorator';
 import { mdiAccount } from '@mdi/js';
 
 @Component
 export default class SearchBox extends Vue {
-    private userInput: string = '';
+    public searchWord: string = '';
+
+    // バインドの確認用
+    @Watch('searchWord')
+    private hoge(): void {
+        console.log(this.searchWord);
+    }
 }

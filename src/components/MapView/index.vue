@@ -1,7 +1,7 @@
 <template>
     <div id="map-view">
       <v-app>
-        <!-- <Map/> -->
+        <Map/>
         <FloorSwitchButton/>
         <SearchBox/>
         <!-- <SpotInfo/> -->
@@ -18,7 +18,7 @@ import FloorSwitchButton from '@/components/FloorSwitchButton/index.vue';
 
 @Component({
     components: {
-        //Map,
+        Map,
         // SpotInfo,
         FloorSwitchButton,
         SearchBox,

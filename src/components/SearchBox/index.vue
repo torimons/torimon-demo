@@ -7,6 +7,7 @@
                         <v-icon>keyboard_arrow_left</v-icon>
                     </v-btn>
                     <v-text-field
+                        v-model='searchWord'
                         placeholder="ここで検索できます"
                         clearable
                     ></v-text-field>
