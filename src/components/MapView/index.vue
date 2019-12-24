@@ -12,9 +12,9 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Map from '@/components/Map/index.vue';
-// import SearchBox from '@/components/SearchBox/index.vue';
 // import SpotInfo from './SpotInfo.vue';
 import FloorSwitchButton from '@/components/FloorSwitchButton/index.vue';
+// import SearchBox from '@/components/SearchBox/index.vue';
 
 @Component({
     components: {

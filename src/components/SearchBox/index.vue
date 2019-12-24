@@ -1,6 +1,6 @@
 <template>
     <div id="search-box">
-        <v-form>
+        <v-form @submit.prevent>
             <v-container>
                 <v-row>
                     <v-btn >
