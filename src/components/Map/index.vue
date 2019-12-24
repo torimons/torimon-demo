@@ -4,7 +4,7 @@
     </div>
 </template>
 
-<script lang='ts' src='./Map.ts'/>
+<script lang='ts' src='./index.ts'/>
 
 
 <!-- Add 'scoped' attribute to limit CSS to this component only -->
