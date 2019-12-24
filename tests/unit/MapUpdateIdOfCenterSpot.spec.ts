@@ -1,5 +1,5 @@
 import { mapViewStore } from '@/store/modules/MapViewModule';
-import map from '@/components/Map.vue';
+import map from '@/components/Map/index.vue';
 import { MapViewState, Spot, Coordinate } from '@/store/types';
 import { shallowMount } from '@vue/test-utils';
 import { cloneDeep } from 'lodash';
