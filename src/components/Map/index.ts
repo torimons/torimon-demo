@@ -1,9 +1,9 @@
 import { Component, Vue } from 'vue-property-decorator';
-import { mapViewStore } from '@/store/modules/MapViewModule';
+import { mapViewStore, MapViewModule } from '@/store/modules/MapViewModule';
 import { SpotForMap, Coordinate, Bounds } from '@/store/types';
 import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper';
 import 'leaflet/dist/leaflet.css';
-import L, { LeafletEvent, TileLayer } from 'leaflet';
+import L, { LeafletEvent, TileLayer, Polyline } from 'leaflet';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
 import CurrentLocationMarker from '@/components/Map/Marker/CurrentLocationMarker';
 import DefaultSpotMarker from '@/components/Map/Marker/DefaultSpotMarker';
@@ -16,6 +16,26 @@ export default class Map extends Vue {
     private zoomLevel: number = 15;
     private tileLayer!: L.TileLayer;
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
+    private routeLines?: L.Polyline[];
+    private routeLayer?: L.Layer;
+    private defaultSpotIcon: L.Icon = L.icon({
+        iconUrl: 'http://localhost:8081/leaflet/icons/marker-icon-2x.png',
+        iconSize: [50, 82],
+        iconAnchor: [25, 80],
+        popupAnchor: [-3, -76],
+        shadowSize: [68, 95],
+        shadowAnchor: [22, 94],
+        className: 'spot',
+    });
+    private currentLocationIcon: L.Icon = L.icon({
+        iconUrl: 'http://localhost:8081/leaflet/icons/currentLocation.png',
+        iconSize: [50, 50],
+        iconAnchor: [25, 25],
+        popupAnchor: [0, 0],
+        shadowSize: [68, 95],
+        shadowAnchor: [22, 94],
+        className: 'currentLocation',
+    });
     private spotMarkers: L.Marker[] = [];
     private currentLocationMarker: CurrentLocationMarker = new CurrentLocationMarker([0, 0]);
     private zoomLevelThreshold: number = 19; // とりあえず仮で閾値決めてます
@@ -45,6 +65,10 @@ export default class Map extends Vue {
         this.$nextTick().then(() => {
             // 現状mapIdのgetterがないため直接指定しています．
             this.displayPolygons(mapViewStore.rootMapId);
+            // 経路（エッジ）表示
+            this.displayRouteLines(mapViewStore.getNodesForNavigation([]));
+            // 経路レイヤーが消去されているか確認
+            // this.routeLines = this.displayRouteLines([]);
         });
         this.currentLocationMarker.addTo(this.map);
 
@@ -153,5 +177,30 @@ export default class Map extends Vue {
             },
         });
         this.map.addLayer(this.polygonLayer);
+    }
+
+    /**
+     * 指定された経由地の配列を受け取りを経路として表示する
+     * @param wayPoints: 2点間の経路の経由地（配列）の配列
+     */
+    private displayRouteLines(wayPoints: Coordinate[][]): void {
+        if (this.routeLayer !== undefined) {
+            this.map.removeLayer(this.routeLayer);
+        }
+        this.routeLines = wayPoints.map((wayPoint: Coordinate[]) => (L.polyline(wayPoint, {
+                color: '#555555',
+                weight: 5,
+                opacity: 0.7,
+            })));
+        this.routeLayer = L.layerGroup(this.routeLines);
+        this.addRouteToMap(this.routeLayer);
+    }
+
+    /**
+     * 経路をmapに追加する
+     * @param routeLayer: mapに追加する経路のレイヤー
+     */
+    private addRouteToMap(routeLayer: L.Layer): void {
+        this.map.addLayer(routeLayer);
     }
 }
