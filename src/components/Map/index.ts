@@ -1,12 +1,12 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { mapViewStore, MapViewModule } from '@/store/modules/MapViewModule';
 import { SpotForMap, Coordinate, Bounds } from '@/store/types';
-import { GeolocationWrapper } from '@/components/GeolocationWrapper.ts';
+import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper';
 import 'leaflet/dist/leaflet.css';
 import L, { LeafletEvent, TileLayer, Polyline } from 'leaflet';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
-import CurrentLocationMarker from '@/CurrentLocationMarker';
-import DefaultSpotMarker from '@/DefaultSpotMarker';
+import CurrentLocationMarker from '@/components/Map/Marker/CurrentLocationMarker';
+import DefaultSpotMarker from '@/components/Map/Marker/DefaultSpotMarker';
 
 @Component
 export default class Map extends Vue {

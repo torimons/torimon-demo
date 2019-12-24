@@ -1,11 +1,11 @@
 import { mapViewStore } from '@/store/modules/MapViewModule';
 import { MapViewState } from '@/store/types';
 import { createLocalVue, mount } from '@vue/test-utils';
-import { GeolocationWrapper } from '@/components/GeolocationWrapper';
-import FloorSwitchButton from '@/components/FloorSwitchButton.vue';
+import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper';
+import FloorSwitchButton from '@/components/FloorSwitchButton/index.vue';
 import 'leaflet/dist/leaflet.css';
 import { cloneDeep } from 'lodash';
-import { testMapViewState } from '../../resources/testMapViewState';
+import { testMapViewState } from '../../../resources/testMapViewState';
 import Vuetify from 'vuetify';
 
 const mapViewStoreTestData: MapViewState = cloneDeep(testMapViewState);

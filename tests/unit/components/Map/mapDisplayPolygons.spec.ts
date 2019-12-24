@@ -1,11 +1,11 @@
 import { mapViewStore } from '@/store/modules/MapViewModule';
-import map from '@/components/Map.vue';
+import map from '@/components/Map/index.vue';
 import { MapViewState } from '@/store/types';
 import { FeatureCollection } from 'geojson';
 import { shallowMount } from '@vue/test-utils';
 import { cloneDeep } from 'lodash';
-import { testMapViewState } from '../../resources/testMapViewState';
-import { GeolocationWrapper } from '@/components/GeolocationWrapper.ts';
+import { testMapViewState } from '../../../resources/testMapViewState';
+import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper';
 
 const mapViewStateTestData: MapViewState = cloneDeep(testMapViewState);
 
