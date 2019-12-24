@@ -15,7 +15,7 @@ export default class Search {
      */
     private getSearchResultOfSpots(keyword: string): Spot[] {
         const resultSpots: Spot[] = this.targetSpotsForSearch.filter((s: Spot) => {
-            return s.name === keyword;
+            return s.name.match(keyword);
         });
         return resultSpots;
     }
