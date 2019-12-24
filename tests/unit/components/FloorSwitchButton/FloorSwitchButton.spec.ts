@@ -37,7 +37,7 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
     it('updateLastViewedDetailMapIdOnClickでlastViewedDetailMapIdを更新する', () => {
         // 中心付近にスポットが存在しない場合
         // ボタンが表示されないため実際に実行される予定はないがテスト
-        mapViewStore.setNonExistentOfCenterSpotWithDetailMap();
+        mapViewStore.setNonExistentOfCenterSpotInRootMap();
         wrapper.vm.updateLastViewedDetailMapIdOnClick('1F');
         const actualLastViewedDetailMapIdWithNoSpot: number | null =
             mapViewStore.getLastViewedDetailMapId({
@@ -47,7 +47,7 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
         expect(actualLastViewedDetailMapIdWithNoSpot).toBe(null);
 
         // 中心付近に詳細マップ持ちスポットがある場合
-        mapViewStore.setIdOfCenterSpotWithDetailMap(0);
+        mapViewStore.setIdOfCenterSpotInRootMap(0);
         const floorName: string = '2F';
         wrapper.vm.updateLastViewedDetailMapIdOnClick(floorName);
         const expectedLastViewedDetailMapId: number = 2;
@@ -62,12 +62,12 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
     it('中心付近のスポットの切り替わりに合わせて階層ボタンの内容を切り替える', () => {
         // 中心付近にrootMapの詳細マップ持ちスポットが存在する場合．
         // まだ一度も参照されていないスポットの場合，初期階が選択された状態となる．
-        mapViewStore.setIdOfCenterSpotWithDetailMap(0);
+        mapViewStore.setIdOfCenterSpotInRootMap(0);
         expect(wrapper.vm.floorNames).toEqual(['2F', '1F']);
         expect(wrapper.vm.floorMapIds).toEqual([2, 1]);
         expect(wrapper.vm.selectedFloorButtonIndex).toBe(1);
         // 中心付近にrootMapのスポットが存在するが，詳細マップを持たない場合．
-        mapViewStore.setIdOfCenterSpotWithDetailMap(1);
+        mapViewStore.setIdOfCenterSpotInRootMap(1);
         expect(wrapper.vm.floorNames).toEqual([]);
         expect(wrapper.vm.floorMapIds).toEqual([]);
         expect(wrapper.vm.selectedFloorButtonIndex).toBe(undefined);
@@ -81,13 +81,13 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
             },
         };
         mapViewStore.setLastViewedDetailMapId(payload);
-        mapViewStore.setIdOfCenterSpotWithDetailMap(0);
+        mapViewStore.setIdOfCenterSpotInRootMap(0);
         expect(wrapper.vm.floorNames).toEqual(['2F', '1F']);
         expect(wrapper.vm.floorMapIds).toEqual([2, 1]);
         expect(wrapper.vm.selectedFloorButtonIndex).toBe(0);
 
         // 中心付近にrootMapのスポットが存在しない場合．
-        mapViewStore.setNonExistentOfCenterSpotWithDetailMap();
+        mapViewStore.setNonExistentOfCenterSpotInRootMap();
         expect(wrapper.vm.floorNames).toEqual([]);
         expect(wrapper.vm.floorMapIds).toEqual([]);
         expect(wrapper.vm.selectedFloorButtonIndex).toBe(undefined);
@@ -108,7 +108,7 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
         expect(wrapper.find('.v-btn').exists()).toBe(false);
         // 詳細マップレベルかつ，rootMapに属するスポットが中心に近いとき表示される
         mapViewStore.setDisplayLevel('detail');
-        mapViewStore.setIdOfCenterSpotWithDetailMap(0);
+        mapViewStore.setIdOfCenterSpotInRootMap(0);
         expect(wrapper.find('.v-btn').exists()).toBe(true);
     });
 

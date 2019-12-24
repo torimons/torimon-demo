@@ -58,13 +58,13 @@ describe('store/modules/MapViewModule.ts', () => {
 
     it('spotHasDetailMaps()で詳細マップを持つかどうかを判定する', () => {
         // 詳細マップを持っている場合
-        const expectedValWithDetailMaps: boolean = true;
-        const targetSpotWithDetailMaps = {
+        const expectedValtInRootMaps: boolean = true;
+        const targetSpottInRootMaps = {
             parentMapId: 0,
             spotId: 0,
         };
-        const actualValWithDetailMaps: boolean = mapViewStore.spotHasDetailMaps(targetSpotWithDetailMaps);
-        expect(actualValWithDetailMaps).toBe(expectedValWithDetailMaps);
+        const actualValtInRootMaps: boolean = mapViewStore.spotHasDetailMaps(targetSpottInRootMaps);
+        expect(actualValtInRootMaps).toBe(expectedValtInRootMaps);
 
         // 詳細マップを持っていない場合
         const expectedValWithoutDetailMaps: boolean = false;
@@ -186,7 +186,7 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(mapViewStore.idOfCenterSpotInRootMap).toBe(expectedIdOfCenterSpotInRootMap);
     });
 
-    it('setNonExistentOfCenterSpotWithDetailMap()でmapViewStoreのIdOfCenterSpotInRootMapにnullが登録されている', () => {
+    it('setNonExistentOfCenterSpottInRootMap()でmapViewStoreのIdOfCenterSpotInRootMapにnullが登録されている', () => {
         mapViewStore.setNonExistentOfCenterSpotInRootMap();
         expect(mapViewStore.idOfCenterSpotInRootMap).toBe(null);
     });
