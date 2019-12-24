@@ -2,10 +2,15 @@
     <div id="search-box">
         <v-form>
             <v-container>
-                <v-text-field
-                    placeholder="ここで検索できます"
-                    clearable
-                ></v-text-field>
+                <v-row>
+                    <v-btn >
+                        <v-icon>keyboard_arrow_left</v-icon>
+                    </v-btn>
+                    <v-text-field
+                        placeholder="ここで検索できます"
+                        clearable
+                    ></v-text-field>
+                </v-row>
             </v-container>
         </v-form>
     </div>
