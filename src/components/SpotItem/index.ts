@@ -8,4 +8,6 @@ export default class SpotItem extends Vue {
     private spotName!: string;
     @Prop()
     private distance!: number;
+    @Prop()
+    private spotId!: number;
 }
