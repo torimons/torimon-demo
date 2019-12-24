@@ -53,22 +53,6 @@ export const testMapViewState: MapViewState = {
                 },
                 {
                     id: 1,
-                    name: 'SpotForTest',
-                    coordinate: {
-                        lat: 33.595502,
-                        lng: 130.218238,
-                    },
-                    shape: {
-                        type: 'Polygon',
-                        coordinates: [[[]]],
-                    },
-                    gateNodeIds: [],
-                    detailMapIds: [],
-                    detailMapLevelNames: [],
-                    lastViewedDetailMapId: null,
-                },
-                {
-                    id: 1,
                     name: 'SougouGakusyuPlaza',
                     coordinate: {
                         lat: 33.595502,
