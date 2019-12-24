@@ -79,7 +79,8 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * @return マップの範囲
      */
     get rootMapBounds(): Bounds {
-        return this.maps[this.rootMapId].bounds;
+        const rootMapIndex: number = this.maps.findIndex((m: Map) => m.id === this.rootMapId);
+        return this.maps[rootMapIndex].bounds;
     }
 
     /**
@@ -90,7 +91,8 @@ export class MapViewModule extends VuexModule implements MapViewState {
      */
     get getSpotsForMap() {
         return (mapId: number): SpotForMap[] => {
-            const spots: Spot[] = this.maps[mapId].spots;
+            const mapIndex: number = this.maps.findIndex((m: Map) => m.id === mapId);
+            const spots: Spot[] = this.maps[mapIndex].spots;
             const spotsForMap: SpotForMap[] = [];
             spots.forEach((spot) => {
                 spotsForMap.push({
@@ -109,7 +111,9 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * @return SpotInfoコンポーネントに必要な情報
      */
     get infoOfFocusedSpot(): SpotInfo {
-        const spot: Spot = this.maps[this.focusedSpot.mapId].spots[this.focusedSpot.spotId];
+        const parentMapId: number = this.focusedSpot.mapId;
+        const spotId: number = this.focusedSpot.spotId;
+        const spot: Spot = getSpotById(this.maps, {parentMapId, spotId});
         const spotInfo: SpotInfo = {
             name:  spot.name,
         };

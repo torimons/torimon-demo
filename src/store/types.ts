@@ -40,7 +40,7 @@ export interface Spot {
     shape?: Shape;
     gateNodeIds: number[];
     detailMapIds: number[];
-    detailMapLevelNames?: string[];
+    detailMapLevelNames: string[];
     lastViewedDetailMapId: number | null;
     others?: any;
 }
