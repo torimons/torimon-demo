@@ -19,7 +19,7 @@ function setReturnOfGetCenter(c: Coordinate): (() => {}) {
     }));
 }
 
-describe('mapコンポーネントのポリゴン表示', () => {
+describe('中央に最も近いスポットの取得，およびその更新のテスト', () => {
     let wrapper: any;
     beforeEach(() => {
         // テスト用データをstoreにセット
