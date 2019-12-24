@@ -4,29 +4,39 @@ import { MapViewState } from '@/store/types';
 import { FeatureCollection } from 'geojson';
 import { shallowMount } from '@vue/test-utils';
 import { cloneDeep } from 'lodash';
-import { testMapViewState } from '../resources/testMapViewState';
+import { testMapViewState } from '../../resources/testMapViewState';
 import { GeolocationWrapper } from '@/components/GeolocationWrapper.ts';
 
 const mapViewStateTestData: MapViewState = cloneDeep(testMapViewState);
 
 const expectedGeoJsonObject: FeatureCollection = {
     type: 'FeatureCollection',
-    features: [{
-        properties: {},
-        type: 'Feature',
-        geometry: {
-            type: 'Polygon',
-            coordinates: [[
-                [ 130.21780639886853, 33.59551018989406  ],
-                [ 130.21791100502014, 33.595199637596735 ],
-                [ 130.2181014418602,  33.59524655564143  ],
-                [ 130.21809339523315, 33.59527783432369  ],
-                [ 130.21865129470825, 33.59543869593907  ],
-                [ 130.2185171842575,  33.595715734684546 ],
-                [ 130.21780639886853, 33.59551018989406  ],
-            ]],
+    features: [
+        {
+            properties: {},
+            type: 'Feature',
+            geometry: {
+                type: 'Polygon',
+                coordinates: [[
+                    [ 130.21780639886853, 33.59551018989406  ],
+                    [ 130.21791100502014, 33.595199637596735 ],
+                    [ 130.2181014418602,  33.59524655564143  ],
+                    [ 130.21809339523315, 33.59527783432369  ],
+                    [ 130.21865129470825, 33.59543869593907  ],
+                    [ 130.2185171842575,  33.595715734684546 ],
+                    [ 130.21780639886853, 33.59551018989406  ],
+                ]],
+            },
         },
-    }],
+        {
+            properties: {},
+            type: 'Feature',
+            geometry: {
+                type: 'Polygon',
+                coordinates: [[[]]],
+            },
+        },
+    ],
 };
 
 

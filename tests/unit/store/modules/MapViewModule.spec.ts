@@ -36,6 +36,12 @@ describe('store/modules/MapViewModule.ts', () => {
                 coordinate: expectedMapViewState.maps[0].spots[0].coordinate,
                 shape:    expectedMapViewState.maps[0].spots[0].shape,
             },
+            {
+                id:       expectedMapViewState.maps[0].spots[1].id,
+                name:     expectedMapViewState.maps[0].spots[1].name,
+                coordinate: expectedMapViewState.maps[0].spots[1].coordinate,
+                shape:    expectedMapViewState.maps[0].spots[1].shape,
+            },
         ];
         expect(actualSpotsForMap).toEqual(expectedSpotsForMap);
     });

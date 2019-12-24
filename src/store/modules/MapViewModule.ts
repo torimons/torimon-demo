@@ -1,6 +1,6 @@
 import { Mutation, VuexModule, getModule, Module } from 'vuex-module-decorators';
 import store from '@/store';
-import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds, DisplayLevelType } from '@/store/types';
+import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds, DisplayLevelType, Coordinate, Node } from '@/store/types';
 import { sampleMaps } from '@/store/modules/sampleMaps';
 import { NoDetailMapsError } from '../errors/NoDetailMapsError';
 import { NoDetailMapIdInSpotError } from '../errors/NoDetailMapIdInSpotError';
@@ -79,7 +79,8 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * @return マップの範囲
      */
     get rootMapBounds(): Bounds {
-        return this.maps[this.rootMapId].bounds;
+        const rootMapIndex: number = this.maps.findIndex((m: Map) => m.id === this.rootMapId);
+        return this.maps[rootMapIndex].bounds;
     }
 
     /**
@@ -90,7 +91,8 @@ export class MapViewModule extends VuexModule implements MapViewState {
      */
     get getSpotsForMap() {
         return (mapId: number): SpotForMap[] => {
-            const spots: Spot[] = this.maps[mapId].spots;
+            const mapIndex: number = this.maps.findIndex((m: Map) => m.id === mapId);
+            const spots: Spot[] = this.maps[mapIndex].spots;
             const spotsForMap: SpotForMap[] = [];
             spots.forEach((spot) => {
                 spotsForMap.push({
@@ -109,7 +111,9 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * @return SpotInfoコンポーネントに必要な情報
      */
     get infoOfFocusedSpot(): SpotInfo {
-        const spot: Spot = this.maps[this.focusedSpot.mapId].spots[this.focusedSpot.spotId];
+        const parentMapId: number = this.focusedSpot.mapId;
+        const spotId: number = this.focusedSpot.spotId;
+        const spot: Spot = getSpotById(this.maps, {parentMapId, spotId});
         const spotInfo: SpotInfo = {
             name:  spot.name,
         };
@@ -194,6 +198,81 @@ export class MapViewModule extends VuexModule implements MapViewState {
     get getIdOfCenterSpotWithDetailMap() {
         return (): number | null => {
             return this.idOfCenterSpotWithDetailMap;
+        };
+    }
+
+     /* 経由するノードidの配列を入力することで経路となるノードの配列を取得
+     * @param nodeIds: 経路となるノードidの配列
+     * @return nodesForNavigation: 経路となるノードの配列
+     */
+    get getNodesForNavigation() {
+        return (nodeIds: number[]): Coordinate[][] => {
+            // getterの中身は経路探索に依存しているため、現状テスト用のものを使用
+            // ノードidの配列を入力として必要なノードを検索、配列として返すメソッドが必要
+            const testRoutes: Node[][] = [[
+                {
+                    id: 0,
+                    mapId: 0,
+                    spotId: 0,
+                    coordinate: {
+                        lat: 33.595502,
+                        lng: 130.218238,
+                    },
+                },
+                {
+                    id: 1,
+                    mapId: 0,
+                    spotId: 1,
+                    coordinate: {
+                    lat: 33.596502,
+                    lng: 130.218238,
+                    },
+                },
+                {
+                    id: 2,
+                    mapId: 0,
+                    spotId: 2,
+                    coordinate: {
+                    lat: 33.596502,
+                    lng: 130.219238,
+                    },
+                },
+            ],
+            [
+                {
+                    id: 0,
+                    mapId: 0,
+                    spotId: 0,
+                    coordinate: {
+                        lat: 33.595502,
+                        lng: 130.218238,
+                    },
+                },
+                {
+                    id: 2,
+                    mapId: 0,
+                    spotId: 2,
+                    coordinate: {
+                    lat: 33.596502,
+                    lng: 130.219238,
+                    },
+                },
+                {
+                    id: 1,
+                    mapId: 0,
+                    spotId: 1,
+                    coordinate: {
+                    lat: 33.596502,
+                    lng: 130.218238,
+                    },
+                },
+            ]];
+            const nodesForNavigation: Coordinate[][] = [];
+            testRoutes.forEach((route: Node[]) => {
+                const wayPoints: Coordinate[] = route.map((wayPoint: Node) => wayPoint.coordinate);
+                nodesForNavigation.push(wayPoints);
+            });
+            return nodesForNavigation;
         };
     }
 
