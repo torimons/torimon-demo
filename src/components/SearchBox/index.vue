@@ -21,7 +21,7 @@
     left: 10px;
     top: 10px;
     z-index: 1000;
-    background-color: white;
+    /* background-color: white; */
 }
 
 </style>
