@@ -29,8 +29,10 @@ describe('mapコンポーネントの経路表示', () => {
         wrapper.vm.displayRouteLines(testData);
         const actualRouteLines: L.Polyline[] = wrapper.vm.routeLines;
         // LatLngsに対してのテスト
-        const expectedLatlngs: (LatLng[] | LatLng[][] | LatLng[][][])[] = expectedRouteLines.map((expectedRouteLine: L.Polyline) => expectedRouteLine.getLatLngs());
-        const actualLatlngs: (LatLng[] | LatLng[][] | LatLng[][][])[] = actualRouteLines.map((actualRouteLine: L.Polyline) => actualRouteLine.getLatLngs());
+        const expectedLatlngs: Array<LatLng[] | LatLng[][] | LatLng[][][]>
+            = expectedRouteLines.map((expectedRouteLine: L.Polyline) => expectedRouteLine.getLatLngs());
+        const actualLatlngs: Array<LatLng[] | LatLng[][] | LatLng[][][]>
+            = actualRouteLines.map((actualRouteLine: L.Polyline) => actualRouteLine.getLatLngs());
         expect(actualLatlngs).toStrictEqual(expectedLatlngs);
         // optionsに対してのテスト
         const expectedOptions = expectedRouteLines.map((expectedRouteLine: L.Polyline) => expectedRouteLine.options);
