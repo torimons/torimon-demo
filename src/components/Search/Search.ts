@@ -2,10 +2,10 @@ import { Spot } from '@/store/types';
 
 export default class Search {
 
-    private searchTargetSpots: Spot[];
+    private targetSpotsForSearch: Spot[];
 
     constructor(spots: Spot[]) {
-        this.searchTargetSpots = spots;
+        this.targetSpotsForSearch = spots;
     }
 
     /**
@@ -13,10 +13,10 @@ export default class Search {
      * @param keyword スポット検索ワード
      * @return 検索にかかったスポットのリスト
      */
-    private getSearchResultOfSpots(keyword :string): Spot[] {
-        const resultSpots: Spot[] = this.searchTargetSpots.filter((s: Spot) => {
+    private getSearchResultOfSpots(keyword: string): Spot[] {
+        const resultSpots: Spot[] = this.targetSpotsForSearch.filter((s: Spot) => {
             return s.name === keyword;
-        })
+        });
         return resultSpots;
     }
 }
