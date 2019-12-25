@@ -1,6 +1,7 @@
 <template>
     <div id="SpotSearch">
         <v-app>
+            <!-- PropでSpotListにデータを渡す -->
         </v-app>
     </div>
 </template>

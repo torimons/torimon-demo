@@ -13,9 +13,12 @@ import { mapViewStore } from '@/store/modules/MapViewModule';
 export default class SpotSearch extends Vue {
     private searchWord!: string;
     private spotListIsVisible: boolean = false;
+    private targetSpot: Spot[] = [];
+    private spotSearchResults: Spot[] = [];
 
     public mounted() {
-        // 全てのマップからスポットを取得する
+        // 全てのマップからスポットを取得し，検索対象に追加する
+        // this.targetSpot.push()
     }
 
     /**
@@ -24,6 +27,14 @@ export default class SpotSearch extends Vue {
      */
     public setSpotListIsVisible(isVisible: boolean) {
         // set
+    }
+
+    /**
+     * 検索文字列をセットする
+     * @param searchWord 検索文字列
+     */
+    public setSearchWord(searchWord: string) {
+        this.searchWord = searchWord;
     }
 
     /**
