@@ -1,7 +1,7 @@
 import { Mutations } from 'vuex-smart-module';
 import { MapViewState } from './MapViewState';
 import { Map, Spot, DisplayLevelType } from '@/store/types';
-import { NoDetailMapIdInSpotError } from '../errors/NoDetailMapIdInSpotError';
+import { NoDetailMapIdInSpotError } from '@/store/errors/NoDetailMapIdInSpotError';
 import { mapViewGetters } from '@/store';
 
 export class MapViewMutations extends Mutations<MapViewState> {

@@ -1,9 +1,9 @@
 import { Getters } from 'vuex-smart-module';
 import { MapViewState } from './MapViewState';
 import { Map, Spot, SpotInfo, SpotForMap, Bounds, DisplayLevelType, Coordinate, Node } from '@/store/types';
-import { NoDetailMapsError } from '../errors/NoDetailMapsError';
-import { MapNotFoundError } from '../errors/MapNotFoundError';
-import { SpotNotFoundError } from '../errors/SpotNotFoundError';
+import { NoDetailMapsError } from '@/store/errors/NoDetailMapsError';
+import { MapNotFoundError } from '@/store/errors/MapNotFoundError';
+import { SpotNotFoundError } from '@/store/errors/SpotNotFoundError';
 
 
 export class MapViewGetters extends Getters<MapViewState> {
