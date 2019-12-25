@@ -1,7 +1,7 @@
 import { Map, DisplayLevelType } from '@/store/types';
 import { sampleMaps } from '@/store/modules/sampleMaps';
 
-export default class MapViewState {
+export class MapViewState {
     /**
      * 複数のマップの情報を持つ
      * - 大元の地図と各スポットの持つ
