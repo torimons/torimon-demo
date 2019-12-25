@@ -53,14 +53,43 @@ export const testMapViewState: MapViewState = {
                 },
                 {
                     id: 1,
-                    name: 'SpotForTest',
+                    name: 'SougouGakusyuPlaza',
                     coordinate: {
                         lat: 33.595502,
-                        lng: 130.218238,
+                        lng: 130.700008,
                     },
                     shape: {
                         type: 'Polygon',
-                        coordinates: [[[]]],
+                        coordinates: [[
+                            [
+                                130.21780639886853,
+                                33.59551018989406,
+                            ],
+                            [
+                                130.21791100502014,
+                                33.595199637596735,
+                            ],
+                            [
+                                130.2181014418602,
+                                33.59524655564143,
+                            ],
+                            [
+                                130.21809339523315,
+                                33.59527783432369,
+                            ],
+                            [
+                                130.21865129470825,
+                                33.59543869593907,
+                            ],
+                            [
+                                130.2185171842575,
+                                33.595715734684546,
+                            ],
+                            [
+                                130.21780639886853,
+                                33.59551018989406,
+                            ],
+                        ]],
                     },
                     gateNodeIds: [],
                     detailMapIds: [],
@@ -172,6 +201,6 @@ export const testMapViewState: MapViewState = {
     },
     spotInfoIsVisible: false,
     displayLevel: 'default',
-    idOfCenterSpotWithDetailMap: null,
+    idOfCenterSpotInRootMap: null,
 };
 

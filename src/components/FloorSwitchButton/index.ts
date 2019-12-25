@@ -30,7 +30,7 @@ export default class FloorSwitchButton extends Vue {
         const index: number = this.floorNames.findIndex((name) => name === floorName);
         const lastViewedDetailMapId: number = this.floorMapIds[index];
         const parentMapId: number = mapViewStore.rootMapId;
-        const spotId: number | null = mapViewStore.idOfCenterSpotWithDetailMap;
+        const spotId: number | null = mapViewStore.idOfCenterSpotInRootMap;
         if (spotId === null) {
             return;
         }
@@ -47,15 +47,15 @@ export default class FloorSwitchButton extends Vue {
     /**
      * changeButtonContentで監視するプロパティ
      */
-    get idOfCenterSpotWithDetailMap(): number | null {
-        return mapViewStore.idOfCenterSpotWithDetailMap;
+    get idOfCenterSpotInRootMap(): number | null {
+        return mapViewStore.idOfCenterSpotInRootMap;
     }
 
     /**
      * 画面中央の詳細マップ持ちスポットに合わせて階層切り替えボタンの内容を更新する．
      * 下の階が下に表示されるようにセットする．
      */
-    @Watch('idOfCenterSpotWithDetailMap')
+    @Watch('idOfCenterSpotInRootMap')
     private updateContentOfFloorSwitchButton(newCenterSpotId: number | null, oldCenterSpotId: number | null): void {
         const parentMapId: number = mapViewStore.rootMapId;
         const spotId: number | null = newCenterSpotId;
