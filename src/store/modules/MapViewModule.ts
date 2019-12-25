@@ -42,7 +42,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      */
     public maps: Map[] = sampleMaps;
 
-    /**
+    /*
      * 大元の親のMapのID
      */
     public rootMapId: number = 0;
@@ -67,7 +67,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * スポットのIDを保持する変数
      * 条件に当てはまるスポットがない場合nullを持つ
      */
-    public idOfCenterSpotWithDetailMap: number | null = null;
+    public idOfCenterSpotInRootMap: number | null = null;
 
     /**
      * ズームレベルに応じて切り替わる表示レベルを保持
@@ -195,9 +195,9 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * 条件に当てはまるスポットがない状態である場合nullを返す
      * @return スポットIDかnull
      */
-    get getIdOfCenterSpotWithDetailMap() {
+    get getIdOfCenterSpotInRootMap() {
         return (): number | null => {
-            return this.idOfCenterSpotWithDetailMap;
+            return this.idOfCenterSpotInRootMap;
         };
     }
 
@@ -325,11 +325,11 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * - 半径〇〇内で最も画面中央に近い
      * - 詳細マップを持っている
      * スポットのIDを更新する
-     * @param idOfCenterSpotWithDetailMap 上記のスポットのID
+     * @param idOfCenterSpotInRootMap 上記のスポットのID
      */
     @Mutation
-    public setIdOfCenterSpotWithDetailMap(idOfCenterSpotWithDetailMap: number): void {
-        this.idOfCenterSpotWithDetailMap = idOfCenterSpotWithDetailMap;
+    public setIdOfCenterSpotInRootMap(idOfCenterSpotInRootMap: number): void {
+        this.idOfCenterSpotInRootMap = idOfCenterSpotInRootMap;
     }
 
     /**
@@ -339,8 +339,8 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * スポットが存在していない状態にする
      */
     @Mutation
-    public setNonExistentOfCenterSpotWithDetailMap(): void {
-        this.idOfCenterSpotWithDetailMap = null;
+    public setNonExistentOfCenterSpotInRootMap(): void {
+        this.idOfCenterSpotInRootMap = null;
     }
 
     /**
@@ -355,7 +355,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
         this.spotInfoIsVisible  = newMapViewState.spotInfoIsVisible;
         this.focusedSpot.mapId  = newMapViewState.focusedSpot.mapId;
         this.focusedSpot.spotId = newMapViewState.focusedSpot.spotId;
-        this.idOfCenterSpotWithDetailMap = newMapViewState.idOfCenterSpotWithDetailMap;
+        this.idOfCenterSpotInRootMap = newMapViewState.idOfCenterSpotInRootMap;
         this.displayLevel       = newMapViewState.displayLevel;
     }
 }

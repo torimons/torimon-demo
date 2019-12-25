@@ -58,13 +58,13 @@ describe('store/modules/MapViewModule.ts', () => {
 
     it('spotHasDetailMaps()で詳細マップを持つかどうかを判定する', () => {
         // 詳細マップを持っている場合
-        const expectedValWithDetailMaps: boolean = true;
-        const targetSpotWithDetailMaps = {
+        const expectedValtInRootMaps: boolean = true;
+        const targetSpottInRootMaps = {
             parentMapId: 0,
             spotId: 0,
         };
-        const actualValWithDetailMaps: boolean = mapViewStore.spotHasDetailMaps(targetSpotWithDetailMaps);
-        expect(actualValWithDetailMaps).toBe(expectedValWithDetailMaps);
+        const actualValtInRootMaps: boolean = mapViewStore.spotHasDetailMaps(targetSpottInRootMaps);
+        expect(actualValtInRootMaps).toBe(expectedValtInRootMaps);
 
         // 詳細マップを持っていない場合
         const expectedValWithoutDetailMaps: boolean = false;
@@ -139,9 +139,9 @@ describe('store/modules/MapViewModule.ts', () => {
         }).toThrow(NoDetailMapsError);
     });
 
-    it('stateに登録したidOfCenterSpotWithDetailMapを取得する', () => {
-        const expectedId: number | null = expectedMapViewState.idOfCenterSpotWithDetailMap;
-        expect(mapViewStore.getIdOfCenterSpotWithDetailMap()).toBe(expectedId);
+    it('stateに登録したidOfCenterSpotInRootMapを取得する', () => {
+        const expectedId: number | null = expectedMapViewState.idOfCenterSpotInRootMap;
+        expect(mapViewStore.getIdOfCenterSpotInRootMap()).toBe(expectedId);
     });
 
     it('スポットに存在しない詳細マップをlastViewDetaiMapIdにセットしようとすると例外が発生する', () => {
@@ -180,15 +180,15 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(actualDetailMapId).toBe(expectedDetailMapId);
     });
 
-    it('setIdOfCenterSpotWithDetailMap()でsetしたidOfCenterSpotWithDetailMapがmapViewStoreのstateに登録されている', () => {
-        const expectedIdOfCenterSpotWithDetailMap = 1;
-        mapViewStore.setIdOfCenterSpotWithDetailMap(expectedIdOfCenterSpotWithDetailMap);
-        expect(mapViewStore.idOfCenterSpotWithDetailMap).toBe(expectedIdOfCenterSpotWithDetailMap);
+    it('setIdOfCenterSpotInRootMap()でsetしたIdOfCenterSpotInRootMapがmapViewStoreのstateに登録されている', () => {
+        const expectedIdOfCenterSpotInRootMap = 1;
+        mapViewStore.setIdOfCenterSpotInRootMap(expectedIdOfCenterSpotInRootMap);
+        expect(mapViewStore.idOfCenterSpotInRootMap).toBe(expectedIdOfCenterSpotInRootMap);
     });
 
-    it('setNonExistentOfCenterSpotWithDetailMap()でmapViewStoreのidOfCenterSpotWithDetailMapにnullが登録されている', () => {
-        mapViewStore.setNonExistentOfCenterSpotWithDetailMap();
-        expect(mapViewStore.idOfCenterSpotWithDetailMap).toBe(null);
+    it('setNonExistentOfCenterSpotInRootMap()でmapViewStoreのIdOfCenterSpotInRootMapにnullが登録されている', () => {
+        mapViewStore.setNonExistentOfCenterSpotInRootMap();
+        expect(mapViewStore.idOfCenterSpotInRootMap).toBe(null);
     });
 
     it('setしたnewDisplayLevelがstateに登録されている', () => {
