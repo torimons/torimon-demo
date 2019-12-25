@@ -13,7 +13,7 @@ export default class Search {
      * @param keyword スポット検索ワード
      * @return 検索にかかったスポットのリスト
      */
-    private getSearchResultOfSpots(keyword: string): Spot[] {
+    public getSearchResultOfSpots(keyword: string): Spot[] {
         const resultSpots: Spot[] = this.targetSpotsForSearch.filter((s: Spot) => {
             return s.name.match(keyword);
         });
