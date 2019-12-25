@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { createStore, Module } from 'vuex-smart-module';
-import { MapViewModule } from '@/store/modules/MapViewModule/MapViewModule';
+import { MapViewModule } from '@/store/modules/MapViewModule';
 
 Vue.use(Vuex);
 

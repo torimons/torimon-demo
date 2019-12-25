@@ -1,4 +1,4 @@
-import { Getters, Mutations, Actions, Module } from 'vuex-smart-module';
+import { Module } from 'vuex-smart-module';
 import { MapViewState } from './MapViewState';
 import { MapViewGetters } from './MapViewGetters';
 import { MapViewMutations } from './MapViewMutations';
