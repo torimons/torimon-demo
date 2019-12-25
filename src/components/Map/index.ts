@@ -1,9 +1,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { mapViewGetters, mapViewMutations } from '@/store';
 import { SpotForMap, Coordinate, Bounds, Spot } from '@/store/types';
-import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper';
 import 'leaflet/dist/leaflet.css';
-import L, { LeafletEvent, TileLayer, Polyline } from 'leaflet';
+import L from 'leaflet';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
 import { findNearest, getDistance } from 'geolib';
 import { GeolibInputCoordinates } from 'geolib/es/types';
@@ -21,24 +20,6 @@ export default class Map extends Vue {
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
     private routeLines?: L.Polyline[];
     private routeLayer?: L.Layer;
-    private defaultSpotIcon: L.Icon = L.icon({
-        iconUrl: 'http://localhost:8081/leaflet/icons/marker-icon-2x.png',
-        iconSize: [50, 82],
-        iconAnchor: [25, 80],
-        popupAnchor: [-3, -76],
-        shadowSize: [68, 95],
-        shadowAnchor: [22, 94],
-        className: 'spot',
-    });
-    private currentLocationIcon: L.Icon = L.icon({
-        iconUrl: 'http://localhost:8081/leaflet/icons/currentLocation.png',
-        iconSize: [50, 50],
-        iconAnchor: [25, 25],
-        popupAnchor: [0, 0],
-        shadowSize: [68, 95],
-        shadowAnchor: [22, 94],
-        className: 'currentLocation',
-    });
     private spotMarkers: L.Marker[] = [];
     private currentLocationMarker: CurrentLocationMarker = new CurrentLocationMarker([0, 0]);
     private zoomLevelThreshold: number = 19; // とりあえず仮で閾値決めてます
