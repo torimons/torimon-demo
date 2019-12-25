@@ -1,5 +1,5 @@
 import { Component, Vue } from 'vue-property-decorator';
-import { mapViewStore } from '@/store/modules/MapViewModule';
+import { mapViewGetters, mapViewMutations } from '@/store';
 import map from '@/components/Map/index.vue';
 import { MapViewState, Coordinate, Node } from '@/store/types';
 import { mount, shallowMount } from '@vue/test-utils';
@@ -20,7 +20,7 @@ describe('mapコンポーネントの経路表示', () => {
         // '_addLayer' of nullのエラー回避のためaddRouteToMapをmock
         wrapper.vm.addRouteToMap = jest.fn();
         // getterが仮作成のためテスト用データはMapViewStateに直接埋め込んでいる物を使用
-        const testData: Coordinate[][] = mapViewStore.getNodesForNavigation([]);
+        const testData: Coordinate[][] = mapViewGetters.getNodesForNavigation([]);
         const expectedRouteLines: L.Polyline[] = testData.map((waypoint: Coordinate[]) => (L.polyline(waypoint, {
             color: '#555555',
             weight: 5,
