@@ -3,7 +3,7 @@
       <v-app>
         <Map/>
         <FloorSwitchButton/>
-        <SearchBox/>
+        <!-- <SearchBox/> -->
         <!-- <SpotInfo/> -->
       </v-app>
     </div>
@@ -14,14 +14,14 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import Map from '@/components/Map/index.vue';
 // import SpotInfo from './SpotInfo.vue';
 import FloorSwitchButton from '@/components/FloorSwitchButton/index.vue';
-import SearchBox from '@/components/SearchBox/index.vue';
+// import SearchBox from '@/components/SearchBox/index.vue';
 
 @Component({
     components: {
         Map,
         // SpotInfo,
         FloorSwitchButton,
-        SearchBox,
+        // SearchBox,
     },
 })
 export default class MapView extends Vue {
