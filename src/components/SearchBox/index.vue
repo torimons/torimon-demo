@@ -2,16 +2,34 @@
     <div id="search-box">
         <v-form @submit.prevent>
             <v-container>
-                <v-row>
-                    <v-btn >
-                        <v-icon>keyboard_arrow_left</v-icon>
-                    </v-btn>
-                    <v-text-field
-                        v-model='searchWord'
-                        placeholder="ここで検索できます"
-                        clearable
-                    ></v-text-field>
-                </v-row>
+                <v-text-field
+                    v-model='searchWord'
+                    placeholder="ここで検索できます"
+                    clearable
+                    solo
+                    full-width
+                    @focus="focus"
+                    @blur="cancel"
+                >
+                    <template
+                        v-slot:prepend-inner
+                    >
+                        <v-btn
+                            text
+                            icon
+                            v-show="!onFocus"
+                        >
+                            <v-icon>place</v-icon>
+                        </v-btn>
+                        <v-btn
+                            text
+                            icon
+                            v-show="onFocus"
+                        >
+                            <v-icon>keyboard_arrow_left</v-icon>
+                        </v-btn>
+                    </template>
+                </v-text-field>
             </v-container>
         </v-form>
     </div>
