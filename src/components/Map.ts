@@ -39,7 +39,7 @@ export default class Map extends Vue {
             },
         ).addTo(this.map);
 
-        // 初期スポット配置，displayLevelを変更するコールバックをテスト用に登録
+        // sampleMapのスポット表示
         const rootMapSpots = mapViewStore.getSpotsForMap(mapViewStore.rootMapId);
         this.displaySpotMarkers(rootMapSpots);
 
