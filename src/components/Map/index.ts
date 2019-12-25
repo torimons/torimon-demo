@@ -161,9 +161,9 @@ export default class Map extends Vue {
      * @return nearestSpotId 基準点に一番近いスポットのId
      */
     private getNearestSpotId(basePoint: Coordinate, spots: Spot[]): number {
-        const spotPositions: Coordinate[] = spots.map(spot => spot.coordinate);
+        const spotPositions: Coordinate[] = spots.map((s: Spot) => s.coordinate);
         const nearestSpotPos: GeolibInputCoordinates = findNearest(basePoint, spotPositions);
-        const nearestSpotIndex: number = spots.findIndex((s) => s.coordinate === nearestSpotPos);
+        const nearestSpotIndex: number = spots.findIndex((s: Spot) => s.coordinate === nearestSpotPos);
         const nearestSpotId: number = spots[nearestSpotIndex].id;
         return nearestSpotId;
     }

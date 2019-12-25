@@ -186,7 +186,7 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(mapViewStore.idOfCenterSpotInRootMap).toBe(expectedIdOfCenterSpotInRootMap);
     });
 
-    it('setNonExistentOfCenterSpottInRootMap()でmapViewStoreのIdOfCenterSpotInRootMapにnullが登録されている', () => {
+    it('setNonExistentOfCenterSpotInRootMap()でmapViewStoreのIdOfCenterSpotInRootMapにnullが登録されている', () => {
         mapViewStore.setNonExistentOfCenterSpotInRootMap();
         expect(mapViewStore.idOfCenterSpotInRootMap).toBe(null);
     });
