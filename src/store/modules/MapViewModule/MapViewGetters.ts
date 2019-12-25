@@ -5,22 +5,37 @@ import { NoDetailMapsError } from '@/store/errors/NoDetailMapsError';
 import { MapNotFoundError } from '@/store/errors/MapNotFoundError';
 import { SpotNotFoundError } from '@/store/errors/SpotNotFoundError';
 
-
 export class MapViewGetters extends Getters<MapViewState> {
+    /**
+     * 全てのマップを返す
+     * @return Map配列
+     */
     get maps(): Map[] {
         return this.state.maps;
     }
 
+    /**
+     * ルートマップのマップIDを返す
+     * @return ルートマップID
+     */
     get rootMapId(): number {
         return this.state.rootMapId;
     }
 
-    get spotInfoIsVisible(): boolean {
-        return this.state.spotInfoIsVisible;
-    }
-
+    /**
+     * Mapコンポーネントで選択されているSpotのIDを返す
+     * @return スポットのIDとそのスポットを持つマップのID
+     */
     get focusedSpot(): {mapId: number, spotId: number} {
         return this.state.focusedSpot;
+    }
+
+    /**
+     * SpotInfoコンポーネントの表示非表示状態を返す
+     * @return 表示状態の場合true
+     */
+    get spotInfoIsVisible(): boolean {
+        return this.state.spotInfoIsVisible;
     }
 
     /**
