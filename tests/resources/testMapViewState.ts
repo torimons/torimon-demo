@@ -92,7 +92,7 @@ export const testMapViewState: MapViewState = {
                         ]],
                     },
                     gateNodeIds: [],
-                    detailMapIds: [1],
+                    detailMapIds: [],
                     detailMapLevelNames: [],
                     lastViewedDetailMapId: null,
                 },
@@ -201,6 +201,6 @@ export const testMapViewState: MapViewState = {
     },
     spotInfoIsVisible: false,
     displayLevel: 'default',
-    idOfCenterSpotInRootMap: 0,
+    idOfCenterSpotInRootMap: null,
 };
 
