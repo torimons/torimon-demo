@@ -1202,6 +1202,342 @@ export const sampleMaps: Map[] =  [
                 lastViewedDetailMapId: null,
                 others: {},
             },
+            {
+                id: 315,
+                name: '315',
+                coordinate: {
+                    lat: ,
+                    lng: ,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
+            {
+                id: 3161,
+                name: '316-1',
+                coordinate: {
+                    lat: ,
+                    lng: ,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
+            {
+                id: 3162,
+                name: '316-2',
+                coordinate: {
+                    lat: ,
+                    lng: ,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
+            {
+                id: 3163,
+                name: '316-3',
+                coordinate: {
+                    lat: ,
+                    lng: ,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
+            {
+                id: 317,
+                name: '317',
+                coordinate: {
+                    lat: ,
+                    lng: ,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
+            {
+                id: 318,
+                name: '318',
+                coordinate: {
+                    lat: ,
+                    lng: ,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
+            {
+                id: 319,
+                name: '319',
+                coordinate: {
+                    lat: ,
+                    lng: ,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
+            {
+                id: 320,
+                name: '320',
+                coordinate: {
+                    lat: ,
+                    lng: ,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
+            {
+                id: 321,
+                name: '321',
+                coordinate: {
+                    lat: ,
+                    lng: ,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
+            {
+                id: 322,
+                name: '322',
+                coordinate: {
+                    lat: ,
+                    lng: ,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
+            {
+                id: 323,
+                name: '323',
+                coordinate: {
+                    lat: ,
+                    lng: ,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
+            {
+                id: 324,
+                name: '324',
+                coordinate: {
+                    lat: ,
+                    lng: ,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
+            {
+                id: 325,
+                name: '325',
+                coordinate: {
+                    lat: ,
+                    lng: ,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
+            {
+                id: 326,
+                name: '326',
+                coordinate: {
+                    lat: ,
+                    lng: ,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
+            {
+                id: 327,
+                name: '327',
+                coordinate: {
+                    lat: ,
+                    lng: ,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
+            {
+                id: 328,
+                name: '328',
+                coordinate: {
+                    lat: ,
+                    lng: ,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+                others: {},
+            },
         ],
         nodes: [],
         edges: [],
