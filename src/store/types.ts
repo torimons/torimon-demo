@@ -10,7 +10,7 @@ export interface MapViewState {
     };
     spotInfoIsVisible: boolean;
     displayLevel: DisplayLevelType;
-    idOfCenterSpotWithDetailMap: number | null;
+    idOfCenterSpotInRootMap: number | null;
 }
 
 /**
@@ -40,7 +40,7 @@ export interface Spot {
     shape?: Shape;
     gateNodeIds: number[];
     detailMapIds: number[];
-    detailMapLevelNames?: string[];
+    detailMapLevelNames: string[];
     lastViewedDetailMapId: number | null;
     others?: any;
 }

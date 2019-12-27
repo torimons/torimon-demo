@@ -1,6 +1,6 @@
 import { Mutation, VuexModule, getModule, Module } from 'vuex-module-decorators';
 import store from '@/store';
-import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds, DisplayLevelType } from '@/store/types';
+import { MapViewState, Map, Spot, SpotInfo, SpotForMap, Bounds, DisplayLevelType, Coordinate, Node } from '@/store/types';
 import { sampleMaps } from '@/store/modules/sampleMaps';
 import { NoDetailMapsError } from '../errors/NoDetailMapsError';
 import { NoDetailMapIdInSpotError } from '../errors/NoDetailMapIdInSpotError';
@@ -42,7 +42,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      */
     public maps: Map[] = sampleMaps;
 
-    /**
+    /*
      * 大元の親のMapのID
      */
     public rootMapId: number = 0;
@@ -67,7 +67,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * スポットのIDを保持する変数
      * 条件に当てはまるスポットがない場合nullを持つ
      */
-    public idOfCenterSpotWithDetailMap: number | null = null;
+    public idOfCenterSpotInRootMap: number | null = null;
 
     /**
      * ズームレベルに応じて切り替わる表示レベルを保持
@@ -195,9 +195,84 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * 条件に当てはまるスポットがない状態である場合nullを返す
      * @return スポットIDかnull
      */
-    get getIdOfCenterSpotWithDetailMap() {
+    get getIdOfCenterSpotInRootMap() {
         return (): number | null => {
-            return this.idOfCenterSpotWithDetailMap;
+            return this.idOfCenterSpotInRootMap;
+        };
+    }
+
+     /* 経由するノードidの配列を入力することで経路となるノードの配列を取得
+     * @param nodeIds: 経路となるノードidの配列
+     * @return nodesForNavigation: 経路となるノードの配列
+     */
+    get getNodesForNavigation() {
+        return (nodeIds: number[]): Coordinate[][] => {
+            // getterの中身は経路探索に依存しているため、現状テスト用のものを使用
+            // ノードidの配列を入力として必要なノードを検索、配列として返すメソッドが必要
+            const testRoutes: Node[][] = [[
+                {
+                    id: 0,
+                    mapId: 0,
+                    spotId: 0,
+                    coordinate: {
+                        lat: 33.595502,
+                        lng: 130.218238,
+                    },
+                },
+                {
+                    id: 1,
+                    mapId: 0,
+                    spotId: 1,
+                    coordinate: {
+                    lat: 33.596502,
+                    lng: 130.218238,
+                    },
+                },
+                {
+                    id: 2,
+                    mapId: 0,
+                    spotId: 2,
+                    coordinate: {
+                    lat: 33.596502,
+                    lng: 130.219238,
+                    },
+                },
+            ],
+            [
+                {
+                    id: 0,
+                    mapId: 0,
+                    spotId: 0,
+                    coordinate: {
+                        lat: 33.595502,
+                        lng: 130.218238,
+                    },
+                },
+                {
+                    id: 2,
+                    mapId: 0,
+                    spotId: 2,
+                    coordinate: {
+                    lat: 33.596502,
+                    lng: 130.219238,
+                    },
+                },
+                {
+                    id: 1,
+                    mapId: 0,
+                    spotId: 1,
+                    coordinate: {
+                    lat: 33.596502,
+                    lng: 130.218238,
+                    },
+                },
+            ]];
+            const nodesForNavigation: Coordinate[][] = [];
+            testRoutes.forEach((route: Node[]) => {
+                const wayPoints: Coordinate[] = route.map((wayPoint: Node) => wayPoint.coordinate);
+                nodesForNavigation.push(wayPoints);
+            });
+            return nodesForNavigation;
         };
     }
 
@@ -250,11 +325,11 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * - 半径〇〇内で最も画面中央に近い
      * - 詳細マップを持っている
      * スポットのIDを更新する
-     * @param idOfCenterSpotWithDetailMap 上記のスポットのID
+     * @param idOfCenterSpotInRootMap 上記のスポットのID
      */
     @Mutation
-    public setIdOfCenterSpotWithDetailMap(idOfCenterSpotWithDetailMap: number): void {
-        this.idOfCenterSpotWithDetailMap = idOfCenterSpotWithDetailMap;
+    public setIdOfCenterSpotInRootMap(idOfCenterSpotInRootMap: number): void {
+        this.idOfCenterSpotInRootMap = idOfCenterSpotInRootMap;
     }
 
     /**
@@ -264,8 +339,8 @@ export class MapViewModule extends VuexModule implements MapViewState {
      * スポットが存在していない状態にする
      */
     @Mutation
-    public setNonExistentOfCenterSpotWithDetailMap(): void {
-        this.idOfCenterSpotWithDetailMap = null;
+    public setNonExistentOfCenterSpotInRootMap(): void {
+        this.idOfCenterSpotInRootMap = null;
     }
 
     /**
@@ -280,7 +355,7 @@ export class MapViewModule extends VuexModule implements MapViewState {
         this.spotInfoIsVisible  = newMapViewState.spotInfoIsVisible;
         this.focusedSpot.mapId  = newMapViewState.focusedSpot.mapId;
         this.focusedSpot.spotId = newMapViewState.focusedSpot.spotId;
-        this.idOfCenterSpotWithDetailMap = newMapViewState.idOfCenterSpotWithDetailMap;
+        this.idOfCenterSpotInRootMap = newMapViewState.idOfCenterSpotInRootMap;
         this.displayLevel       = newMapViewState.displayLevel;
     }
 }
