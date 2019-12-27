@@ -1,4 +1,4 @@
-import DefaultSpotMarker from '@/DefaultSpotMarker';
+import DefaultSpotMarker from '@/components/Map/Marker/DefaultSpotMarker';
 import L, { map } from 'leaflet';
 
 describe('DefaultSpotMarkers', () => {
