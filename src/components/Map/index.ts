@@ -67,7 +67,6 @@ export default class Map extends Vue {
         // sampleMapのポリゴン表示
         // $nextTick()はテスト実行時のエラーを回避するために使用しています．
         this.$nextTick().then(() => {
-            // 現状mapIdのgetterがないため直接指定しています．
             this.displayPolygons(rootMapSpots);
             // 経路（エッジ）表示
             this.displayRouteLines(mapViewStore.getNodesForNavigation([]));
