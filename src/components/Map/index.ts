@@ -1,10 +1,9 @@
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import { mapViewStore, MapViewModule } from '@/store/modules/MapViewModule';
 import { SpotForMap, Coordinate, Bounds, Spot } from '@/store/types';
-import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper';
 import 'leaflet/dist/leaflet.css';
-import L, { LeafletEvent, TileLayer, Polyline } from 'leaflet';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
+import L, { LeafletEvent, TileLayer, Polyline } from 'leaflet';
 import { findNearest, getDistance } from 'geolib';
 import { GeolibInputCoordinates } from 'geolib/es/types';
 import CurrentLocationMarker from '@/components/Map/Marker/CurrentLocationMarker';
@@ -60,10 +59,11 @@ export default class Map extends Vue {
             },
         ).addTo(this.map);
 
-        this.map.on('move', this.updateIdOfCenterSpotInRootMap);
+        // sampleMapのスポット表示
+        const rootMapSpots = mapViewStore.getSpotsForMap(mapViewStore.rootMapId);
+        this.displaySpotMarkers(rootMapSpots);
 
-        const rootMapSpots: SpotForMap[] = mapViewStore.getSpotsForMap(mapViewStore.rootMapId);
-        this.replaceMarkersWith(rootMapSpots);
+
         // sampleMapのポリゴン表示
         // $nextTick()はテスト実行時のエラーを回避するために使用しています．
         this.$nextTick().then(() => {
@@ -76,8 +76,8 @@ export default class Map extends Vue {
         });
         this.currentLocationMarker.addTo(this.map);
 
-        // マップのズームが変更された時のコールバック登録
         this.map.on('zoomend', this.updateDisplayLevel);
+        this.map.on('move', this.updateIdOfCenterSpotInRootMap);
     }
 
     /**
@@ -92,26 +92,23 @@ export default class Map extends Vue {
     }
 
     /**
-     * 現在のマーカー削除し，spotsの座標にマーカーを配置する
-     * @param newSpots 新しく表示したいスポットの配列
-     * @param callback スポットがクリックされた時に呼び出すコールバック
+     * ズームレベルや階層が変更された際のマーカー表示切り替え
+     * @param 新しく表示するスポットの配列
      */
-    private replaceMarkersWith(newSpots: SpotForMap[]): void {
-        const coordinates: Coordinate[] = newSpots.map(
-            (spot: SpotForMap) => spot.coordinate,
-        );
+    private displaySpotMarkers(spotsToDisplay: SpotForMap[]): void {
         // removeしてから取り除かないと描画から消えない
         this.spotMarkers.forEach((marker: L.Marker) => marker.remove());
+        const coordinates: Coordinate[] = spotsToDisplay.map((spot: SpotForMap) => spot.coordinate);
         this.spotMarkers = coordinates.map((coord: Coordinate) => new DefaultSpotMarker(coord));
-        this.spotMarkers.map((marker: L.Marker) => marker.addTo(this.map));
+        this.addMarkersToMap(this.spotMarkers);
     }
 
     /**
-     * ズームレベルや階層が変更された際のマーカー表示切り替え
-     * @param e 発火イベント
+     * マーカーをマップに追加する．単体テストでモックするためにdisplaySpotMarkersから分離
+     * @param マップに追加するマーカーの配列
      */
-    private switchMarkers(e: L.LeafletEvent): void {
-        // ズームレベルや階層が変更された際のマーカー表示切り替え
+    private addMarkersToMap(markersToAdd: L.Marker[]) {
+        markersToAdd.map((marker: L.Marker) => marker.addTo(this.map));
     }
 
     /**
@@ -124,15 +121,6 @@ export default class Map extends Vue {
         } else {
             mapViewStore.setDisplayLevel('default');
         }
-    }
-
-    // マーカーが押された際に呼び出される関数
-    private updateFocusedMarker(e: Event): void {
-        /*
-            （vuexの状態更新も行う必要がある）
-            押したマーカーのスポットの情報の取得
-            ポップアップの表示
-            */
     }
 
     /**
