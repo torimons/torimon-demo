@@ -38,12 +38,12 @@ const spotsForTest: Spot[] = [
 
 describe('Searchクラスのテスト', () => {
 
-    it('getSearchResultOfSpotsでスポットの配列からキーワード検索', () => {
+    it('searchSpotsでスポットをキーワード検索', () => {
         const targetSpotsForSearch = spotsForTest;
         const searchObj = new Search(targetSpotsForSearch);
-        // 'Sougou'という文字を名前に含んでいるスポットを検索
-        const keyword: string = 'Sougou';
-        const actualResult: Spot[] = searchObj.getSearchResultOfSpots(keyword);
+        // 'sougou'という文字を名前に含んでいるスポットを検索(大文字小文字は区別しない)
+        const keyword: string = 'sougou';
+        const actualResult: Spot[] = searchObj.searchSpots(keyword);
         const expectedResult: Spot[] = [spotsForTest[0]];
         expect(actualResult).toStrictEqual(expectedResult);
     });
