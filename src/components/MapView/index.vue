@@ -2,8 +2,14 @@
     <div id="map-view">
       <v-app>
         <Map/>
-        <FloorSwitchButton/>
-        <SpotInfo/>
+        <div class="wrap">
+          <div id="floor-switich-button">
+            <FloorSwitchButton/>
+          </div>
+          <div id="spot-info">
+            <SpotInfo/>
+          </div>
+        </div>
       </v-app>
     </div>
 </template>
@@ -11,7 +17,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Map from '@/components/Map/index.vue';
-import SpotInfo from './SpotInfo.vue';
+import SpotInfo from '@/components/SpotInfo/index.vue';
 import FloorSwitchButton from '@/components/FloorSwitchButton/index.vue';
 
 @Component({
@@ -30,8 +36,27 @@ export default class MapView extends Vue {
 html,
 body,
 #map-view {
+  position: relative;
   height: 100%;
 }
+
+.wrap {
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  z-index: 1000;
+}
+
+#floor-switch-button {
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+#spot-info{
+  margin-left: 5px;
+  margin-bottom: 10px;
+}
+
 body {
   margin: 0;
 }

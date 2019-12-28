@@ -25,10 +25,4 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#spot-info {
-    position:absolute;
-    left: 10px;
-    bottom: 10px;
-    z-index: 1000;
-}
 </style>

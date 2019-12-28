@@ -30,14 +30,12 @@ export default class SpotInfo extends Vue {
         newFocusedSpot: {mapId: number, spotId: number},
         oldFocusedSpot: {mapId: number, spotId: number},
         ): void {
-            // spotの型はまだ未定義のためanyとしています．
-            // const spot: any = this.$store.getters.getInfoOfCurrentSpot;
             const spot: Spot = mapViewStore.getSpotById({
                 parentMapId: newFocusedSpot.mapId,
                 spotId: newFocusedSpot.spotId,
             });
             this.spotName = spot.name;
-            if (spot.others != undefined) {
+            if (spot.others !== undefined) {
                 this.others = spot.others;
             } else {
                 this.others = '';
