@@ -277,6 +277,15 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
+     *
+     * @param newFocusedSpot
+     */
+    @Mutation
+    public setSpotInfoIsVisible(newVisibleState: boolean): void {
+        this.spotInfoIsVisible = newVisibleState;
+    }
+
+    /**
      * Mapコンポーネント上でフォーカスされているスポットのIDを更新する
      * @param newFocusedSpot 新しくフォーカスされるスポット
      * 中にmapId, spotIdを持つ
