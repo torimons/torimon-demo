@@ -1,4 +1,6 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { mapViewStore } from '@/store/modules/MapViewModule';
+import { Spot } from '@/store/types';
 
 @Component
 /**
@@ -10,46 +12,51 @@ export default class SpotInfo extends Vue {
     private spotName: string = '';
     // othersはまだ形式が決まっていないためanyとしています．
     private others: any = {};
-    private visible: boolean = false;
+    private isVisible: boolean = false;
 
     /**
-     * 現在選択されているスポットIDをvuexから取得する
-     * @return 現在選択されているスポットのID
+     * updateSpotInfoContentで監視するプロパティ
+     * @return 選択されているスポット
      */
-    private get currentSpotID(): number {
-        return this.$store.getters.getCurrentSpotID;
-    }
-
-    /**
-     * SpotInfoコンポーネントの可視化状態をvuexから取得する．
-     * @return spotInfoコンポーネントの可視化状態
-     */
-    private get spotInfoVisible(): boolean {
-        return this.$store.getters.getSpotInfoVisible;
+    get focusedSpot(): {mapId: number, spotId: number} {
+        return mapViewStore.focusedSpot;
     }
 
     /**
      * 選択されているスポットIDの変更を検知すると，spotName, othersを更新して表示内容を更新する．
      */
-    @Watch('currentSpotID')
-    private spotIDChanged(): void {
-        // spotの型はまだ未定義のためanyとしています．
-        const spot: any = this.$store.getters.getInfoOfCurrentSpot;
-        if (spot) {
+    @Watch('focusedSpot')
+    private updateSpotInfoContent(
+        newFocusedSpot: {mapId: number, spotId: number},
+        oldFocusedSpot: {mapId: number, spotId: number},
+        ): void {
+            // spotの型はまだ未定義のためanyとしています．
+            // const spot: any = this.$store.getters.getInfoOfCurrentSpot;
+            const spot: Spot = mapViewStore.getSpotById({
+                parentMapId: newFocusedSpot.mapId,
+                spotId: newFocusedSpot.spotId,
+            });
             this.spotName = spot.name;
-            this.others = spot.others;
-        } else {
-            this.spotName = 'no_name';
-            this.others = {};
-        }
+            if (spot.others != undefined) {
+                this.others = spot.others;
+            } else {
+                this.others = '';
+            }
+    }
+
+    /**
+     * updateSpotInfoIsVisibleで監視するプロパティ
+     */
+    get spotInfoIsVisible(): boolean {
+        return mapViewStore.spotInfoIsVisible;
     }
 
     /**
      * コンポーネントの表示/非表示を，visibleを更新して切り替える.．
      */
-    @Watch('spotInfoVisible')
-    private spotInfoVisibleChanged(): void {
-        this.visible = this.$store.getters.getSpotInfoVisible;
+    @Watch('spotInfoIsVisible')
+    private updateSpotInfoIsVisible(newVisibleState: boolean, oldVisibileState: boolean): void {
+        this.isVisible = newVisibleState;
     }
 
 }
