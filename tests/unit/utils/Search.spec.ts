@@ -1,4 +1,4 @@
-import Search from '@/components/Search/Search.ts';
+import Search from '@/utils/Search';
 import { Spot } from '@/store/types';
 
 const spotsForTest: Spot[] = [
