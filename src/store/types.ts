@@ -42,7 +42,7 @@ export interface Spot {
     detailMapIds: number[];
     detailMapLevelNames: string[];
     lastViewedDetailMapId: number | null;
-    others?: any;
+    others?: Others;
 }
 
 
@@ -102,6 +102,16 @@ export interface Edge {
     id: number;
     nodeIds: {A: number, B: number};
     distance: number;
+}
+
+export interface Others {
+    description?: string;
+    attachment?: [
+        {
+            name: string,
+            url: string,
+        }
+    ]
 }
 
 /**
