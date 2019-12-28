@@ -50,6 +50,9 @@ export const testMapViewState: MapViewState = {
                     detailMapIds: [1, 2],
                     detailMapLevelNames: ['1F', '2F'],
                     lastViewedDetailMapId: null,
+                    others: {
+                        description: '総合学習プラザです'
+                    },
                 },
                 {
                     id: 1,
@@ -95,6 +98,7 @@ export const testMapViewState: MapViewState = {
                     detailMapIds: [],
                     detailMapLevelNames: [],
                     lastViewedDetailMapId: null,
+                    others: {},
                 },
             ],
             nodes: [],
