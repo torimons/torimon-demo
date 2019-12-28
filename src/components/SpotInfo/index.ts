@@ -1,6 +1,6 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { mapViewStore } from '@/store/modules/MapViewModule';
-import { Spot } from '@/store/types';
+import { Spot, Others } from '@/store/types';
 
 @Component
 /**
@@ -9,10 +9,9 @@ import { Spot } from '@/store/types';
  */
 export default class SpotInfo extends Vue {
 
-    private spotName: string = '';
-    // othersはまだ形式が決まっていないためanyとしています．
-    private others: any = {};
     private isVisible: boolean = false;
+    private spotName: string = '';
+    private description: string = '';
 
     /**
      * updateSpotInfoContentで監視するプロパティ
@@ -29,21 +28,27 @@ export default class SpotInfo extends Vue {
     private updateSpotInfoContent(
         newFocusedSpot: {mapId: number, spotId: number},
         oldFocusedSpot: {mapId: number, spotId: number},
-        ): void {
-            const spot: Spot = mapViewStore.getSpotById({
-                parentMapId: newFocusedSpot.mapId,
-                spotId: newFocusedSpot.spotId,
-            });
-            this.spotName = spot.name;
-            if (spot.others !== undefined) {
-                this.others = spot.others;
-            } else {
-                this.others = '';
-            }
+    ): void {
+        const spot: Spot = mapViewStore.getSpotById({
+            parentMapId: newFocusedSpot.mapId,
+            spotId: newFocusedSpot.spotId,
+        });
+        this.spotName = spot.name;
+        const others: Others | undefined = spot.others;
+        if (others === undefined) {
+            this.description = '';
+            return;
+        }
+        if (others.description !== undefined) {
+            this.description = others.description;
+        } else {
+            this.description = '';
+        }
     }
 
     /**
      * updateSpotInfoIsVisibleで監視するプロパティ
+     * @return SpotInfoの可視化状態
      */
     get spotInfoIsVisible(): boolean {
         return mapViewStore.spotInfoIsVisible;
