@@ -31,8 +31,8 @@ export const sampleMaps: Map[] =  [
                 detailMapLevelNames: ['1F', '2F'],
                 lastViewedDetailMapId: null,
                 others: {
-                    'description': '総合学習プラザです',
-                }
+                    description: '総合学習プラザです',
+                },
             },
             {
                 id: 1,

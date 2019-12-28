@@ -111,7 +111,7 @@ export interface Others {
             name: string,
             url: string,
         }
-    ]
+    ];
 }
 
 /**
