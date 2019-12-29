@@ -92,7 +92,7 @@ export default class Map extends Vue {
 
     /**
      * ズームレベルや階層が変更された際のマーカー表示切り替え
-     * @param 新しく表示するスポットの配列
+     * @param spotsToDisplay 新しく表示するスポットの配列
      */
     private displaySpotMarkers(spotsToDisplay: SpotForMap[]): void {
         // removeしてから取り除かないと描画から消えない
@@ -104,7 +104,7 @@ export default class Map extends Vue {
 
     /**
      * マーカーをマップに追加する．単体テストでモックするためにdisplaySpotMarkersから分離
-     * @param マップに追加するマーカーの配列
+     * @param markersToAdd マップに追加するマーカーの配列
      */
     private addMarkersToMap(markersToAdd: L.Marker[]) {
         markersToAdd.map((marker: L.Marker) => marker.addTo(this.map));
@@ -125,7 +125,7 @@ export default class Map extends Vue {
     /**
      * マップ移動時に画面中央に最も近い&ある一定距離以内に存在するスポットをidOfCenterSpotInRootMapにセットする．
      * 一定距離内であればスポットIdを，一定距離外であればnullをセット．距離の判定はtwoPointsIsNearが行う．
-     * @params leafletのイベント
+     * @params e leafletのイベント
      */
     private updateIdOfCenterSpotInRootMap(e: L.LeafletEvent): void {
         const centerPos: Coordinate = this.map.getCenter();
@@ -174,7 +174,7 @@ export default class Map extends Vue {
     /**
      * storeのgetSpotsForMapで取得したspotの情報から
      * shapeの情報を取り出してleafletで扱える形式に変換する．
-     * @params storeのgetSpotsForMapの返り値.
+     * @param spots storeのgetSpotsForMapの返り値.
      * @return geoJson形式のshapeデータ
      */
     private spotShapeToGeoJson(spots: SpotForMap[]): GeoJsonObject {
@@ -198,7 +198,7 @@ export default class Map extends Vue {
     /**
      * 指定されたスポットのポリゴンを表示する
      * polygonLayerメンバを変更して表示内容を変える．
-     * @params 表示するスポットの配列
+     * @param spotsForDisplay 表示するスポットの配列
      */
     private displayPolygons(spotsForDisplay: SpotForMap[]): void {
         // すでに表示されているポリゴンがある場合は先に削除する
