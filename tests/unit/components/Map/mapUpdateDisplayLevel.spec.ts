@@ -1,4 +1,4 @@
-import { mapViewStore } from '@/store/modules/MapViewModule';
+import { mapViewGetters, mapViewMutations } from '@/store';
 import { MapViewState, SpotForMap, Coordinate } from '@/store/types';
 import { shallowMount } from '@vue/test-utils';
 import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper';
@@ -26,7 +26,7 @@ describe('components/Map.vue zoomlevel切り替えのテスト', () => {
     let wrapper: any;
 
     beforeEach(() => {
-        mapViewStore.setMapViewState(mapViewStoreTestData);
+        mapViewMutations.setMapViewState(mapViewStoreTestData);
         GeolocationWrapper.watchPosition = jest.fn();
         wrapper = shallowMount(Map, {
             attachToDocument: true,
@@ -43,13 +43,13 @@ describe('components/Map.vue zoomlevel切り替えのテスト', () => {
         wrapper.vm.map.getZoom = setReturnOfGetZoom(18);
         // 閾値(19)未満の場合，displayLevelはdefault
         wrapper.vm.updateDisplayLevel();
-        const currentDisplayLevelZoomOut = mapViewStore.getDisplayLevel();
+        const currentDisplayLevelZoomOut = mapViewGetters.displayLevel;
         expect(currentDisplayLevelZoomOut).toBe('default');
 
         // 閾値(19)以上の場合，displayLevelはdetail
         wrapper.vm.map.getZoom = setReturnOfGetZoom(19);
         wrapper.vm.updateDisplayLevel();
-        const currentDisplayLevelZoomIn = mapViewStore.getDisplayLevel();
+        const currentDisplayLevelZoomIn = mapViewGetters.displayLevel;
         expect(currentDisplayLevelZoomIn).toBe('detail');
     });
 });

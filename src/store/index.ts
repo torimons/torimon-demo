@@ -1,10 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { MapViewState } from '@/store/types';
+import { createStore, Module } from 'vuex-smart-module';
+import { MapViewModule } from '@/store/modules/MapViewModule';
 
-interface StoreType {
-    mapView: MapViewState;
-}
 Vue.use(Vuex);
 
-export default new Vuex.Store<StoreType>({});
+export const store = createStore(
+    MapViewModule,
+);
+export const mapViewGetters = MapViewModule.context(store).getters;
+export const mapViewMutations = MapViewModule.context(store).mutations;

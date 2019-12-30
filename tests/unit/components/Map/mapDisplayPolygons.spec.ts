@@ -1,4 +1,4 @@
-import { mapViewStore } from '@/store/modules/MapViewModule';
+import { mapViewGetters, mapViewMutations } from '@/store';
 import map from '@/components/Map/index.vue';
 import { MapViewState } from '@/store/types';
 import { FeatureCollection } from 'geojson';
@@ -52,7 +52,7 @@ describe('mapコンポーネントのポリゴン表示', () => {
     let wrapper: any;
     beforeEach(() => {
         // テスト用データをstoreにセット
-        mapViewStore.setMapViewState(mapViewStateTestData);
+        mapViewMutations.setMapViewState(mapViewStateTestData);
         GeolocationWrapper.watchPosition = jest.fn();
         wrapper = shallowMount( map, {
             attachToDocument: true,
@@ -60,7 +60,7 @@ describe('mapコンポーネントのポリゴン表示', () => {
     });
 
     it('storeのgetter(getSpotsForMap)で取得したspotのshape情報をgeoJson形式に変換する', () => {
-        const spotsForMap = mapViewStore.getSpotsForMap(0);
+        const spotsForMap = mapViewGetters.getSpotsForMap(0);
         const actualGeoJsonFormat =  wrapper.vm.spotShapeToGeoJson(spotsForMap);
         const expectedGeoJsonFormat = expectedGeoJsonObject;
         expect(actualGeoJsonFormat).toStrictEqual(expectedGeoJsonFormat);
