@@ -277,8 +277,8 @@ export class MapViewModule extends VuexModule implements MapViewState {
     }
 
     /**
-     *
-     * @param newFocusedSpot
+     * spotInfoコンポーネントの可視化状態をセットする.
+     * @param newVisibleState spotInfoコンポーネントの可視化状態
      */
     @Mutation
     public setSpotInfoIsVisible(newVisibleState: boolean): void {
