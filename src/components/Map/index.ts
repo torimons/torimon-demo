@@ -67,8 +67,7 @@ export default class Map extends Vue {
         // sampleMapのポリゴン表示
         // $nextTick()はテスト実行時のエラーを回避するために使用しています．
         this.$nextTick().then(() => {
-            // 現状mapIdのgetterがないため直接指定しています．
-            this.displayPolygons(mapViewStore.rootMapId);
+            this.displayPolygons(rootMapSpots);
             // 経路（エッジ）表示
             this.displayRouteLines(mapViewStore.getNodesForNavigation([]));
             // 経路レイヤーが消去されているか確認
@@ -93,7 +92,7 @@ export default class Map extends Vue {
 
     /**
      * ズームレベルや階層が変更された際のマーカー表示切り替え
-     * @param 新しく表示するスポットの配列
+     * @param spotsToDisplay 新しく表示するスポットの配列
      */
     private displaySpotMarkers(spotsToDisplay: SpotForMap[]): void {
         // removeしてから取り除かないと描画から消えない
@@ -105,7 +104,7 @@ export default class Map extends Vue {
 
     /**
      * マーカーをマップに追加する．単体テストでモックするためにdisplaySpotMarkersから分離
-     * @param マップに追加するマーカーの配列
+     * @param markersToAdd マップに追加するマーカーの配列
      */
     private addMarkersToMap(markersToAdd: L.Marker[]) {
         markersToAdd.map((marker: L.Marker) => marker.addTo(this.map));
@@ -126,7 +125,7 @@ export default class Map extends Vue {
     /**
      * マップ移動時に画面中央に最も近い&ある一定距離以内に存在するスポットをidOfCenterSpotInRootMapにセットする．
      * 一定距離内であればスポットIdを，一定距離外であればnullをセット．距離の判定はtwoPointsIsNearが行う．
-     * @params leafletのイベント
+     * @params e leafletのイベント
      */
     private updateIdOfCenterSpotInRootMap(e: L.LeafletEvent): void {
         const centerPos: Coordinate = this.map.getCenter();
@@ -175,7 +174,7 @@ export default class Map extends Vue {
     /**
      * storeのgetSpotsForMapで取得したspotの情報から
      * shapeの情報を取り出してleafletで扱える形式に変換する．
-     * @params storeのgetSpotsForMapの返り値.
+     * @param spots storeのgetSpotsForMapの返り値.
      * @return geoJson形式のshapeデータ
      */
     private spotShapeToGeoJson(spots: SpotForMap[]): GeoJsonObject {
@@ -197,17 +196,16 @@ export default class Map extends Vue {
     }
 
     /**
-     * 指定されたIDを持つ地図のポリゴンを表示する
+     * 指定されたスポットのポリゴンを表示する
      * polygonLayerメンバを変更して表示内容を変える．
-     * @params 地図のID
+     * @param spotsForDisplay 表示するスポットの配列
      */
-    private displayPolygons(mapId: number): void {
+    private displayPolygons(spotsForDisplay: SpotForMap[]): void {
         // すでに表示されているポリゴンがある場合は先に削除する
         if (this.polygonLayer !== undefined) {
             this.map.removeLayer(this.polygonLayer);
         }
-        const spotForMap: SpotForMap[] = mapViewStore.getSpotsForMap(mapId);
-        const shapeGeoJson: GeoJsonObject = this.spotShapeToGeoJson(spotForMap);
+        const shapeGeoJson: GeoJsonObject = this.spotShapeToGeoJson(spotsForDisplay);
         this.polygonLayer = new L.GeoJSON(shapeGeoJson, {
             style: {
                 color: '#555555',
