@@ -1,13 +1,14 @@
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { mapViewStore, MapViewModule } from '@/store/modules/MapViewModule';
+import { Component, Vue, Watch} from 'vue-property-decorator';
+import { mapViewGetters, mapViewMutations } from '@/store';
 import { SpotForMap, Coordinate, Bounds, Spot } from '@/store/types';
 import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
-import L, { LeafletEvent, TileLayer, Polyline } from 'leaflet';
 import { findNearest, getDistance } from 'geolib';
 import { GeolibInputCoordinates } from 'geolib/es/types';
 import CurrentLocationMarker from '@/components/Map/Marker/CurrentLocationMarker';
 import DefaultSpotMarker from '@/components/Map/Marker/DefaultSpotMarker';
+
 
 @Component
 export default class Map extends Vue {
@@ -19,35 +20,18 @@ export default class Map extends Vue {
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
     private routeLines?: L.Polyline[];
     private routeLayer?: L.Layer;
-    private defaultSpotIcon: L.Icon = L.icon({
-        iconUrl: 'http://localhost:8081/leaflet/icons/marker-icon-2x.png',
-        iconSize: [50, 82],
-        iconAnchor: [25, 80],
-        popupAnchor: [-3, -76],
-        shadowSize: [68, 95],
-        shadowAnchor: [22, 94],
-        className: 'spot',
-    });
-    private currentLocationIcon: L.Icon = L.icon({
-        iconUrl: 'http://localhost:8081/leaflet/icons/currentLocation.png',
-        iconSize: [50, 50],
-        iconAnchor: [25, 25],
-        popupAnchor: [0, 0],
-        shadowSize: [68, 95],
-        shadowAnchor: [22, 94],
-        className: 'currentLocation',
-    });
     private spotMarkers: L.Marker[] = [];
     private currentLocationMarker: CurrentLocationMarker = new CurrentLocationMarker([0, 0]);
     private zoomLevelThreshold: number = 19; // とりあえず仮で閾値決めてます
-    private mapIdToDisplay: number = mapViewStore.rootMapId;
+    private mapIdToDisplay: number = mapViewGetters.rootMapId;
 
     /**
      * とりあえず地図の表示を行なっています．
      */
     public mounted() {
-        this.centerLat = this.calculateCenter(mapViewStore.rootMapBounds).lat;
-        this.centerLng = this.calculateCenter(mapViewStore.rootMapBounds).lng;
+        const rootMapCenter: Coordinate = this.calculateCenter(mapViewGetters.rootMapBounds);
+        this.centerLat = rootMapCenter.lat;
+        this.centerLng = rootMapCenter.lng;
         this.map = L.map('map').setView(
             [this.centerLat, this.centerLng],
             this.zoomLevel,
@@ -60,17 +44,15 @@ export default class Map extends Vue {
         ).addTo(this.map);
 
         // sampleMapのスポット表示
-        const rootMapSpots = mapViewStore.getSpotsForMap(mapViewStore.rootMapId);
+        const rootMapSpots: SpotForMap[] = mapViewGetters.getSpotsForMap(mapViewGetters.rootMapId);
         this.displaySpotMarkers(rootMapSpots);
-
 
         // sampleMapのポリゴン表示
         // $nextTick()はテスト実行時のエラーを回避するために使用しています．
         this.$nextTick().then(() => {
-            // 現状mapIdのgetterがないため直接指定しています．
-            this.displayPolygons(mapViewStore.rootMapId);
+            this.displayPolygons(rootMapSpots);
             // 経路（エッジ）表示
-            this.displayRouteLines(mapViewStore.getNodesForNavigation([]));
+            this.displayRouteLines(mapViewGetters.getNodesForNavigation([]));
             // 経路レイヤーが消去されているか確認
             // this.routeLines = this.displayRouteLines([]);
         });
@@ -93,7 +75,7 @@ export default class Map extends Vue {
 
     /**
      * ズームレベルや階層が変更された際のマーカー表示切り替え
-     * @param 新しく表示するスポットの配列
+     * @param spotsToDisplay 新しく表示するスポットの配列
      */
     private displaySpotMarkers(spotsToDisplay: SpotForMap[]): void {
         // removeしてから取り除かないと描画から消えない
@@ -105,7 +87,7 @@ export default class Map extends Vue {
 
     /**
      * マーカーをマップに追加する．単体テストでモックするためにdisplaySpotMarkersから分離
-     * @param マップに追加するマーカーの配列
+     * @param markersToAdd マップに追加するマーカーの配列
      */
     private addMarkersToMap(markersToAdd: L.Marker[]) {
         markersToAdd.map((marker: L.Marker) => marker.addTo(this.map));
@@ -117,28 +99,28 @@ export default class Map extends Vue {
     private updateDisplayLevel(): void {
         const currentZoomLevel = this.map.getZoom();
         if (currentZoomLevel >= this.zoomLevelThreshold) {
-            mapViewStore.setDisplayLevel('detail');
+            mapViewMutations.setDisplayLevel('detail');
         } else {
-            mapViewStore.setDisplayLevel('default');
+            mapViewMutations.setDisplayLevel('default');
         }
     }
 
     /**
      * マップ移動時に画面中央に最も近い&ある一定距離以内に存在するスポットをidOfCenterSpotInRootMapにセットする．
      * 一定距離内であればスポットIdを，一定距離外であればnullをセット．距離の判定はtwoPointsIsNearが行う．
-     * @params leafletのイベント
+     * @params e leafletのイベント
      */
     private updateIdOfCenterSpotInRootMap(e: L.LeafletEvent): void {
         const centerPos: Coordinate = this.map.getCenter();
-        const mapIndex: number = mapViewStore.maps.findIndex((m) => m.id === mapViewStore.rootMapId);
-        const spots: Spot[] = mapViewStore.maps[mapIndex].spots;
+        const mapIndex: number = mapViewGetters.maps.findIndex((m) => m.id === mapViewGetters.rootMapId);
+        const spots: Spot[] = mapViewGetters.maps[mapIndex].spots;
         const nearestSpotId: number = this.getNearestSpotId(centerPos, spots);
         // 距離のチェック
         const isNear: boolean = this.twoPointsIsNear(centerPos, spots[nearestSpotId].coordinate);
         if (isNear === true) {
-            mapViewStore.setIdOfCenterSpotInRootMap(nearestSpotId);
+            mapViewMutations.setIdOfCenterSpotInRootMap(nearestSpotId);
         } else {
-            mapViewStore.setNonExistentOfCenterSpotInRootMap();
+            mapViewMutations.setNonExistentOfCenterSpotInRootMap();
         }
     }
 
@@ -175,7 +157,7 @@ export default class Map extends Vue {
     /**
      * storeのgetSpotsForMapで取得したspotの情報から
      * shapeの情報を取り出してleafletで扱える形式に変換する．
-     * @params storeのgetSpotsForMapの返り値.
+     * @param spots storeのgetSpotsForMapの返り値.
      * @return geoJson形式のshapeデータ
      */
     private spotShapeToGeoJson(spots: SpotForMap[]): GeoJsonObject {
@@ -197,17 +179,16 @@ export default class Map extends Vue {
     }
 
     /**
-     * 指定されたIDを持つ地図のポリゴンを表示する
+     * 指定されたスポットのポリゴンを表示する
      * polygonLayerメンバを変更して表示内容を変える．
-     * @params 地図のID
+     * @param spotsForDisplay 表示するスポットの配列
      */
-    private displayPolygons(mapId: number): void {
+    private displayPolygons(spotsForDisplay: SpotForMap[]): void {
         // すでに表示されているポリゴンがある場合は先に削除する
         if (this.polygonLayer !== undefined) {
             this.map.removeLayer(this.polygonLayer);
         }
-        const spotForMap: SpotForMap[] = mapViewStore.getSpotsForMap(mapId);
-        const shapeGeoJson: GeoJsonObject = this.spotShapeToGeoJson(spotForMap);
+        const shapeGeoJson: GeoJsonObject = this.spotShapeToGeoJson(spotsForDisplay);
         this.polygonLayer = new L.GeoJSON(shapeGeoJson, {
             style: {
                 color: '#555555',
