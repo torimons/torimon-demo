@@ -1,8 +1,7 @@
 import { createLocalVue, mount } from '@vue/test-utils';
-
 import SpotInfo from '@/components/SpotInfo/index.vue';
-import { mapViewStore } from '@/store/modules/MapViewModule';
 import { testMapViewState } from '../../../resources/testMapViewState';
+import { mapViewGetters, mapViewMutations } from '@/store';
 import { cloneDeep } from 'lodash';
 import Vuetify from 'vuetify';
 import { MapViewState } from '@/store/types';
@@ -18,7 +17,7 @@ const mapViewStoreTestData: MapViewState = {
                     name: 'SougouGakusyuPlaza',
                     coordinate: {
                         lat: 0,
-                        lng: 0
+                        lng: 0,
                     },
                     shape: {
                         type: 'Polygon',
@@ -28,9 +27,7 @@ const mapViewStoreTestData: MapViewState = {
                     detailMapIds: [1, 2],
                     detailMapLevelNames: ['1F', '2F'],
                     lastViewedDetailMapId: null,
-                    others: {
-                        description: '総合学習プラザです'
-                    },
+                    description: '総合学習プラザです',
                 },
                 {
                     id: 1,
@@ -47,7 +44,6 @@ const mapViewStoreTestData: MapViewState = {
                     detailMapIds: [],
                     detailMapLevelNames: [],
                     lastViewedDetailMapId: null,
-                    others: {},
                 },
             ],
             nodes: [],
@@ -122,13 +118,13 @@ describe('SpotInfoコンポーネントのテスト', () => {
             vuetify,
         });
         const mapViewState = cloneDeep(mapViewStoreTestData);
-        mapViewStore.setMapViewState(mapViewState);
+        mapViewMutations.setMapViewState(mapViewState);
     });
 
     it('選択されているスポットの切り替えを検知するとコンポーネントの表示内容が変化する(others+descriptionが定義されている場合)', () => {
         const mapId: number = 0;
         const spotId: number = 0;
-        mapViewStore.setFocusedSpot({mapId, spotId});
+        mapViewMutations.setFocusedSpot({mapId, spotId});
         const expectedSpotName: string = 'SougouGakusyuPlaza';
         const expectedDescription: string = '総合学習プラザです';
         expect(wrapper.vm.spotName).toBe(expectedSpotName);
@@ -138,7 +134,7 @@ describe('SpotInfoコンポーネントのテスト', () => {
     it('選択されているスポットの切り替えを検知するとコンポーネントの表示内容が変化する(descriptionが定義されていない場合)', () => {
         const mapId: number = 0;
         const spotId: number = 1;
-        mapViewStore.setFocusedSpot({mapId, spotId});
+        mapViewMutations.setFocusedSpot({mapId, spotId});
         const expectedSpotName: string = 'West2';
         const expectedDescription: string = '';
         expect(wrapper.vm.spotName).toBe(expectedSpotName);
@@ -148,7 +144,7 @@ describe('SpotInfoコンポーネントのテスト', () => {
     it('選択されているスポットの切り替えを検知するとコンポーネントの表示内容が変化する(othersが定義されていない場合)', () => {
         const mapId: number = 1;
         const spotId: number = 0;
-        mapViewStore.setFocusedSpot({mapId, spotId});
+        mapViewMutations.setFocusedSpot({mapId, spotId});
         const expectedSpotName: string = '101';
         const expectedDescription: string = '';
         expect(wrapper.vm.spotName).toBe(expectedSpotName);
@@ -159,7 +155,7 @@ describe('SpotInfoコンポーネントのテスト', () => {
         // 初期状態では見えない状態
         expect(wrapper.vm.isVisible).toBe(false);
         // spoInfoVisibleが変化すると切り替わる
-        mapViewStore.setSpotInfoIsVisible(true);
+        mapViewMutations.setSpotInfoIsVisible(true);
         expect(wrapper.vm.isVisible).toBe(true);
     });
 
