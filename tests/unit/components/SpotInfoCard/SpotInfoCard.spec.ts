@@ -1,5 +1,5 @@
 import { createLocalVue, mount } from '@vue/test-utils';
-import SpotInfo from '@/components/SpotInfo/index.vue';
+import SpotInfoCard from '@/components/SpotInfoCard/index.vue';
 import { testMapViewState } from '../../../resources/testMapViewState';
 import { mapViewGetters, mapViewMutations } from '@/store';
 import { cloneDeep } from 'lodash';
@@ -113,7 +113,7 @@ describe('SpotInfoコンポーネントのテスト', () => {
         vuetify = new Vuetify();
         localVue = createLocalVue();
         localVue.use(Vuetify);
-        wrapper = mount( SpotInfo, {
+        wrapper = mount( SpotInfoCard, {
             localVue,
             vuetify,
         });
@@ -127,7 +127,7 @@ describe('SpotInfoコンポーネントのテスト', () => {
         mapViewMutations.setFocusedSpot({mapId, spotId});
         const expectedSpotName: string = 'SougouGakusyuPlaza';
         const expectedDescription: string = '総合学習プラザです';
-        expect(wrapper.vm.spotName).toBe(expectedSpotName);
+        expect(wrapper.vm.name).toBe(expectedSpotName);
         expect(wrapper.vm.description).toBe(expectedDescription);
     });
 
@@ -137,7 +137,7 @@ describe('SpotInfoコンポーネントのテスト', () => {
         mapViewMutations.setFocusedSpot({mapId, spotId});
         const expectedSpotName: string = 'West2';
         const expectedDescription: string = '';
-        expect(wrapper.vm.spotName).toBe(expectedSpotName);
+        expect(wrapper.vm.name).toBe(expectedSpotName);
         expect(wrapper.vm.description).toStrictEqual(expectedDescription);
     });
 
@@ -147,7 +147,7 @@ describe('SpotInfoコンポーネントのテスト', () => {
         mapViewMutations.setFocusedSpot({mapId, spotId});
         const expectedSpotName: string = '101';
         const expectedDescription: string = '';
-        expect(wrapper.vm.spotName).toBe(expectedSpotName);
+        expect(wrapper.vm.name).toBe(expectedSpotName);
         expect(wrapper.vm.description).toStrictEqual(expectedDescription);
     });
 
