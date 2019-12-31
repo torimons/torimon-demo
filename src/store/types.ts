@@ -10,7 +10,7 @@ export interface MapViewState {
     };
     spotInfoIsVisible: boolean;
     displayLevel: DisplayLevelType;
-    idOfCenterSpotWithDetailMap: number | null;
+    idOfCenterSpotInRootMap: number | null;
 }
 
 /**
