@@ -18,7 +18,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Map from '@/components/Map/index.vue';
-import SpotInfo from '@/components/SpotInfo/index.vue';
+import SpotInfo from '@/components/SpotInfoCard/index.vue';
 import FloorSwitchButton from '@/components/FloorSwitchButton/index.vue';
 // import SpotItem from '@/components/SpotItem/index.vue';
 
