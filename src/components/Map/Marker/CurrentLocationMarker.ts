@@ -1,5 +1,5 @@
 import L, {Marker, LatLngExpression} from 'leaflet';
-import { GeolocationWrapper } from './components/GeolocationWrapper';
+import { GeolocationWrapper } from '../GeolocationWrapper';
 
 export default class CurrentLocationMarker extends L.Marker {
     private icon: L.Icon = L.icon({
