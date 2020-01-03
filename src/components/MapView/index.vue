@@ -23,6 +23,7 @@ import SpotSearch from '@/components/SpotSearch/index.vue';
         Map,
         // SpotInfo,
         FloorSwitchButton,
+        SpotSearch,
         // SpotItem,
     },
 })

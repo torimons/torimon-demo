@@ -1,6 +1,7 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { Spot, SpotForMap } from '@/store/types';
-import { mapViewStore } from '@/store/modules/MapViewModule';
+import { Map, Spot, SpotForMap } from '@/store/types';
+import { mapViewGetters, mapViewMutations } from '@/store';
+import Search from '@/utils/Search';
 
 // こうなる予定？
 // @Component({
@@ -11,14 +12,21 @@ import { mapViewStore } from '@/store/modules/MapViewModule';
 // })
 @Component
 export default class SpotSearch extends Vue {
-    private searchWord!: string;
+    private searchWord: string = '';
     private spotListIsVisible: boolean = false;
-    private targetSpot: Spot[] = [];
+    private targetSpots: Spot[] = [];
     private spotSearchResults: Spot[] = [];
+    private search!: Search;
 
     public mounted() {
-        // 全てのマップからスポットを取得し，検索対象に追加する
-        // this.targetSpot.push()
+        // 全てのマップからスポットを取得
+        const allMapIds: number[] = mapViewGetters.maps.map((map: Map) => map.id);
+        allMapIds.forEach((id) => {
+            const spots: Spot[] = mapViewGetters.getSpotsForMap(id);
+            this.targetSpots = this.targetSpots.concat(spots);
+        });
+        // 上で取得したspotを検索対象にセットしたSearchクラスのインスタンス作成
+        this.search = new Search(this.targetSpots);
     }
 
     /**
@@ -26,11 +34,11 @@ export default class SpotSearch extends Vue {
      * @param isVisible セットする値(true/false)
      */
     public setSpotListIsVisible(isVisible: boolean) {
-        // set
+        this.spotListIsVisible = isVisible;
     }
 
     /**
-     * 検索文字列をセットする
+     * 検索文字列をセットする．SearchBoxからemitで呼ばれる？
      * @param searchWord 検索文字列
      */
     public setSearchWord(searchWord: string) {
@@ -42,6 +50,6 @@ export default class SpotSearch extends Vue {
      */
     @Watch('searchWord')
     public searchSpot(): void {
-        // searchクラスの検索を呼び出す
+        this.spotSearchResults = this.search.searchSpots(this.searchWord);
     }
 }
