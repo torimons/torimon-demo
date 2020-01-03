@@ -1,4 +1,4 @@
-import { mapViewStore } from '@/store/modules/MapViewModule';
+import { mapViewGetters, mapViewMutations } from '@/store';
 import { MapViewState, SpotForMap, Coordinate } from '@/store/types';
 import { shallowMount } from '@vue/test-utils';
 import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper';
@@ -34,7 +34,7 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
     ];
 
     beforeEach(() => {
-        mapViewStore.setMapViewState(mapViewStoreTestData);
+        mapViewMutations.setMapViewState(mapViewStoreTestData);
         GeolocationWrapper.watchPosition = jest.fn();
         wrapper = shallowMount(Map, {
             attachToDocument: true,
