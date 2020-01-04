@@ -19,12 +19,10 @@ export default class SpotSearch extends Vue {
     private search!: Search;
 
     public mounted() {
-        // 全てのマップからスポットを取得
-        const allMapIds: number[] = mapViewGetters.maps.map((map: Map) => map.id);
-        allMapIds.forEach((id) => {
-            const spots: SpotForMap[] = mapViewGetters.getSpotsForMap(id);
-            this.targetSpots = this.targetSpots.concat(spots as Spot[]);
-        });
+        // 全てのマップからスポットを取得，一つの配列に結合する
+        const spotsOfMaps: SpotForMap[][] = mapViewGetters.maps.map((map: Map) => map.spots);
+        const allSpots: SpotForMap[] = Array.prototype.concat.apply([], spotsOfMaps);
+        this.targetSpots = allSpots as Spot[];
         // 上で取得したspotを検索対象にセットしたSearchクラスのインスタンス作成
         this.search = new Search(this.targetSpots);
     }
