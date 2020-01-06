@@ -13,16 +13,26 @@ export default class SpotItem extends Vue {
 
     /**
      * 現在選択されているスポットIDをvuexから取得する
-     * @return 現在選択されているスポットのID
+     * @return 現在選択されているスポットのspotID
      */
-    private get currentSpotID(): number {
-        return this.$store.getters.getCurrentSpotID;
+    private get selecedSpotID(): number {
+        return this.$store.getters.getSelecedSpotID;
+    }
+
+    /**
+     * 現在選択されているスポットのmapIDをvuexから取得する
+     * @return 現在選択されているスポットのmapID
+     */
+    private get selecedMapID(): number {
+        return this.$store.getters.getSelecedSpotID;
     }
 
     // spotList内にある検索結果（spotItem）が選択された際にfocusedSpotを更新する.
-    @Watch('CurrentSpotID')
+    @Watch('selecedSpotID')
     private updateFocusedSpotItem(): void {
-        mapViewStore.focusedSpot.spotId = this.$store.getters.getCurrentSpotID;
-        mapViewStore.setFocusedSpot(mapViewStore.focusedSpot);
+        const newSpotID: number = this.$store.getters.getSelectedSpotID;
+        const newMapID: number = this.$store.getters.getselectedMapID;
+        const newSpot: { mapId: number, spotId: number} = { mapId: newMapID, spotId: newSpotID };
+        mapViewMutations.setFocusedSpot(newSpot);
     }
 }
