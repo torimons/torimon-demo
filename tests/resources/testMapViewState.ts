@@ -50,10 +50,11 @@ export const testMapViewState: MapViewState = {
                     detailMapIds: [1, 2],
                     detailMapLevelNames: ['1F', '2F'],
                     lastViewedDetailMapId: null,
+                    description: '総合学習プラザです',
                 },
                 {
                     id: 1,
-                    name: 'SougouGakusyuPlaza',
+                    name: 'West2',
                     coordinate: {
                         lat: 33.595502,
                         lng: 130.700008,
@@ -95,6 +96,9 @@ export const testMapViewState: MapViewState = {
                     detailMapIds: [],
                     detailMapLevelNames: [],
                     lastViewedDetailMapId: null,
+                    attachment: [
+                        {name: 'testName', url: 'testUrl'},
+                    ],
                 },
             ],
             nodes: [],
@@ -177,7 +181,6 @@ export const testMapViewState: MapViewState = {
                     detailMapIds: [],
                     detailMapLevelNames: [],
                     lastViewedDetailMapId: null,
-                    others: {},
                 },
             ],
             nodes: [],
