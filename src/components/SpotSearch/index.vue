@@ -1,7 +1,7 @@
 <template>
     <div id="spot-search">
-        <!-- <SearchBox/>
-        <SearchList/> -->
+        <SearchBox/>
+        <SpotList :spotSearchResults="spotSearchResults"></SpotList>
         <!-- PropでSpotListにデータを渡す -->
     </div>
 </template>
@@ -11,4 +11,10 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+/* #spot-search{
+    position:absolute;
+    left: 10px;
+    top: 10px;
+    z-index: 1000;
+} */
 </style>
