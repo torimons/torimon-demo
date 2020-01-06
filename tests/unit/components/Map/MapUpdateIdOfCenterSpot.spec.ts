@@ -25,8 +25,12 @@ describe('中央に最も近いスポットの取得，およびその更新の�
         // テスト用データをstoreにセット
         mapViewMutations.setMapViewState(mapViewStateTestData);
         GeolocationWrapper.watchPosition = jest.fn();
+        const initMapDisplay = jest.fn();
         wrapper = shallowMount( map, {
             attachToDocument: true,
+            methods: {
+                initMapDisplay,
+            },
         });
     });
 
