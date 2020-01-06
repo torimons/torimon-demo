@@ -15,6 +15,14 @@ export class MapViewMutations extends Mutations<MapViewState> {
     }
 
     /**
+     * spotInfoコンポーネントの可視化状態を更新する．
+     * @param newVisibleState spotInfoコンポーネントの可視化状態
+     */
+    public setSpotInfoIsVisible(newVisibleState: boolean): void {
+        this.state.spotInfoIsVisible = newVisibleState;
+    }
+
+    /**
      * 詳細マップ持ちスポットが最後に表示していた詳細マップのIdをセットする.
      * @param detailMapId 最後に参照された詳細マップのId
      * @param parentSpot どのマップのどのスポットかを示す情報

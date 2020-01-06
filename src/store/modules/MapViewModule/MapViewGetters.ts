@@ -31,6 +31,24 @@ export class MapViewGetters extends Getters<MapViewState> {
     }
 
     /**
+     * SpotInfoコンポーネントが表示する情報を返す
+     * @param targetSpot マップIdとスポットIdのオブジェクト
+     * @return SpotInfoコンポーネントに必要な情報*
+     */
+    public getSpotInfo(targetSpot: {mapId: number, spotId: number}): SpotInfo {
+        const spot: Spot = this.getters.getSpotById({
+            parentMapId: targetSpot.mapId,
+            spotId: targetSpot.spotId,
+        });
+        const name: string = spot.name;
+        const description: string =
+            spot.description !== undefined ? spot.description : '';
+        const attachment: [{name: string, url: string}] =
+            spot.attachment !== undefined ? spot.attachment : [{name: '', url: ''}];
+        return {name, description, attachment};
+    }
+
+    /**
      * SpotInfoコンポーネントの表示非表示状態を返す
      * @return 表示状態の場合true
      */
@@ -66,20 +84,6 @@ export class MapViewGetters extends Getters<MapViewState> {
             });
         });
         return spotsForMap;
-    }
-
-    /**
-     * SpotInfoコンポーネントが表示する情報を返す
-     * @return SpotInfoコンポーネントに必要な情報
-     */
-    get infoOfFocusedSpot(): SpotInfo {
-        const parentMapId: number = this.state.focusedSpot.mapId;
-        const spotId: number = this.state.focusedSpot.spotId;
-        const spot: Spot = this.getters.getSpotById({parentMapId, spotId});
-        const spotInfo: SpotInfo = {
-            name:  spot.name,
-        };
-        return spotInfo;
     }
 
     /**
