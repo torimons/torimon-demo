@@ -2,6 +2,7 @@
     <div id="map-view">
       <v-app>
         <Map/>
+        <SpotSearch/>
         <div class="wrap">
           <div id="floor-switich-button">
             <FloorSwitchButton/>
@@ -21,6 +22,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import Map from '@/components/Map/index.vue';
 import SpotInfo from '@/components/SpotInfoCard/index.vue';
 import FloorSwitchButton from '@/components/FloorSwitchButton/index.vue';
+import SpotSearch from '@/components/SpotSearch/index.vue';
 // import SearchBox from '@/components/SearchBox/index.vue';
 // import SpotItem from '@/components/SpotItem/index.vue';
 
@@ -29,6 +31,7 @@ import FloorSwitchButton from '@/components/FloorSwitchButton/index.vue';
         Map,
         SpotInfo,
         FloorSwitchButton,
+        SpotSearch,
         // SearchBox,
         // SpotItem,
     },
