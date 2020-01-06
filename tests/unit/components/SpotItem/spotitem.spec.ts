@@ -1,44 +1,27 @@
 import { createLocalVue, shallowMount } from '@vue/test-utils';
 import Vuex from 'vuex';
+import Vuetify from 'vuetify';
+import { mapViewGetters, mapViewMutations } from '@/store';
 import SpotItem from '@/components/SpotItem/index.vue';
 
-const state = {
-    currentSpotID: null,
-    spotInfoVisible: false,
-    map: {
-        spots: [
-            {
-                id: 0,
-                    name: 'spot0',
-                others: {},
-            },
-            {
-                id: 1,
-                name: 'spot1',
-                others: {},
-            },
-        ],
-    },
-};
-
 describe('components/SpotItem.vue', () => {
-    let store: any;
     let localVue: any;
     let wrapper: any;
+    let vuetify: any;
     beforeEach(() => {
+        vuetify = new Vuetify();
         localVue = createLocalVue();
         localVue.use(Vuex);
-        store = new Vuex.Store({
-            state,
-        });
+        localVue.use(Vuetify);
         wrapper = shallowMount( SpotItem, {
             localVue,
-            store,
+            vuetify,
         });
     });
 
     it('SpotList内のSpotItemが選択されるとfocusedSpotIdの更新をおこなう', () => {
-        wrapper.vm.selectedSpot = {mapId: 0, spotId: 0};
-        expect(store.state.focusedSpot).toBe({mapId: 0, spotId: 0});
+        wrapper.vm.selectedSpot = { mapId: 1, spotId: 1 };
+        const actualFocusedSpot: { mapId: number, spotId: number} = mapViewGetters.focusedSpot
+        expect(actualFocusedSpot).toStrictEqual({ mapId: 1, spotId: 1 });
     });
 });
