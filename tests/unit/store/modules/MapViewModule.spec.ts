@@ -46,14 +46,32 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(actualSpotsForMap).toEqual(expectedSpotsForMap);
     });
 
-    it('stateに登録したSpotsの情報からFocusedSpotIdを持つSpotのSpotInfo型の情報をgetterで取得する', () => {
-        const actualInfoOfFocusedSpot: SpotInfo = mapViewGetters.infoOfFocusedSpot;
-        const expectedFocusedMapId: number  = expectedMapViewState.focusedSpot.mapId;
-        const expectedFocusedSpotId: number = expectedMapViewState.focusedSpot.spotId;
-        const expectedInfoOfFocusedSpot: SpotInfo = {
-            name:  expectedMapViewState.maps[expectedFocusedMapId].spots[expectedFocusedSpotId].name,
+    it('getSpotInfoでSpotInfoコンポーネントで表示する内容を取得する(descriptionあり,attachmentなし)', () => {
+        const mapId: number = 0;
+        const spotId: number = 0;
+        const actualSpotInfo: SpotInfo = mapViewGetters.getSpotInfo({mapId, spotId});
+        const expectedSpotInfo: SpotInfo = {
+            name: 'SougouGakusyuPlaza',
+            description: '総合学習プラザです',
+            attachment: [
+                {name: '', url: ''},
+            ],
         };
-        expect(actualInfoOfFocusedSpot).toEqual(expectedInfoOfFocusedSpot);
+        expect(actualSpotInfo).toStrictEqual(expectedSpotInfo);
+    });
+
+    it('getSpotInfoでSpotInfoコンポーネントで表示する内容を取得する(descriptionなし,attachmentあり)', () => {
+        const mapId: number = 0;
+        const spotId: number = 1;
+        const actualSpotInfo: SpotInfo = mapViewGetters.getSpotInfo({mapId, spotId});
+        const expectedSpotInfo: SpotInfo = {
+            name: 'West2',
+            description: '',
+            attachment: [
+                {name: 'testName', url: 'testUrl'},
+            ],
+        };
+        expect(actualSpotInfo).toStrictEqual(expectedSpotInfo);
     });
 
     it('spotHasDetailMaps()で詳細マップを持つかどうかを判定する', () => {

@@ -42,7 +42,13 @@ export interface Spot {
     detailMapIds: number[];
     detailMapLevelNames: string[];
     lastViewedDetailMapId: number | null;
-    others?: any;
+    description?: string;
+    attachment?: [
+        {
+            name: string,
+            url: string,
+        }
+    ];
 }
 
 
@@ -51,7 +57,13 @@ export interface Spot {
  */
 export interface SpotInfo {
     name: string;
-    others?: any;
+    description: string;
+    attachment: [
+        {
+            name: string,
+            url: string,
+        }
+    ];
 }
 
 /**

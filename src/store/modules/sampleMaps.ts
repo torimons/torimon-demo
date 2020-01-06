@@ -30,6 +30,7 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [1, 2],
                 detailMapLevelNames: ['1F', '2F'],
                 lastViewedDetailMapId: null,
+                description: '総合学習プラザです',
             },
             {
                 id: 1,
@@ -383,7 +384,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 12,
@@ -481,7 +481,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 18,
@@ -507,7 +506,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 19,
@@ -556,7 +554,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 212,
@@ -581,7 +578,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 213,
@@ -606,7 +602,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 214,
@@ -631,7 +626,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 215,
@@ -656,7 +650,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 216,
@@ -681,7 +674,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 217,
@@ -706,7 +698,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 218,
@@ -731,7 +722,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 219,
@@ -756,7 +746,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 220,
@@ -781,7 +770,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 15,
@@ -806,7 +794,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 16,
@@ -831,7 +818,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
         ],
         nodes: [],
@@ -874,7 +860,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 202,
@@ -899,7 +884,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 203,
@@ -924,7 +908,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 204,
@@ -949,7 +932,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 205,
@@ -974,7 +956,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 206,
@@ -999,7 +980,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 207,
@@ -1024,7 +1004,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 208,
@@ -1049,7 +1028,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 209,
@@ -1074,7 +1052,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 210,
@@ -1099,7 +1076,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
         ],
         nodes: [],
@@ -1142,7 +1118,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 302,
@@ -1167,7 +1142,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 303,
@@ -1192,7 +1166,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 304,
@@ -1217,7 +1190,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 305,
@@ -1242,7 +1214,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 306,
@@ -1267,7 +1238,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 3071,
@@ -1292,7 +1262,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 3072,
@@ -1317,7 +1286,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 3073,
@@ -1342,7 +1310,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 309,
@@ -1367,7 +1334,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 310,
@@ -1392,7 +1358,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 311,
@@ -1417,7 +1382,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 312,
@@ -1442,7 +1406,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 313,
@@ -1467,7 +1430,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 314,
@@ -1492,7 +1454,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 315,
@@ -1517,7 +1478,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 3161,
@@ -1542,7 +1502,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 3162,
@@ -1567,7 +1526,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 3163,
@@ -1592,7 +1550,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 317,
@@ -1617,7 +1574,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 318,
@@ -1642,7 +1598,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 319,
@@ -1667,7 +1622,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 320,
@@ -1692,7 +1646,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 321,
@@ -1717,7 +1670,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 322,
@@ -1742,7 +1694,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 323,
@@ -1767,7 +1718,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 324,
@@ -1792,7 +1742,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 325,
@@ -1817,7 +1766,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 326,
@@ -1842,7 +1790,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 327,
@@ -1867,7 +1814,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
             {
                 id: 328,
@@ -1892,7 +1838,6 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                others: {},
             },
         ],
         nodes: [],
