@@ -8,7 +8,10 @@
  * 回避策として本設定ファイルを作成した．
  */
 
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
+import '@mdi/font/css/materialdesignicons.css';
 import Vue from 'vue';
 import Vuetify from 'vuetify';
 
 Vue.use(Vuetify);
+
