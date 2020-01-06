@@ -1,7 +1,9 @@
 <template>
     <div id="spot-search">
-        <SearchBox/>
-        <SpotList :spotSearchResults="spotSearchResults"></SpotList>
+        <v-card tile>
+            <SearchBox class="pa-2"/>
+            <SpotList :spotSearchResults="spotSearchResults"></SpotList>
+        </v-card>
         <!-- PropでSpotListにデータを渡す -->
     </div>
 </template>

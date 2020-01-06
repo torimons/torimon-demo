@@ -2,9 +2,10 @@
 	<div id="spot-list">
         <SpotItem
             v-for="spotSearchResult in spotSearchResults"
-            v-bind:key="spotSearchResult.id"
+            v-bind:key="spotSearchResult.id + spotSearchResult.name"
             :spotId="spotSearchResult.id"
-            :spotName="spotSearchResult.name">
+            :spotName="spotSearchResult.name"
+            :distance="'1000km'">
         </SpotItem>
 	</div>
 </template>
@@ -14,10 +15,4 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#spot-list{
-    position: absolute;
-    left: 10px;
-    bottom: 10px;
-    z-index: 1000;
-}
 </style>

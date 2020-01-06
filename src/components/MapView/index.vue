@@ -2,11 +2,12 @@
     <div id="map-view">
       <v-app>
         <Map/>
-        <v-container id="map-container">
+        <v-container id="map-container" class="pt-0" >
           <v-row>
             <v-col
               cols="12"
               sm="5"
+              class="pl-0 pr-0 pt-0"
             >
               <SpotSearch/>
             </v-col>
