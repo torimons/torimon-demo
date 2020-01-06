@@ -30,9 +30,6 @@ describe('components/SpotItem.vue', () => {
         localVue.use(Vuex);
         store = new Vuex.Store({
             state,
-            getters: {
-                getSelectedSpotID: () => store.state.SelectedSpotID,
-            },
         });
         wrapper = shallowMount( SpotItem, {
             localVue,
@@ -41,6 +38,7 @@ describe('components/SpotItem.vue', () => {
     });
 
     it('SpotList内のSpotItemが選択されるとfocusedSpotIdの更新をおこなう', () => {
-
+        wrapper.vm.selectedSpot = {mapId: 0, spotId: 0};
+        expect(store.state.focusedSpot).toBe({mapId: 0, spotId: 0});
     });
 });
