@@ -14,8 +14,13 @@ export default class SearchBox extends Vue {
         this.onFocus = false;
     }
 
+    @Emit('searchWordInput')
+    private sendSearchWord(): string {
+        return this.searchWord;
+    }
+
     @Watch('searchWord')
-    private sendSearchWord(): void {
-        this.$emit('searchWordInput', this.searchWord);
+    private searchWordChange(): void {
+        this.sendSearchWord();
     }
 }
