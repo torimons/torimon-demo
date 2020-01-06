@@ -1,4 +1,4 @@
-import { mapViewStore } from '@/store/modules/MapViewModule';
+import { mapViewGetters, mapViewMutations } from '@/store';
 import { MapViewState, Map, Bounds, SpotInfo, SpotForMap, Spot, DisplayLevelType } from '@/store/types';
 import { testMapViewState } from '../../../resources/testMapViewState';
 import { cloneDeep } from 'lodash';
@@ -14,21 +14,21 @@ describe('store/modules/MapViewModule.ts', () => {
         // stateを入力するためにテスト用のmutationsを用意するしかなかった
         // 直接stateをモックしたり入力にできないか調べたい
         const mapViewState = cloneDeep(testMapViewState);
-        mapViewStore.setMapViewState(mapViewState);
+        mapViewMutations.setMapViewState(mapViewState);
     });
 
     it('stateに登録したSpotInfoコンポーネントの表示状態をgetterで取得する', () => {
-        const actualSpotInfoIsVisible: boolean = mapViewStore.spotInfoIsVisible;
+        const actualSpotInfoIsVisible: boolean = mapViewGetters.spotInfoIsVisible;
         expect(actualSpotInfoIsVisible).toEqual(expectedMapViewState.spotInfoIsVisible);
     });
 
     it('stateに登録したmapのBoundsをgetterで取得する', () => {
-        const actualMapBounds: Bounds = mapViewStore.rootMapBounds;
+        const actualMapBounds: Bounds = mapViewGetters.rootMapBounds;
         expect(actualMapBounds).toEqual(expectedMapViewState.maps[expectedMapViewState.rootMapId].bounds);
     });
 
     it('stateに登録したSpotsからSpotForMap型の配列をgetterで取得する', () => {
-        const actualSpotsForMap: SpotForMap[] = mapViewStore.getSpotsForMap(0);
+        const actualSpotsForMap: SpotForMap[] = mapViewGetters.getSpotsForMap(0);
         const expectedSpotsForMap: SpotForMap[] = [
             {
                 id:       expectedMapViewState.maps[0].spots[0].id,
@@ -47,7 +47,7 @@ describe('store/modules/MapViewModule.ts', () => {
     });
 
     it('stateに登録したSpotsの情報からFocusedSpotIdを持つSpotのSpotInfo型の情報をgetterで取得する', () => {
-        const actualInfoOfFocusedSpot: SpotInfo = mapViewStore.infoOfFocusedSpot;
+        const actualInfoOfFocusedSpot: SpotInfo = mapViewGetters.infoOfFocusedSpot;
         const expectedFocusedMapId: number  = expectedMapViewState.focusedSpot.mapId;
         const expectedFocusedSpotId: number = expectedMapViewState.focusedSpot.spotId;
         const expectedInfoOfFocusedSpot: SpotInfo = {
@@ -58,13 +58,13 @@ describe('store/modules/MapViewModule.ts', () => {
 
     it('spotHasDetailMaps()で詳細マップを持つかどうかを判定する', () => {
         // 詳細マップを持っている場合
-        const expectedValWithDetailMaps: boolean = true;
-        const targetSpotWithDetailMaps = {
+        const expectedValtInRootMaps: boolean = true;
+        const targetSpottInRootMaps = {
             parentMapId: 0,
             spotId: 0,
         };
-        const actualValWithDetailMaps: boolean = mapViewStore.spotHasDetailMaps(targetSpotWithDetailMaps);
-        expect(actualValWithDetailMaps).toBe(expectedValWithDetailMaps);
+        const actualValtInRootMaps: boolean = mapViewGetters.spotHasDetailMaps(targetSpottInRootMaps);
+        expect(actualValtInRootMaps).toBe(expectedValtInRootMaps);
 
         // 詳細マップを持っていない場合
         const expectedValWithoutDetailMaps: boolean = false;
@@ -72,7 +72,7 @@ describe('store/modules/MapViewModule.ts', () => {
             parentMapId: 2,
             spotId: 10,
         };
-        const actualValWithoutDetailMaps: boolean = mapViewStore.spotHasDetailMaps(targetSpotWithoutDetailMaps);
+        const actualValWithoutDetailMaps: boolean = mapViewGetters.spotHasDetailMaps(targetSpotWithoutDetailMaps);
         expect(actualValWithoutDetailMaps).toBe(expectedValWithoutDetailMaps);
     });
 
@@ -81,10 +81,10 @@ describe('store/modules/MapViewModule.ts', () => {
             parentMapId: 0,
             spotId: 0,
         };
-        const mapIndex = mapViewStore.maps.findIndex((m: Map) => m.id === targetSpot.parentMapId);
-        const spotIndex = mapViewStore.maps[mapIndex].spots.findIndex((s: Spot) => s.id === targetSpot.spotId);
-        const expectedSpot: Spot = mapViewStore.maps[mapIndex].spots[spotIndex];
-        const actualSpot: Spot = mapViewStore.getSpotById(targetSpot);
+        const mapIndex = mapViewGetters.maps.findIndex((m: Map) => m.id === targetSpot.parentMapId);
+        const spotIndex = mapViewGetters.maps[mapIndex].spots.findIndex((s: Spot) => s.id === targetSpot.spotId);
+        const expectedSpot: Spot = mapViewGetters.maps[mapIndex].spots[spotIndex];
+        const actualSpot: Spot = mapViewGetters.getSpotById(targetSpot);
         expect(actualSpot).toStrictEqual(expectedSpot);
     });
 
@@ -95,7 +95,7 @@ describe('store/modules/MapViewModule.ts', () => {
             spotId: 0,
         };
         expect(() => {
-            const _ = mapViewStore.getSpotById(targetSpotWithWrongMapId);
+            const _ = mapViewGetters.getSpotById(targetSpotWithWrongMapId);
         }).toThrow(MapNotFoundError);
 
         // 存在しないスポットIdを指定した場合
@@ -104,7 +104,7 @@ describe('store/modules/MapViewModule.ts', () => {
             spotId: 999,
         };
         expect(() => {
-            const _ = mapViewStore.getSpotById(targetSpotWithWrongSpotId);
+            const _ = mapViewGetters.getSpotById(targetSpotWithWrongSpotId);
         }).toThrow(SpotNotFoundError);
     });
 
@@ -113,8 +113,8 @@ describe('store/modules/MapViewModule.ts', () => {
             mapId: 1,
             spotId: 0,
         };
-        mapViewStore.setFocusedSpot(expectedNewFocusedSpot);
-        const actualFocusedSpot: {mapId: number, spotId: number} = mapViewStore.focusedSpot;
+        mapViewMutations.setFocusedSpot(expectedNewFocusedSpot);
+        const actualFocusedSpot: {mapId: number, spotId: number} = mapViewGetters.focusedSpot;
         expect(actualFocusedSpot).toBe(expectedNewFocusedSpot);
     });
 
@@ -125,7 +125,7 @@ describe('store/modules/MapViewModule.ts', () => {
             parentMapId: 0,
             spotId: 0,
         };
-        const actualLastViewedDetailMapId: number | null = mapViewStore.getLastViewedDetailMapId(targetSpot);
+        const actualLastViewedDetailMapId: number | null = mapViewGetters.getLastViewedDetailMapId(targetSpot);
         expect(actualLastViewedDetailMapId).toEqual(expectedLastViewedDetailMapId);
     });
 
@@ -135,13 +135,13 @@ describe('store/modules/MapViewModule.ts', () => {
             spotId: 10,
         };
         expect(() => {
-            const _ = mapViewStore.getLastViewedDetailMapId(targetSpotWithWrongSpotId);
+            const _ = mapViewGetters.getLastViewedDetailMapId(targetSpotWithWrongSpotId);
         }).toThrow(NoDetailMapsError);
     });
 
-    it('stateに登録したidOfCenterSpotWithDetailMapを取得する', () => {
-        const expectedId: number | null = expectedMapViewState.idOfCenterSpotWithDetailMap;
-        expect(mapViewStore.getIdOfCenterSpotWithDetailMap()).toBe(expectedId);
+    it('stateに登録したidOfCenterSpotInRootMapを取得する', () => {
+        const expectedId: number | null = expectedMapViewState.idOfCenterSpotInRootMap;
+        expect(mapViewGetters.idOfCenterSpotInRootMap).toBe(expectedId);
     });
 
     it('スポットに存在しない詳細マップをlastViewDetaiMapIdにセットしようとすると例外が発生する', () => {
@@ -154,7 +154,7 @@ describe('store/modules/MapViewModule.ts', () => {
             },
         };
         expect(() => {
-            mapViewStore.setLastViewedDetailMapId(payload);
+            mapViewMutations.setLastViewedDetailMapId(payload);
         }).toThrow(NoDetailMapIdInSpotError);
     });
 
@@ -171,35 +171,35 @@ describe('store/modules/MapViewModule.ts', () => {
                 spotId: 0,
             },
         };
-        mapViewStore.setLastViewedDetailMapId(payLoad);
+        mapViewMutations.setLastViewedDetailMapId(payLoad);
 
         // 正しくセットされたかをチェック
-        const mapIndex: number = mapViewStore.maps.findIndex((m: Map) => m.id === parentMapId);
-        const spotIndex: number = mapViewStore.maps[mapIndex].spots.findIndex((s: Spot) => s.id === spotId);
-        const actualDetailMapId: number | null = mapViewStore.maps[mapIndex].spots[spotIndex].lastViewedDetailMapId;
+        const mapIndex: number = mapViewGetters.maps.findIndex((m: Map) => m.id === parentMapId);
+        const spotIndex: number = mapViewGetters.maps[mapIndex].spots.findIndex((s: Spot) => s.id === spotId);
+        const actualDetailMapId: number | null = mapViewGetters.maps[mapIndex].spots[spotIndex].lastViewedDetailMapId;
         expect(actualDetailMapId).toBe(expectedDetailMapId);
     });
 
-    it('setIdOfCenterSpotWithDetailMap()でsetしたidOfCenterSpotWithDetailMapがmapViewStoreのstateに登録されている', () => {
-        const expectedIdOfCenterSpotWithDetailMap = 1;
-        mapViewStore.setIdOfCenterSpotWithDetailMap(expectedIdOfCenterSpotWithDetailMap);
-        expect(mapViewStore.idOfCenterSpotWithDetailMap).toBe(expectedIdOfCenterSpotWithDetailMap);
+    it('setIdOfCenterSpotInRootMap()でsetしたIdOfCenterSpotInRootMapがmapViewStoreのstateに登録されている', () => {
+        const expectedIdOfCenterSpotInRootMap = 1;
+        mapViewMutations.setIdOfCenterSpotInRootMap(expectedIdOfCenterSpotInRootMap);
+        expect(mapViewGetters.idOfCenterSpotInRootMap).toBe(expectedIdOfCenterSpotInRootMap);
     });
 
-    it('setNonExistentOfCenterSpotWithDetailMap()でmapViewStoreのidOfCenterSpotWithDetailMapにnullが登録されている', () => {
-        mapViewStore.setNonExistentOfCenterSpotWithDetailMap();
-        expect(mapViewStore.idOfCenterSpotWithDetailMap).toBe(null);
+    it('setNonExistentOfCenterSpotInRootMap()でmapViewStoreのIdOfCenterSpotInRootMapにnullが登録されている', () => {
+        mapViewMutations.setNonExistentOfCenterSpotInRootMap();
+        expect(mapViewGetters.idOfCenterSpotInRootMap).toBe(null);
     });
 
     it('setしたnewDisplayLevelがstateに登録されている', () => {
         const newDisplayLevel: DisplayLevelType = 'detail';
-        mapViewStore.setDisplayLevel(newDisplayLevel);
-        expect(mapViewStore.displayLevel).toBe(newDisplayLevel);
+        mapViewMutations.setDisplayLevel(newDisplayLevel);
+        expect(mapViewGetters.displayLevel).toBe(newDisplayLevel);
     });
 
     it('stateのdisplayLevelをgetterで取得する', () => {
         // テストデータの初期値はdefault
         const expectedDisplayLevel: DisplayLevelType = 'default';
-        expect(mapViewStore.getDisplayLevel()).toBe(expectedDisplayLevel);
+        expect(mapViewGetters.displayLevel).toBe(expectedDisplayLevel);
     });
 });

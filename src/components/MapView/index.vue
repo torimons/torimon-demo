@@ -4,6 +4,7 @@
         <Map/>
         <FloorSwitchButton/>
         <!-- <SearchBox/> -->
+        <!-- <SpotItem spotName="hoge" distance="1000 m"/> -->
         <!-- <SpotInfo/> -->
       </v-app>
     </div>
@@ -15,6 +16,7 @@ import Map from '@/components/Map/index.vue';
 // import SpotInfo from './SpotInfo.vue';
 import FloorSwitchButton from '@/components/FloorSwitchButton/index.vue';
 // import SearchBox from '@/components/SearchBox/index.vue';
+// import SpotItem from '@/components/SpotItem/index.vue';
 
 @Component({
     components: {
@@ -22,6 +24,7 @@ import FloorSwitchButton from '@/components/FloorSwitchButton/index.vue';
         // SpotInfo,
         FloorSwitchButton,
         // SearchBox,
+        // SpotItem,
     },
 })
 export default class MapView extends Vue {
