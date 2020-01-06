@@ -54,9 +54,14 @@ describe('mapコンポーネントのポリゴン表示', () => {
         // テスト用データをstoreにセット
         mapViewMutations.setMapViewState(mapViewStateTestData);
         GeolocationWrapper.watchPosition = jest.fn();
+        const initMapDisplay = jest.fn();
         wrapper = shallowMount( map, {
             attachToDocument: true,
+            methods: {
+                initMapDisplay,
+            },
         });
+        wrapper.vm.initMapDisplay = jest.fn();
     });
 
     it('storeのgetter(getSpotsForMap)で取得したspotのshape情報をgeoJson形式に変換する', () => {

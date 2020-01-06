@@ -28,9 +28,14 @@ describe('components/Map.vue zoomlevel切り替えのテスト', () => {
     beforeEach(() => {
         mapViewMutations.setMapViewState(mapViewStoreTestData);
         GeolocationWrapper.watchPosition = jest.fn();
+        const initMapDisplay = jest.fn();
         wrapper = shallowMount(Map, {
             attachToDocument: true,
+            methods: {
+                initMapDisplay,
+            },
         });
+        wrapper.vm.initMapDisplay = jest.fn();
     });
 
     afterEach(() => {

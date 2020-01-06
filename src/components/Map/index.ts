@@ -42,24 +42,18 @@ export default class Map extends Vue {
                 maxNativeZoom: 19,
             },
         ).addTo(this.map);
+        this.map.on('zoomend', this.updateDisplayLevel);
+        this.map.on('move', this.updateIdOfCenterSpotInRootMap);
+        this.initMapDisplay();
+    }
 
+    private initMapDisplay(): void {
         // sampleMapのスポット表示
         const rootMapSpots: SpotForMap[] = mapViewGetters.getSpotsForMap(mapViewGetters.rootMapId);
         this.displaySpotMarkers(rootMapSpots);
-
         // sampleMapのポリゴン表示
-        // $nextTick()はテスト実行時のエラーを回避するために使用しています．
-        this.$nextTick().then(() => {
-            this.displayPolygons(rootMapSpots);
-            // 経路（エッジ）表示
-            this.displayRouteLines(mapViewGetters.getNodesForNavigation([]));
-            // 経路レイヤーが消去されているか確認
-            // this.routeLines = this.displayRouteLines([]);
-        });
+        this.displayPolygons(rootMapSpots);
         this.currentLocationMarker.addTo(this.map);
-
-        this.map.on('zoomend', this.updateDisplayLevel);
-        this.map.on('move', this.updateIdOfCenterSpotInRootMap);
     }
 
     /**
