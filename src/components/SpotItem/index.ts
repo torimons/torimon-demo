@@ -1,5 +1,5 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { mapViewMutations } from '@/store';
+import { mapViewGetters, mapViewMutations } from '@/store';
 
 @Component
 export default class SpotItem extends Vue {
@@ -9,15 +9,5 @@ export default class SpotItem extends Vue {
     @Prop()
     private distance!: number;
     @Prop()
-    private spotIds!: {mapId: number, spotId: number};
-
-    // 選択されているスポットのmapIdとspotId
-    private selectedSpot: null | {mapId: number, spotId: number} = null;
-
-    @Watch('selectedSpot')
-    private updateFocusedSpot(): void{
-        if (this.selectedSpot !== null){
-            mapViewMutations.setFocusedSpot(this.selectedSpot)
-        }
-    }
+    private spotId!: number;
 }

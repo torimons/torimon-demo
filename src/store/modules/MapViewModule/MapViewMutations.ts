@@ -76,13 +76,6 @@ export class MapViewMutations extends Mutations<MapViewState> {
     }
 
     /**
-     * spotInfoIsVisibleの設定を行う
-     */
-    public setSpotInfoIsVisible(isVisible: boolean): void {
-        this.state.spotInfoIsVisible = isVisible;
-    }
-
-    /**
      * MapViewStateの情報を一括でset
      * - 現状は単体テストの入力用の仮メソッド
      * @param mapState マップの状態
