@@ -47,6 +47,9 @@ export default class Map extends Vue {
         this.initMapDisplay();
     }
 
+    /**
+     * マップの初期の描画，モックするためにmountedから分離
+     */
     private initMapDisplay(): void {
         // sampleMapのスポット表示
         const rootMapSpots: SpotForMap[] = mapViewGetters.getSpotsForMap(mapViewGetters.rootMapId);
