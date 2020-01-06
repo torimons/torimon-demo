@@ -80,8 +80,11 @@ export default class Map extends Vue {
     private displaySpotMarkers(spotsToDisplay: SpotForMap[]): void {
         // removeしてから取り除かないと描画から消えない
         this.spotMarkers.forEach((marker: L.Marker) => marker.remove());
-        const coordinates: Coordinate[] = spotsToDisplay.map((spot: SpotForMap) => spot.coordinate);
-        this.spotMarkers = coordinates.map((coord: Coordinate) => new DefaultSpotMarker(coord));
+        const markerOptions: any = [];
+        spotsToDisplay.forEach((spot: SpotForMap) => {
+            markerOptions.push(new DefaultSpotMarker(spot.coordinate, { mapId: spot.mapId, spotId: spot.spotId }));
+        });
+        this.spotMarkers = markerOptions;
         this.addMarkersToMap(this.spotMarkers);
     }
 

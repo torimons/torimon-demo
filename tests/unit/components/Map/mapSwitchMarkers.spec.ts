@@ -16,7 +16,8 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
     // テストデータ
     const testSpots: SpotForMap[] = [
         {
-            id: 0,
+            mapId: 0,
+            spotId: 0,
             name: 'SougouGakusyuPlaza1',
             coordinate: {
                 lat: 33.595502,
@@ -24,7 +25,8 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
             },
         },
         {
-            id: 1,
+            mapId: 0,
+            spotId: 1,
             name: 'SougouGakusyuPlaza2',
             coordinate: {
                 lat: 33.595503,
@@ -58,4 +60,12 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
             expect(actLatLng).toStrictEqual(L.latLng(testLat, testLng));
         }
     });
+
+    it('マーカーをクリックした際にuodateFocusedMarkerがfocusedSpotを変更する', () => {
+        // テスト内容
+    })
+
+    it('マーカーをクリックした際にuodateFocusedMarkerがspotInfoIsVisibleを変更する', () => {
+        // テスト内容
+    })
 });

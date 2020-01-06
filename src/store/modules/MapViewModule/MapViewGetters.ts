@@ -77,7 +77,8 @@ export class MapViewGetters extends Getters<MapViewState> {
         const spotsForMap: SpotForMap[] = [];
         spots.forEach((spot) => {
             spotsForMap.push({
-                id: spot.id,
+                mapId: mapId,
+                spotId: spot.id,
                 name: spot.name,
                 coordinate: spot.coordinate,
                 shape: spot.shape,

@@ -12,9 +12,10 @@ export default class DefaultSpotMarker extends L.Marker {
         shadowAnchor: [22, 94],
     });
 
-    constructor(latlng: LatLngExpression) {
+    constructor(latlng: LatLngExpression, spotIds: {mapId: number, spotId: number}) {
         super(latlng);
         this.setIcon(this.icon);
+        spotIds;
     }
 
     public addTo(map: L.Map | L.LayerGroup<any>): this {
@@ -25,7 +26,7 @@ export default class DefaultSpotMarker extends L.Marker {
      * マーカーが押された時に呼び出されるコールバック関数
      */
     private updateFocusedMarker(e: L.LeafletEvent): void {
-        mapViewMutations.setFocusedSpot(newfocusedSpot);
+        mapViewMutations.setFocusedSpot(e.target.spotIds);
         mapViewMutations.setSpotInfoIsVisible(true);
     }
 }
