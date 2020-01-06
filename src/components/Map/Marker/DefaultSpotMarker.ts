@@ -1,4 +1,6 @@
-import L, {Marker, LatLngExpression} from 'leaflet';
+import L, {Marker, LatLngExpression, LeafletEvent} from 'leaflet';
+import { mapViewMutations } from '@/store';
+import { MapViewState } from '@/store/modules/MapViewModule/MapViewState';
 
 export default class DefaultSpotMarker extends L.Marker {
     private icon: L.Icon = L.icon({
@@ -19,12 +21,12 @@ export default class DefaultSpotMarker extends L.Marker {
         return super.addTo(map).on('click', this.updateFocusedMarker);
     }
 
-    // マーカーが押された際に呼び出される関数
-    private updateFocusedMarker(): void {
-        /*
-            （vuexの状態更新も行う必要がある）
-            押したマーカーのスポットの情報の取得
-            ポップアップの表示
-            */
+    /**
+     * マーカーが押された時に呼び出されるコールバック関数
+     */
+    private updateFocusedMarker(e: L.LeafletEvent): void {
+        console.log(e.target.options.spotId);
+        // mapViewMutations.setFocusedSpot(e.target.options.spotId);
+        mapViewMutations.setSpotInfoIsVisible(true);
     }
 }
