@@ -1,7 +1,6 @@
 <template>
     <div id="search-box">
         <v-form @submit.prevent>
-            <v-container>
                 <v-text-field
                     v-model='searchWord'
                     placeholder="ここで検索できます"
@@ -30,7 +29,6 @@
                         </v-btn>
                     </template>
                 </v-text-field>
-            </v-container>
         </v-form>
     </div>
 </template>
@@ -40,12 +38,4 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#search-box {
-    position:absolute;
-    left: 10px;
-    top: 10px;
-    z-index: 1000;
-    /* background-color: white; */
-}
-
 </style>

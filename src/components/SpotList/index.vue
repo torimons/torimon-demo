@@ -1,6 +1,6 @@
 <template>
 	<div id="spot-list">
-        <SpotItem 
+        <SpotItem
             v-for="spotSearchResult in spotSearchResults"
             v-bind:key="spotSearchResult.id"
             :spotId="spotSearchResult.id"
