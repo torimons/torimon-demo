@@ -60,12 +60,4 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
             expect(actLatLng).toStrictEqual(L.latLng(testLat, testLng));
         }
     });
-
-    it('マーカーをクリックした際にuodateFocusedMarkerがfocusedSpotを変更する', () => {
-        // テスト内容
-    })
-
-    it('マーカーをクリックした際にuodateFocusedMarkerがspotInfoIsVisibleを変更する', () => {
-        // テスト内容
-    })
 });

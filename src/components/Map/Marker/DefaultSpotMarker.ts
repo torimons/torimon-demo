@@ -15,7 +15,6 @@ export default class DefaultSpotMarker extends L.Marker {
     constructor(latlng: LatLngExpression, spotIds: {mapId: number, spotId: number}) {
         super(latlng);
         this.setIcon(this.icon);
-        spotIds;
     }
 
     public addTo(map: L.Map | L.LayerGroup<any>): this {
