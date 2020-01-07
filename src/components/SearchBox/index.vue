@@ -9,7 +9,7 @@
                     solo
                     full-width
                     @focus="focus"
-                    @blur="cancel"
+                    @blur="focusCancel"
                 >
                     <template
                         v-slot:prepend-inner
@@ -25,6 +25,7 @@
                             text
                             icon
                             v-show="onFocus"
+                            v-on:click="exitSpotSearch"
                         >
                             <v-icon>keyboard_arrow_left</v-icon>
                         </v-btn>
