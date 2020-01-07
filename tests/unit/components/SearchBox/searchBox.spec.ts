@@ -15,7 +15,7 @@ describe('SearchBoxコンポーネントのテスト', () => {
         wrapper.destroy();
     });
 
-    it('searchWordの変更を監視してsearchWordChangeを呼び出す', () => {
+    it('searchWordの変更を監視してonChangeSearchWordを呼び出す', () => {
         wrapper.vm.sendSearchWord = jest.fn();
         wrapper.vm.searchWord = 'abcde';
         // searchWordの中身でsendSearchWordを呼んでいる

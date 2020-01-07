@@ -20,7 +20,7 @@ export default class SearchBox extends Vue {
     }
 
     @Watch('searchWord')
-    private searchWordChange(): void {
+    private onChangeSearchWord(): void {
         this.sendSearchWord();
     }
 }
