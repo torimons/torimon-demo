@@ -11,13 +11,7 @@ export default class SpotItem extends Vue {
     @Prop()
     private spotIds!: {mapId: number, spotId: number};
 
-    // 選択されているスポットのmapIdとspotId
-    private selectedSpot: null | {mapId: number, spotId: number} = null;
-
-    @Watch('selectedSpot')
-    private updateFocusedSpot(): void {
-        if (this.selectedSpot !== null) {
-            mapViewMutations.setFocusedSpot(this.selectedSpot);
-        }
+    private updateFocusedSpot(selectedSpot: {mapId: number, spotId: number}): void {
+        mapViewMutations.setFocusedSpot(selectedSpot);
     }
 }

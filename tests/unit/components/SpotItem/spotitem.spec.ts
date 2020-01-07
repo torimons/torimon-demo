@@ -16,12 +16,15 @@ describe('components/SpotItem.vue', () => {
         wrapper = shallowMount( SpotItem, {
             localVue,
             vuetify,
+            attachToDocument: true,
         });
     });
 
     it('SpotList内のSpotItemが選択されるとfocusedSpotIdの更新をおこなう', () => {
-        wrapper.vm.selectedSpot = { mapId: 1, spotId: 1 };
+        wrapper.vm.spotIds = {mapId: 1, spotId: 1};
+        expect(wrapper.find('.v-btn').exists()).toBe(true);
+        wrapper.find('.v-btn').trigger('click');
         const actualFocusedSpot: { mapId: number, spotId: number} = mapViewGetters.focusedSpot;
-        expect(actualFocusedSpot).toStrictEqual({ mapId: 1, spotId: 1 });
+        expect(actualFocusedSpot).toStrictEqual({mapId: 1, spotId: 1});
     });
 });

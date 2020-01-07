@@ -1,7 +1,17 @@
 <template>
 	<div id="spot-item">
-        {{ spotName }}
-        {{ distance }}
+        <v-col>
+            <v-btn-toggle
+                v-model="spotIds"
+            >
+                <v-btn
+                    @click="updateFocusedSpot(spotIds)"
+                >
+                {{ spotName }}
+                {{ distance }}
+                </v-btn>
+            </v-btn-toggle>
+        </v-col>
 	</div>
 </template>
 
