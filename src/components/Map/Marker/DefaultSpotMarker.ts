@@ -20,14 +20,20 @@ export default class DefaultSpotMarker extends L.Marker {
     }
 
     public addTo(map: L.Map | L.LayerGroup<any>): this {
-        return super.addTo(map).on('click', this.updateFocusedMarker);
+        return super.addTo(map).on('click', this.getFocusedMarker);
     }
-
+    /**
+     * マーカーが押されたときに押されたマーカーのmapIdとspotIdをsetFocusedMarkerに渡す
+     * @param e
+     */
+    private getFocusedMarker(e: L.LeafletEvent): void {
+        this.setFocusedMarker(e.target.spotIds);
+    }
     /**
      * マーカーが押された時に呼び出されるコールバック関数
      */
-    private updateFocusedMarker(e: L.LeafletEvent): void {
-        mapViewMutations.setFocusedSpot(e.target.spotIds);
+    private setFocusedMarker(spotIds: {mapId: number, spotId: number}): void {
+        mapViewMutations.setFocusedSpot(spotIds);
         mapViewMutations.setSpotInfoIsVisible(true);
     }
 }
