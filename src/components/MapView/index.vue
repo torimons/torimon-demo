@@ -3,16 +3,18 @@
       <v-app>
         <Map/>
         <SpotSearch/>
-        <div class="wrap">
-          <div id="floor-switich-button">
-            <FloorSwitchButton/>
-          </div>
-          <div id="spot-info">
-            <SpotInfo/>
-          </div>
-        </div>
-        <!-- <SearchBox/> -->
-        <!-- <SpotItem spotName="hoge" distance="1000 m"/> -->
+        <v-container id="bottom-container" class="pa-0">
+          <v-row no-gutters>
+            <v-col
+              cols="12"
+              sm="5"
+              class="pa-0"
+            >
+              <FloorSwitchButton class="pa-2"/>
+              <SpotInfo class="px-2 pb-2" />
+            </v-col>
+          </v-row>
+        </v-container>
       </v-app>
     </div>
 </template>
@@ -49,21 +51,11 @@ body,
   height: 100%;
 }
 
-.wrap {
+#bottom-container {
   position: absolute;
   left: 0px;
   bottom: 0px;
   z-index: 1000;
-}
-
-#floor-switch-button {
-  margin-left: 10px;
-  margin-bottom: 10px;
-}
-
-#spot-info{
-  margin-left: 5px;
-  margin-bottom: 10px;
 }
 
 body {
