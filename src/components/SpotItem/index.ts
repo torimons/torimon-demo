@@ -1,5 +1,5 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { mapViewMutations } from '@/store';
+import { mapViewGetters, mapViewMutations } from '@/store';
 
 @Component
 export default class SpotItem extends Vue {
