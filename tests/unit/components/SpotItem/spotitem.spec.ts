@@ -21,7 +21,7 @@ describe('components/SpotItem.vue', () => {
 
     it('SpotList内のSpotItemが選択されるとfocusedSpotIdの更新をおこなう', () => {
         wrapper.vm.selectedSpot = { mapId: 1, spotId: 1 };
-        const actualFocusedSpot: { mapId: number, spotId: number} = mapViewGetters.focusedSpot
+        const actualFocusedSpot: { mapId: number, spotId: number} = mapViewGetters.focusedSpot;
         expect(actualFocusedSpot).toStrictEqual({ mapId: 1, spotId: 1 });
     });
 });

@@ -12,7 +12,7 @@ export default class SpotItem extends Vue {
     private spotIds!: {mapId: number, spotId: number};
 
     // 選択されているスポットのmapIdとspotId
-    public selectedSpot: null | {mapId: number, spotId: number} = null;
+    private selectedSpot: null | {mapId: number, spotId: number} = null;
 
     @Watch('selectedSpot')
     private updateFocusedSpot(): void {
