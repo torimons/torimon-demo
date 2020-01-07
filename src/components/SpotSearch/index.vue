@@ -3,7 +3,6 @@
         <SearchBox @toggleSpotList="setSpotListIsVisible"/>
         <!-- <SearchList/> -->
         <!-- PropでSpotListにデータを渡す -->
-        <div v-show="spotListIsVisible">nanka</div>
     </div>
 </template>
 

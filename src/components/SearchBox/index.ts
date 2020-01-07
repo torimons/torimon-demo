@@ -3,7 +3,7 @@ import { mdiAccount } from '@mdi/js';
 
 @Component
 export default class SearchBox extends Vue {
-    public searchWord: string = '';
+    private searchWord: string = '';
     private onFocus: boolean = false;
 
     /**
@@ -19,7 +19,6 @@ export default class SearchBox extends Vue {
      */
     private focusCancel(): void {
         this.onFocus = false;
-        console.log(this.$refs['search-text']);
     }
 
     /**
@@ -28,7 +27,7 @@ export default class SearchBox extends Vue {
      */
     private exitSpotSearch(): void {
         this.closeSpotList();
-        this.focusCancel();
+        this.onFocus = false;
     }
 
     /**

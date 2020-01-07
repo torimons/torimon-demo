@@ -8,7 +8,6 @@
                     clearable
                     solo
                     full-width
-                    @focus="focus"
                     @click="focus"
                     @blur="focusCancel"
                 >
@@ -16,6 +15,7 @@
                         v-slot:prepend-inner
                     >
                         <v-btn
+                            id="place"
                             text
                             icon
                             v-show="!onFocus"
@@ -23,10 +23,11 @@
                             <v-icon>place</v-icon>
                         </v-btn>
                         <v-btn
+                            id="arrow"
                             text
                             icon
                             v-show="onFocus"
-                            v-on:click="exitSpotSearch"
+                            @click="exitSpotSearch"
                         >
                             <v-icon>keyboard_arrow_left</v-icon>
                         </v-btn>
