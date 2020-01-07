@@ -82,7 +82,7 @@ export default class Map extends Vue {
         this.spotMarkers.forEach((marker: L.Marker) => marker.remove());
         const markerOptions: DefaultSpotMarker[] = [];
         spotsToDisplay.forEach((spot: SpotForMap) => {
-            markerOptions.push(new DefaultSpotMarker(spot.coordinate, { mapId: spot.mapId, spotId: spot.spotId }));
+            markerOptions.push(new DefaultSpotMarker(spot.coordinate, {mapId: spot.mapId, spotId: spot.spotId}));
         });
         this.spotMarkers = markerOptions;
         this.addMarkersToMap(this.spotMarkers);

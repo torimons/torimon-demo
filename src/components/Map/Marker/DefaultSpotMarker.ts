@@ -11,10 +11,12 @@ export default class DefaultSpotMarker extends L.Marker {
         shadowSize: [68, 95],
         shadowAnchor: [22, 94],
     });
+    private spotIds!: {mapId: number, spotId: number};
 
     constructor(latlng: LatLngExpression, spotIds: {mapId: number, spotId: number}) {
         super(latlng);
         this.setIcon(this.icon);
+        this.spotIds = spotIds;
     }
 
     public addTo(map: L.Map | L.LayerGroup<any>): this {
