@@ -9,6 +9,7 @@
                     solo
                     full-width
                     @focus="focus"
+                    @click="focus"
                     @blur="focusCancel"
                 >
                     <template

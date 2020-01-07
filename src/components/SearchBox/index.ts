@@ -19,13 +19,14 @@ export default class SearchBox extends Vue {
      */
     private focusCancel(): void {
         this.onFocus = false;
+        console.log(this.$refs['search-text']);
     }
 
     /**
      * 戻るボタンをクリックした時にspotSearchコンポーネントに
      * spotListを閉じるように伝える
      */
-    private exitSpotSearch(): void{
+    private exitSpotSearch(): void {
         this.closeSpotList();
         this.focusCancel();
     }
