@@ -7,7 +7,7 @@
             <v-col
               cols="12"
               sm="5"
-              class="pl-0 pr-0 pt-0"
+              class="pa-0"
             >
               <SpotSearch/>
             </v-col>

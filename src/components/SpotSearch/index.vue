@@ -1,8 +1,16 @@
 <template>
     <div id="spot-search">
-        <v-card tile>
-            <SearchBox class="pa-2"/>
-            <SpotList :spotSearchResults="spotSearchResults"></SpotList>
+        <v-card
+            tile
+            flat
+            color="primary"
+        >
+            <SearchBox/>
+            <SpotList
+                :spotSearchResults="spotSearchResults"
+                v-show="true"
+                class="px-2 pb-2"
+            ></SpotList>
         </v-card>
         <!-- PropでSpotListにデータを渡す -->
     </div>
