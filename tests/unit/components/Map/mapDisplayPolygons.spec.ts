@@ -61,7 +61,6 @@ describe('mapコンポーネントのポリゴン表示', () => {
                 initMapDisplay,
             },
         });
-        wrapper.vm.initMapDisplay = jest.fn();
     });
 
     it('storeのgetter(getSpotsForMap)で取得したspotのshape情報をgeoJson形式に変換する', () => {

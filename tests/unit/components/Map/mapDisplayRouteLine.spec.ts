@@ -17,7 +17,6 @@ describe('mapコンポーネントの経路表示', () => {
                 initMapDisplay,
             },
         });
-        wrapper.vm.initMapDisplay = jest.fn();
     });
 
     // expectで直接比較を行うと'_leaflet_id'が異なりテストが落ちるのでそれぞれの'_latLngs'と'_options'を比較するものに変更

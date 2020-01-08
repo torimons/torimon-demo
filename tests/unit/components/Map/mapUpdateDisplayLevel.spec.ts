@@ -35,7 +35,6 @@ describe('components/Map.vue zoomlevel切り替えのテスト', () => {
                 initMapDisplay,
             },
         });
-        wrapper.vm.initMapDisplay = jest.fn();
     });
 
     afterEach(() => {

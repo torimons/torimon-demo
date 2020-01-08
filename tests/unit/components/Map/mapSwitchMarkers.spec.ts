@@ -43,7 +43,6 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
                 initMapDisplay,
             },
         });
-        wrapper.vm.addMarkersToMap = jest.fn();
     });
 
     afterEach(() => {
