@@ -4,7 +4,6 @@ import { mapViewGetters, mapViewMutations } from '@/store';
 import Search from '@/utils/Search';
 import SearchBox from '@/components/SearchBox/index.vue';
 
-// こうなる予定？
 @Component({
     components: {
         SearchBox,
