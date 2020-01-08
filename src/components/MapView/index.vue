@@ -11,8 +11,6 @@
             <SpotInfo/>
           </div>
         </div>
-        <!-- <SearchBox/> -->
-        <!-- <SpotItem spotName="hoge" distance="1000 m"/> -->
       </v-app>
     </div>
 </template>
@@ -23,8 +21,6 @@ import Map from '@/components/Map/index.vue';
 import SpotInfo from '@/components/SpotInfoCard/index.vue';
 import FloorSwitchButton from '@/components/FloorSwitchButton/index.vue';
 import SpotSearch from '@/components/SpotSearch/index.vue';
-// import SearchBox from '@/components/SearchBox/index.vue';
-// import SpotItem from '@/components/SpotItem/index.vue';
 
 @Component({
     components: {
@@ -32,8 +28,6 @@ import SpotSearch from '@/components/SpotSearch/index.vue';
         SpotInfo,
         FloorSwitchButton,
         SpotSearch,
-        // SearchBox,
-        // SpotItem,
     },
 })
 export default class MapView extends Vue {

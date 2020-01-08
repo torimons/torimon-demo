@@ -1,7 +1,7 @@
 <template>
     <div id="spot-search">
-        <!-- <SearchBox/>
-        <SearchList/> -->
+        <SearchBox @searchWordInput="setSearchWord"/>
+        <!-- <SearchList/> -->
         <!-- PropでSpotListにデータを渡す -->
     </div>
 </template>

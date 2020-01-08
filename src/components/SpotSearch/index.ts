@@ -2,15 +2,13 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { Map, Spot } from '@/store/types';
 import { mapViewGetters, mapViewMutations } from '@/store';
 import Search from '@/utils/Search';
+import SearchBox from '@/components/SearchBox/index.vue';
 
-// こうなる予定？
-// @Component({
-    // components: {
-    //     SearchBox,
-    //     SpotList,
-    // }
-// })
-@Component
+@Component({
+    components: {
+        SearchBox,
+    },
+})
 export default class SpotSearch extends Vue {
     private searchWord: string = '';
     private spotListIsVisible: boolean = false;
