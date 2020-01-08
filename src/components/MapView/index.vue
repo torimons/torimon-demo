@@ -6,7 +6,8 @@
           <v-row>
             <v-col
               cols="12"
-              sm="5"
+              sm="4"
+              md="3"
               class="pa-0"
             >
               <SpotSearch/>

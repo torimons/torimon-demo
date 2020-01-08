@@ -5,7 +5,6 @@ import Search from '@/utils/Search';
 import SearchBox from '@/components/SearchBox/index.vue';
 import SpotList from '@/components/SpotList/index.vue';
 
-// こうなる予定？
 @Component({
     components: {
         SearchBox,

@@ -8,7 +8,7 @@
             <SearchBox/>
             <SpotList
                 :spotSearchResults="spotSearchResults"
-                v-show="true"
+                v-show="spotListIsVisible"
                 class="px-2 pb-2"
             ></SpotList>
         </v-card>
