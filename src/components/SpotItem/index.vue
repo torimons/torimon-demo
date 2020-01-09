@@ -1,15 +1,11 @@
 <template>
 	<div id="spot-item">
-        <v-btn-toggle
-            v-model="computedSpot"
+        <v-btn
+            @click="updateFocusedSpot()"
         >
-            <v-btn
-                @click="updateFocusedSpot(computedSpot)"
-            >
-            {{ spotName }}
-            {{ distance }}
-            </v-btn>
-        </v-btn-toggle>
+        {{ spotName }}
+        {{ distance }}
+        </v-btn>
 	</div>
 </template>
 
