@@ -12,7 +12,7 @@
           </div>
         </div>
         <!-- <SearchBox/> -->
-        <!-- <SpotItem spotName="hoge" distance="1000 m" spotIds="{mapId: 1, spotId: 1}"/> -->
+        <!-- <SpotItem spotName="hoge" distance="1000 m"/> -->
       </v-app>
     </div>
 </template>
