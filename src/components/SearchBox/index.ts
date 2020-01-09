@@ -15,7 +15,7 @@ export default class SearchBox extends Vue {
     }
 
     /**
-     * text-field以外をクリックした時にフォーカス状態を解除する
+     * text-field以外をクリックした時にonFocusをfalseにする
      */
     private focusCancel(): void {
         this.onFocus = false;
@@ -28,6 +28,8 @@ export default class SearchBox extends Vue {
     private exitSpotSearch(): void {
         this.closeSpotList();
         this.onFocus = false;
+        // text-fieldからフォーカスを外す
+        (this.$refs.searchTextField as HTMLInputElement).blur();
     }
 
     /**

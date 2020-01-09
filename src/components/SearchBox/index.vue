@@ -10,6 +10,7 @@
                     full-width
                     @click="focus"
                     @blur="focusCancel"
+                    ref="searchTextField"
                 >
                     <template
                         v-slot:prepend-inner
