@@ -1,5 +1,4 @@
-import { Component, Watch, Vue } from 'vue-property-decorator';
-import { mdiAccount } from '@mdi/js';
+import { Component, Watch, Vue, Emit } from 'vue-property-decorator';
 
 @Component
 export default class SearchBox extends Vue {
@@ -9,7 +8,18 @@ export default class SearchBox extends Vue {
     private focus(): void {
         this.onFocus = true;
     }
+
     private cancel(): void {
         this.onFocus = false;
+    }
+
+    @Emit('searchWordInput')
+    private sendSearchWord(): string {
+        return this.searchWord;
+    }
+
+    @Watch('searchWord')
+    private onChangeSearchWord(): void {
+        this.sendSearchWord();
     }
 }
