@@ -1,7 +1,17 @@
 <template>
     <div id="spot-search">
-        <SearchBox @searchWordInput="setSearchWord"/>
-        <!-- <SearchList/> -->
+        <v-card
+            tile
+            flat
+            color="primary"
+        >
+            <SearchBox/>
+            <SpotList
+                :spotSearchResults="spotSearchResults"
+                v-show="spotListIsVisible"
+                class="px-2 pb-2"
+            ></SpotList>
+        </v-card>
         <!-- PropでSpotListにデータを渡す -->
     </div>
 </template>

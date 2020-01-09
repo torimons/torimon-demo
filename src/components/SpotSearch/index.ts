@@ -3,10 +3,12 @@ import { Map, Spot } from '@/store/types';
 import { mapViewGetters, mapViewMutations } from '@/store';
 import Search from '@/utils/Search';
 import SearchBox from '@/components/SearchBox/index.vue';
+import SpotList from '@/components/SpotList/index.vue';
 
 @Component({
     components: {
         SearchBox,
+        SpotList,
     },
 })
 export default class SpotSearch extends Vue {
