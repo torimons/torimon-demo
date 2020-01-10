@@ -13,7 +13,7 @@ describe('DefaultSpotMarkers', () => {
     });
 
     // クリックイベントが発火できないため、getFocusedMarkerのテストはなし
-    
+
     it('setFocusedMarkerを呼び出してmapIdとspotIdをfocusedSpotにsetする', () => {
         const testMarker = new DefaultSpotMarker([0, 0], {mapId: 0, spotId: 0});
         const expectedFocusedMarker: {mapId: number, spotId: number} = {mapId: 0, spotId: 1};
