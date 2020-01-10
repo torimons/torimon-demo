@@ -44,6 +44,7 @@ export default class Map extends Vue {
         ).addTo(this.map);
         this.map.on('zoomend', this.updateDisplayLevel);
         this.map.on('move', this.updateIdOfCenterSpotInRootMap);
+        this.map.zoomControl.setPosition('bottomright');
         this.initMapDisplay();
     }
 
