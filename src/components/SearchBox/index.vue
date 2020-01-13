@@ -9,7 +9,7 @@
                     solo
                     full-width
                     @click="focus"
-                    @blur="focusCancel"
+                    @blur="unfocus"
                     ref="searchTextField"
                 >
                     <template
