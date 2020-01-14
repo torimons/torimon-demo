@@ -1,6 +1,33 @@
 import { Map, DisplayLevelType } from '@/store/types';
 import { sampleMaps } from '@/store/modules/sampleMaps';
 
+/**
+ * マップ中の全スポットに階層情報と親のスポットの名前を登録する
+ * 階層や親スポットが存在しない場合は空文字列を代入
+ * @return 情報追加後のマップ
+ */
+function initMap(): Map[] {
+    for (const map of sampleMaps) {
+        for (const spot of map.spots) {
+            spot.parentSpotName = '';
+            spot.floorName = '';
+        }
+    }
+    for (const map of sampleMaps) {
+        for (const spot of map.spots) {
+            for (const detailMapId of spot.detailMapIds) {
+                for (const detailMapSpot of sampleMaps[detailMapId].spots) {
+                    detailMapSpot.parentSpotName = spot.name;
+                    const detailMapIdIndex: number = spot.detailMapIds
+                        .findIndex((mapId: number) => mapId === detailMapId);
+                    detailMapSpot.floorName = spot.detailMapLevelNames[detailMapIdIndex];
+                }
+            }
+        }
+    }
+    return sampleMaps;
+}
+
 export class MapViewState {
     /**
      * 複数のマップの情報を持つ
@@ -10,7 +37,8 @@ export class MapViewState {
      *   外部モジュールのsampleMapsで初期化
      * 将来的にはvuexのmutationで登録する
      */
-    public maps: Map[] = sampleMaps;
+    public maps: Map[] = initMap();
+
 
     /*
      * 大元の親のMapのID

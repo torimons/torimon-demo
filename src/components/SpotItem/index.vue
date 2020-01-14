@@ -5,7 +5,8 @@
         >
             <v-list-item two-line>
                 <v-list-item-content>
-                    <v-list-item-title class="headline">{{ spotName }}</v-list-item-title>
+                    <v-list-item-title class="headline">{{ parentSpotName + " " + spotName }}</v-list-item-title>
+                    <v-list-item-subtitle>{{ floorName }}</v-list-item-subtitle>
                     <v-list-item-subtitle>{{ distance }}</v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>

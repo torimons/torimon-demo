@@ -7,6 +7,10 @@ export default class SpotItem extends Vue {
     @Prop()
     private spotName!: string;
     @Prop()
+    private parentSpotName!: string;
+    @Prop()
+    private floorName!: string;
+    @Prop()
     private distance!: number;
     @Prop()
     private spotId!: number;
