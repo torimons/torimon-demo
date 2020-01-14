@@ -2,17 +2,30 @@
     <div id="map-view">
       <v-app>
         <Map/>
-        <SpotSearch/>
-        <div class="wrap">
-          <div id="floor-switich-button">
-            <FloorSwitchButton/>
-          </div>
-          <div id="spot-info">
-            <SpotInfo/>
-          </div>
-        </div>
-        <!-- <SearchBox/> -->
-        <!-- <SpotItem spotName="hoge" distance="1000 m"/> -->
+        <v-container id="map-container" class="pt-0" >
+          <v-row>
+            <v-col
+              cols="12"
+              sm="4"
+              md="3"
+              class="pa-0"
+            >
+              <SpotSearch/>
+            </v-col>
+          </v-row>
+        </v-container>
+        <v-container id="bottom-container" class="pa-0">
+          <v-row no-gutters>
+            <v-col
+              cols="12"
+              sm="5"
+              class="pa-0"
+            >
+              <FloorSwitchButton class="pa-2"/>
+              <SpotInfo class="px-2 pb-2" />
+            </v-col>
+          </v-row>
+        </v-container>
       </v-app>
     </div>
 </template>
@@ -23,8 +36,6 @@ import Map from '@/components/Map/index.vue';
 import SpotInfo from '@/components/SpotInfoCard/index.vue';
 import FloorSwitchButton from '@/components/FloorSwitchButton/index.vue';
 import SpotSearch from '@/components/SpotSearch/index.vue';
-// import SearchBox from '@/components/SearchBox/index.vue';
-// import SpotItem from '@/components/SpotItem/index.vue';
 
 @Component({
     components: {
@@ -32,8 +43,6 @@ import SpotSearch from '@/components/SpotSearch/index.vue';
         SpotInfo,
         FloorSwitchButton,
         SpotSearch,
-        // SearchBox,
-        // SpotItem,
     },
 })
 export default class MapView extends Vue {
@@ -49,21 +58,18 @@ body,
   height: 100%;
 }
 
-.wrap {
+#map-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+}
+
+#bottom-container {
   position: absolute;
   left: 0px;
   bottom: 0px;
   z-index: 1000;
-}
-
-#floor-switch-button {
-  margin-left: 10px;
-  margin-bottom: 10px;
-}
-
-#spot-info{
-  margin-left: 5px;
-  margin-bottom: 10px;
 }
 
 body {

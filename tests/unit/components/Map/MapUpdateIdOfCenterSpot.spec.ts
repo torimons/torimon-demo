@@ -3,7 +3,7 @@ import map from '@/components/Map/index.vue';
 import { MapViewState, Spot, Coordinate } from '@/store/types';
 import { shallowMount } from '@vue/test-utils';
 import { cloneDeep } from 'lodash';
-import { testMapViewState } from '../resources/testMapViewState';
+import { testMapViewState } from '../../../resources/testMapViewState';
 import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper';
 
 const mapViewStateTestData: MapViewState = cloneDeep(testMapViewState);
@@ -25,8 +25,12 @@ describe('中央に最も近いスポットの取得，およびその更新の�
         // テスト用データをstoreにセット
         mapViewMutations.setMapViewState(mapViewStateTestData);
         GeolocationWrapper.watchPosition = jest.fn();
+        const initMapDisplay = jest.fn();
         wrapper = shallowMount( map, {
             attachToDocument: true,
+            methods: {
+                initMapDisplay,
+            },
         });
     });
 

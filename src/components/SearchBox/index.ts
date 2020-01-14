@@ -1,5 +1,4 @@
 import { Component, Watch, Vue, Emit } from 'vue-property-decorator';
-import { mdiAccount } from '@mdi/js';
 
 @Component
 export default class SearchBox extends Vue {
@@ -32,5 +31,15 @@ export default class SearchBox extends Vue {
         this.onFocus = false;
         // text-fieldからフォーカスを外す
         (this.$refs.searchTextField as HTMLInputElement).blur();
+    }
+
+    @Emit('searchWordInput')
+    private sendSearchWord(): string {
+        return this.searchWord;
+    }
+
+    @Watch('searchWord')
+    private onChangeSearchWord(): void {
+        this.sendSearchWord();
     }
 }

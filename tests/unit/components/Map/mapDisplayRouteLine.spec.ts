@@ -10,8 +10,12 @@ describe('mapコンポーネントの経路表示', () => {
     let wrapper: any;
     beforeEach(() => {
         GeolocationWrapper.watchPosition = jest.fn();
+        const initMapDisplay = jest.fn();
         wrapper = shallowMount( map, {
             attachToDocument: true,
+            methods: {
+                initMapDisplay,
+            },
         });
     });
 

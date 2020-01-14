@@ -1,7 +1,15 @@
 <template>
 	<div id="spot-item">
-        {{ spotName }}
-        {{ distance }}
+        <v-card
+            tile
+        >
+            <v-list-item two-line>
+                <v-list-item-content>
+                    <v-list-item-title class="headline">{{ spotName }}</v-list-item-title>
+                    <v-list-item-subtitle>{{ distance }}</v-list-item-subtitle>
+                </v-list-item-content>
+            </v-list-item>
+        </v-card>
 	</div>
 </template>
 
@@ -10,10 +18,4 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#spot-item {
-    position: absolute;
-    left: 10px;
-    bottom: 10px;
-    z-index: 1000;
-}
 </style>
