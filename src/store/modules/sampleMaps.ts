@@ -1031,7 +1031,7 @@ export const sampleMaps: Map[] =  [
             },
             {
                 id: 209,
-                name: 'JouhouGakusyuu_1',
+                name: '情報学習室-1',
                 coordinate: {
                     lat: 33.59613575947229,
                     lng: 130.21857619285583,
@@ -1055,7 +1055,7 @@ export const sampleMaps: Map[] =  [
             },
             {
                 id: 210,
-                name: 'JouhouGakusyuu_2',
+                name: '情報学習室-2',
                 coordinate: {
                     lat: 33.59605979769412,
                     lng: 130.21809875965118,
