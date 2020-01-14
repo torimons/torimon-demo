@@ -1,20 +1,29 @@
 <template>
     <div id="search-box">
-        <v-form @submit.prevent>
-            <v-container>
+        <v-card
+            tile
+            flat
+            color="transparent"
+        >
+            <v-form @submit.prevent>
                 <v-text-field
                     v-model='searchWord'
                     placeholder="ここで検索できます"
                     clearable
                     solo
                     full-width
-                    @focus="focus"
-                    @blur="cancel"
+                    @click="focus"
+                    @blur="unfocus"
+                    ref="searchTextField"
+                    hide-details
+                    height="8vh"
+                    class="pa-2"
                 >
                     <template
                         v-slot:prepend-inner
                     >
                         <v-btn
+                            id="place"
                             text
                             icon
                             v-show="!onFocus"
@@ -22,16 +31,18 @@
                             <v-icon>place</v-icon>
                         </v-btn>
                         <v-btn
+                            id="arrow"
                             text
                             icon
                             v-show="onFocus"
+                            @click="exitSpotSearch"
                         >
                             <v-icon>keyboard_arrow_left</v-icon>
                         </v-btn>
                     </template>
                 </v-text-field>
-            </v-container>
-        </v-form>
+            </v-form>
+        </v-card>
     </div>
 </template>
 
@@ -40,12 +51,4 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#search-box {
-    position:absolute;
-    left: 10px;
-    top: 10px;
-    z-index: 1000;
-    /* background-color: white; */
-}
-
 </style>

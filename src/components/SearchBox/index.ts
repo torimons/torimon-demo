@@ -1,15 +1,45 @@
-import { Component, Watch, Vue } from 'vue-property-decorator';
-import { mdiAccount } from '@mdi/js';
+import { Component, Watch, Vue, Emit } from 'vue-property-decorator';
 
 @Component
 export default class SearchBox extends Vue {
-    public searchWord: string = '';
+    private searchWord: string = '';
     private onFocus: boolean = false;
 
+    /**
+     * text-fieldをクリックした時にフォーカス状態にする
+     */
     private focus(): void {
         this.onFocus = true;
+        // SpotListを表示するように伝える
+        this.$emit('toggleSpotList', true);
     }
-    private cancel(): void {
+
+    /**
+     * text-field以外をクリックした時にonFocusをfalseにする
+     */
+    private unfocus(): void {
         this.onFocus = false;
+    }
+
+    /**
+     * 戻るボタンをクリックした時にspotSearchコンポーネントに
+     * spotListを閉じるように伝える
+     */
+    private exitSpotSearch(): void {
+        // SpotListを非表示するように伝える
+        this.$emit('toggleSpotList', false);
+        this.onFocus = false;
+        // text-fieldからフォーカスを外す
+        (this.$refs.searchTextField as HTMLInputElement).blur();
+    }
+
+    @Emit('searchWordInput')
+    private sendSearchWord(): string {
+        return this.searchWord;
+    }
+
+    @Watch('searchWord')
+    private onChangeSearchWord(): void {
+        this.sendSearchWord();
     }
 }

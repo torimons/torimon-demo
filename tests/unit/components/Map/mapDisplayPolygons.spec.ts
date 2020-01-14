@@ -54,8 +54,12 @@ describe('mapコンポーネントのポリゴン表示', () => {
         // テスト用データをstoreにセット
         mapViewMutations.setMapViewState(mapViewStateTestData);
         GeolocationWrapper.watchPosition = jest.fn();
+        const initMapDisplay = jest.fn();
         wrapper = shallowMount( map, {
             attachToDocument: true,
+            methods: {
+                initMapDisplay,
+            },
         });
     });
 
