@@ -1,6 +1,6 @@
 import { Component, Vue, Watch} from 'vue-property-decorator';
-import { mapViewGetters, mapViewMutations } from '@/store';
-import { SpotForMap, Coordinate, Bounds, Spot } from '@/store/types';
+import { mapViewGetters, mapViewMutations, store } from '@/store';
+import { SpotForMap, Coordinate, Bounds, Spot, DisplayLevelType } from '@/store/types';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
@@ -8,6 +8,7 @@ import { findNearest, getDistance } from 'geolib';
 import { GeolibInputCoordinates } from 'geolib/es/types';
 import CurrentLocationMarker from '@/components/Map/Marker/CurrentLocationMarker';
 import DefaultSpotMarker from '@/components/Map/Marker/DefaultSpotMarker';
+import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
 
 
 @Component
@@ -45,6 +46,7 @@ export default class Map extends Vue {
         this.map.on('zoomend', this.updateDisplayLevel);
         this.map.on('move', this.updateIdOfCenterSpotInRootMap);
         this.map.zoomControl.setPosition('bottomright');
+        this.watchStoreForDisplayMap();
         this.initMapDisplay();
     }
 
@@ -222,5 +224,64 @@ export default class Map extends Vue {
      */
     private addRouteToMap(routeLayer: L.Layer): void {
         this.map.addLayer(routeLayer);
+    }
+
+    /**
+     * マップ表示の更新のためにStoreのgetterのウォッチを行う
+     */
+    private watchStoreForDisplayMap(): void {
+        const getSwitchedFloorMapId = (getters: MapViewGetters) => {
+            const centerSpotId = getters.idOfCenterSpotInRootMap;
+            if (centerSpotId != null) {
+                const centerSpot = { parentMapId: mapViewGetters.rootMapId, spotId: centerSpotId };
+                if (getters.spotHasDetailMaps(centerSpot)) {
+                    return getters.getLastViewedDetailMapId(centerSpot);
+                }
+            }
+        };
+        store.watch(
+            (state, getters: MapViewGetters) => [
+                getters.displayLevel,
+                getters.idOfCenterSpotInRootMap,
+                getSwitchedFloorMapId(getters),
+            ],
+            (value, oldValue) => this.updateMap(),
+        );
+    }
+
+    /**
+     * マップを選択し，そのマップのスポットとポリゴンを表示する
+     */
+    private updateMap(): void {
+        const newSpotsForDisplayMap: SpotForMap[] = mapViewGetters.getSpotsForMap(this.selectMapToDisplay());
+        this.$nextTick().then(() => {
+            this.displaySpotMarkers(newSpotsForDisplayMap);
+            this.displayPolygons(newSpotsForDisplayMap);
+        });
+    }
+
+    /**
+     * Storeを参照して新しく表示するマップのIDを選択する
+     * @return 新しく表示するマップのID
+     */
+    private selectMapToDisplay(): number {
+        const displayLevel: DisplayLevelType = mapViewGetters.displayLevel;
+        if (displayLevel === 'default') {
+            return mapViewGetters.rootMapId;
+        }
+        const centerSpotId: number | null = mapViewGetters.idOfCenterSpotInRootMap;
+        if (centerSpotId === null) {
+            return mapViewGetters.rootMapId;
+        }
+        const centerSpot = { parentMapId: mapViewGetters.rootMapId, spotId: centerSpotId };
+        if (!mapViewGetters.spotHasDetailMaps(centerSpot)) {
+            return mapViewGetters.rootMapId;
+        }
+        const lastViewedDetailMapId: number | null = mapViewGetters.getLastViewedDetailMapId(centerSpot);
+        if (lastViewedDetailMapId != null) {
+            return lastViewedDetailMapId;
+        }
+        const firstDetailMapId: number = mapViewGetters.getSpotById(centerSpot).detailMapIds[0];
+        return firstDetailMapId;
     }
 }
