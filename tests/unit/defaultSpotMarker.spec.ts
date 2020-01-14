@@ -14,7 +14,7 @@ describe('DefaultSpotMarkers', () => {
         expect(spotMarker.getLatLng()).toStrictEqual(expectedMarker.getLatLng());
     });
 
-    // クリックイベントが発火できないため、getFocusedMarkerのテストはなし
+    // クリックイベントが発火できないため、updateFocusedMarkerのテストはなし
 
     it('setFocusedMarkerを呼び出してmapIdとspotIdをfocusedSpotにsetする', () => {
         const testMarker = new DefaultSpotMarker([0, 0], 0, 0);
