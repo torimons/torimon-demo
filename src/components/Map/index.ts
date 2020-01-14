@@ -76,10 +76,8 @@ export default class Map extends Vue {
      * @param spotsToDisplay 新しく表示するスポットの配列
      */
     private displaySpotMarkers(spotsToDisplay: SpotForMap[]): void {
-        // removeしてから取り除かないと描画から消えない
-        this.spotMarkers.forEach((marker: L.Marker) => marker.remove());
-        const coordinates: Coordinate[] = spotsToDisplay.map((spot: SpotForMap) => spot.coordinate);
-        this.spotMarkers = coordinates.map((coord: Coordinate) => new DefaultSpotMarker(coord));
+        this.spotMarkers = spotsToDisplay.
+            map((spot: SpotForMap) => new DefaultSpotMarker(spot.coordinate, spot.mapId, spot.spotId));
         this.addMarkersToMap(this.spotMarkers);
     }
 

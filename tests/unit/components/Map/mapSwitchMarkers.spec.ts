@@ -16,7 +16,8 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
     // テストデータ
     const testSpots: SpotForMap[] = [
         {
-            id: 0,
+            mapId: 0,
+            spotId: 0,
             name: 'SougouGakusyuPlaza1',
             coordinate: {
                 lat: 33.595502,
@@ -24,7 +25,8 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
             },
         },
         {
-            id: 1,
+            mapId: 0,
+            spotId: 1,
             name: 'SougouGakusyuPlaza2',
             coordinate: {
                 lat: 33.595503,

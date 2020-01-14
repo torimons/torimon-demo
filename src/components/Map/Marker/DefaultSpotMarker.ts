@@ -1,4 +1,6 @@
-import L, {Marker, LatLngExpression} from 'leaflet';
+import L, {Marker, LatLngExpression, LeafletEvent} from 'leaflet';
+import { mapViewMutations } from '@/store';
+import { MapViewState } from '@/store/modules/MapViewModule/MapViewState';
 
 export default class DefaultSpotMarker extends L.Marker {
     private icon: L.Icon = L.icon({
@@ -9,22 +11,24 @@ export default class DefaultSpotMarker extends L.Marker {
         shadowSize: [68, 95],
         shadowAnchor: [22, 94],
     });
+    private mapId: number;
+    private spotId: number;
 
-    constructor(latlng: LatLngExpression) {
+    constructor(latlng: LatLngExpression, mapId: number, spotId: number) {
         super(latlng);
         this.setIcon(this.icon);
+        this.mapId = mapId;
+        this.spotId = spotId;
     }
 
     public addTo(map: L.Map | L.LayerGroup<any>): this {
         return super.addTo(map).on('click', this.updateFocusedMarker);
     }
-
-    // マーカーが押された際に呼び出される関数
+    /**
+     * マーカーが押されたときに呼び出されるコールバック関数
+     */
     private updateFocusedMarker(): void {
-        /*
-            （vuexの状態更新も行う必要がある）
-            押したマーカーのスポットの情報の取得
-            ポップアップの表示
-            */
+        mapViewMutations.setFocusedSpot({mapId: this.mapId, spotId: this.spotId});
+        mapViewMutations.setSpotInfoIsVisible(true);
     }
 }

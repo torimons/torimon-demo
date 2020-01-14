@@ -31,13 +31,15 @@ describe('store/modules/MapViewModule.ts', () => {
         const actualSpotsForMap: SpotForMap[] = mapViewGetters.getSpotsForMap(0);
         const expectedSpotsForMap: SpotForMap[] = [
             {
-                id:       expectedMapViewState.maps[0].spots[0].id,
+                mapId:  expectedMapViewState.maps[0].id,
+                spotId:       expectedMapViewState.maps[0].spots[0].id,
                 name:     expectedMapViewState.maps[0].spots[0].name,
                 coordinate: expectedMapViewState.maps[0].spots[0].coordinate,
                 shape:    expectedMapViewState.maps[0].spots[0].shape,
             },
             {
-                id:       expectedMapViewState.maps[0].spots[1].id,
+                mapId: expectedMapViewState.maps[0].id,
+                spotId:       expectedMapViewState.maps[0].spots[1].id,
                 name:     expectedMapViewState.maps[0].spots[1].name,
                 coordinate: expectedMapViewState.maps[0].spots[1].coordinate,
                 shape:    expectedMapViewState.maps[0].spots[1].shape,
