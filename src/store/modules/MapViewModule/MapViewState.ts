@@ -1,4 +1,4 @@
-import { Map, DisplayLevelType } from '@/store/types';
+import { Map, DisplayLevelType, Spot } from '@/store/types';
 import { sampleMaps } from '@/store/modules/sampleMaps';
 
 /**
@@ -6,7 +6,7 @@ import { sampleMaps } from '@/store/modules/sampleMaps';
  * 階層や親スポットが存在しない場合は空文字列を代入
  * @return 情報追加後のマップ
  */
-function initMap(): Map[] {
+function initMaps(): Map[] {
     for (const map of sampleMaps) {
         for (const spot of map.spots) {
             spot.parentSpotName = '';
@@ -16,10 +16,14 @@ function initMap(): Map[] {
     for (const map of sampleMaps) {
         for (const spot of map.spots) {
             for (const detailMapId of spot.detailMapIds) {
-                for (const detailMapSpot of sampleMaps[detailMapId].spots) {
+                const detailMap = sampleMaps.find((m: Map) => m.id === detailMapId);
+                if (detailMap === undefined) {
+                    throw new Error('Illegal map id on sampleMaps.');
+                }
+                for (const detailMapSpot of detailMap.spots) {
                     detailMapSpot.parentSpotName = spot.name;
                     const detailMapIdIndex: number = spot.detailMapIds
-                        .findIndex((mapId: number) => mapId === detailMapId);
+                        .findIndex((id: number) => id === detailMapId);
                     detailMapSpot.floorName = spot.detailMapLevelNames[detailMapIdIndex];
                 }
             }
@@ -37,7 +41,7 @@ export class MapViewState {
      *   外部モジュールのsampleMapsで初期化
      * 将来的にはvuexのmutationで登録する
      */
-    public maps: Map[] = initMap();
+    public maps: Map[] = initMaps();
 
 
     /*
