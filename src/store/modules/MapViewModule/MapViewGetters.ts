@@ -74,15 +74,14 @@ export class MapViewGetters extends Getters<MapViewState> {
     public getSpotsForMap(mapId: number): SpotForMap[] {
         const mapIndex: number = this.state.maps.findIndex((m: Map) => m.id === mapId);
         const spots: Spot[] = this.state.maps[mapIndex].spots;
-        const spotsForMap: SpotForMap[] = [];
-        spots.forEach((spot) => {
-            spotsForMap.push({
+        const spotsForMap: SpotForMap[] = spots.map((spot: Spot) => {
+            return {
                 mapId,
                 spotId: spot.id,
                 name: spot.name,
                 coordinate: spot.coordinate,
                 shape: spot.shape,
-            });
+            };
         });
         return spotsForMap;
     }

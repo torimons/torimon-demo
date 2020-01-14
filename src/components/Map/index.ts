@@ -79,7 +79,7 @@ export default class Map extends Vue {
      */
     private displaySpotMarkers(spotsToDisplay: SpotForMap[]): void {
         this.spotMarkers = spotsToDisplay.
-        map((spot: SpotForMap) => new DefaultSpotMarker(spot.coordinate, spot.mapId, spot.spotId));
+            map((spot: SpotForMap) => new DefaultSpotMarker(spot.coordinate, spot.mapId, spot.spotId));
         this.addMarkersToMap(this.spotMarkers);
     }
 
