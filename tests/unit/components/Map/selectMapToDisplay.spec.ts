@@ -6,18 +6,24 @@ import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper.ts';
 
 describe('components/map/index.ts/ selectMapToDisplay()', () => {
-    mapViewMutations.setMapViewState(testMapViewState2);
-    GeolocationWrapper.watchPosition = jest.fn();
-    const initMapDisplay = jest.fn();
-    const watchStoreForDisplayMap = jest.fn();
-    const wrapper: any = shallowMount(map, {
-        attachToDocument: true,
-        methods: {
-            initMapDisplay,
-            watchStoreForDisplayMap,
-        },
+    let wrapper: any;
+    beforeEach(() => {
+        mapViewMutations.setMapViewState(testMapViewState2);
+        GeolocationWrapper.watchPosition = jest.fn();
+        const initMapDisplay = jest.fn();
+        const watchStoreForDisplayMap = jest.fn();
+        wrapper = shallowMount(map, {
+            attachToDocument: true,
+            methods: {
+                initMapDisplay,
+                watchStoreForDisplayMap,
+            },
+        });
+        wrapper.vm.addRouteToMap = jest.fn();
     });
-    wrapper.vm.addRouteToMap = jest.fn();
+    afterEach(() => {
+        wrapper.destroy();
+    });
 
     it('表示ズームレベルがdefaultの場合，rootMapIdを返す', () => {
         const actualMapId = wrapper.vm.selectMapToDisplay();

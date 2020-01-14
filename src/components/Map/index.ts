@@ -254,10 +254,8 @@ export default class Map extends Vue {
      */
     private updateMap(): void {
         const newSpotsForDisplayMap: SpotForMap[] = mapViewGetters.getSpotsForMap(this.selectMapToDisplay());
-        this.$nextTick().then(() => {
-            this.displaySpotMarkers(newSpotsForDisplayMap);
-            this.displayPolygons(newSpotsForDisplayMap);
-        });
+        this.displaySpotMarkers(newSpotsForDisplayMap);
+        this.displayPolygons(newSpotsForDisplayMap);
     }
 
     /**
