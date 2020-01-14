@@ -18,13 +18,13 @@ export default class SpotList extends Vue {
     private currentPosition?: Coordinate;
 
     public mounted() {
+        // 現在地を取得する
         this.currentPositionHandler = GeolocationWrapper.watchPosition(
             (pos: Position) => {
                 this.currentPosition = {
                     lat: pos.coords.latitude,
                     lng: pos.coords.longitude,
                 };
-                console.log(this.currentPosition);
             },
             (err: PositionError) => {
                 throw err;
@@ -37,17 +37,29 @@ export default class SpotList extends Vue {
         );
     }
 
+    /**
+     * 現在地を取得できている場合、現在地とスポットの距離を計算し、文字列型にformatして返す
+     * 現在地を取得できていない場合、空文字列を返す
+     * @param spot 現在地との距離を計算したいスポット
+     */
     private calculateDistanceFromCurrentPosition(spot: Spot): string {
         if (this.currentPosition === undefined) {
             return '';
         }
         const distance = getDistance(spot.coordinate, this.currentPosition);
-        // return this.formatDistance(distance);
-        return distance.toString();
+        return this.formatDistance(distance);
     }
 
-    private formatDistance(distanceInMeter: number): string {
-        // m km表記で返す
-        return '';
+    /**
+     * 数値の距離を値によって、mまたはkm付きの文字列に変換する
+     * @param distanceInMeters 変換したい距離(m)
+     */
+    private formatDistance(distanceInMeters: number): string {
+        if (distanceInMeters < 1000) {
+            return distanceInMeters.toString() + 'm';
+        } else {
+            const distanceInKMeters = Math.round(distanceInMeters / 100) / 10;
+            return distanceInKMeters.toString() + 'km';
+        }
     }
 }
