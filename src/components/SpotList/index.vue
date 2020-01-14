@@ -8,7 +8,7 @@
                 v-bind:key="spotSearchResult.id + spotSearchResult.name"
                 :spotId="spotSearchResult.id"
                 :spotName="spotSearchResult.name"
-                :distance="'1000km'"
+                :distance="calculateDistanceFromCurrentPosition(spotSearchResult)"
             >
             </SpotItem>
         </v-list>
