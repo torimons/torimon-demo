@@ -78,6 +78,16 @@ export interface SpotForMap {
 }
 
 /**
+ * 検索に利用する型
+ */
+export interface SpotForSearch {
+    mapId: number;
+    spotId: number;
+    name: string;
+    coordinate: Coordinate;
+}
+
+/**
  * 地図上の範囲を左上と右下の座標で示す型
  */
 export interface Bounds {

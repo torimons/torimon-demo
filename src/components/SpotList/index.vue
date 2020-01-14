@@ -5,8 +5,9 @@
         >
             <SpotItem
                 v-for="spotSearchResult in spotSearchResults"
-                v-bind:key="spotSearchResult.id + spotSearchResult.name"
-                :spotId="spotSearchResult.id"
+                v-bind:key="spotSearchResult.spotId + spotSearchResult.name"
+                :spotId="spotSearchResult.spotId"
+                :mapId="spotSearchResult.mapId"
                 :spotName="spotSearchResult.name"
                 :distance="'1000km'"
             >
