@@ -34,7 +34,7 @@ export const sampleMaps: Map[] =  [
             },
             {
                 id: 1,
-                name: 'ウエスト2号間',
+                name: 'ウエスト2号館',
                 coordinate: {
                     lat: 33.59600170923035,
                     lng: 130.21851181983948,
@@ -835,7 +835,7 @@ export const sampleMaps: Map[] =  [
     },
     {
         id: 3,
-        name: 'ウエスト2号間 2F',
+        name: 'ウエスト2号館 2F',
         spots: [
             {
                 id: 201,
@@ -1093,7 +1093,7 @@ export const sampleMaps: Map[] =  [
     },
     {
         id: 4,
-        name: 'ウエスト2号間 3F',
+        name: 'ウエスト2号館 3F',
         spots: [
             {
                 id: 301,
