@@ -26,17 +26,9 @@ export default class DefaultSpotMarker extends L.Marker {
     }
     /**
      * マーカーが押されたときに呼び出されるコールバック関数
-     * @param e
      */
-    private updateFocusedMarker(e: L.LeafletEvent): void {
-        this.setFocusedMarker(e.target.mapId, e.target.spotId);
-    }
-    /**コールバック関数内で呼び出される関数
-     * @param mapId
-     * @param spotId
-     */
-    private setFocusedMarker(mapId: number, spotId: number): void {
-        mapViewMutations.setFocusedSpot({mapId, spotId});
+    private updateFocusedMarker(): void {
+        mapViewMutations.setFocusedSpot({mapId: this.mapId, spotId: this.spotId});
         mapViewMutations.setSpotInfoIsVisible(true);
     }
 }

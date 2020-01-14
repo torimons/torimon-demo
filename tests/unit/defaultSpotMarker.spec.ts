@@ -14,18 +14,16 @@ describe('DefaultSpotMarkers', () => {
         expect(spotMarker.getLatLng()).toStrictEqual(expectedMarker.getLatLng());
     });
 
-    // クリックイベントが発火できないため、updateFocusedMarkerのテストはなし
-
-    it('setFocusedMarkerを呼び出してmapIdとspotIdをfocusedSpotにsetする', () => {
-        const testMarker = new DefaultSpotMarker([0, 0], 0, 0);
-        (testMarker as any).setFocusedMarker(0, 1);
+    it('updateFocusedMarkerがmapIdとspotIdをfocusedSpotにsetする', () => {
+        const testMarker = new DefaultSpotMarker([0, 0], 0, 1);
+        (testMarker as any).updateFocusedMarker();
         const expectedFocusedMarker: {mapId: number, spotId: number} = {mapId: 0, spotId: 1};
         expect(mapViewGetters.focusedSpot).toStrictEqual(expectedFocusedMarker);
     });
 
-    it('setFocusedMarkerがspotInfoIsVisibleを変更する', () => {
+    it('updateFocusedMarkerがspotInfoIsVisibleをtrueに変更する', () => {
         const testMarker = new DefaultSpotMarker([0, 0], 0, 0);
-        (testMarker as any).setFocusedMarker();
+        (testMarker as any).updateFocusedMarker();
         expect(mapViewGetters.spotInfoIsVisible).toBe(true);
     });
 });
