@@ -3,11 +3,11 @@ import { Map } from '@/store/types';
 export const sampleMaps: Map[] =  [
     {
         id: 0,
-        name: 'Kyudai',
+        name: '九州大学',
         spots: [
             {
                 id: 0,
-                name: 'SougouGakusyuPlaza',
+                name: '総合学習プラザ',
                 coordinate: {
                     lat: 33.595502,
                     lng: 130.218238,
@@ -34,7 +34,7 @@ export const sampleMaps: Map[] =  [
             },
             {
                 id: 1,
-                name: 'WestBuilding2',
+                name: 'ウエスト2号間',
                 coordinate: {
                     lat: 33.59600170923035,
                     lng: 130.21851181983948,
@@ -52,8 +52,8 @@ export const sampleMaps: Map[] =  [
                     ] ],
                 },
                 gateNodeIds: [],
-                detailMapIds: [1],
-                detailMapLevelNames: [],
+                detailMapIds: [3, 4],
+                detailMapLevelNames: ['2F', '3F'],
                 lastViewedDetailMapId: null,
             },
         ],
@@ -73,7 +73,7 @@ export const sampleMaps: Map[] =  [
     },
     {
         id: 1,
-        name: 'SougouGakusyuPlaza_1F',
+        name: '総合学習プラザ 1F',
         spots: [
             {
                 id: 0,
@@ -120,7 +120,7 @@ export const sampleMaps: Map[] =  [
                     ],
                 },
                 gateNodeIds: [],
-                detailMapIds: [1],
+                detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
             },
@@ -334,7 +334,7 @@ export const sampleMaps: Map[] =  [
     },
     {
         id: 2,
-        name: 'SougouGakusyuPlaza_2F',
+        name: '総合学習プラザ 2F',
         spots: [
             {
                 id: 10,
@@ -356,7 +356,7 @@ export const sampleMaps: Map[] =  [
                     ],
                 },
                 gateNodeIds: [],
-                detailMapIds: [1],
+                detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
             },
@@ -835,7 +835,7 @@ export const sampleMaps: Map[] =  [
     },
     {
         id: 3,
-        name: 'West_2F',
+        name: 'ウエスト2号間 2F',
         spots: [
             {
                 id: 201,
@@ -1093,7 +1093,7 @@ export const sampleMaps: Map[] =  [
     },
     {
         id: 4,
-        name: 'West_3F',
+        name: 'ウエスト2号間 3F',
         spots: [
             {
                 id: 301,
