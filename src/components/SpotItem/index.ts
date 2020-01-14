@@ -9,9 +9,11 @@ export default class SpotItem extends Vue {
     @Prop()
     private distance!: number;
     @Prop()
-    private spotIds!: {mapId: number, spotId: number};
+    private mapId!: number;
+    @Prop()
+    private spotId!: number;
 
     private updateFocusedSpot(): void {
-        mapViewMutations.setFocusedSpot(this.spotIds);
+        mapViewMutations.setFocusedSpot({mapId: this.mapId, spotId: this.spotId});
     }
 }

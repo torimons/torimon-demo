@@ -18,7 +18,8 @@ describe('components/SpotItem.vue', () => {
             vuetify,
             attachToDocument: true,
             propsData: {
-                spotIds: {mapId: 1, spotId: 1},
+                mapId: 1,
+                spotId: 1,
             },
         });
     });
