@@ -246,14 +246,14 @@ export default class Map extends Vue {
                 getters.idOfCenterSpotInRootMap,
                 getSwitchedFloorMapId(getters),
             ],
-            (value, oldValue) => this.updateMap(),
+            (value, oldValue) => this.displayMap(),
         );
     }
 
     /**
      * マップを選択し，そのマップのスポットとポリゴンを表示する
      */
-    private updateMap(): void {
+    private displayMap(): void {
         const newSpotsForDisplayMap: SpotForMap[] = mapViewGetters.getSpotsForMap(this.selectMapToDisplay());
         this.displaySpotMarkers(newSpotsForDisplayMap);
         this.displayPolygons(newSpotsForDisplayMap);
