@@ -2,7 +2,7 @@ import { Component, Vue, Watch} from 'vue-property-decorator';
 import { mapViewGetters, mapViewMutations, store } from '@/store';
 import { SpotForMap, Coordinate, Bounds, Spot, DisplayLevelType } from '@/store/types';
 import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
+import L, { Marker } from 'leaflet';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
 import { findNearest, getDistance } from 'geolib';
 import { GeolibInputCoordinates } from 'geolib/es/types';
@@ -78,8 +78,9 @@ export default class Map extends Vue {
      * @param spotsToDisplay 新しく表示するスポットの配列
      */
     private displaySpotMarkers(spotsToDisplay: SpotForMap[]): void {
-        this.spotMarkers = spotsToDisplay.
-            map((spot: SpotForMap) => new DefaultSpotMarker(spot.coordinate, spot.mapId, spot.spotId));
+        this.spotMarkers.map((marker: Marker<any>) => marker.remove());
+        this.spotMarkers = spotsToDisplay
+            .map((spot: SpotForMap) => new DefaultSpotMarker(spot.coordinate, spot.mapId, spot.spotId));
         this.addMarkersToMap(this.spotMarkers);
     }
 
