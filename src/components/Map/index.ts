@@ -230,7 +230,7 @@ export default class Map extends Vue {
      * マップ表示の更新のためにStoreのgetterのウォッチを行う
      */
     private watchStoreForDisplayMap(): void {
-        const getSwitchedFloorMapId = (getters: MapViewGetters) => {
+        const getSwitchedFloorMapId = (getters: MapViewGetters): number | null => {
             const centerSpotId = getters.idOfCenterSpotInRootMap;
             if (centerSpotId != null) {
                 const centerSpot = { parentMapId: mapViewGetters.rootMapId, spotId: centerSpotId };
@@ -238,6 +238,7 @@ export default class Map extends Vue {
                     return getters.getLastViewedDetailMapId(centerSpot);
                 }
             }
+            return null;
         };
         store.watch(
             (state, getters: MapViewGetters) => [
