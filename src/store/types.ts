@@ -72,7 +72,8 @@ export interface SpotInfo {
  * Mapコンポーネント上でスポットのアイコンを表示するために必要な情報を持つ型
  */
 export interface SpotForMap {
-    id: number;
+    mapId: number;
+    spotId: number;
     name: string;
     coordinate: Coordinate;
     shape?: Shape;
