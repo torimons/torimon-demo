@@ -6,7 +6,7 @@
             <SpotItem
                 v-for="spotSearchResult in spotSearchResults"
                 v-bind:key="spotSearchResult.spotId + spotSearchResult.name"
-                :spotId="spotSearchResult.spotId"
+                :spotId="spotSearchResult.id"
                 :mapId="spotSearchResult.mapId"
                 :spotName="spotSearchResult.name"
                 :parentSpotName="spotSearchResult.parentSpotName"

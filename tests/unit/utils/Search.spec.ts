@@ -1,24 +1,40 @@
 import Search from '@/utils/Search';
-import { SpotForSearch } from '@/store/types';
+import { Spot } from '@/store/types';
 
-const spotsForTest: SpotForSearch[] = [
+const spotsForTest: Spot[] = [
     {
         mapId: 0,
-        spotId: 0,
+        id: 0,
         name: 'SougouGakusyuPlaza',
         coordinate: {
             lat: 33.595502,
             lng: 130.218238,
         },
+        shape: {
+            type: 'Polygon',
+            coordinates: [[[]]],
+        },
+        gateNodeIds: [],
+        detailMapIds: [1, 2],
+        detailMapLevelNames: ['1F', '2F'],
+        lastViewedDetailMapId: null,
     },
     {
         mapId: 0,
-        spotId: 1,
+        id: 1,
         name: 'SpotForTest',
         coordinate: {
             lat: 33.595502,
             lng: 130.218238,
         },
+        shape: {
+            type: 'Polygon',
+            coordinates: [[[]]],
+        },
+        gateNodeIds: [],
+        detailMapIds: [],
+        detailMapLevelNames: [],
+        lastViewedDetailMapId: null,
     },
 ];
 
@@ -29,8 +45,8 @@ describe('Searchクラスのテスト', () => {
         const searchObj = new Search(targetSpotsForSearch);
         // 'sougou'という文字を名前に含んでいるスポットを検索(大文字小文字は区別しない)
         const keyword: string = 'sougou';
-        const actualResult: SpotForSearch[] = searchObj.searchSpots(keyword);
-        const expectedResult: SpotForSearch[] = [spotsForTest[0]];
+        const actualResult: Spot[] = searchObj.searchSpots(keyword);
+        const expectedResult: Spot[] = [spotsForTest[0]];
         expect(actualResult).toStrictEqual(expectedResult);
     });
 

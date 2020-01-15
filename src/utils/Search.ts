@@ -1,10 +1,10 @@
-import { Spot, SpotForSearch } from '@/store/types';
+import { Spot } from '@/store/types';
 
 export default class Search {
 
-    private targetSpots: SpotForSearch[];
+    private targetSpots: Spot[];
 
-    constructor(spots: SpotForSearch[]) {
+    constructor(spots: Spot[]) {
         this.targetSpots = spots;
     }
 
@@ -13,9 +13,9 @@ export default class Search {
      * @param keyword スポット検索ワード
      * @return keywordにかかったスポットのリスト
      */
-    public searchSpots(keyword: string): SpotForSearch[] {
+    public searchSpots(keyword: string): Spot[] {
         const searchExp = new RegExp(keyword, 'i'); // 'i'オプションで大文字小文字を区別しない
-        return this.targetSpots.filter((s: SpotForSearch) => {
+        return this.targetSpots.filter((s: Spot) => {
             return s.name.match(searchExp);
         });
     }

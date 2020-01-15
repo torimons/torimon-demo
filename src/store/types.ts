@@ -31,6 +31,7 @@ export interface Map {
  */
 export interface Spot {
     id: number;
+    mapId?: number;
     name: string;
     parentSpotName?: string;
     floorName?: string;
@@ -77,16 +78,6 @@ export interface SpotForMap {
     name: string;
     coordinate: Coordinate;
     shape?: Shape;
-}
-
-/**
- * 検索に利用する型
- */
-export interface SpotForSearch {
-    mapId: number;
-    spotId: number;
-    name: string;
-    coordinate: Coordinate;
 }
 
 /**
