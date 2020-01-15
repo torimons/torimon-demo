@@ -3,7 +3,9 @@ import { sampleMaps } from '@/store/modules/sampleMaps';
 
 /**
  * マップ中の全スポットに階層情報と親のスポットの名前を登録する
- * 階層や親スポットが存在しない場合は空文字列を代入
+ * 階層や親スポットが存在しない場合,初期化を行わないと
+ * SpotItemコンポーネントでundefinedが表示されることになるので
+ * 空文字列を代入しておく
  * @return 情報追加後のマップ
  */
 function initMaps(): Map[] {
