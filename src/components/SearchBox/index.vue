@@ -12,9 +12,10 @@
                     clearable
                     solo
                     full-width
+                    @click="focus"
+                    @blur="unfocus"
+                    ref="searchTextField"
                     hide-details
-                    @focus="focus"
-                    @blur="cancel"
                     height="8vh"
                     class="pa-2"
                 >
@@ -22,6 +23,7 @@
                         v-slot:prepend-inner
                     >
                         <v-btn
+                            id="place"
                             text
                             icon
                             v-show="!onFocus"
@@ -29,9 +31,11 @@
                             <v-icon>place</v-icon>
                         </v-btn>
                         <v-btn
+                            id="arrow"
                             text
                             icon
                             v-show="onFocus"
+                            @click="exitSpotSearch"
                         >
                             <v-icon>keyboard_arrow_left</v-icon>
                         </v-btn>
