@@ -9,6 +9,8 @@
                 :spotId="spotSearchResult.spotId"
                 :mapId="spotSearchResult.mapId"
                 :spotName="spotSearchResult.name"
+                :parentSpotName="spotSearchResult.parentSpotName"
+                :floorName="spotSearchResult.floorName" 
                 :distance="'1000km'"
             >
             </SpotItem>
