@@ -1,5 +1,6 @@
 import { Map, DisplayLevelType } from '@/store/types';
 import { sampleMaps } from '@/store/modules/sampleMaps';
+import { LatLngExpression } from 'leaflet';
 
 export class MapViewState {
     /**
@@ -43,4 +44,6 @@ export class MapViewState {
      * ズームレベルに応じて切り替わる表示レベルを保持
      */
     public displayLevel: DisplayLevelType = 'default';
+
+    public mapCenterPositionToFocus: LatLngExpression = { lat: 0, lng: 0 };
 }

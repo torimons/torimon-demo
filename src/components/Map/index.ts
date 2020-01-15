@@ -1,5 +1,5 @@
 import { Component, Vue, Watch} from 'vue-property-decorator';
-import { mapViewGetters, mapViewMutations } from '@/store';
+import { mapViewGetters, mapViewMutations, store } from '@/store';
 import { SpotForMap, Coordinate, Bounds, Spot } from '@/store/types';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -8,6 +8,7 @@ import { findNearest, getDistance } from 'geolib';
 import { GeolibInputCoordinates } from 'geolib/es/types';
 import CurrentLocationMarker from '@/components/Map/Marker/CurrentLocationMarker';
 import DefaultSpotMarker from '@/components/Map/Marker/DefaultSpotMarker';
+import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
 
 
 @Component
@@ -32,10 +33,7 @@ export default class Map extends Vue {
         const rootMapCenter: Coordinate = this.calculateCenter(mapViewGetters.rootMapBounds);
         this.centerLat = rootMapCenter.lat;
         this.centerLng = rootMapCenter.lng;
-        this.map = L.map('map').setView(
-            [this.centerLat, this.centerLng],
-            this.zoomLevel,
-        );
+        this.map = L.map('map').setView([this.centerLat, this.centerLng], this.zoomLevel);
         this.tileLayer = L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 23,
@@ -45,6 +43,10 @@ export default class Map extends Vue {
         this.map.on('zoomend', this.updateDisplayLevel);
         this.map.on('move', this.updateIdOfCenterSpotInRootMap);
         this.map.zoomControl.setPosition('bottomright');
+        store.watch(
+            (state, getters: MapViewGetters) => mapViewGetters.mapCenterPositionToFocus,
+            (value, oldValue) => this.map.setView(value, this.zoomLevel),
+        );
         this.initMapDisplay();
     }
 

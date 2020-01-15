@@ -3,6 +3,7 @@ import { MapViewState } from './MapViewState';
 import { Map, Spot, DisplayLevelType } from '@/store/types';
 import { NoDetailMapIdInSpotError } from '@/store/errors/NoDetailMapIdInSpotError';
 import { mapViewGetters } from '@/store';
+import { LatLngExpression } from 'leaflet';
 
 export class MapViewMutations extends Mutations<MapViewState> {
     /**
@@ -73,6 +74,10 @@ export class MapViewMutations extends Mutations<MapViewState> {
      */
     public setNonExistentOfCenterSpotInRootMap(): void {
         this.state.idOfCenterSpotInRootMap = null;
+    }
+
+    public setMapCenterPositionToFocus(centerPosition: LatLngExpression): void {
+        this.state.mapCenterPositionToFocus = centerPosition;
     }
 
     /**

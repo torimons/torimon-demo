@@ -9,6 +9,7 @@
                 :spotId="spotSearchResult.id"
                 :spotName="spotSearchResult.name"
                 :distance="'1000km'"
+                :position="spotSearchResult.coordinate"
             >
             </SpotItem>
         </v-list>

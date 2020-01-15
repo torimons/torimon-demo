@@ -4,6 +4,7 @@ import { Map, Spot, SpotInfo, SpotForMap, Bounds, DisplayLevelType, Coordinate, 
 import { NoDetailMapsError } from '@/store/errors/NoDetailMapsError';
 import { MapNotFoundError } from '@/store/errors/MapNotFoundError';
 import { SpotNotFoundError } from '@/store/errors/SpotNotFoundError';
+import { LatLngExpression } from 'leaflet';
 
 export class MapViewGetters extends Getters<MapViewState> {
     /**
@@ -156,6 +157,10 @@ export class MapViewGetters extends Getters<MapViewState> {
      */
     get idOfCenterSpotInRootMap(): number | null {
         return this.state.idOfCenterSpotInRootMap;
+    }
+
+    get mapCenterPositionToFocus(): LatLngExpression {
+        return this.state.mapCenterPositionToFocus;
     }
 
      /* 経由するノードidの配列を入力することで経路となるノードの配列を取得
