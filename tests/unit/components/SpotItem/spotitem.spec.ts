@@ -25,8 +25,7 @@ describe('components/SpotItem.vue', () => {
     });
 
     it('SpotList内のSpotItemが選択されるとfocusedSpotIdの更新をおこなう', () => {
-        expect(wrapper.find('.v-btn').exists()).toBe(true);
-        wrapper.find('.v-btn').trigger('click');
+        wrapper.find('.v-card').trigger('click');
         expect(mapViewGetters.focusedSpot).toStrictEqual({mapId: 1, spotId: 1});
     });
 });

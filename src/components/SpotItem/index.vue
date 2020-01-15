@@ -2,13 +2,12 @@
 	<div id="spot-item">
         <v-card
             tile
+            @click="updateFocusedSpot()"
         >
             <v-list-item two-line>
                 <v-list-item-content>
-                    <v-btn @click="updateFocusedSpot()">
-                        <v-list-item-title class="headline">{{ spotName }}</v-list-item-title>
-                        <v-list-item-subtitle>{{ distance }}</v-list-item-subtitle>
-                    </v-btn>
+                    <v-list-item-title class="headline" >{{ spotName }}</v-list-item-title>
+                    <v-list-item-subtitle>{{ distance }}</v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
         </v-card>
