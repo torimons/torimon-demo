@@ -51,7 +51,7 @@ describe('SpotListコンポーネントのテスト', () => {
 
     it('formatDistanceが数値の距離を値によって、mまたはkm付きの文字列に変換する', () => {
         // 受け取った数値が1000未満の場合、単位(m)をつけて文字列型に変換する
-        expect(wrapper.vm.formatDistance(900)).toBe('0m');
+        expect(wrapper.vm.formatDistance(900)).toBe('900m');
         // 受け取った数値が1000以上の場合、小数第一位に丸め、単位(km)をつけて文字列型に変換する
         expect(wrapper.vm.formatDistance(1000)).toBe('1km');
         expect(wrapper.vm.formatDistance(2222)).toBe('2.2km');
