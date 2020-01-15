@@ -32,6 +32,8 @@ export interface Map {
 export interface Spot {
     id: number;
     name: string;
+    parentSpotName?: string;
+    floorName?: string;
     coordinate: Coordinate;
     /**
      * GeoJSONのジオメトリオブジェクトのJSON構造

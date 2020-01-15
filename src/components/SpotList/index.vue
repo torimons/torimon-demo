@@ -8,6 +8,8 @@
                 v-bind:key="spotSearchResult.id + spotSearchResult.name"
                 :spotId="spotSearchResult.id"
                 :spotName="spotSearchResult.name"
+                :parentSpotName="spotSearchResult.parentSpotName"
+                :floorName="spotSearchResult.floorName" 
                 :distance="'1000km'"
             >
             </SpotItem>
