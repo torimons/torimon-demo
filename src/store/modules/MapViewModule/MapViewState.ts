@@ -11,6 +11,7 @@ import { sampleMaps } from '@/store/modules/sampleMaps';
 function initMaps(): Map[] {
     for (const map of sampleMaps) {
         for (const spot of map.spots) {
+            spot.mapId = map.id;
             spot.parentSpotName = '';
             spot.floorName = '';
         }

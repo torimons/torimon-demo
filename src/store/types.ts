@@ -31,6 +31,7 @@ export interface Map {
  */
 export interface Spot {
     id: number;
+    mapId?: number;
     name: string;
     parentSpotName?: string;
     floorName?: string;
