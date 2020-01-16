@@ -3,16 +3,15 @@ import { mapViewMutations } from '@/store';
 import { MapViewState } from '@/store/modules/MapViewModule/MapViewState';
 
 export default class DefaultSpotMarker extends L.Marker {
-    private icon: L.Icon = L.icon({
-        iconUrl: 'https://github.com/torimons/torimon/blob/master/public/leaflet/icons/marker-icon-2x.png?raw=true',
-        iconSize: [50, 82],
-        iconAnchor: [25, 80],
-        popupAnchor: [-3, -76],
-        shadowSize: [68, 95],
-        shadowAnchor: [22, 94],
-    });
     private mapId: number;
     private spotId: number;
+    private normalColor: string = '#3F8373';
+    private selectedColor: string = '#AE56B3';
+    private icon: L.DivIcon = L.divIcon({
+        className: 'custom-div-icon',
+        html: `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${this.normalColor};">room</i>`,
+        iconAnchor: [24, 50],
+    });
 
     constructor(latlng: LatLngExpression, mapId: number, spotId: number) {
         super(latlng);
@@ -24,11 +23,29 @@ export default class DefaultSpotMarker extends L.Marker {
     public addTo(map: L.Map | L.LayerGroup<any>): this {
         return super.addTo(map).on('click', this.updateFocusedMarker);
     }
+
     /**
      * マーカーが押されたときに呼び出されるコールバック関数
      */
     private updateFocusedMarker(): void {
         mapViewMutations.setFocusedSpot({mapId: this.mapId, spotId: this.spotId});
         mapViewMutations.setSpotInfoIsVisible(true);
+    }
+
+    /**
+     * マーカーの選択状態によって色を切り替える
+     * String.format系のいいのがなかったのでhtml要素の前半/後半を分割して結合している
+     * @param isSelected true/false
+     */
+    private setSelected(isSelected: boolean): void {
+        const color = isSelected ? this.selectedColor : this.normalColor;
+        const htmlTemplate =
+            `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${color};">room</i>`;
+        const icon = L.divIcon({
+            className: 'custom-div-icon',
+            html: htmlTemplate,
+            iconAnchor: [24, 50],
+        });
+        this.setIcon(icon);
     }
 }
