@@ -12,6 +12,7 @@ export default class DefaultSpotMarker extends L.Marker {
         html: `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${this.normalColor};">room</i>`,
         iconAnchor: [24, 50],
     });
+    private isSelected: boolean = false;
 
     constructor(latlng: LatLngExpression, mapId: number, spotId: number) {
         super(latlng);
@@ -34,10 +35,10 @@ export default class DefaultSpotMarker extends L.Marker {
 
     /**
      * マーカーの選択状態によって色を切り替える
-     * String.format系のいいのがなかったのでhtml要素の前半/後半を分割して結合している
      * @param isSelected true/false
      */
     private setSelected(isSelected: boolean): void {
+        this.isSelected = isSelected;
         const color = isSelected ? this.selectedColor : this.normalColor;
         const htmlTemplate =
             `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${color};">room</i>`;
