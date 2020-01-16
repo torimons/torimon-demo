@@ -38,8 +38,7 @@ export default class FloorSwitchButton extends Vue {
      * 階層ボタンを押した時にスポットのlastViewedDetailMapIdを更新する．
      * @param floorName 押された階層ボタンの階層名
      */
-    private updateLastViewedDetailMapIdOnClick(floorName: string): void {
-        const index: number = this.floorNames.findIndex((name) => name === floorName);
+    private updateLastViewedDetailMapIdOnClick(index: number): void {
         const lastViewedDetailMapId: number = this.floorMapIds[index];
         const parentMapId: number = mapViewGetters.rootMapId;
         const spotId: number | null = mapViewGetters.idOfCenterSpotInRootMap;
@@ -67,7 +66,7 @@ export default class FloorSwitchButton extends Vue {
             this.clearButtonContent();
             return;
         }
-        const spot = mapViewGetters.getSpotById({parentMapId,　spotId});
+        const spot = mapViewGetters.getSpotById({parentMapId, spotId});
         if (spot.detailMapIds.length === 0) {
             this.clearButtonContent();
             return;
