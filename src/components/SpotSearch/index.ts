@@ -49,5 +49,10 @@ export default class SpotSearch extends Vue {
     @Watch('searchWord')
     public searchSpot(): void {
         this.spotSearchResults = this.search.searchSpots(this.searchWord);
+        if (this.spotSearchResults.length > 0) {
+            this.setSpotListIsVisible(true);
+        } else {
+            this.setSpotListIsVisible(false);
+        }
     }
 }
