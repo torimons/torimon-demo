@@ -38,7 +38,7 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
         // 中心付近にスポットが存在しない場合
         // ボタンが表示されないため実際に実行される予定はないがテスト
         mapViewMutations.setNonExistentOfCenterSpotInRootMap();
-        wrapper.vm.updateLastViewedDetailMapIdOnClick('1F');
+        wrapper.vm.updateLastViewedDetailMapIdOnClick(0);
         const actualLastViewedDetailMapIdWithNoSpot: number | null =
             mapViewGetters.getLastViewedDetailMapId({
                 parentMapId: 0,
@@ -48,8 +48,8 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
 
         // 中心付近に詳細マップ持ちスポットがある場合
         mapViewMutations.setIdOfCenterSpotInRootMap(0);
-        const floorName: string = '2F';
-        wrapper.vm.updateLastViewedDetailMapIdOnClick(floorName);
+        const indexOfClickedButton: number = 0;
+        wrapper.vm.updateLastViewedDetailMapIdOnClick(indexOfClickedButton);
         const expectedLastViewedDetailMapId: number = 2;
         const actualLastViewedDetailMapId: number | null =
             mapViewGetters.getLastViewedDetailMapId({
