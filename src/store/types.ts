@@ -13,7 +13,7 @@ export interface MapViewState {
     spotInfoIsVisible: boolean;
     displayLevel: DisplayLevelType;
     idOfCenterSpotInRootMap: number | null;
-    mapCenterPositionToFocus: LatLngExpression;
+    spotToFocus: { mapId: number, spotId: number };
 }
 
 /**

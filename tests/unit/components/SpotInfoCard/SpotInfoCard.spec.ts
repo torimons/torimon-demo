@@ -102,7 +102,7 @@ const mapViewStoreTestData: MapViewState = {
     spotInfoIsVisible: false,
     displayLevel: 'default',
     idOfCenterSpotInRootMap: null,
-    mapCenterPositionToFocus: { lat: 0, lng: 0 },
+    spotToFocus: { mapId: 0, spotId: 0 },
 };
 
 describe('SpotInfoコンポーネントのテスト', () => {

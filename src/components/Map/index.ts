@@ -40,7 +40,10 @@ export default class Map extends Vue {
         this.map.zoomControl.setPosition('bottomright');
         store.watch(
             (state, getters: MapViewGetters) => mapViewGetters.spotToFocus,
-            (value, oldValue) => {},
+            (spot, oldSpot) => {
+                const spotToFocus: Spot = mapViewGetters.getSpotById({parentMapId: spot.mapId, spotId: spot.spotId});
+                this.map.setView(spotToFocus.coordinate, initZoomLevel);
+            },
         );
         this.watchStoreForDisplayMap();
         this.initMapDisplay();
