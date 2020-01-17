@@ -45,5 +45,5 @@ export class MapViewState {
      */
     public displayLevel: DisplayLevelType = 'default';
 
-    public mapCenterPositionToFocus: LatLngExpression = { lat: 0, lng: 0 };
+    public spotToFocus: { mapId: number, spotId: number } = { mapId: 0, spotId: 0 };
 }

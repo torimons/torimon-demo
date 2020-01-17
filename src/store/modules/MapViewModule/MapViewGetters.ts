@@ -159,8 +159,8 @@ export class MapViewGetters extends Getters<MapViewState> {
         return this.state.idOfCenterSpotInRootMap;
     }
 
-    get mapCenterPositionToFocus(): LatLngExpression {
-        return this.state.mapCenterPositionToFocus;
+    get spotToFocus(): { mapId: number, spotId: number } {
+        return this.state.spotToFocus;
     }
 
      /* 経由するノードidの配列を入力することで経路となるノードの配列を取得

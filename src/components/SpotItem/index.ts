@@ -11,10 +11,8 @@ export default class SpotItem extends Vue {
     private distance!: number;
     @Prop()
     private spotId!: number;
-    @Prop()
-    private position!: LatLngExpression;
 
     private moveMapViewToThisSpot(): void {
-        mapViewMutations.setMapCenterPositionToFocus(this.position);
+        // mapViewMutations.setSpotToFocus({ mapId: this.mapId, spotId: this.spotId });
     }
 }

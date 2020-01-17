@@ -14,9 +14,6 @@ import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
 @Component
 export default class Map extends Vue {
     private map!: L.Map;
-    private centerLat: number = 35;
-    private centerLng: number = 139;
-    private zoomLevel: number = 15;
     private tileLayer!: L.TileLayer;
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
     private routeLines?: L.Polyline[];
@@ -24,16 +21,14 @@ export default class Map extends Vue {
     private spotMarkers: L.Marker[] = [];
     private currentLocationMarker: CurrentLocationMarker = new CurrentLocationMarker([0, 0]);
     private zoomLevelThreshold: number = 19; // とりあえず仮で閾値決めてます
-    private mapIdToDisplay: number = mapViewGetters.rootMapId;
 
     /**
      * とりあえず地図の表示を行なっています．
      */
     public mounted() {
         const rootMapCenter: Coordinate = this.calculateCenter(mapViewGetters.rootMapBounds);
-        this.centerLat = rootMapCenter.lat;
-        this.centerLng = rootMapCenter.lng;
-        this.map = L.map('map').setView([this.centerLat, this.centerLng], this.zoomLevel);
+        const initZoomLevel: number = 18;
+        this.map = L.map('map').setView([rootMapCenter.lat, rootMapCenter.lng], initZoomLevel);
         this.tileLayer = L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 23,
@@ -44,8 +39,8 @@ export default class Map extends Vue {
         this.map.on('move', this.updateIdOfCenterSpotInRootMap);
         this.map.zoomControl.setPosition('bottomright');
         store.watch(
-            (state, getters: MapViewGetters) => mapViewGetters.mapCenterPositionToFocus,
-            (value, oldValue) => this.map.setView(value, this.zoomLevel),
+            (state, getters: MapViewGetters) => mapViewGetters.spotToFocus,
+            (value, oldValue) => {},
         );
         this.initMapDisplay();
     }

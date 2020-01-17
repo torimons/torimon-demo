@@ -6,8 +6,8 @@
             <v-list-item two-line>
                 <v-list-item-content>
                     <div @click="moveMapViewToThisSpot()">
-                    <v-list-item-title class="headline">{{ spotName }}</v-list-item-title>
-                    <v-list-item-subtitle>{{ distance }}</v-list-item-subtitle>
+                        <v-list-item-title class="headline">{{ spotName }}</v-list-item-title>
+                        <v-list-item-subtitle>{{ distance }}</v-list-item-subtitle>
                     </div>
                 </v-list-item-content>
             </v-list-item>

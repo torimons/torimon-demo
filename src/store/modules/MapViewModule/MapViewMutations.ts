@@ -76,8 +76,8 @@ export class MapViewMutations extends Mutations<MapViewState> {
         this.state.idOfCenterSpotInRootMap = null;
     }
 
-    public setMapCenterPositionToFocus(centerPosition: LatLngExpression): void {
-        this.state.mapCenterPositionToFocus = centerPosition;
+    public setSpotToFocus(spot: { mapId: number, spotId: number }): void {
+        this.state.spotToFocus = spot;
     }
 
     /**
