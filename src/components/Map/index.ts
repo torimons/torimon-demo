@@ -218,6 +218,9 @@ export default class Map extends Vue {
         this.map.addLayer(routeLayer);
     }
 
+    /**
+     * マップ表示の移動のためにStoreのgetterのウォッチを行う
+     */
     private watchStoreForMoveMapCenter(): void {
         store.watch(
             (state, getters: MapViewGetters) => mapViewGetters.spotToDisplayInMapCenter,
