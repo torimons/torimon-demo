@@ -12,6 +12,7 @@
                 :parentSpotName="spotSearchResult.parentSpotName"
                 :floorName="spotSearchResult.floorName"
                 :distance="'1000km'"
+                @hideSpotList="hideSpotList"
             >
             </SpotItem>
         </v-list>

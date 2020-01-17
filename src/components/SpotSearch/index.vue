@@ -5,12 +5,13 @@
             flat
             color="primary"
         >
-            <SearchBox 
+            <SearchBox
                 @searchWordInput="setSearchWord"
                 @toggleSpotList="setSpotListIsVisible"
             />
             <SpotList
                 :spotSearchResults="spotSearchResults"
+                @hideSpotList="setSpotListIsVisible"
                 v-show="spotListIsVisible"
                 class="px-2 pb-2"
             ></SpotList>
