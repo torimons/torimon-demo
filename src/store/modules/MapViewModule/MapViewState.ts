@@ -80,5 +80,5 @@ export class MapViewState {
      */
     public displayLevel: DisplayLevelType = 'default';
 
-    public spotToFocus: { mapId: number, spotId: number } = { mapId: 0, spotId: 0 };
+    public spotToDisplayInMapCenter: { mapId: number, spotId: number } = { mapId: 0, spotId: 0 };
 }

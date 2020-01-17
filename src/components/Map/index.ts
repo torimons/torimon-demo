@@ -14,6 +14,7 @@ import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
 @Component
 export default class Map extends Vue {
     private map!: L.Map;
+    private defaultZoomLevel: number = 17;
     private tileLayer!: L.TileLayer;
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
     private routeLines?: L.Polyline[];
@@ -27,8 +28,7 @@ export default class Map extends Vue {
      */
     public mounted() {
         const rootMapCenter: Coordinate = this.calculateCenter(mapViewGetters.rootMapBounds);
-        const initZoomLevel: number = 18;
-        this.map = L.map('map').setView([rootMapCenter.lat, rootMapCenter.lng], initZoomLevel);
+        this.map = L.map('map').setView([rootMapCenter.lat, rootMapCenter.lng], this.defaultZoomLevel);
         this.tileLayer = L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 23,
@@ -38,13 +38,7 @@ export default class Map extends Vue {
         this.map.on('zoomend', this.updateDisplayLevel);
         this.map.on('move', this.updateIdOfCenterSpotInRootMap);
         this.map.zoomControl.setPosition('bottomright');
-        store.watch(
-            (state, getters: MapViewGetters) => mapViewGetters.spotToFocus,
-            (spot, oldSpot) => {
-                const spotToFocus: Spot = mapViewGetters.getSpotById({parentMapId: spot.mapId, spotId: spot.spotId});
-                this.map.setView(spotToFocus.coordinate, initZoomLevel);
-            },
-        );
+        this.watchStoreForMoveMapCenter();
         this.watchStoreForDisplayMap();
         this.initMapDisplay();
     }
@@ -222,6 +216,21 @@ export default class Map extends Vue {
      */
     private addRouteToMap(routeLayer: L.Layer): void {
         this.map.addLayer(routeLayer);
+    }
+
+    private watchStoreForMoveMapCenter(): void {
+        store.watch(
+            (state, getters: MapViewGetters) => mapViewGetters.spotToDisplayInMapCenter,
+            (spot, oldSpot) => {
+                let zoomLevel = this.defaultZoomLevel;
+                if (spot.mapId !== mapViewGetters.rootMapId) {
+                    zoomLevel = this.zoomLevelThreshold + 1;
+                }
+                const spotToDisplayInMapCenter: Spot
+                    = mapViewGetters.getSpotById({parentMapId: spot.mapId, spotId: spot.spotId});
+                this.map.setView(spotToDisplayInMapCenter.coordinate, zoomLevel);
+            },
+        );
     }
 
     /**
