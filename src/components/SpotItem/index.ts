@@ -13,5 +13,7 @@ export default class SpotItem extends Vue {
     @Prop()
     private distance!: number;
     @Prop()
+    private mapId!: number;
+    @Prop()
     private spotId!: number;
 }
