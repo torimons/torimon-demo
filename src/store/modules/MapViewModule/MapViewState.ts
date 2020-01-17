@@ -1,6 +1,40 @@
-import { Map, DisplayLevelType } from '@/store/types';
+import { Map, DisplayLevelType, Spot } from '@/store/types';
 import { sampleMaps } from '@/store/modules/sampleMaps';
 import { LatLngExpression } from 'leaflet';
+
+/**
+ * マップ中の全スポットに階層情報と親のスポットの名前を登録する
+ * 階層や親スポットが存在しない場合,初期化を行わないと
+ * SpotItemコンポーネントでundefinedが表示されることになるので
+ * 空文字列を代入しておく
+ * @return 情報追加後のマップ
+ */
+function initMaps(): Map[] {
+    for (const map of sampleMaps) {
+        for (const spot of map.spots) {
+            spot.mapId = map.id;
+            spot.parentSpotName = '';
+            spot.floorName = '';
+        }
+    }
+    for (const map of sampleMaps) {
+        for (const spot of map.spots) {
+            for (const detailMapId of spot.detailMapIds) {
+                const detailMap = sampleMaps.find((m: Map) => m.id === detailMapId);
+                if (detailMap === undefined) {
+                    throw new Error('Illegal map id on sampleMaps.');
+                }
+                for (const detailMapSpot of detailMap.spots) {
+                    detailMapSpot.parentSpotName = spot.name;
+                    const detailMapIdIndex: number = spot.detailMapIds
+                        .findIndex((id: number) => id === detailMapId);
+                    detailMapSpot.floorName = spot.detailMapLevelNames[detailMapIdIndex];
+                }
+            }
+        }
+    }
+    return sampleMaps;
+}
 
 export class MapViewState {
     /**
@@ -11,7 +45,8 @@ export class MapViewState {
      *   外部モジュールのsampleMapsで初期化
      * 将来的にはvuexのmutationで登録する
      */
-    public maps: Map[] = sampleMaps;
+    public maps: Map[] = initMaps();
+
 
     /*
      * 大元の親のMapのID

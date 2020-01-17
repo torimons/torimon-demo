@@ -7,7 +7,10 @@
                 v-for="spotSearchResult in spotSearchResults"
                 v-bind:key="spotSearchResult.id + spotSearchResult.name"
                 :spotId="spotSearchResult.id"
+                :mapId="spotSearchResult.mapId"
                 :spotName="spotSearchResult.name"
+                :parentSpotName="spotSearchResult.parentSpotName"
+                :floorName="spotSearchResult.floorName"
                 :distance="'1000km'"
                 :position="spotSearchResult.coordinate"
             >
