@@ -47,6 +47,7 @@ export default class Map extends Vue {
         this.map.on('move', this.updateIdOfCenterSpotInRootMap);
         this.map.zoomControl.setPosition('bottomright');
         this.watchStoreForDisplayMap();
+        this.watchFocusedSpotChange();
         this.initMapDisplay();
     }
 
@@ -70,13 +71,55 @@ export default class Map extends Vue {
     private onMapClick(): void {
         // focusedSpotがある場合そのスポットを未選択に設定する
         const focusedSpot = mapViewGetters.focusedSpot;
-        this.spotMarkers
-            .filter((marker: DefaultSpotMarker) => marker.getIdInfo() === focusedSpot)
-            // mapId,spotIdの組み合わせでspotは一意に決まるはずなのでforEachはいらないけど
-            // filterの返り値が[]なのでとりあえずforEachにしてる
-            .forEach((marker: DefaultSpotMarker) => marker.setSelected(false));
+        const focusedMarker = this.getMarkerByMapAndSpotId(focusedSpot);
+        if (focusedMarker !== null) {
+            focusedMarker.setSelected(false);
+        }
         // SpotItemを非表示にする
         mapViewMutations.setSpotInfoIsVisible(false);
+    }
+
+    /**
+     * mapIdとspotIdから現在表示されているマーカーのオブジェクトを取得する
+     * 見つからない場合nullを返す
+     * @param idInfo マーカーを取得したいspotの{mapId, spotId}
+     * @returns 見つかったマーカーのオブジェクト | null
+     */
+    private getMarkerByMapAndSpotId(idInfo: {mapId: number, spotId: number}): DefaultSpotMarker | null {
+        const foundMarker: DefaultSpotMarker | undefined = this.spotMarkers
+            .find((marker) => {
+                return marker.getIdInfo().mapId === idInfo.mapId && marker.getIdInfo().spotId === idInfo.spotId;
+            });
+        if (foundMarker === undefined) {
+            return null;
+        }
+        return foundMarker;
+    }
+
+    /**
+     * focusedSpotをwatchして選択されたマーカーの色変更を行う
+     * 以前のfocusedSpotは非選択状態の色にする
+     */
+    private watchFocusedSpotChange(): void {
+        store.watch(
+            (state, getters: MapViewGetters) => [
+                getters.focusedSpot,
+            ],
+            (value, oldValue) => {
+                // 古いfocusedSpotを非選択状態にする
+                // 表示するmapが変わった場合など，以前のfocusedMarkerが存在しない場合がある
+                // valueとoldValueは配列なので[0]で渡している
+                const oldSelectedMarker = this.getMarkerByMapAndSpotId(oldValue[0]);
+                if (oldSelectedMarker != null) {
+                    oldSelectedMarker.setSelected(false);
+                }
+                // 新しいfocusedSpotを選択状態にする
+                const newSelectedMarker = this.getMarkerByMapAndSpotId(value[0]);
+                if (newSelectedMarker != null) {
+                    newSelectedMarker.setSelected(true);
+                }
+            },
+        );
     }
 
     /**
@@ -270,9 +313,14 @@ export default class Map extends Vue {
      * マップを選択し，そのマップのスポットとポリゴンを表示する
      */
     private displayMap(): void {
-        const newSpotsForDisplayMap: SpotForMap[] = mapViewGetters.getSpotsForMap(this.selectMapToDisplay());
-        this.displaySpotMarkers(newSpotsForDisplayMap);
-        this.displayPolygons(newSpotsForDisplayMap);
+        const newMapToDisplay = this.selectMapToDisplay();
+        // 表示するマップのidが変わった時だけマーカー,ポリゴンの表示を行う
+        if (newMapToDisplay !== this.mapIdToDisplay) {
+            const newSpotsForDisplayMap: SpotForMap[] = mapViewGetters.getSpotsForMap(newMapToDisplay);
+            this.displaySpotMarkers(newSpotsForDisplayMap);
+            this.displayPolygons(newSpotsForDisplayMap);
+        }
+        this.mapIdToDisplay = newMapToDisplay;
     }
 
     /**

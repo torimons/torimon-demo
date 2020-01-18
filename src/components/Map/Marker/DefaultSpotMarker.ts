@@ -56,6 +56,5 @@ export default class DefaultSpotMarker extends L.Marker {
     private updateFocusedMarker(): void {
         mapViewMutations.setFocusedSpot({mapId: this.mapId, spotId: this.spotId});
         mapViewMutations.setSpotInfoIsVisible(true);
-        this.setSelected(true);
     }
 }
