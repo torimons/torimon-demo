@@ -3,6 +3,7 @@ import { Spot } from '@/store/types';
 
 const spotsForTest: Spot[] = [
     {
+        mapId: 0,
         id: 0,
         name: 'SougouGakusyuPlaza',
         coordinate: {
@@ -19,6 +20,7 @@ const spotsForTest: Spot[] = [
         lastViewedDetailMapId: null,
     },
     {
+        mapId: 0,
         id: 1,
         name: 'SpotForTest',
         coordinate: {
