@@ -21,7 +21,7 @@ export default class Map extends Vue {
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
     private routeLines?: L.Polyline[];
     private routeLayer?: L.Layer;
-    private spotMarkers: L.Marker[] = [];
+    private spotMarkers: DefaultSpotMarker[] = [];
     private currentLocationMarker: CurrentLocationMarker = new CurrentLocationMarker([0, 0]);
     private zoomLevelThreshold: number = 19; // とりあえず仮で閾値決めてます
     private mapIdToDisplay: number = mapViewGetters.rootMapId;
@@ -60,6 +60,23 @@ export default class Map extends Vue {
         // sampleMapのポリゴン表示
         this.displayPolygons(rootMapSpots);
         this.currentLocationMarker.addTo(this.map);
+        // マーカー以外のmapがクリックされた時の処理を登録
+        this.map.on('click', this.onMapClick);
+    }
+
+    /**
+     * マーカーの選択状態を解除してSpotItemを非表示にする
+     */
+    private onMapClick(): void {
+        // focusedSpotがある場合そのスポットを未選択に設定する
+        const focusedSpot = mapViewGetters.focusedSpot;
+        this.spotMarkers
+            .filter((marker: DefaultSpotMarker) => marker.getIdInfo() === focusedSpot)
+            // mapId,spotIdの組み合わせでspotは一意に決まるはずなのでforEachはいらないけど
+            // filterの返り値が[]なのでとりあえずforEachにしてる
+            .forEach((marker: DefaultSpotMarker) => marker.setSelected(false));
+        // SpotItemを非表示にする
+        mapViewMutations.setSpotInfoIsVisible(false);
     }
 
     /**

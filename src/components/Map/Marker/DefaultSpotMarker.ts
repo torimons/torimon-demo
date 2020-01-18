@@ -21,23 +21,23 @@ export default class DefaultSpotMarker extends L.Marker {
         this.spotId = spotId;
     }
 
-    public addTo(map: L.Map | L.LayerGroup<any>): this {
-        return super.addTo(map).on('click', this.updateFocusedMarker);
+    /**
+     * マーカーのmapIdとspotIdを返す
+     * @returns 自身のmapId, spotId
+     */
+    public getIdInfo(): {mapId: number, spotId: number} {
+        return {mapId: this.mapId, spotId: this.spotId};
     }
 
-    /**
-     * マーカーが押されたときに呼び出されるコールバック関数
-     */
-    private updateFocusedMarker(): void {
-        mapViewMutations.setFocusedSpot({mapId: this.mapId, spotId: this.spotId});
-        mapViewMutations.setSpotInfoIsVisible(true);
+    public addTo(map: L.Map | L.LayerGroup<any>): this {
+        return super.addTo(map).on('click', this.updateFocusedMarker);
     }
 
     /**
      * マーカーの選択状態によって色を切り替える
      * @param isSelected true/false
      */
-    private setSelected(isSelected: boolean): void {
+    public setSelected(isSelected: boolean): void {
         this.isSelected = isSelected;
         const color = isSelected ? this.selectedColor : this.normalColor;
         const htmlTemplate =
@@ -48,5 +48,14 @@ export default class DefaultSpotMarker extends L.Marker {
             iconAnchor: [24, 50],
         });
         this.setIcon(icon);
+    }
+
+    /**
+     * マーカーが押されたときに呼び出されるコールバック関数
+     */
+    private updateFocusedMarker(): void {
+        mapViewMutations.setFocusedSpot({mapId: this.mapId, spotId: this.spotId});
+        mapViewMutations.setSpotInfoIsVisible(true);
+        this.setSelected(true);
     }
 }
