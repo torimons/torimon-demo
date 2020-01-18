@@ -41,7 +41,7 @@ export default class SpotList extends Vue {
      * 現在地を取得できている場合、現在地とスポットの距離を計算し、文字列型にformatして返す
      * 現在地を取得できていない場合、空文字列を返す
      * @param spot 現在地との距離を計算したいスポット
-     * @return 空文字列 
+     * @return 空文字列
      * @return 文字列型の単位付きの距離
      */
     private calculateDistanceFromCurrentPosition(spot: Spot): string {
@@ -61,6 +61,7 @@ export default class SpotList extends Vue {
         if (distanceInMeters < 1000) {
             return distanceInMeters.toString() + 'm';
         } else {
+            // km表示に変換した時の小数点第一位以下を丸める
             const distanceInKMeters = Math.round(distanceInMeters / 100) / 10;
             return distanceInKMeters.toString() + 'km';
         }

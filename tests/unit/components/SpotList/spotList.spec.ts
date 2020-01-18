@@ -31,7 +31,7 @@ describe('SpotListコンポーネントのテスト', () => {
         lastViewedDetailMapId: null,
     };
 
-    it('calculateDistanceFromCurrentPositionが取得された現在地とスポット間の距離を計算してformat型に返す', () => {
+    it('calculateDistanceFromCurrentPositionが取得された現在地とスポット間の距離を計算してformatした結果を返す', () => {
         const currentPosition = {
             lat: 33.595502,
             lng: 130.218238,
@@ -39,9 +39,10 @@ describe('SpotListコンポーネントのテスト', () => {
         const expectedDistance = getDistance(testSpot.coordinate, currentPosition);
         wrapper.vm.currentPosition = currentPosition;
         wrapper.vm.formatDistance = jest.fn((distance) => {
-            expect(distance).toBe(expectedDistance);
+            return distance.toString();
         });
-        wrapper.vm.calculateDistanceFromCurrentPosition(testSpot);
+        const resultDistanceInString = wrapper.vm.calculateDistanceFromCurrentPosition(testSpot);
+        expect(resultDistanceInString).toBe(expectedDistance.toString());
     });
 
     it('現在地を取得できなかった場合、calculateDistanceFromCurrentPositionが空文字列を返す', () => {
