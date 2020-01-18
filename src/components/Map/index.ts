@@ -231,7 +231,7 @@ export default class Map extends Vue {
                 }
                 const spotToDisplayInMapCenter: Spot
                     = mapViewGetters.getSpotById({parentMapId: spot.mapId, spotId: spot.spotId});
-                this.map.setView(spotToDisplayInMapCenter.coordinate, zoomLevel);
+                this.map.flyTo(spotToDisplayInMapCenter.coordinate, zoomLevel);
             },
         );
     }
