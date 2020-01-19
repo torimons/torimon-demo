@@ -46,7 +46,7 @@ describe('components/Map.vue マーカー選択関連のテスト', () => {
         expect(foundMarker.getIdInfo().spotId).toBe(expectedSpotId);
     });
 
-    it('onMapClickでfocusedSpotを非選択状態にしてSpotItemを非表示にする', () => {
+    it('onMapClickでfocusedSpotを非選択状態にしてSpotInfoを非表示にする', () => {
         const mapId = 0;
         const spotId = 1;
         const marker = new DefaultSpotMarker([0, 0], mapId, spotId);
