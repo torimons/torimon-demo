@@ -1,5 +1,5 @@
 import L, {Marker, LatLngExpression, LeafletEvent} from 'leaflet';
-import { mapViewMutations } from '@/store';
+import { mapViewMutations, mapViewGetters } from '@/store';
 import { MapViewState } from '@/store/modules/MapViewModule/MapViewState';
 
 export default class DefaultSpotMarker extends L.Marker {
@@ -19,6 +19,11 @@ export default class DefaultSpotMarker extends L.Marker {
         this.setIcon(this.icon);
         this.mapId = mapId;
         this.spotId = spotId;
+        // マーカー生成時にfocusedSpotの場合選択状態にしておく
+        const focusedSpot = mapViewGetters.focusedSpot;
+        if (focusedSpot.mapId === mapId && focusedSpot.spotId === spotId) {
+            this.setSelected(true);
+        }
     }
 
     /**
