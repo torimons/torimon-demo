@@ -1,5 +1,6 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { mapViewGetters, mapViewMutations } from '@/store';
+import { store, mapViewGetters, mapViewMutations } from '@/store';
+import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
 import { DisplayLevelType } from '@/store/types';
 
 @Component
@@ -12,6 +13,17 @@ export default class FloorSwitchButton extends Vue {
     // 階層ボタンの見た目に関するメンバ
     private selectedFloorButtonIndex: number | undefined = 0;
     private isVisible: boolean = false;
+
+    public mounted() {
+        store.watch(
+            (state, getters: MapViewGetters) => getters.displayLevel,
+            (value, oldValue) => this.changeButtonIsVisible(value, oldValue),
+        );
+        store.watch(
+            (state, getters: MapViewGetters) => getters.idOfCenterSpotInRootMap,
+            (value, oldValue) => this.updateContentOfFloorSwitchButton(value, oldValue),
+        );
+    }
 
     /**
      * 階層ボタンの内容を初期化する．
@@ -26,8 +38,7 @@ export default class FloorSwitchButton extends Vue {
      * 階層ボタンを押した時にスポットのlastViewedDetailMapIdを更新する．
      * @param floorName 押された階層ボタンの階層名
      */
-    private updateLastViewedDetailMapIdOnClick(floorName: string): void {
-        const index: number = this.floorNames.findIndex((name) => name === floorName);
+    private updateLastViewedDetailMapIdOnClick(index: number): void {
         const lastViewedDetailMapId: number = this.floorMapIds[index];
         const parentMapId: number = mapViewGetters.rootMapId;
         const spotId: number | null = mapViewGetters.idOfCenterSpotInRootMap;
@@ -45,17 +56,9 @@ export default class FloorSwitchButton extends Vue {
     }
 
     /**
-     * changeButtonContentで監視するプロパティ
-     */
-    get idOfCenterSpotInRootMap(): number | null {
-        return mapViewGetters.idOfCenterSpotInRootMap;
-    }
-
-    /**
      * 画面中央の詳細マップ持ちスポットに合わせて階層切り替えボタンの内容を更新する．
      * 下の階が下に表示されるようにセットする．
      */
-    @Watch('idOfCenterSpotInRootMap')
     private updateContentOfFloorSwitchButton(newCenterSpotId: number | null, oldCenterSpotId: number | null): void {
         const parentMapId: number = mapViewGetters.rootMapId;
         const spotId: number | null = newCenterSpotId;
@@ -63,7 +66,7 @@ export default class FloorSwitchButton extends Vue {
             this.clearButtonContent();
             return;
         }
-        const spot = mapViewGetters.getSpotById({parentMapId,　spotId});
+        const spot = mapViewGetters.getSpotById({parentMapId, spotId});
         if (spot.detailMapIds.length === 0) {
             this.clearButtonContent();
             return;
@@ -82,16 +85,8 @@ export default class FloorSwitchButton extends Vue {
     }
 
     /**
-     * changeButtonIsVisibleで監視するプロパティ
-     */
-    get displayLevel(): DisplayLevelType {
-        return mapViewGetters.displayLevel;
-    }
-
-    /**
      * displayLevelに合わせて階層切り替えボタンの表示/非表示を切り替える．
      */
-    @Watch('displayLevel')
     private changeButtonIsVisible(newDisplayLevel: DisplayLevelType, oldDisplayLevel: DisplayLevelType): void {
         if (newDisplayLevel === 'detail') {
             this.isVisible = true;

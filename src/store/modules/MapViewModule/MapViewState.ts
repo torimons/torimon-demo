@@ -11,6 +11,7 @@ import { sampleMaps } from '@/store/modules/sampleMaps';
 function initMaps(): Map[] {
     for (const map of sampleMaps) {
         for (const spot of map.spots) {
+            spot.mapId = map.id;
             spot.parentSpotName = '';
             spot.floorName = '';
         }
@@ -77,4 +78,9 @@ export class MapViewState {
      * ズームレベルに応じて切り替わる表示レベルを保持
      */
     public displayLevel: DisplayLevelType = 'default';
+
+    /**
+     * マップ表示の中心の移動先のスポット
+     */
+    public spotToDisplayInMapCenter: { mapId: number, spotId: number } = { mapId: 0, spotId: 0 };
 }

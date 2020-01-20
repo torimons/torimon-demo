@@ -2,14 +2,11 @@ import L, {Marker, LatLngExpression} from 'leaflet';
 import { GeolocationWrapper } from '../GeolocationWrapper';
 
 export default class CurrentLocationMarker extends L.Marker {
-    private icon: L.Icon = L.icon({
-        iconUrl: 'https://github.com/torimons/torimon/blob/master/public/leaflet/icons/currentLocation.png?raw=true',
-        iconSize: [40, 40],
-        iconAnchor: [25, 25],
-        popupAnchor: [0, 0],
-        shadowSize: [68, 95],
-        shadowAnchor: [22, 94],
-        className: 'currentLocation',
+    private icon: L.DivIcon = L.divIcon({
+        className: 'custom-div-icon',
+        html:
+            '<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:#736020;">person_pin</i>',
+        iconAnchor: [24, 50],
     });
 
     constructor(latlng: LatLngExpression) {
