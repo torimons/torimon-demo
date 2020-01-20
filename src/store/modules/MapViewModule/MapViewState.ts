@@ -1,6 +1,5 @@
 import { Map, DisplayLevelType, Spot } from '@/store/types';
 import { sampleMaps } from '@/store/modules/sampleMaps';
-import { LatLngExpression } from 'leaflet';
 
 /**
  * マップ中の全スポットに階層情報と親のスポットの名前を登録する
@@ -80,5 +79,8 @@ export class MapViewState {
      */
     public displayLevel: DisplayLevelType = 'default';
 
+    /**
+     * マップ表示の中心の移動先のスポット
+     */
     public spotToDisplayInMapCenter: { mapId: number, spotId: number } = { mapId: 0, spotId: 0 };
 }

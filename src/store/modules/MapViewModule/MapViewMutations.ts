@@ -3,7 +3,6 @@ import { MapViewState } from './MapViewState';
 import { Map, Spot, DisplayLevelType } from '@/store/types';
 import { NoDetailMapIdInSpotError } from '@/store/errors/NoDetailMapIdInSpotError';
 import { mapViewGetters } from '@/store';
-import { LatLngExpression } from 'leaflet';
 
 export class MapViewMutations extends Mutations<MapViewState> {
     /**

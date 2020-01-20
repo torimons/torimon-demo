@@ -1,4 +1,3 @@
-import { LatLngExpression } from 'leaflet';
 
 /**
  * MapViewコンポーネントの状態の情報を持つ型

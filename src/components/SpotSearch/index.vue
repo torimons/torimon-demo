@@ -3,7 +3,6 @@
         <v-card
             tile
             flat
-            color="primary"
         >
             <SearchBox 
                 @searchWordInput="setSearchWord"
