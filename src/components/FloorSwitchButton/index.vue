@@ -1,5 +1,5 @@
 <template>
-	<div id="floor-switch-button" v-show="isVisible">
+    <div id="floor-switch-button" v-show="isVisible">
         <v-container class="pa-0">
             <v-row
                 no-gutters
@@ -8,20 +8,21 @@
                     <v-btn-toggle
                         tile
                         mandatory
+                        color="primary"
                         v-model="selectedFloorButtonIndex"
                     >
                         <v-btn
-                            v-for="floorName in floorNames"
-                            v-bind:key="floorName"
-                            @click="updateLastViewedDetailMapIdOnClick(floorName)"
+                            v-for="(floorName, index) in floorNames"
+                            v-bind:key="index"
+                            @click="updateLastViewedDetailMapIdOnClick(index)"
                         >
-                        {{ floorName }}
+                            {{ floorName }}
                         </v-btn>
                     </v-btn-toggle>
                 </v-col>
             </v-row>
         </v-container>
-	</div>
+    </div>
 </template>
 
 <script lang="ts" src='./index.ts'>

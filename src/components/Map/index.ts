@@ -14,9 +14,7 @@ import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
 @Component
 export default class Map extends Vue {
     private map!: L.Map;
-    private centerLat: number = 35;
-    private centerLng: number = 139;
-    private zoomLevel: number = 15;
+    private defaultZoomLevel: number = 17;
     private tileLayer!: L.TileLayer;
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
     private routeLines?: L.Polyline[];
@@ -24,19 +22,13 @@ export default class Map extends Vue {
     private spotMarkers: L.Marker[] = [];
     private currentLocationMarker: CurrentLocationMarker = new CurrentLocationMarker([0, 0]);
     private zoomLevelThreshold: number = 19; // とりあえず仮で閾値決めてます
-    private mapIdToDisplay: number = mapViewGetters.rootMapId;
 
     /**
      * とりあえず地図の表示を行なっています．
      */
     public mounted() {
         const rootMapCenter: Coordinate = this.calculateCenter(mapViewGetters.rootMapBounds);
-        this.centerLat = rootMapCenter.lat;
-        this.centerLng = rootMapCenter.lng;
-        this.map = L.map('map').setView(
-            [this.centerLat, this.centerLng],
-            this.zoomLevel,
-        );
+        this.map = L.map('map').setView([rootMapCenter.lat, rootMapCenter.lng], this.defaultZoomLevel);
         this.tileLayer = L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 23,
@@ -46,6 +38,7 @@ export default class Map extends Vue {
         this.map.on('zoomend', this.updateDisplayLevel);
         this.map.on('move', this.updateIdOfCenterSpotInRootMap);
         this.map.zoomControl.setPosition('bottomright');
+        this.watchStoreForMoveMapCenter();
         this.watchStoreForDisplayMap();
         this.initMapDisplay();
     }
@@ -223,6 +216,24 @@ export default class Map extends Vue {
      */
     private addRouteToMap(routeLayer: L.Layer): void {
         this.map.addLayer(routeLayer);
+    }
+
+    /**
+     * マップ表示の移動のためにStoreのgetterのウォッチを行う
+     */
+    private watchStoreForMoveMapCenter(): void {
+        store.watch(
+            (state, getters: MapViewGetters) => mapViewGetters.spotToDisplayInMapCenter,
+            (spot, oldSpot) => {
+                let zoomLevel = this.defaultZoomLevel;
+                if (spot.mapId !== mapViewGetters.rootMapId) {
+                    zoomLevel = this.zoomLevelThreshold + 1;
+                }
+                const spotToDisplayInMapCenter: Spot
+                    = mapViewGetters.getSpotById({parentMapId: spot.mapId, spotId: spot.spotId});
+                this.map.flyTo(spotToDisplayInMapCenter.coordinate, zoomLevel);
+            },
+        );
     }
 
     /**

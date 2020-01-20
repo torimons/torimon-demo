@@ -75,6 +75,10 @@ export class MapViewMutations extends Mutations<MapViewState> {
         this.state.idOfCenterSpotInRootMap = null;
     }
 
+    public setSpotToDisplayInMapCenter(spot: { mapId: number, spotId: number }): void {
+        this.state.spotToDisplayInMapCenter = spot;
+    }
+
     /**
      * MapViewStateの情報を一括でset
      * - 現状は単体テストの入力用の仮メソッド

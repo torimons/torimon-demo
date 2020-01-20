@@ -3,6 +3,7 @@ import { Spot } from '@/store/types';
 
 const spotsForTest: Spot[] = [
     {
+        mapId: 0,
         id: 0,
         name: 'SougouGakusyuPlaza',
         coordinate: {
@@ -19,6 +20,7 @@ const spotsForTest: Spot[] = [
         lastViewedDetailMapId: null,
     },
     {
+        mapId: 0,
         id: 1,
         name: 'SpotForTest',
         coordinate: {
@@ -45,6 +47,15 @@ describe('Searchクラスのテスト', () => {
         const keyword: string = 'sougou';
         const actualResult: Spot[] = searchObj.searchSpots(keyword);
         const expectedResult: Spot[] = [spotsForTest[0]];
+        expect(actualResult).toStrictEqual(expectedResult);
+    });
+
+    it('検索ワードが空文字の場合，検索しない', () => {
+        const targetSpotsForSearch = spotsForTest;
+        const searchObj = new Search(targetSpotsForSearch);
+        const keyword: string = '';
+        const actualResult: Spot[] = searchObj.searchSpots(keyword);
+        const expectedResult: Spot[] = [];
         expect(actualResult).toStrictEqual(expectedResult);
     });
 

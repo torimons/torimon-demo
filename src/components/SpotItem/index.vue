@@ -2,11 +2,13 @@
 	<div id="spot-item">
         <v-card
             tile
+            @click="updateFocusedSpot();
+                    moveMapViewToThisSpot()"
         >
             <v-list-item two-line>
                 <v-list-item-content>
                     <v-list-item-title class="headline">{{ parentSpotName + " " + spotName }}</v-list-item-title>
-                    <v-list-item-subtitle>{{ floorName + " " + distance}}</v-list-item-subtitle>
+                    <v-list-item-subtitle>{{ floorName + " " + distance }}</v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
         </v-card>
