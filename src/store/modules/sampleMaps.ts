@@ -56,6 +56,27 @@ export const sampleMaps: Map[] =  [
                 detailMapLevelNames: ['2F', '3F'],
                 lastViewedDetailMapId: null,
             },
+            {
+                id: ,
+                name: 'ウエストｎ号館',
+                coordinate: {
+                    lat: ,
+                    lng: ,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+                description: 'ウエストｎ号館です',
+            },
         ],
         nodes: [],
         edges: [],
