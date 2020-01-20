@@ -71,7 +71,7 @@ export default class Map extends Vue {
     private onMapClick(): void {
         // focusedSpotがある場合そのスポットを未選択に設定する
         const focusedSpot = mapViewGetters.focusedSpot;
-        const focusedMarker = this.getMarkerByMapAndSpotId(focusedSpot);
+        const focusedMarker = this.findMarker(focusedSpot);
         if (focusedMarker !== null) {
             focusedMarker.setSelected(false);
         }
@@ -85,7 +85,7 @@ export default class Map extends Vue {
      * @param idInfo マーカーを取得したいspotの{mapId, spotId}
      * @returns 見つかったマーカーのオブジェクト | null
      */
-    private getMarkerByMapAndSpotId(idInfo: {mapId: number, spotId: number}): DefaultSpotMarker | null {
+    private findMarker(idInfo: {mapId: number, spotId: number}): DefaultSpotMarker | null {
         const foundMarker: DefaultSpotMarker | undefined = this.spotMarkers
             .find((marker) => {
                 return marker.getIdInfo().mapId === idInfo.mapId && marker.getIdInfo().spotId === idInfo.spotId;
@@ -109,12 +109,12 @@ export default class Map extends Vue {
                 // 古いfocusedSpotを非選択状態にする
                 // 表示するmapが変わった場合など，以前のfocusedMarkerが存在しない場合がある
                 // valueとoldValueは配列なので[0]で渡している
-                const oldSelectedMarker = this.getMarkerByMapAndSpotId(oldValue[0]);
+                const oldSelectedMarker = this.findMarker(oldValue[0]);
                 if (oldSelectedMarker != null) {
                     oldSelectedMarker.setSelected(false);
                 }
                 // 新しいfocusedSpotを選択状態にする
-                const newSelectedMarker = this.getMarkerByMapAndSpotId(value[0]);
+                const newSelectedMarker = this.findMarker(value[0]);
                 if (newSelectedMarker != null) {
                     newSelectedMarker.setSelected(true);
                 }
