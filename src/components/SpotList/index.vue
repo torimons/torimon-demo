@@ -9,10 +9,11 @@
                 :spotId="spotSearchResult.id"
                 :mapId="spotSearchResult.mapId"
                 :spotName="spotSearchResult.name"
+                :distance="calculateDistanceFromCurrentPosition(spotSearchResult)"
                 :parentSpotName="spotSearchResult.parentSpotName"
                 :floorName="spotSearchResult.floorName"
-                :distance="'1000km'"
                 @hideSpotList="hideSpotList"
+                :position="spotSearchResult.coordinate"
             >
             </SpotItem>
         </v-list>
