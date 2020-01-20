@@ -23,4 +23,7 @@ export default class SpotItem extends Vue {
     private updateFocusedSpot(): void {
         mapViewMutations.setFocusedSpot({mapId: this.mapId, spotId: this.spotId});
     }
+    private moveMapViewToThisSpot(): void {
+        mapViewMutations.setSpotToDisplayInMapCenter({ mapId: this.mapId, spotId: this.spotId });
+    }
 }
