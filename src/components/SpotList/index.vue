@@ -12,6 +12,7 @@
                 :distance="calculateDistanceFromCurrentPosition(spotSearchResult)"
                 :parentSpotName="spotSearchResult.parentSpotName"
                 :floorName="spotSearchResult.floorName"
+                :position="spotSearchResult.coordinate"
             >
             </SpotItem>
         </v-list>

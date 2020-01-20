@@ -16,4 +16,8 @@ export default class SpotItem extends Vue {
     private mapId!: number;
     @Prop()
     private spotId!: number;
+
+    private moveMapViewToThisSpot(): void {
+        mapViewMutations.setSpotToDisplayInMapCenter({ mapId: this.mapId, spotId: this.spotId });
+    }
 }

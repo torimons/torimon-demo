@@ -158,6 +158,10 @@ export class MapViewGetters extends Getters<MapViewState> {
         return this.state.idOfCenterSpotInRootMap;
     }
 
+    get spotToDisplayInMapCenter(): { mapId: number, spotId: number } {
+        return this.state.spotToDisplayInMapCenter;
+    }
+
      /* 経由するノードidの配列を入力することで経路となるノードの配列を取得
      * @param nodeIds: 経路となるノードidの配列
      * @return nodesForNavigation: 経路となるノードの配列
