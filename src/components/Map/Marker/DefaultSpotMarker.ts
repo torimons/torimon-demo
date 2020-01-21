@@ -1,5 +1,5 @@
 import L, {Marker, LatLngExpression, LeafletEvent} from 'leaflet';
-import { mapViewMutations } from '@/store';
+import { mapViewMutations, mapViewGetters } from '@/store';
 import { MapViewState } from '@/store/modules/MapViewModule/MapViewState';
 
 export default class DefaultSpotMarker extends L.Marker {
@@ -19,6 +19,19 @@ export default class DefaultSpotMarker extends L.Marker {
         this.setIcon(this.icon);
         this.mapId = mapId;
         this.spotId = spotId;
+        // マーカー生成時にfocusedSpotの場合選択状態にしておく
+        const focusedSpot = mapViewGetters.focusedSpot;
+        if (focusedSpot.mapId === mapId && focusedSpot.spotId === spotId) {
+            this.setSelected(true);
+        }
+    }
+
+    /**
+     * マーカーのmapIdとspotIdを返す
+     * @returns 自身のmapId, spotId
+     */
+    public getIdInfo(): {mapId: number, spotId: number} {
+        return {mapId: this.mapId, spotId: this.spotId};
     }
 
     public addTo(map: L.Map | L.LayerGroup<any>): this {
@@ -26,18 +39,10 @@ export default class DefaultSpotMarker extends L.Marker {
     }
 
     /**
-     * マーカーが押されたときに呼び出されるコールバック関数
-     */
-    private updateFocusedMarker(): void {
-        mapViewMutations.setFocusedSpot({mapId: this.mapId, spotId: this.spotId});
-        mapViewMutations.setSpotInfoIsVisible(true);
-    }
-
-    /**
      * マーカーの選択状態によって色を切り替える
      * @param isSelected true/false
      */
-    private setSelected(isSelected: boolean): void {
+    public setSelected(isSelected: boolean): void {
         this.isSelected = isSelected;
         const color = isSelected ? this.selectedColor : this.normalColor;
         const htmlTemplate =
@@ -48,5 +53,13 @@ export default class DefaultSpotMarker extends L.Marker {
             iconAnchor: [24, 50],
         });
         this.setIcon(icon);
+    }
+
+    /**
+     * マーカーが押されたときに呼び出されるコールバック関数
+     */
+    private updateFocusedMarker(): void {
+        mapViewMutations.setFocusedSpot({mapId: this.mapId, spotId: this.spotId});
+        mapViewMutations.setSpotInfoIsVisible(true);
     }
 }
