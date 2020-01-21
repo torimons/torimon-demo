@@ -22,6 +22,7 @@ export default class Map extends Vue {
     private spotMarkers: DefaultSpotMarker[] = [];
     private currentLocationMarker: CurrentLocationMarker = new CurrentLocationMarker([0, 0]);
     private zoomLevelThreshold: number = 19; // とりあえず仮で閾値決めてます
+    private mapIdToDisplay!: number;
 
     /**
      * とりあえず地図の表示を行なっています．
