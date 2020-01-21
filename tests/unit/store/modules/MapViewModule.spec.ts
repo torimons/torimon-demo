@@ -164,6 +164,18 @@ describe('store/modules/MapViewModule.ts', () => {
         expect(mapViewGetters.idOfCenterSpotInRootMap).toBe(expectedId);
     });
 
+    it('親スポットを持つスポットの親スポットIDをfindParentSpotIdで検索すると親スポットIDが返る', () => {
+        const actualParentSpotId: number | null = mapViewGetters.findParentSpotId({mapId: 1, spotId: 0});
+        const expectedParentSpotId: number = 0;
+        expect(actualParentSpotId).toBe(expectedParentSpotId);
+    });
+
+    it('親スポットを持たないスポットの親スポットIDをfindParentSpotIdで検索するとnullが返る', () => {
+        const actualParentSpotId: number | null = mapViewGetters.findParentSpotId({mapId: 0, spotId: 0});
+        expect(actualParentSpotId).toBe(null);
+    });
+
+
     it('スポットに存在しない詳細マップをlastViewDetaiMapIdにセットしようとすると例外が発生する', () => {
         const wrongDetailMapId: number = 999;
         const payload = {
