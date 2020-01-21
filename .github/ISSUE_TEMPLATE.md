@@ -1,7 +1,7 @@
 ---
 name: 'Default'
 about: '' 
-title: ''
+title: 'コストつけて！！！'
 labels: ''
 assignees: ''
 
