@@ -17,6 +17,7 @@ export default class SpotSearch extends Vue {
     private targetSpots: Spot[] = [];
     private spotSearchResults: Spot[] = [];
     private search!: Search;
+    private backgroundColor: 'transparent' | 'white' = 'transparent';
 
     public mounted() {
         // 全てのマップからスポットを取得，一つの配列に結合する
@@ -50,8 +51,10 @@ export default class SpotSearch extends Vue {
         this.spotSearchResults = this.search.searchSpots(this.searchWord);
         if (this.spotSearchResults.length > 0) {
             this.setSpotListIsVisible(true);
+            this.backgroundColor = 'white';
         } else {
             this.setSpotListIsVisible(false);
+            this.backgroundColor = 'transparent';
         }
     }
 }
