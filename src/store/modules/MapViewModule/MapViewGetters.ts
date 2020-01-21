@@ -111,8 +111,8 @@ export class MapViewGetters extends Getters<MapViewState> {
      * @return スポットが詳細マップを持つならばtrue, 持たないならばfalse
      */
     public spotHasDetailMaps(targetSpot: {
-                parentMapId: number,
-                spotId: number,
+        parentMapId: number,
+        spotId: number,
     }): boolean {
         const spot = this.getters.getSpotById(targetSpot);
         if (spot.detailMapIds.length > 0) {

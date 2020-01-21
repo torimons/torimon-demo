@@ -25,25 +25,7 @@ export default class FloorSwitchButton extends Vue {
             (state, getters: MapViewGetters) => getters.idOfCenterSpotInRootMap,
             (value, oldValue) => this.updateContentOfFloorSwitchButton(value, oldValue),
         );
-        // 外部での表示階層の切り替わりをウォッチ
-        store.watch(
-            (state, getters: MapViewGetters) => {
-                if (this.spotId === null) {
-                    return null;
-                }
-                return getters.getLastViewedDetailMapId({ parentMapId: mapViewGetters.rootMapId, spotId: this.spotId });
-            },
-            (value, oldValue) => {
-                if (this.spotId !== null) {
-                    const spot = mapViewGetters.getSpotById({
-                        parentMapId: mapViewGetters.rootMapId,
-                        spotId: this.spotId,
-                    });
-                    this.selectedFloorButtonIndex =
-                        spot.detailMapIds.slice().reverse().findIndex((mapId: number) => mapId === value);
-                }
-            },
-        );
+        this.watchFloorChangeForButtonSelect();
     }
 
     /**
@@ -114,5 +96,33 @@ export default class FloorSwitchButton extends Vue {
         } else {
             this.isVisible = false;
         }
+    }
+    /**
+     * 外部での表示階層の切り替わりをウォッチして
+     * ボタンの選択状態に反映
+     */
+    private watchFloorChangeForButtonSelect(): void {
+        store.watch(
+            (state, getters: MapViewGetters) => {
+                if (this.spotId === null) {
+                    return null;
+                }
+                const spot = { parentMapId: mapViewGetters.rootMapId, spotId: this.spotId };
+                if (mapViewGetters.spotHasDetailMaps(spot)) {
+                    return getters.getLastViewedDetailMapId(spot);
+                }
+                return null;
+            },
+            (value, oldValue) => {
+                if (this.spotId !== null) {
+                    const spot = mapViewGetters.getSpotById({
+                        parentMapId: mapViewGetters.rootMapId,
+                        spotId: this.spotId,
+                    });
+                    this.selectedFloorButtonIndex =
+                        spot.detailMapIds.slice().reverse().findIndex((mapId: number) => mapId === value);
+                }
+            },
+        );
     }
 }
