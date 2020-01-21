@@ -14,6 +14,8 @@ export default class FloorSwitchButton extends Vue {
     private selectedFloorButtonIndex: number | undefined = 0;
     private isVisible: boolean = false;
 
+    private spotId: number | null = null;
+
     public mounted() {
         store.watch(
             (state, getters: MapViewGetters) => getters.displayLevel,
@@ -22,6 +24,20 @@ export default class FloorSwitchButton extends Vue {
         store.watch(
             (state, getters: MapViewGetters) => getters.idOfCenterSpotInRootMap,
             (value, oldValue) => this.updateContentOfFloorSwitchButton(value, oldValue),
+        );
+        // 外部での表示階層の切り替わりをウォッチ
+        store.watch(
+            (state, getters: MapViewGetters) => {
+                if(this.spotId === null) return null;
+                return getters.getLastViewedDetailMapId({ parentMapId: mapViewGetters.rootMapId, spotId: this.spotId })
+            },
+            (value, oldValue) => {
+                if(this.spotId !== null) {
+                    const spot = mapViewGetters.getSpotById({parentMapId: mapViewGetters.rootMapId, spotId: this.spotId});
+                    this.selectedFloorButtonIndex = 
+                        spot.detailMapIds.slice().reverse().findIndex((mapId: number) => mapId === value);
+                }
+            }
         );
     }
 
@@ -59,13 +75,13 @@ export default class FloorSwitchButton extends Vue {
      * 画面中央の詳細マップ持ちスポットに合わせて階層切り替えボタンの内容を更新する．
      * 下の階が下に表示されるようにセットする．
      */
-    private updateContentOfFloorSwitchButton(newCenterSpotId: number | null, oldCenterSpotId: number | null): void {
-        const parentMapId: number = mapViewGetters.rootMapId;
-        const spotId: number | null = newCenterSpotId;
+    private updateContentOfFloorSwitchButton(spotId: number | null, oldSpotId: number | null): void {
         if (spotId === null) {
             this.clearButtonContent();
             return;
         }
+        this.spotId = spotId; 
+        const parentMapId: number = mapViewGetters.rootMapId;
         const spot = mapViewGetters.getSpotById({parentMapId, spotId});
         if (spot.detailMapIds.length === 0) {
             this.clearButtonContent();

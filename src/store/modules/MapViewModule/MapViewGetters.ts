@@ -158,11 +158,35 @@ export class MapViewGetters extends Getters<MapViewState> {
         return this.state.idOfCenterSpotInRootMap;
     }
 
+    /**
+     * マップの中央に表示したいスポットを取得
+     * @return スポットのIDとスポットが存在するマップのID 
+     */
     get spotToDisplayInMapCenter(): { mapId: number, spotId: number } {
         return this.state.spotToDisplayInMapCenter;
     }
 
-     /* 経由するノードidの配列を入力することで経路となるノードの配列を取得
+    /**
+     * スポットの親スポットを探す
+     * 親スポットが存在しない場合はnullを返す
+     * @param targetSpot 親スポットを探したいスポット
+     * @return 親スポット.存在しない場合null
+     */
+    public findParentSpotId(targetSpot: { mapId: number, spotId: number} ): number | null {
+        for (const map of this.state.maps) {
+            for (const spot of map.spots) {
+                for (const detailMapId of spot.detailMapIds) {
+                    if (detailMapId == targetSpot.mapId) {
+                        return spot.id;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /** 
+     * 経由するノードidの配列を入力することで経路となるノードの配列を取得
      * @param nodeIds: 経路となるノードidの配列
      * @return nodesForNavigation: 経路となるノードの配列
      */
