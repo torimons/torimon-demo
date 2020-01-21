@@ -1,5 +1,4 @@
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { mapViewGetters, mapViewMutations } from '@/store';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import SpotItem from '@/components/SpotItem/index.vue';
 import { Spot, Coordinate } from '@/store/types';
 import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper';
@@ -13,7 +12,6 @@ import { getDistance } from 'geolib';
 })
 export default class SpotList extends Vue {
     @Prop() public spotSearchResults!: Spot[];
-
     private currentPositionHandler?: number;
     private currentPosition?: Coordinate;
 
@@ -35,6 +33,14 @@ export default class SpotList extends Vue {
                 maximumAge: 0,
             },
         );
+    }
+
+    /**
+     * SpotItemからemitを受け取ると，SpotSearchにSpotList(自身)を
+     * 非表示にするようにemitする．
+     */
+    public hideSpotList() {
+        this.$emit('hideSpotList', false);
     }
 
     /**

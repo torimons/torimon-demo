@@ -1,3 +1,4 @@
+
 /**
  * MapViewコンポーネントの状態の情報を持つ型
  */
@@ -11,6 +12,7 @@ export interface MapViewState {
     spotInfoIsVisible: boolean;
     displayLevel: DisplayLevelType;
     idOfCenterSpotInRootMap: number | null;
+    spotToDisplayInMapCenter: { mapId: number, spotId: number };
 }
 
 /**

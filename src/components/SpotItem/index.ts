@@ -1,5 +1,5 @@
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { mapViewGetters, mapViewMutations } from '@/store';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { mapViewMutations } from '@/store';
 
 @Component
 export default class SpotItem extends Vue {
@@ -16,4 +16,30 @@ export default class SpotItem extends Vue {
     private mapId!: number;
     @Prop()
     private spotId!: number;
+
+    /**
+     * SpotItemがクリックされると呼ばれ，SpotListを非表示にする．
+     * ただし，直接非表示にするのでなく，SpotItem -> SpotList -> SpotSearchまで
+     * Emitして，SpotSearchで最終的に非表示にする．
+     */
+    public hideSpotList() {
+        this.$emit('hideSpotList');
+    }
+
+    /**
+     * SpotItemがクリックされると呼ばれ，SpotInfoを表示する．
+     */
+    public showSpotInfo() {
+        mapViewMutations.setSpotInfoIsVisible(true);
+    }
+
+    /*
+     * SpotList内のSpotItemを選択した際にfocusedSpotを更新する関数
+     */
+    private updateFocusedSpot(): void {
+        mapViewMutations.setFocusedSpot({mapId: this.mapId, spotId: this.spotId});
+    }
+    private moveMapViewToThisSpot(): void {
+        mapViewMutations.setSpotToDisplayInMapCenter({ mapId: this.mapId, spotId: this.spotId });
+    }
 }
