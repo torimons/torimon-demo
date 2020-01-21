@@ -160,7 +160,7 @@ export class MapViewGetters extends Getters<MapViewState> {
 
     /**
      * マップの中央に表示したいスポットを取得
-     * @return スポットのIDとスポットが存在するマップのID 
+     * @return スポットのIDとスポットが存在するマップのID
      */
     get spotToDisplayInMapCenter(): { mapId: number, spotId: number } {
         return this.state.spotToDisplayInMapCenter;
@@ -176,7 +176,7 @@ export class MapViewGetters extends Getters<MapViewState> {
         for (const map of this.state.maps) {
             for (const spot of map.spots) {
                 for (const detailMapId of spot.detailMapIds) {
-                    if (detailMapId == targetSpot.mapId) {
+                    if (detailMapId === targetSpot.mapId) {
                         return spot.id;
                     }
                 }
@@ -185,7 +185,7 @@ export class MapViewGetters extends Getters<MapViewState> {
         return null;
     }
 
-    /** 
+    /**
      * 経由するノードidの配列を入力することで経路となるノードの配列を取得
      * @param nodeIds: 経路となるノードidの配列
      * @return nodesForNavigation: 経路となるノードの配列

@@ -293,10 +293,10 @@ export default class Map extends Vue {
                 const spotToDisplayInMapCenter: Spot
                     = mapViewGetters.getSpotById({parentMapId: spot.mapId, spotId: spot.spotId});
                 const parentSpotId: number | null = mapViewGetters.findParentSpotId(spot);
-                if(parentSpotId !== null) {
+                if (parentSpotId !== null) {
                     const payload = {
                         detailMapId: spot.mapId,
-                        parentSpot: { parentMapId: mapViewGetters.rootMapId, spotId: parentSpotId }, 
+                        parentSpot: { parentMapId: mapViewGetters.rootMapId, spotId: parentSpotId },
                     };
                     mapViewMutations.setLastViewedDetailMapId(payload);
                 }

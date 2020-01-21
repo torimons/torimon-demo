@@ -28,16 +28,21 @@ export default class FloorSwitchButton extends Vue {
         // 外部での表示階層の切り替わりをウォッチ
         store.watch(
             (state, getters: MapViewGetters) => {
-                if(this.spotId === null) return null;
-                return getters.getLastViewedDetailMapId({ parentMapId: mapViewGetters.rootMapId, spotId: this.spotId })
+                if (this.spotId === null) {
+                    return null;
+                }
+                return getters.getLastViewedDetailMapId({ parentMapId: mapViewGetters.rootMapId, spotId: this.spotId });
             },
             (value, oldValue) => {
-                if(this.spotId !== null) {
-                    const spot = mapViewGetters.getSpotById({parentMapId: mapViewGetters.rootMapId, spotId: this.spotId});
-                    this.selectedFloorButtonIndex = 
+                if (this.spotId !== null) {
+                    const spot = mapViewGetters.getSpotById({
+                        parentMapId: mapViewGetters.rootMapId,
+                        spotId: this.spotId,
+                    });
+                    this.selectedFloorButtonIndex =
                         spot.detailMapIds.slice().reverse().findIndex((mapId: number) => mapId === value);
                 }
-            }
+            },
         );
     }
 
@@ -80,7 +85,7 @@ export default class FloorSwitchButton extends Vue {
             this.clearButtonContent();
             return;
         }
-        this.spotId = spotId; 
+        this.spotId = spotId;
         const parentMapId: number = mapViewGetters.rootMapId;
         const spot = mapViewGetters.getSpotById({parentMapId, spotId});
         if (spot.detailMapIds.length === 0) {
