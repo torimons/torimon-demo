@@ -66,7 +66,7 @@ export default class Map extends Vue {
     }
 
     /**
-     * マーカーの選択状態を解除してSpotItemを非表示にする
+     * マーカーの選択状態を解除してSpotInfoを非表示にする
      */
     private onMapClick(): void {
         // focusedSpotがある場合そのスポットを未選択に設定する
