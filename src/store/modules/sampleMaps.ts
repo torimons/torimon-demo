@@ -57,11 +57,11 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [3, 4],
                 detailMapLevelNames: ['2F', '3F'],
                 lastViewedDetailMapId: null,
-                description: 'ウエスト２号館です',
+                description: 'ウエスト2号館です',
             },
             {
                 id: 2,
-                name: 'ウエスト３号館',
+                name: 'ウエスト3号館',
                 coordinate: {
                     lat: 33.59574254483849,
                     lng: 130.21705269813538,
@@ -86,11 +86,11 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                description: 'ウエスト３号館です',
+                description: 'ウエスト3号館です',
             },
             {
                 id: 3,
-                name: 'ウエスト１号館',
+                name: 'ウエスト1号館',
                 coordinate: {
                     lat: 33.596408327655084,
                     lng: 130.2206951379776,
@@ -124,11 +124,11 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                description: 'ウエスト１号館です',
+                description: 'ウエスト1号館です',
             },
             {
                 id: 4,
-                name: 'ウエスト４号館',
+                name: 'ウエスト4号館',
                 coordinate: {
                     lat: 33.5951705930801,
                     lng: 130.2165591716766,
@@ -158,7 +158,7 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                description: 'ウエスト４号館です',
+                description: 'ウエスト4号館です',
             },
             {
                 id: 5,
@@ -184,6 +184,33 @@ export const sampleMaps: Map[] =  [
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
                 description: 'マス・フォアインダストリ研究所です',
+            },
+            {
+                id: 6,
+                name: '伊都理系図書館',
+                coordinate: {
+                    lat: 33.59575148155462,
+                    lng: 130.22006213665009,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.21972954273224, 33.59601958260798],
+                            [130.21974027156827, 33.59559062052259],
+                            [130.21983683109283, 33.59559955725445],
+                            [130.21987974643707, 33.59537613867985],
+                            [130.22039473056793, 33.59539401218712],
+                            [130.2203357219696, 33.59603298763877],
+                            [130.21972954273224, 33.59601958260798],
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+                description: '伊都理系図書館です',
             },
         ],
         nodes: [],
