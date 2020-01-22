@@ -15,6 +15,14 @@ describe('DefaultSpotMarkers', () => {
         expect(spotMarker.getLatLng()).toStrictEqual(expectedMarker.getLatLng());
     });
 
+    it('コンストラクタに渡したmapId, spotIdを取得する', () => {
+        const expectedMapId = 0;
+        const expectedSpotId = 0;
+        const testMarker = new DefaultSpotMarker([0, 0], expectedMapId, expectedSpotId);
+        expect(testMarker.getIdInfo().mapId).toBe(expectedMapId);
+        expect(testMarker.getIdInfo().spotId).toBe(expectedSpotId);
+    });
+
     it('updateFocusedMarkerがmapIdとspotIdをfocusedSpotにsetする', () => {
         const testMarker = new DefaultSpotMarker([0, 0], 'hoge', 0, 1);
         (testMarker as any).updateFocusedMarker();

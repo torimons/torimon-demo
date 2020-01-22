@@ -1,5 +1,5 @@
 import L, {LatLngExpression} from 'leaflet';
-import { mapViewMutations } from '@/store';
+import { mapViewMutations, mapViewGetters } from '@/store';
 
 export default class DefaultSpotMarker extends L.Marker {
     private mapId: number;
@@ -21,6 +21,11 @@ export default class DefaultSpotMarker extends L.Marker {
         this.mapId = mapId;
         this.spotId = spotId;
         this.createNameLabelMarker(latlng);
+        // マーカー生成時にfocusedSpotの場合選択状態にしておく
+        const focusedSpot = mapViewGetters.focusedSpot;
+        if (focusedSpot.mapId === mapId && focusedSpot.spotId === spotId) {
+            this.setSelected(true);
+        }
     }
 
     public addTo(map: L.Map | L.LayerGroup<any>): this {
@@ -31,6 +36,29 @@ export default class DefaultSpotMarker extends L.Marker {
     public remove(): this {
         this.nameLabelMarker.remove();
         return super.remove();
+    }
+
+    /**
+     * マーカーのmapIdとspotIdを返す
+     * @returns 自身のmapId, spotId
+     */
+    public getIdInfo(): {mapId: number, spotId: number} {
+        return {mapId: this.mapId, spotId: this.spotId};
+    }
+    /**
+     * マーカーの選択状態によって色を切り替える
+     * @param isSelected true/false
+     */
+    public setSelected(isSelected: boolean): void {
+        const color = isSelected ? this.selectedColor : this.normalColor;
+        const htmlTemplate =
+            `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${color};">room</i>`;
+        const icon = L.divIcon({
+            className: 'custom-div-icon',
+            html: htmlTemplate,
+            iconAnchor: [24, 50],
+        });
+        this.setIcon(icon);
     }
 
     /**
@@ -53,27 +81,12 @@ export default class DefaultSpotMarker extends L.Marker {
         this.nameLabelMarker = L.marker(latlng, {icon: nameLabelIcon});
     }
 
+
     /**
      * マーカーが押されたときに呼び出されるコールバック関数
      */
     private updateFocusedMarker(): void {
         mapViewMutations.setFocusedSpot({mapId: this.mapId, spotId: this.spotId});
         mapViewMutations.setSpotInfoIsVisible(true);
-    }
-
-    /**
-     * マーカーの選択状態によって色を切り替える
-     * @param isSelected true/false
-     */
-    private setSelected(isSelected: boolean): void {
-        const color = isSelected ? this.selectedColor : this.normalColor;
-        const htmlTemplate =
-            `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${color};">room</i>`;
-        const icon = L.divIcon({
-            className: 'custom-div-icon',
-            html: htmlTemplate,
-            iconAnchor: [24, 50],
-        });
-        this.setIcon(icon);
     }
 }

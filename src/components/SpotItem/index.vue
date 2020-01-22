@@ -2,7 +2,9 @@
 	<div id="spot-item">
         <v-card
             tile
-            @click="updateFocusedSpot();
+            @click="hideSpotList();
+                    showSpotInfo();
+                    updateFocusedSpot();
                     moveMapViewToThisSpot()"
         >
             <v-list-item two-line>
