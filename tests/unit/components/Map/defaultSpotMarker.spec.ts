@@ -18,7 +18,7 @@ describe('DefaultSpotMarkers', () => {
     it('コンストラクタに渡したmapId, spotIdを取得する', () => {
         const expectedMapId = 0;
         const expectedSpotId = 0;
-        const testMarker = new DefaultSpotMarker([0, 0], expectedMapId, expectedSpotId);
+        const testMarker = new DefaultSpotMarker([0, 0], 'testSoptName', expectedMapId, expectedSpotId);
         expect(testMarker.getIdInfo().mapId).toBe(expectedMapId);
         expect(testMarker.getIdInfo().spotId).toBe(expectedSpotId);
     });
