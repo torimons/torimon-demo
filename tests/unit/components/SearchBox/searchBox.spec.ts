@@ -1,6 +1,7 @@
 import { createLocalVue, mount } from '@vue/test-utils';
 import SearchBox from '@/components/SearchBox/index.vue';
 import Vuetify from 'vuetify';
+import { mapViewGetters, mapViewMutations } from '@/store';
 
 describe('SearchBoxコンポーネントのテスト', () => {
     let wrapper: any;
@@ -23,7 +24,8 @@ describe('SearchBoxコンポーネントのテスト', () => {
         wrapper.destroy();
     });
 
-    it('text-fieldをクリックするとフォーカス状態になり，emitする', () => {
+    it('text-fieldをクリックするとフォーカス状態になりspotInfoを非表示にして，emitする', () => {
+        mapViewMutations.setSpotInfoIsVisible(true);
         // text-fieldのclickイベント発火
         const textField = wrapper.find('input');
         textField.trigger('click');
@@ -33,6 +35,8 @@ describe('SearchBoxコンポーネントのテスト', () => {
         expect(wrapper.emitted().toggleSpotList.length).toBe(1);
         // emitのpayloadはtrue
         expect(wrapper.emitted().toggleSpotList[0]).toStrictEqual([true]);
+        // spotInfoIsVisibleはfalse
+        expect(mapViewGetters.spotInfoIsVisible).toBe(false);
     });
 
     it('戻るボタンをクリックした時，フォーカス解除してemitする', () => {
