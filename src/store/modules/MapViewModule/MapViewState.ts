@@ -56,8 +56,8 @@ export class MapViewState {
      * Mapコンポーネントで選択されているMap，およびスポットのID
      */
     public focusedSpot: {mapId: number, spotId: number} = {
-        mapId: 0,
-        spotId: 0,
+        mapId: -1,
+        spotId: -1,
     };
 
     /**
