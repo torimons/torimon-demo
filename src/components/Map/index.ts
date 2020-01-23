@@ -288,7 +288,7 @@ export default class Map extends Vue {
             (spot, oldSpot) => {
                 let zoomLevel = this.defaultZoomLevel;
                 if (spot.mapId !== mapViewGetters.rootMapId) {
-                    zoomLevel = this.zoomLevelThreshold + 1;
+                    zoomLevel = this.zoomLevelThreshold + 0.5;
                 }
                 const spotToDisplayInMapCenter: Spot
                     = mapViewGetters.getSpotById({parentMapId: spot.mapId, spotId: spot.spotId});
