@@ -49,7 +49,7 @@ export default class Search {
             return joinAnd(inner.map(escape));
         }));
         const regExp: string = rx.replace(/=\[\\s\\S\]\*-/g, '![\\s\\S]*');
-        return new RegExp(regExp);
+        return new RegExp(regExp, 'i');
     }
 
     /**
