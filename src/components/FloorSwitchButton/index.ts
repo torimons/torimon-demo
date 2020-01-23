@@ -14,7 +14,7 @@ export default class FloorSwitchButton extends Vue {
     private selectedFloorButtonIndex: number | undefined = 0;
     private isVisible: boolean = false;
 
-    private spotId: number | null = null;
+    private spotId: number = 0;
 
     public mounted() {
         store.watch(
@@ -25,7 +25,7 @@ export default class FloorSwitchButton extends Vue {
             (state, getters: MapViewGetters) => getters.idOfCenterSpotInRootMap,
             (value, oldValue) => this.updateContentOfFloorSwitchButton(value, oldValue),
         );
-        this.watchFloorChangeForButtonSelect();
+        this.watchFloorMapChangeOfDisplayedSpot();
     }
 
     /**
@@ -100,29 +100,26 @@ export default class FloorSwitchButton extends Vue {
         }
     }
     /**
-     * 外部での表示階層の切り替わりをウォッチして
+     * 外部コンポーネントでのLastViewedDetailMapIdの切り替わりをウォッチして
      * ボタンの選択状態に反映
      */
-    private watchFloorChangeForButtonSelect(): void {
+    private watchFloorMapChangeOfDisplayedSpot(): void {
         store.watch(
             (state, getters: MapViewGetters) => {
-                if (this.spotId === null) {
-                    return null;
-                }
                 const spot = { parentMapId: mapViewGetters.rootMapId, spotId: this.spotId };
                 if (mapViewGetters.spotHasDetailMaps(spot)) {
                     return getters.getLastViewedDetailMapId(spot);
                 }
                 return null;
             },
-            (value, oldValue) => {
-                if (this.spotId !== null) {
+            (newFloorMapId, oldFloorMapId) => {
+                if (newFloorMapId != null) {
                     const spot = mapViewGetters.getSpotById({
                         parentMapId: mapViewGetters.rootMapId,
                         spotId: this.spotId,
                     });
                     this.selectedFloorButtonIndex =
-                        spot.detailMapIds.slice().reverse().findIndex((mapId: number) => mapId === value);
+                        spot.detailMapIds.slice().reverse().findIndex((mapId: number) => mapId === newFloorMapId);
                 }
             },
         );
