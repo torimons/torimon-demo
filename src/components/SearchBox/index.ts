@@ -13,8 +13,6 @@ export default class SearchBox extends Vue {
         this.onFocus = true;
         // SpotInfoを非表示にする
         mapViewMutations.setSpotInfoIsVisible(false);
-        // SpotListを表示するように伝える
-        this.$emit('toggleSpotList', true);
     }
 
     /**
@@ -32,6 +30,7 @@ export default class SearchBox extends Vue {
         // SpotListを非表示するように伝える
         this.$emit('toggleSpotList', false);
         this.onFocus = false;
+        this.searchWord = '';
         // text-fieldからフォーカスを外す
         (this.$refs.searchTextField as HTMLInputElement).blur();
     }

@@ -24,17 +24,13 @@ describe('SearchBoxコンポーネントのテスト', () => {
         wrapper.destroy();
     });
 
-    it('text-fieldをクリックするとフォーカス状態になりspotInfoを非表示にして，emitする', () => {
+    it('text-fieldをクリックするとフォーカス状態になる', () => {
+        // spotInfoIsVisibleの変更を確認するためtrueをセット
         mapViewMutations.setSpotInfoIsVisible(true);
         // text-fieldのclickイベント発火
         const textField = wrapper.find('input');
         textField.trigger('click');
-        // emitした時，イベントはtoggleSpotList
-        expect(wrapper.emitted().toggleSpotList).toBeTruthy();
-        // イベントの数は一回
-        expect(wrapper.emitted().toggleSpotList.length).toBe(1);
-        // emitのpayloadはtrue
-        expect(wrapper.emitted().toggleSpotList[0]).toStrictEqual([true]);
+        expect(wrapper.vm.onFocus).toBe(true);
         // spotInfoIsVisibleはfalse
         expect(mapViewGetters.spotInfoIsVisible).toBe(false);
     });
