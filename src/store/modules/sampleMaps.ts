@@ -30,7 +30,7 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [1, 2],
                 detailMapLevelNames: ['1F', '2F'],
                 lastViewedDetailMapId: null,
-                description: '総合学習プラザです',
+                description: '全学・工学系の共通講義と大学院統合新領域学府オートモーティブサイエンス専攻の教育研究等を行う施設',
             },
             {
                 id: 1,
@@ -63,7 +63,7 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [3, 4, 6],
                 detailMapLevelNames: ['2F', '3F', '5F'],
                 lastViewedDetailMapId: null,
-                description: 'ウエスト2号館です',
+                description: '見どころスポット：フーコーの振り子',
             },
             {
                 id: 2,
@@ -92,7 +92,7 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                description: 'ウエスト3号館です',
+                description: '機械航空工学部門群と物質科学工学部門群が入居する施設であり、ウエスト2号館とウエスト4号館とつながっている',
             },
             {
                 id: 3,
@@ -130,7 +130,7 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                description: 'ウエスト1号館です',
+                description: '理学部、理学府、数理学府が入居する施設',
             },
             {
                 id: 4,
@@ -164,7 +164,7 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                description: 'ウエスト4号館です',
+                description: '2階203号室には工学部教務課が入居している',
             },
             {
                 id: 5,
@@ -189,7 +189,7 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                description: 'マス・フォアインダストリ研究所です',
+                description: '現在マス・フォアインダストリー研究所はウエスト1号館に移動し、今は情報基盤研究開発センター棟となっている',
             },
             {
                 id: 6,
@@ -216,7 +216,7 @@ export const sampleMaps: Map[] =  [
                 detailMapIds: [],
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
-                description: '伊都理系図書館です',
+                description: '多様な学習スペースが設けられており，軽食を提供するカフェ(Libca)が併設されています',
             },
         ],
         nodes: [],
