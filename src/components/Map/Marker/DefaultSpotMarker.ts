@@ -69,10 +69,16 @@ export default class DefaultSpotMarker extends L.Marker {
         const fontSize: number = 14;
         const widthRate: number = fontSize * 5 / 3;
         // だいたいfont-size:12のときwidthはString.length * 15くらいがちょうどいい
-        const htmlTemplate =
-            `<div
-                style="width:${Math.round(this.spotName.length * widthRate)}px;font-size:${fontSize}px;"
-            >${this.spotName}</div>`;
+        let htmlTemplate;
+        // スポットがrootMapIdに属していなければスポットの名前を表示する
+        if (this.mapId !== mapViewGetters.rootMapId) {
+            htmlTemplate =
+                `<div
+                    style="width:${Math.round(this.spotName.length * widthRate)}px;font-size:${fontSize}px;"
+                >${this.spotName}</div>`;
+        } else {
+            htmlTemplate = '';
+        }
         const nameLabelIcon = L.divIcon({
             className: 'name-label',
             html: htmlTemplate,
