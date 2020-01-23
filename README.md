@@ -1,4 +1,11 @@
-# torimon
+<h1 align="center">Torimon</h1>
+
+<p align="center">Map for Everyone. Make your own map to share.<br>
+
+<p align=center> <a href="https://travis-ci.org/torimons/torimon-api" alt="release"><img src="https://travis-ci.org/torimons/torimon.svg?branch=master"></a></p>
+
+---
+
 
 ## Project setup
 ```
