@@ -11,7 +11,6 @@ export default class SearchBox extends Vue {
      */
     private focus(): void {
         this.onFocus = true;
-        mapViewMutations.setFocusedSpot({mapId: -1, spotId: -1});
         // SpotInfoを非表示にする
         mapViewMutations.setSpotInfoIsVisible(false);
         // SpotListを表示するように伝える
