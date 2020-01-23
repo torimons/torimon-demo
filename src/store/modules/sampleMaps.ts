@@ -52,8 +52,8 @@ export const sampleMaps: Map[] =  [
                     ] ],
                 },
                 gateNodeIds: [],
-                detailMapIds: [3, 4],
-                detailMapLevelNames: ['2F', '3F'],
+                detailMapIds: [3, 4, 6],
+                detailMapLevelNames: ['2F', '3F', '5F'],
                 lastViewedDetailMapId: null,
             },
         ],
@@ -1853,4 +1853,356 @@ export const sampleMaps: Map[] =  [
             },
         },
     },
+    {
+        id: 6,
+        name: 'ウエスト2号館 5F',
+        spots: [
+            {
+                id: 501,
+                name: '501',
+                coordinate: {
+                    lat: 33.59595255742276,
+                    lng: 130.21762132644653,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.21757304668427, 33.59599277254014],
+                            [130.21760523319242, 33.59591904481062],
+                            [130.21767765283585, 33.5959413865535],
+                            [130.21764814853665, 33.5960084117474],
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+            },
+            {
+                id: 502,
+                name: '502',
+                coordinate: {
+                    lat: 33.595974899156964,
+                    lng: 130.217707157135,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.21764814853665, 33.5960084117474],
+                            [130.21767765283585, 33.5959413865535],
+                            [130.21777153015137, 33.59596149411714],
+                            [130.21775007247925, 33.59603298763877],
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+            },
+            {
+                id: 5031,
+                name: '503-1',
+                coordinate: {
+                    lat: 33.59601958260798,
+                    lng: 130.2177929878235,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.21775007247925, 33.59603298763877],
+                            [130.21777153015137, 33.59596149411714],
+                            [130.2178519964218, 33.59597713333007],
+                            [130.2178332209587, 33.59604415849618],
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+            },
+            {
+                id: 5032,
+                name: '503-2',
+                coordinate: {
+                    lat: 33.59597936750309,
+                    lng: 130.21780908107755,
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+            },
+            {
+                id: 504,
+                name: '504',
+                coordinate: {
+                    lat: 33.59601958260798,
+                    lng: 130.21787881851196,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.2178332209587, 33.59604415849618],
+                            [130.2178519964218, 33.59597713333007],
+                            [130.2179217338562, 33.595990538367445],
+                            [130.21790027618408, 33.59605756352315],
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+            },
+            {
+                id: 505,
+                name: '505',
+                coordinate: {
+                    lat: 33.5960419243248,
+                    lng: 130.21798610687256,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.21790027618408, 33.59605756352315],
+                            [130.2179217338562, 33.595990538367445],
+                            [130.218063890934, 33.59602628512363],
+                            [130.21803975105286, 33.596086607741114],
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+            },
+            {
+                id: 506,
+                name: '506',
+                coordinate: {
+                    lat: 33.596064266035846,
+                    lng: 130.2181363105774,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.21803975105286, 33.596086607741114],
+                            [130.218063890934, 33.59602628512363],
+                            [130.21823287010193, 33.59605979769412],
+                            [130.2182087302208, 33.59612682279598],
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+            },
+            {
+                id: 507,
+                name: '507',
+                coordinate: {
+                    lat: 33.5960955444216,
+                    lng: 130.2182972431183,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.2182087302208, 33.59612682279598],
+                            [130.21823287010193, 33.59605979769412],
+                            [130.21837502717972, 33.596086607741114],
+                            [130.2183535695076, 33.59615139865362],
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+            },
+            {
+                id: 508,
+                name: '508',
+                coordinate: {
+                    lat: 33.59612682279598,
+                    lng: 130.21844744682312,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.2183535695076, 33.59615139865362],
+                            [130.21837502717972, 33.596086607741114],
+                            [130.21853327751157, 33.59611565194929],
+                            [130.21851986646652, 33.59618267700777],
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+            },
+            {
+                id: 509,
+                name: '509',
+                coordinate: {
+                    lat: 33.596153632822144,
+                    lng: 130.218608379364,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.21851986646652, 33.59618267700777],
+                            [130.21853327751157, 33.59611565194929],
+                            [130.2186781167984, 33.5961402278101],
+                            [130.21866738796234, 33.59620278451515],
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+            },
+            {
+                id: 510,
+                name: '510',
+                coordinate: {
+                    lat: 33.59616703783212,
+                    lng: 130.2187478542328,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.21866738796234, 33.59620278451515],
+                            [130.2186781167984, 33.5961402278101],
+                            [130.21881222724915, 33.596164803663925],
+                            [130.2188014984131, 33.596227360351136],
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+            },
+            {
+                id: 511,
+                name: '511',
+                coordinate: {
+                    lat: 33.59619831618057,
+                    lng: 130.21887123584747,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.2188014984131, 33.596227360351136],
+                            [130.21881222724915, 33.596164803663925],
+                            [130.21893829107285, 33.59617374033632],
+                            [130.2189302444458, 33.596242999515844],
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+            },
+            {
+                id: 512,
+                name: '512',
+                coordinate: {
+                    lat: 33.5962117211836,
+                    lng: 130.21898925304413,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.2189302444458, 33.596242999515844],
+                            [130.21893829107285, 33.59617374033632],
+                            [130.21905094385147, 33.59618491117548],
+                            [130.2190402150154, 33.59625640451193],
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+            },
+            {
+                id: 513,
+                name: '513',
+                coordinate: {
+                    lat: 33.59622512618452,
+                    lng: 130.21908581256866,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.2190402150154, 33.59625640451193],
+                            [130.21905094385147, 33.59618491117548],
+                            [130.2191260457039, 33.59619384784579],
+                            [130.21912336349487, 33.59626310700918],
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+            },
+            {
+                id: 514,
+                name: '514',
+                coordinate: {
+                    lat: 33.5962295945177,
+                    lng: 130.21916091442108,
+                },
+                shape: {
+                    type: 'Polygon',
+                    coordinates: [
+                        [
+                            [130.21912336349487, 33.59626310700918],
+                            [130.2191260457039, 33.59619384784579],
+                            [130.21919310092926, 33.59619608201319],
+                            [130.21919310092926, 33.59626534117481],
+                        ],
+                    ],
+                },
+                gateNodeIds: [],
+                detailMapIds: [],
+                detailMapLevelNames: [],
+                lastViewedDetailMapId: null,
+            },
+        ],
+    nodes: [],
+    edges: [],
+    bounds: {
+        topL: {
+            lat: 33.596314492804154,
+            lng: 130.2175408601761,
+        },
+        botR: {
+            lat: 33.59563530417269,
+            lng: 130.2193433046341,
+        },
+    },
+},
 ];
