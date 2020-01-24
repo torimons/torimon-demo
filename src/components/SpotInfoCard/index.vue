@@ -3,14 +3,31 @@
         <v-card
             outlined
         >
-            <v-list-item two-line>
-                <v-list-item-content>
-                    <v-list-item-title class="headline">{{ name }}</v-list-item-title>
-                    <v-list-item-subtitle>{{ description }}</v-list-item-subtitle>
-                </v-list-item-content>
-            </v-list-item>
+            <v-card-title>
+                {{ name }}
+            </v-card-title>
+            <v-card-subtitle>
+                {{ description }}
+            </v-card-subtitle>
             <v-card-actions>
-                <v-btn text>Button</v-btn>
+                <v-btn
+                    class="ma-1"
+                    color="#3FA590"
+                    outlined
+                    disabled
+                >
+                    <span>経路</span>
+                    <v-icon right>call_split</v-icon>
+                </v-btn>
+                <v-btn
+                    class="ma-1"
+                    color="#3FA590"
+                    outlined
+                    disabled
+                >
+                    <span>詳細</span>
+                    <v-icon right>category</v-icon>
+                </v-btn>
             </v-card-actions>
         </v-card>
     </div>
