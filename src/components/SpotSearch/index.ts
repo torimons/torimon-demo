@@ -51,9 +51,13 @@ export default class SpotSearch extends Vue {
         this.spotSearchResults = this.search.searchSpots(this.searchWord);
         if (this.spotSearchResults.length > 0) {
             this.setSpotListIsVisible(true);
+            // SpotInfoを非表示にする
+            mapViewMutations.setSpotInfoIsVisible(false);
             this.backgroundColor = 'white';
         } else {
             this.setSpotListIsVisible(false);
+            // SpotInfoを表示にする
+            mapViewMutations.setSpotInfoIsVisible(true);
             this.backgroundColor = 'transparent';
         }
     }

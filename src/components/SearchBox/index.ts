@@ -1,5 +1,4 @@
 import { Component, Watch, Vue, Emit } from 'vue-property-decorator';
-import { mapViewMutations } from '@/store';
 
 @Component
 export default class SearchBox extends Vue {
@@ -11,8 +10,6 @@ export default class SearchBox extends Vue {
      */
     private focus(): void {
         this.onFocus = true;
-        // SpotInfoを非表示にする
-        mapViewMutations.setSpotInfoIsVisible(false);
     }
 
     /**
