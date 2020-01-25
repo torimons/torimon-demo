@@ -26,7 +26,17 @@
                     disabled
                 >
                     <span>詳細</span>
-                    <v-icon right>category</v-icon>
+                    <v-icon right>info</v-icon>
+                </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn
+                    class="ma-1"
+                    color="#3FA590"
+                    tile
+                    icon
+                    @click="closeSpotInfoCard"
+                >
+                    <v-icon>close</v-icon>
                 </v-btn>
             </v-card-actions>
         </v-card>
