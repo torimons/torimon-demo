@@ -17,10 +17,11 @@ export default class Search {
         if (keyword === '' || keyword === null) {
             return [];
         }
+        console.log(keyword);
         const keywords: string[][] = keyword.split(/\s+/)
-            .filter((word: string) => word !== '')
+            .filter((word: string) => word !== '' && word !== '\\\\')
             .map((word: string) => [word]);
-        const keywordsRegExp = this.compile(keywords);
+        const keywordsRegExp = this.compileIntoSearchCondition(keywords);
         return this.targetSpots.filter((s: Spot) => this.spotIsMatchToKeywords(s, keywordsRegExp));
     }
 
@@ -35,7 +36,7 @@ export default class Search {
      * @param cond 検索条件の配列
      * @return 検索条件を表した正規表現オブジェクト
      */
-    private compile(cond: string[][]) {
+    private compileIntoSearchCondition(cond: string[][]) {
         const joinAnd = (arr: string[]): string => {
             return '^(?=[\\s\\S]*' + arr.join(')(?=[\\s\\S]*') + ')';
         };
