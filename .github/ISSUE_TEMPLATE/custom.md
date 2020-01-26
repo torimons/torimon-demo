@@ -1,7 +1,7 @@
 ---
-name: 'Default'
-about: '' 
-title: ''
+name: Custom issue template
+about: issue template
+title: コストつけて！！！
 labels: ''
 assignees: ''
 
@@ -14,5 +14,3 @@ assignees: ''
 
 
 ### Notion URL
-
-
