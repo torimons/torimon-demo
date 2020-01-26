@@ -134,7 +134,7 @@ export default class Map extends Vue {
     private displaySpotMarkers(spotsToDisplay: SpotForMap[]): void {
         this.spotMarkers.map((marker: Marker<any>) => marker.remove());
         this.spotMarkers = spotsToDisplay
-            .map((spot: SpotForMap) => new DefaultSpotMarker(spot.coordinate, spot.mapId, spot.spotId));
+            .map((spot: SpotForMap) => new DefaultSpotMarker(spot.coordinate, spot.name, spot.mapId, spot.spotId));
         this.addMarkersToMap(this.spotMarkers);
     }
 
