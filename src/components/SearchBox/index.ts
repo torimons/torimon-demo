@@ -10,8 +10,6 @@ export default class SearchBox extends Vue {
      */
     private focus(): void {
         this.onFocus = true;
-        // SpotListを表示するように伝える
-        this.$emit('toggleSpotList', true);
     }
 
     /**
@@ -29,6 +27,7 @@ export default class SearchBox extends Vue {
         // SpotListを非表示するように伝える
         this.$emit('toggleSpotList', false);
         this.onFocus = false;
+        this.searchWord = '';
         // text-fieldからフォーカスを外す
         (this.$refs.searchTextField as HTMLInputElement).blur();
     }

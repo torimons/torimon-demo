@@ -23,16 +23,11 @@ describe('SearchBoxコンポーネントのテスト', () => {
         wrapper.destroy();
     });
 
-    it('text-fieldをクリックするとフォーカス状態になり，emitする', () => {
+    it('text-fieldをクリックするとフォーカス状態になる', () => {
         // text-fieldのclickイベント発火
         const textField = wrapper.find('input');
         textField.trigger('click');
-        // emitした時，イベントはtoggleSpotList
-        expect(wrapper.emitted().toggleSpotList).toBeTruthy();
-        // イベントの数は一回
-        expect(wrapper.emitted().toggleSpotList.length).toBe(1);
-        // emitのpayloadはtrue
-        expect(wrapper.emitted().toggleSpotList[0]).toStrictEqual([true]);
+        expect(wrapper.vm.onFocus).toBe(true);
     });
 
     it('戻るボタンをクリックした時，フォーカス解除してemitする', () => {

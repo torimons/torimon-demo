@@ -33,7 +33,7 @@ describe('components/Map.vue マーカー選択関連のテスト', () => {
         const mapId = 0;
         // (mapId, spotId) = (0, i)のマーカーを作成
         for (let i = 0; i < 5; i++) {
-            wrapper.vm.spotMarkers.push(new DefaultSpotMarker([0, 0], mapId, i));
+            wrapper.vm.spotMarkers.push(new DefaultSpotMarker([0, 0], 'testSpotName', mapId, i));
         }
         // 存在しないidを指定した場合
         expect(wrapper.vm.findMarker({mapId: 999, spotId: 999})).toBe(null);
@@ -47,7 +47,7 @@ describe('components/Map.vue マーカー選択関連のテスト', () => {
     it('onMapClickでfocusedSpotを非選択状態にしてSpotInfoを非表示にする', () => {
         const mapId = 0;
         const spotId = 1;
-        const marker = new DefaultSpotMarker([0, 0], mapId, spotId);
+        const marker = new DefaultSpotMarker([0, 0], 'testSpotName', mapId, spotId);
         marker.setSelected(true);
         mapViewMutations.setFocusedSpot({mapId, spotId});
         // focusedMarkerを探す部分をモック
@@ -55,9 +55,6 @@ describe('components/Map.vue マーカー選択関連のテスト', () => {
             return marker;
         });
         wrapper.vm.onMapClick();
-
-        // 非選択状態になっている
-        expect((marker as any).isSelected).toBe(false);
         // SpotItemが非表示になっている
         expect(mapViewGetters.spotInfoIsVisible).toBe(false);
     });
