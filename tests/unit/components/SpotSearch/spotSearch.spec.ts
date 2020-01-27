@@ -81,11 +81,15 @@ describe('SpotSearchコンポーネントのテスト', () => {
         wrapper.vm.search = searchObj;
         // spotInfoIsVisibleの変更を確認するために最初はtrueをset
         mapViewMutations.setSpotInfoIsVisible(true);
-        // 検索結果がある場合
+        // 検索結果がある場合は非表示
         wrapper.find(SearchBox).vm.$emit('searchWordInput', 'sougou');
         expect(mapViewGetters.spotInfoIsVisible).toBe(false);
-        // 検索結果がない場合
-        wrapper.find(SearchBox).vm.$emit('searchWordInput', 'abcde');
+        // focusedSpotが初期値で, 検索結果がない場合は非表示
+        wrapper.find(SearchBox).vm.$emit('searchWordInput', 'abcd');
+        expect(mapViewGetters.spotInfoIsVisible).toBe(false);
+        // focusedSpotが初期値以外で, 検索結果がない場合は表示
+        mapViewMutations.setFocusedSpot({mapId: 0, spotId: 1});
+        wrapper.find(SearchBox).vm.$emit('searchWordInput', 'bcde');
         expect(mapViewGetters.spotInfoIsVisible).toBe(true);
     });
 

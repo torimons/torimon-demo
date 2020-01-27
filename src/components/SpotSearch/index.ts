@@ -56,8 +56,11 @@ export default class SpotSearch extends Vue {
             this.backgroundColor = 'white';
         } else {
             this.setSpotListIsVisible(false);
-            // SpotInfoを表示にする
-            mapViewMutations.setSpotInfoIsVisible(true);
+            // focusedSpotが初期値ではない場合, SpotInfoを表示する
+            // 直接focusedSpotを参照すると{mapId: [Getter/Setter], spotId: [Getter/Setter]}となり値が取得できないためIDごとに分離
+            if (mapViewGetters.focusedSpot.mapId !== -1 && mapViewGetters.focusedSpot.spotId !== -1) {
+                mapViewMutations.setSpotInfoIsVisible(true);
+            }
             this.backgroundColor = 'transparent';
         }
     }
