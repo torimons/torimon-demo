@@ -32,5 +32,6 @@
 <style scoped>
 .v-btn-toggle {
   flex-direction: column;
+  pointer-events: auto;
 }
 </style>
