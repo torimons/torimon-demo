@@ -74,7 +74,7 @@ describe('SpotSearchコンポーネントのテスト', () => {
         expect(wrapper.vm.spotListIsVisible).toBe(false);
     });
 
-    it('検索ボックスに1つ以上の検索結果が表示されるとSpotInfoを非表示に, 検索結果が空になると表示にする', () => {
+    it('検索ボックスに1つ以上の検索結果がある場合, SpotInfoを非表示に検索結果がない場合は表示にする', () => {
         // 検索対象の設定
         const targetSpotsForSearch = spotsForTest;
         const searchObj = new Search(targetSpotsForSearch);
