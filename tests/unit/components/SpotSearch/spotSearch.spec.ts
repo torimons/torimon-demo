@@ -79,15 +79,11 @@ describe('SpotSearchコンポーネントのテスト', () => {
         const targetSpotsForSearch = spotsForTest;
         const searchObj = new Search(targetSpotsForSearch);
         wrapper.vm.search = searchObj;
-        // spotInfoIsVisibleの変更を確認するために最初はfalseをset
+        // spotInfoIsVisibleの変更を確認するために最初はtrueをset
         mapViewMutations.setSpotInfoIsVisible(true);
-        // 検索結果がある場合
         wrapper.find(SearchBox).vm.$emit('searchWordInput', 'sougou');
-        // spotInfoIsVisibleはfalse
         expect(mapViewGetters.spotInfoIsVisible).toBe(false);
-        // 検索結果がない場合
         wrapper.find(SearchBox).vm.$emit('searchWordInput', 'abcde');
-        // spotInfoIsVisibleはture
         expect(mapViewGetters.spotInfoIsVisible).toBe(true);
     });
 
