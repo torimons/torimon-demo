@@ -28,5 +28,6 @@
 .v-list {
     /* SearchBoxのサイズと, ボトムの余白サイズを引いたものがSearchListのサイズになる */
     max-height: calc(100vh - (8vh + 16px) - 8px);
+    pointer-events: auto;
 }
 </style>

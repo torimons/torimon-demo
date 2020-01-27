@@ -63,6 +63,7 @@ body,
   left: 0;
   top: 0;
   z-index: 1000;
+  pointer-events: none;
 }
 
 #bottom-container {
@@ -70,6 +71,7 @@ body,
   left: 0px;
   bottom: 0px;
   z-index: 1000;
+  pointer-events: none;
 }
 
 body {
