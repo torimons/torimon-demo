@@ -14,6 +14,8 @@ export default class FloorSwitchButton extends Vue {
     private selectedFloorButtonIndex: number | undefined = 0;
     private isVisible: boolean = false;
 
+    private spotId: number = 0;
+
     public mounted() {
         store.watch(
             (state, getters: MapViewGetters) => getters.displayLevel,
@@ -23,6 +25,7 @@ export default class FloorSwitchButton extends Vue {
             (state, getters: MapViewGetters) => getters.idOfCenterSpotInRootMap,
             (value, oldValue) => this.updateContentOfFloorSwitchButton(value, oldValue),
         );
+        this.watchFloorMapChangeOfDisplayedSpot();
     }
 
     /**
@@ -58,14 +61,16 @@ export default class FloorSwitchButton extends Vue {
     /**
      * 画面中央の詳細マップ持ちスポットに合わせて階層切り替えボタンの内容を更新する．
      * 下の階が下に表示されるようにセットする．
+     * @params spotId 更新後のスポットID
+     * @params oldSpotId 更新前のスポットID．未使用
      */
-    private updateContentOfFloorSwitchButton(newCenterSpotId: number | null, oldCenterSpotId: number | null): void {
-        const parentMapId: number = mapViewGetters.rootMapId;
-        const spotId: number | null = newCenterSpotId;
+    private updateContentOfFloorSwitchButton(spotId: number | null, oldSpotId: number | null): void {
         if (spotId === null) {
             this.clearButtonContent();
             return;
         }
+        this.spotId = spotId;
+        const parentMapId: number = mapViewGetters.rootMapId;
         const spot = mapViewGetters.getSpotById({parentMapId, spotId});
         if (spot.detailMapIds.length === 0) {
             this.clearButtonContent();
@@ -93,5 +98,30 @@ export default class FloorSwitchButton extends Vue {
         } else {
             this.isVisible = false;
         }
+    }
+    /**
+     * 外部コンポーネントでのLastViewedDetailMapIdの切り替わりをウォッチして
+     * ボタンの選択状態に反映
+     */
+    private watchFloorMapChangeOfDisplayedSpot(): void {
+        store.watch(
+            (state, getters: MapViewGetters) => {
+                const spot = { parentMapId: mapViewGetters.rootMapId, spotId: this.spotId };
+                if (mapViewGetters.spotHasDetailMaps(spot)) {
+                    return getters.getLastViewedDetailMapId(spot);
+                }
+                return null;
+            },
+            (newFloorMapId, oldFloorMapId) => {
+                if (newFloorMapId != null) {
+                    const spot = mapViewGetters.getSpotById({
+                        parentMapId: mapViewGetters.rootMapId,
+                        spotId: this.spotId,
+                    });
+                    this.selectedFloorButtonIndex =
+                        spot.detailMapIds.slice().reverse().findIndex((mapId: number) => mapId === newFloorMapId);
+                }
+            },
+        );
     }
 }
