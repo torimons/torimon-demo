@@ -1,9 +1,9 @@
 import { mapViewGetters, mapViewMutations } from '@/store';
 import { MapViewState, SpotForMap, Coordinate } from '@/store/types';
 import { shallowMount } from '@vue/test-utils';
-import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper';
+import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
 import Vue from 'vue';
-import Map from '@/components/Map/index.vue';
+import Map from '@/components/MapView/index.vue';
 import 'leaflet/dist/leaflet.css';
 import L, { map } from 'leaflet';
 import { cloneDeep } from 'lodash';

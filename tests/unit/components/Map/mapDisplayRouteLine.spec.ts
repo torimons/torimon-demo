@@ -1,9 +1,9 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { mapViewGetters, mapViewMutations } from '@/store';
-import map from '@/components/Map/index.vue';
+import map from '@/components/MapView/index.vue';
 import { MapViewState, Coordinate, Node } from '@/store/types';
 import { mount, shallowMount } from '@vue/test-utils';
-import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper.ts';
+import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper.ts';
 import L, { LatLng } from 'leaflet';
 
 describe('mapコンポーネントの経路表示', () => {

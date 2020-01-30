@@ -1,10 +1,10 @@
 import { mapViewGetters, mapViewMutations } from '@/store';
-import map from '@/components/Map/index.vue';
+import map from '@/components/MapView/index.vue';
 import { MapViewState, Spot, Coordinate } from '@/store/types';
 import { shallowMount } from '@vue/test-utils';
 import { cloneDeep } from 'lodash';
 import { testMapViewState } from '../../../resources/testMapViewState';
-import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper';
+import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
 
 const mapViewStateTestData: MapViewState = cloneDeep(testMapViewState);
 
