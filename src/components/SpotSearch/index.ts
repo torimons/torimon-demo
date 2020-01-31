@@ -32,6 +32,11 @@ export default class SpotSearch extends Vue {
      * @param isVisible セットする値(true/false)
      */
     public setSpotListIsVisible(isVisible: boolean) {
+        if (isVisible === true) {
+            this.backgroundColor = 'white';
+        } else {
+            this.backgroundColor = 'transparent';
+        }
         this.spotListIsVisible = isVisible;
     }
 
@@ -51,10 +56,8 @@ export default class SpotSearch extends Vue {
         this.spotSearchResults = this.search.searchSpots(this.searchWord);
         if (this.spotSearchResults.length > 0) {
             this.setSpotListIsVisible(true);
-            this.backgroundColor = 'white';
         } else {
             this.setSpotListIsVisible(false);
-            this.backgroundColor = 'transparent';
         }
     }
 }
