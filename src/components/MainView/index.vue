@@ -1,7 +1,7 @@
 <template>
     <div id="map-view">
       <v-app>
-        <Map/>
+        <MapView/>
         <v-container id="map-container" class="pt-0" >
           <v-row>
             <v-col
@@ -32,20 +32,20 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import Map from '@/components/MapView/index.vue';
+import MapView from '@/components/MapView/index.vue';
 import SpotInfo from '@/components/SpotInfoCard/index.vue';
 import FloorSwitchButton from '@/components/FloorSwitchButton/index.vue';
 import SpotSearch from '@/components/SpotSearch/index.vue';
 
 @Component({
     components: {
-        Map,
+        MapView,
         SpotInfo,
         FloorSwitchButton,
         SpotSearch,
     },
 })
-export default class MapView extends Vue {
+export default class MainView extends Vue {
 }
 </script>
 

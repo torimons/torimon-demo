@@ -12,7 +12,7 @@ import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
 
 
 @Component
-export default class Map extends Vue {
+export default class MapView extends Vue {
     private map!: L.Map;
     private defaultZoomLevel: number = 17;
     private tileLayer!: L.TileLayer;
