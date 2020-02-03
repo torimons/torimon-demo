@@ -3,7 +3,7 @@ import { MapViewState, SpotForMap, Coordinate } from '@/store/types';
 import { shallowMount } from '@vue/test-utils';
 import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
 import Vue from 'vue';
-import Map from '@/components/MapView/index.vue';
+import MapView from '@/components/MapView/index.vue';
 import 'leaflet/dist/leaflet.css';
 import L, { map } from 'leaflet';
 import { cloneDeep } from 'lodash';
@@ -30,7 +30,7 @@ describe('components/Map.vue zoomlevel切り替えのテスト', () => {
         GeolocationWrapper.watchPosition = jest.fn();
         const initMapDisplay = jest.fn();
         const watchStoreForDisplayMap = jest.fn();
-        wrapper = shallowMount(Map, {
+        wrapper = shallowMount(MapView, {
             attachToDocument: true,
             methods: {
                 initMapDisplay,
