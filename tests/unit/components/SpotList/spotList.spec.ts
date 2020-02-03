@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import SpotList from '@/components/SpotList/index.vue';
-import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper';
+import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
 import { Spot } from '@/store/types';
 import { getDistance } from 'geolib';
 

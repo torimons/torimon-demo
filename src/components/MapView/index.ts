@@ -6,13 +6,13 @@ import L, { Marker } from 'leaflet';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
 import { findNearest, getDistance } from 'geolib';
 import { GeolibInputCoordinates } from 'geolib/es/types';
-import CurrentLocationMarker from '@/components/Map/Marker/CurrentLocationMarker';
-import DefaultSpotMarker from '@/components/Map/Marker/DefaultSpotMarker';
+import CurrentLocationMarker from '@/components/MapView/Marker/CurrentLocationMarker';
+import DefaultSpotMarker from '@/components/MapView/Marker/DefaultSpotMarker';
 import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
 
 
 @Component
-export default class Map extends Vue {
+export default class MapView extends Vue {
     private map!: L.Map;
     private defaultZoomLevel: number = 17;
     private tileLayer!: L.TileLayer;

@@ -1,6 +1,6 @@
-import DefaultSpotMarker from '@/components/Map/Marker/DefaultSpotMarker';
+import DefaultSpotMarker from '@/components/MapView/Marker/DefaultSpotMarker';
 import L from 'leaflet';
-import map from '@/components/Map/index.vue';
+import map from '@/components/MapView/index.vue';
 import { mapViewGetters } from '@/store';
 
 describe('DefaultSpotMarkers', () => {
