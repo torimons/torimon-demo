@@ -2,6 +2,46 @@ import { shallowMount } from '@vue/test-utils';
 import SpotSearch from '@/components/SpotSearch/index.vue';
 import SearchBox from '@/components/SearchBox/index.vue';
 import SpotList from '@/components/SpotList/index.vue';
+import { mapViewMutations, mapViewGetters } from '@/store';
+import Search from '@/utils/Search';
+import { Spot } from '@/store/types';
+
+const spotsForTest: Spot[] = [
+    {
+        mapId: 0,
+        id: 0,
+        name: 'SougouGakusyuPlaza',
+        coordinate: {
+            lat: 33.595502,
+            lng: 130.218238,
+        },
+        shape: {
+            type: 'Polygon',
+            coordinates: [[[]]],
+        },
+        gateNodeIds: [],
+        detailMapIds: [1, 2],
+        detailMapLevelNames: ['1F', '2F'],
+        lastViewedDetailMapId: null,
+    },
+    {
+        mapId: 0,
+        id: 1,
+        name: 'SpotForTest',
+        coordinate: {
+            lat: 33.595502,
+            lng: 130.218238,
+        },
+        shape: {
+            type: 'Polygon',
+            coordinates: [[[]]],
+        },
+        gateNodeIds: [],
+        detailMapIds: [],
+        detailMapLevelNames: [],
+        lastViewedDetailMapId: null,
+    },
+];
 
 describe('SpotSearchコンポーネントのテスト', () => {
     let wrapper: any;
@@ -30,6 +70,27 @@ describe('SpotSearchコンポーネントのテスト', () => {
         wrapper.vm.spotListIsVisible = true;
         // 子コンポーネント(SpotList)からのemit
         wrapper.find(SpotList).vm.$emit('hideSpotList', false);
+        // falseに変わっていることを確認
         expect(wrapper.vm.spotListIsVisible).toBe(false);
     });
+
+    it('1つ以上の検索結果がある場合SpotInfoを非表示に, 検索結果がない場合は表示にする', () => {
+        // 検索対象の設定
+        const targetSpotsForSearch = spotsForTest;
+        const searchObj = new Search(targetSpotsForSearch);
+        wrapper.vm.search = searchObj;
+        // spotInfoIsVisibleの変更を確認するために最初はtrueをset
+        mapViewMutations.setSpotInfoIsVisible(true);
+        // 検索結果がある場合は非表示
+        wrapper.find(SearchBox).vm.$emit('searchWordInput', 'sougou');
+        expect(mapViewGetters.spotInfoIsVisible).toBe(false);
+        // focusedSpotが初期値で, 検索結果がない場合は非表示
+        wrapper.find(SearchBox).vm.$emit('searchWordInput', 'abcd');
+        expect(mapViewGetters.spotInfoIsVisible).toBe(false);
+        // focusedSpotが初期値以外で, 検索結果がない場合は表示
+        mapViewMutations.setFocusedSpot({mapId: 0, spotId: 1});
+        wrapper.find(SearchBox).vm.$emit('searchWordInput', 'bcde');
+        expect(mapViewGetters.spotInfoIsVisible).toBe(true);
+    });
+
 });
