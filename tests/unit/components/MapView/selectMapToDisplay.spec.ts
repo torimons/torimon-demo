@@ -1,9 +1,9 @@
 import Vuex from 'vuex';
-import map from '@/components/Map/index.vue';
+import map from '@/components/MapView/index.vue';
 import { mapViewMutations } from '@/store';
 import { testMapViewState2 } from '../../../resources/testMapViewState2';
 import { shallowMount, createLocalVue } from '@vue/test-utils';
-import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper.ts';
+import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper.ts';
 
 describe('components/map/index.ts/ selectMapToDisplay()', () => {
     let wrapper: any;

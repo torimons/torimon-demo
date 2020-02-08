@@ -1,12 +1,12 @@
 import { mapViewGetters, mapViewMutations } from '@/store';
 import { MapViewState } from '@/store/types';
 import { shallowMount } from '@vue/test-utils';
-import { GeolocationWrapper } from '@/components/Map/GeolocationWrapper';
-import Map from '@/components/Map';
+import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
+import MapView from '@/components/MapView';
 import 'leaflet/dist/leaflet.css';
 import { cloneDeep } from 'lodash';
 import { testMapViewState } from '../../../resources/testMapViewState';
-import DefaultSpotMarker from '@/components/Map/Marker/DefaultSpotMarker';
+import DefaultSpotMarker from '@/components/MapView/Marker/DefaultSpotMarker';
 
 const mapViewStoreTestData: MapViewState = cloneDeep(testMapViewState);
 
@@ -16,7 +16,7 @@ describe('components/Map.vue マーカー選択関連のテスト', () => {
         mapViewMutations.setMapViewState(mapViewStoreTestData);
         GeolocationWrapper.watchPosition = jest.fn();
         const initMapDisplay = jest.fn();
-        wrapper = shallowMount(Map, {
+        wrapper = shallowMount(MapView, {
             attachToDocument: true,
             methods: {
                 initMapDisplay,
