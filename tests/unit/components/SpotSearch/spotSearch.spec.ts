@@ -63,6 +63,8 @@ describe('SpotSearchコンポーネントのテスト', () => {
         wrapper.find(SearchBox).vm.$emit('toggleSpotList', true);
         // trueに変わっていることを確認
         expect(wrapper.vm.spotListIsVisible).toBe(true);
+        // 背景が白になっていることの確認
+        expect(wrapper.vm.backgroundColor).toBe('white');
     });
 
     it('hideSpotListイベントが発火するとsetSpotListIsVisbleが呼ばれる', () => {
@@ -72,6 +74,8 @@ describe('SpotSearchコンポーネントのテスト', () => {
         wrapper.find(SpotList).vm.$emit('hideSpotList', false);
         // falseに変わっていることを確認
         expect(wrapper.vm.spotListIsVisible).toBe(false);
+        // 背景が透明になっていることの確認
+        expect(wrapper.vm.backgroundColor).toBe('transparent');
     });
 
     it('1つ以上の検索結果がある場合SpotInfoを非表示に, 検索結果がない場合は表示にする', () => {
