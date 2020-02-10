@@ -6,9 +6,9 @@ export default class Spot {
                 private name: string,
                 private coordinate: Coordinate,
                 private parentMap: Map,
+                private detailMaps: Map[],
                 private shape?: Shape,
                 private floorName?: string,
-                private detailMapLevelNames?: string[],
                 private description?: string,
                 private attachment?: [{name: string, url: string}]) {
     }
