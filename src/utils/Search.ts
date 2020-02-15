@@ -13,7 +13,7 @@ export default class Search {
      * @param keyword スポット検索ワード
      * @return keywordにかかったスポットのリスト
      */
-    public searchSpots(keyword: string): Spot[] {
+    public searchSpots(keyword: string | null): Spot[] {
         // 空文字チェックは、検索ボックスをバックスペース等で空にしたときに
         // 空文字による検索が走るのを防ぐために必要。
         // nullチェックは、検索ボックスの x ボタンをクリックしたときに、
