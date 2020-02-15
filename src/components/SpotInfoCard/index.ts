@@ -1,5 +1,5 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { store, mapViewGetters } from '@/store';
+import { store, mapViewGetters, mapViewMutations } from '@/store';
 import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
 import { SpotInfo } from '@/store/types';
 
@@ -48,6 +48,13 @@ export default class SpotInfoCard extends Vue implements SpotInfo {
      */
     private updateSpotInfoIsVisible(newVisibleState: boolean): void {
         this.isVisible = newVisibleState;
+    }
+
+    /**
+     * spotInfoCardを非表示にする
+     */
+    private closeSpotInfoCard(): void {
+        mapViewMutations.setSpotInfoIsVisible(false);
     }
 
 }

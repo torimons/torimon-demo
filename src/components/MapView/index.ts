@@ -6,13 +6,13 @@ import L, { Marker } from 'leaflet';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
 import { findNearest, getDistance } from 'geolib';
 import { GeolibInputCoordinates } from 'geolib/es/types';
-import CurrentLocationMarker from '@/components/Map/Marker/CurrentLocationMarker';
-import DefaultSpotMarker from '@/components/Map/Marker/DefaultSpotMarker';
+import CurrentLocationMarker from '@/components/MapView/Marker/CurrentLocationMarker';
+import DefaultSpotMarker from '@/components/MapView/Marker/DefaultSpotMarker';
 import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
 
 
 @Component
-export default class Map extends Vue {
+export default class MapView extends Vue {
     private map!: L.Map;
     private defaultZoomLevel: number = 17;
     private tileLayer!: L.TileLayer;
@@ -134,7 +134,7 @@ export default class Map extends Vue {
     private displaySpotMarkers(spotsToDisplay: SpotForMap[]): void {
         this.spotMarkers.map((marker: Marker<any>) => marker.remove());
         this.spotMarkers = spotsToDisplay
-            .map((spot: SpotForMap) => new DefaultSpotMarker(spot.coordinate, spot.mapId, spot.spotId));
+            .map((spot: SpotForMap) => new DefaultSpotMarker(spot.coordinate, spot.name, spot.mapId, spot.spotId));
         this.addMarkersToMap(this.spotMarkers);
     }
 
@@ -288,10 +288,18 @@ export default class Map extends Vue {
             (spot, oldSpot) => {
                 let zoomLevel = this.defaultZoomLevel;
                 if (spot.mapId !== mapViewGetters.rootMapId) {
-                    zoomLevel = this.zoomLevelThreshold + 1;
+                    zoomLevel = this.zoomLevelThreshold + 0.5;
                 }
                 const spotToDisplayInMapCenter: Spot
                     = mapViewGetters.getSpotById({parentMapId: spot.mapId, spotId: spot.spotId});
+                const parentSpotId: number | null = mapViewGetters.findParentSpotId(spot);
+                if (parentSpotId !== null) {
+                    const payload = {
+                        detailMapId: spot.mapId,
+                        parentSpot: { parentMapId: mapViewGetters.rootMapId, spotId: parentSpotId },
+                    };
+                    mapViewMutations.setLastViewedDetailMapId(payload);
+                }
                 this.map.flyTo(spotToDisplayInMapCenter.coordinate, zoomLevel);
             },
         );

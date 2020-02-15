@@ -1,16 +1,16 @@
 <template>
     <div id="app">
-        <MapView/>
+        <MainView/>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import MapView from '@/components/MapView/index.vue';
+import MainView from '@/components/MainView/index.vue';
 
 @Component({
     components: {
-        MapView,
+        MainView,
     },
 })
 export default class App extends Vue {}
