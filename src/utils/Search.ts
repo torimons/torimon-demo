@@ -14,12 +14,15 @@ export default class Search {
      * @return keywordにかかったスポットのリスト
      */
     public searchSpots(keyword: string): Spot[] {
+        // 空文字チェックは、検索ボックスをバックスペース等で空にしたときに
+        // 空文字による検索が走るのを防ぐために必要。
+        // nullチェックは、検索ボックスの x ボタンをクリックしたときに、
+        // keywordがnullになり、その後の処理でエラーとなるため必要。
         if (keyword === '' || keyword === null) {
             return [];
         }
-        console.log(keyword);
         const keywords: string[][] = keyword.split(/\s+/)
-            .filter((word: string) => word !== '' && word !== '\\\\')
+            .filter((word: string) => word !== '')
             .map((word: string) => [word]);
         const keywordsRegExp = this.compileIntoSearchCondition(keywords);
         return this.targetSpots.filter((s: Spot) => this.spotIsMatchToKeywords(s, keywordsRegExp));
@@ -44,20 +47,19 @@ export default class Search {
             return '(?:' + arr.join('|') + ')';
         };
         const escape = (str: string): string => {
-            return str.replace(/(?=[(){}\[\].*\\^$?])/, '\\');
+            return str.replace(/(?=[(){}\[\].*\\^$?])/g, '\\');
         };
-        const rx = joinOr(cond.map((inner: string[]): string => {
+        const rx: string = joinOr(cond.map((inner: string[]): string => {
             return joinAnd(inner.map(escape));
         }));
-        const regExp: string = rx.replace(/=\[\\s\\S\]\*-/g, '![\\s\\S]*');
-        return new RegExp(regExp, 'i');
+        return new RegExp(rx, 'i'); // iオプションで大文字小文字の区別をしない.
     }
 
     /**
      * スポットが正規表現にマッチするかどうかを判定する
      * @param spot filter対象のスポット
      * @param keywordsRegExp 検索キーワードの正規表現オブジェクト
-     * @return isMatch スポットが正規表現にマッチした場合true, マッチしなければfalse
+     * @return isMatch スポットが検索ワードにマッチした場合true, マッチしなければfalse
      */
     private spotIsMatchToKeywords(spot: Spot, keywordsRegExp: RegExp): boolean {
         let isMatch: boolean = false;
