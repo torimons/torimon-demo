@@ -63,12 +63,13 @@ export default class Search {
      */
     private spotIsMatchToKeywords(spot: Spot, keywordsRegExp: RegExp): boolean {
         let isMatch: boolean = false;
-        isMatch = isMatch || spot.name.match(keywordsRegExp) !== null;
+        // RegExp.test(target:str)は、targetにRegExpがマッチした場合にtrue, マッチしない場合falseを返す.
+        isMatch = isMatch || keywordsRegExp.test(spot.name);
         if (spot.parentSpotName !== undefined) {
-            isMatch = isMatch || (spot.parentSpotName.match(keywordsRegExp) !== null);
+            isMatch = isMatch || keywordsRegExp.test(spot.parentSpotName);
         }
         if (spot.description !== undefined) {
-            isMatch = isMatch || (spot.description.match(keywordsRegExp) !== null);
+            isMatch = isMatch || keywordsRegExp.test(spot.description);
         }
         return isMatch;
     }
