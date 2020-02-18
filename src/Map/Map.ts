@@ -14,14 +14,9 @@ export default class Map {
     /**
      * 親スポットを登録する
      * @params 登録する親スポット
-     * @errors 親スポットがすでに登録されている場合エラーを送出する
      */
     public registerParentSpot(parentSpot: Spot) {
-        if (this.parentSpot === undefined) {
-            this.parentSpot = parentSpot;
-        } else {
-            throw new Error('ParentSpot is already registered');
-        }
+        this.parentSpot = parentSpot;
     }
 
     /**
