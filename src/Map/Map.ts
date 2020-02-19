@@ -12,10 +12,10 @@ export default class Map {
     }
 
     /**
-     * 親スポットを登録する
-     * @params 登録する親スポット
+     * 親スポットをセットする
+     * @params セットする親スポット
      */
-    public registerParentSpot(parentSpot: Spot) {
+    public setParentSpot(parentSpot: Spot) {
         this.parentSpot = parentSpot;
     }
 

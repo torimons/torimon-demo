@@ -13,7 +13,7 @@ describe('Mapクラスの親スポット登録のテスト', () => {
         map = new Map(0, 'testMap', testBounds, undefined);
         const testSpot = new Spot(0, 'testSpot', testCoord, undefined, undefined, undefined);
         // 登録
-        map.registerParentSpot(testSpot);
+        map.setParentSpot(testSpot);
         expect((map as any).parentSpot).toBe(testSpot);
     });
 });
