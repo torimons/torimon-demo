@@ -10,6 +10,12 @@ export default class Search {
 
     /**
      * 検索ワードを受け取って，条件にあったスポットのリストを返す．
+     * 複数の検索ワードを受け取った場合、一致した検索ワードが多い順に結果を返す。
+     * 例として、検索ワードが「'hoge', 'fuga', 'piyo'」だった場合、
+     * 1. 'hoge' and 'huga' and 'piyo'に一致したもの
+     * 2. 'hoge' and 'huga'に一致したもの
+     * 3. 'hoge'に一致したもの
+     * を順番に返す。
      * @param keyword スポット検索ワード
      * @return keywordにかかったスポットのリスト
      */
@@ -21,37 +27,30 @@ export default class Search {
         if (keyword === '' || keyword === null) {
             return [];
         }
-        const keywords: string[][] = keyword.split(/\s+/)
-            .filter((word: string) => word !== '')
-            .map((word: string) => [word]);
-        const keywordsRegExp = this.compileIntoSearchCondition(keywords);
-        return this.targetSpots.filter((s: Spot) => this.spotIsMatchToKeywords(s, keywordsRegExp));
+        const keywords: string[] = keyword.split(/\s+/).filter((word: string) => word !== '');
+        let searchResults: Spot[] = [];
+        for (let i = keywords.length; i > 0; i--) {
+            const keywordsRegExp = this.compileIntoSearchCondition(keywords.slice(0, i));
+            searchResults = searchResults.concat((this.targetSpots.filter((s: Spot) => this.spotIsMatchToKeywords(s, keywordsRegExp))));
+        }
+        // 重複を削除したものを返す
+        return searchResults.filter((x, i, self) => self.indexOf(x) === i);
     }
 
     /**
      * 検索単語の配列を受け取り，前処理した正規表現オブジェクトとして返す.
-     * [
-     *  ['a', 'b', 'c'],
-     *  ['d'],
-     *  ['e', 'f'],
-     * ]
-     * のとき，検索条件は ('a' and 'b' and 'c') or ('d') or ('e' and 'f')
-     * @param cond 検索条件の配列
+     * 検索条件はAnd.
+     * @param keywords 検索条件の配列
      * @return 検索条件を表した正規表現オブジェクト
      */
-    private compileIntoSearchCondition(cond: string[][]) {
+    private compileIntoSearchCondition(keywords: string[]) {
         const joinAnd = (arr: string[]): string => {
             return '^(?=[\\s\\S]*' + arr.join(')(?=[\\s\\S]*') + ')';
-        };
-        const joinOr = (arr: string[]): string => {
-            return '(?:' + arr.join('|') + ')';
         };
         const escape = (str: string): string => {
             return str.replace(/(?=[(){}\[\].*\\^$?])/g, '\\');
         };
-        const rx: string = joinOr(cond.map((inner: string[]): string => {
-            return joinAnd(inner.map(escape));
-        }));
+        const rx: string = joinAnd(keywords.map(escape));
         return new RegExp(rx, 'i'); // iオプションで大文字小文字の区別をしない.
     }
 
@@ -62,15 +61,14 @@ export default class Search {
      * @return isMatch スポットが検索ワードにマッチした場合true, マッチしなければfalse
      */
     private spotIsMatchToKeywords(spot: Spot, keywordsRegExp: RegExp): boolean {
-        let isMatch: boolean = false;
-        // RegExp.test(target:str)は、targetにRegExpがマッチした場合にtrue, マッチしない場合falseを返す.
-        isMatch = isMatch || keywordsRegExp.test(spot.name);
+        let target: string = spot.name;
         if (spot.parentSpotName !== undefined) {
-            isMatch = isMatch || keywordsRegExp.test(spot.parentSpotName);
+            target = target + spot.parentSpotName;
         }
         if (spot.description !== undefined) {
-            isMatch = isMatch || keywordsRegExp.test(spot.description);
+            target += spot.description;
         }
-        return isMatch;
+        // RegExp.test(target:str)は、targetにRegExpがマッチした場合にtrue, マッチしない場合falseを返す.
+        return keywordsRegExp.test(target);
     }
 }
