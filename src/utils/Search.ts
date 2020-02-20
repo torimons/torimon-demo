@@ -31,7 +31,9 @@ export default class Search {
         let searchResults: Spot[] = [];
         for (let i = keywords.length; i > 0; i--) {
             const keywordsRegExp = this.compileIntoSearchCondition(keywords.slice(0, i));
-            searchResults = searchResults.concat((this.targetSpots.filter((s: Spot) => this.spotIsMatchToKeywords(s, keywordsRegExp))));
+            searchResults = searchResults.concat(
+                this.targetSpots
+                    .filter((s: Spot) => this.spotIsMatchToKeywords(s, keywordsRegExp)));
         }
         // 重複を削除したものを返す
         return searchResults.filter((x, i, self) => self.indexOf(x) === i);
