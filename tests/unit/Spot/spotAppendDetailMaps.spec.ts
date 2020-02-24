@@ -16,7 +16,7 @@ describe('Spotクラスの詳細マップ登録のテスト', () => {
             testDetailMaps.push(new Map(i, 'testMap', testBounds, undefined));
         }
         // 登録
-        spot.appendDetailMaps(testDetailMaps);
+        spot.addDetailMaps(testDetailMaps);
         expect((spot as any).detailMaps).toStrictEqual(testDetailMaps);
     });
 });

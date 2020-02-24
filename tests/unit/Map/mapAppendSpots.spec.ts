@@ -16,7 +16,7 @@ describe('Mapクラスの親スポット登録のテスト', () => {
             testSpots.push(new Spot(i, 'testSpot', testCoord, undefined, undefined, undefined, undefined));
         }
         // 登録
-        map.appendSpots(testSpots);
+        map.addSpots(testSpots);
         expect((map as any).spots).toStrictEqual(testSpots);
     });
 });

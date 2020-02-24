@@ -26,7 +26,7 @@ export default class Spot {
      * 詳細マップを追加する
      * @params 追加する詳細マップの配列
      */
-    public appendDetailMaps(detailMaps: Map[]) {
-        detailMaps.map((map) => this.detailMaps.push(map));
+    public addDetailMaps(detailMaps: Map[]) {
+        this.detailMaps = this.detailMaps.concat(detailMaps);
     }
 }

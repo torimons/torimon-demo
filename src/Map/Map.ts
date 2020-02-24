@@ -23,7 +23,7 @@ export default class Map {
      * スポットを追加する
      * @params 追加するスポット
      */
-    public appendSpots(spots: Spot[]) {
-        spots.map((spot) => this.spots.push(spot));
+    public addSpots(spots: Spot[]) {
+        this.spots = this.spots.concat(spots);
     }
 }
