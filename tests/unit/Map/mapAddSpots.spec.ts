@@ -1,7 +1,7 @@
 import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot.ts';
 
-describe('Mapクラスの親スポット登録のテスト', () => {
+describe('Mapクラスのスポット登録のテスト', () => {
     let map: Map;
     const testBounds = {
         topL: {lat: 0, lng: 0},
