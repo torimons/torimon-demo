@@ -28,7 +28,6 @@ describe('Mapクラス，findDescendantSpot', () => {
         // 検索したいスポット生成，登録
         const targetSpot = new Spot(targetId, 'targetSpot', testCoord);
         map.addSpots([targetSpot]);
-
         expect(map.findDescendantSpot(targetId)).toBe(targetSpot);
     });
 });

@@ -54,4 +54,21 @@ export default class Map {
         }
         return null;
     }
+
+    /**
+     * 指定したidをもつ子孫マップを探す
+     * @params id 指定するid
+     * @returns 該当するマップ，またはnull
+     */
+    public findDescendantMap(id: number): Map | null {
+        // 自身の子スポットの子孫を探す
+        for (const spot of this.spots) {
+            const foundMap = spot.findDescendantMap(id);
+            if (foundMap === null) {
+                continue;
+            }
+            return foundMap;
+        }
+        return null;
+    }
 }
