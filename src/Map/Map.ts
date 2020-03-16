@@ -11,6 +11,14 @@ export default class Map {
                 private floorName?: string) {
     }
 
+    /**
+     * 自身のidを返す
+     * @returns id 自身のid
+     */
+    public getId(): number {
+        return this.id;
+    }
+
     /** 親スポットをセットする
      * @params セットする親スポット
      */
