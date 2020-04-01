@@ -1,6 +1,6 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import SpotItem from '@/components/SpotItem/index.vue';
-import { Spot, Coordinate } from '@/store/types';
+import { RawSpotData, Coordinate } from '@/store/types';
 import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
 import { LatLngExpression } from 'leaflet';
 import { getDistance } from 'geolib';
@@ -11,7 +11,7 @@ import { getDistance } from 'geolib';
     },
 })
 export default class SpotList extends Vue {
-    @Prop() public spotSearchResults!: Spot[];
+    @Prop() public spotSearchResults!: RawSpotData[];
     private currentPositionHandler?: number;
     private currentPosition?: Coordinate;
 
@@ -50,7 +50,7 @@ export default class SpotList extends Vue {
      * @return 空文字列
      * @return 文字列型の単位付きの距離
      */
-    private calculateDistanceFromCurrentPosition(spot: Spot): string {
+    private calculateDistanceFromCurrentPosition(spot: RawSpotData): string {
         if (this.currentPosition === undefined) {
             return '';
         }

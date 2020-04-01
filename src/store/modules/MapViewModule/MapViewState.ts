@@ -1,4 +1,4 @@
-import { Map, DisplayLevelType, Spot } from '@/store/types';
+import { RawMapData, DisplayLevelType, RawSpotData } from '@/store/types';
 import { sampleMaps } from '@/store/modules/sampleMaps';
 
 /**
@@ -8,7 +8,7 @@ import { sampleMaps } from '@/store/modules/sampleMaps';
  * 空文字列を代入しておく
  * @return 情報追加後のマップ
  */
-function initMaps(): Map[] {
+function initMaps(): RawMapData[] {
     for (const map of sampleMaps) {
         for (const spot of map.spots) {
             spot.mapId = map.id;
@@ -19,7 +19,7 @@ function initMaps(): Map[] {
     for (const map of sampleMaps) {
         for (const spot of map.spots) {
             for (const detailMapId of spot.detailMapIds) {
-                const detailMap = sampleMaps.find((m: Map) => m.id === detailMapId);
+                const detailMap = sampleMaps.find((m: RawMapData) => m.id === detailMapId);
                 if (detailMap === undefined) {
                     throw new Error('Illegal map id on sampleMaps.');
                 }
@@ -44,7 +44,7 @@ export class MapViewState {
      *   外部モジュールのsampleMapsで初期化
      * 将来的にはvuexのmutationで登録する
      */
-    public maps: Map[] = initMaps();
+    public maps: RawMapData[] = initMaps();
 
 
     /*

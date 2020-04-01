@@ -1,6 +1,6 @@
-import { Map } from '@/store/types';
+import { RawMapData } from '@/store/types';
 
-export const sampleMaps: Map[] =  [
+export const sampleMaps: RawMapData[] =  [
     {
         id: 0,
         name: '九州大学',

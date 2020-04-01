@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils';
 import SpotList from '@/components/SpotList/index.vue';
 import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
-import { Spot } from '@/store/types';
+import { RawSpotData } from '@/store/types';
 import { getDistance } from 'geolib';
 
 describe('SpotListコンポーネントのテスト', () => {
@@ -18,7 +18,7 @@ describe('SpotListコンポーネントのテスト', () => {
         wrapper.destroy();
     });
 
-    const testSpot: Spot = {
+    const testSpot: RawSpotData = {
         id: 1,
         name: 'ウエスト2号館',
         coordinate: {

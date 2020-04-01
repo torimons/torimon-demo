@@ -1,5 +1,5 @@
 import { mapViewGetters, mapViewMutations } from '@/store';
-import { MapViewState, Map, Bounds, SpotInfo, SpotForMap, Spot, DisplayLevelType } from '@/store/types';
+import { MapViewState, RawMapData, Bounds, SpotInfo, SpotForMap, RawSpotData, DisplayLevelType } from '@/store/types';
 import { testMapViewState } from '../../../resources/testMapViewState';
 import { cloneDeep } from 'lodash';
 import { NoDetailMapsError } from '@/store/errors/NoDetailMapsError';
@@ -101,10 +101,10 @@ describe('store/modules/MapViewModule.ts', () => {
             parentMapId: 0,
             spotId: 0,
         };
-        const mapIndex = mapViewGetters.maps.findIndex((m: Map) => m.id === targetSpot.parentMapId);
-        const spotIndex = mapViewGetters.maps[mapIndex].spots.findIndex((s: Spot) => s.id === targetSpot.spotId);
-        const expectedSpot: Spot = mapViewGetters.maps[mapIndex].spots[spotIndex];
-        const actualSpot: Spot = mapViewGetters.getSpotById(targetSpot);
+        const mapIndex = mapViewGetters.maps.findIndex((m: RawMapData) => m.id === targetSpot.parentMapId);
+        const spotIndex = mapViewGetters.maps[mapIndex].spots.findIndex((s: RawSpotData) => s.id === targetSpot.spotId);
+        const expectedSpot: RawSpotData = mapViewGetters.maps[mapIndex].spots[spotIndex];
+        const actualSpot: RawSpotData = mapViewGetters.getSpotById(targetSpot);
         expect(actualSpot).toStrictEqual(expectedSpot);
     });
 
@@ -206,8 +206,8 @@ describe('store/modules/MapViewModule.ts', () => {
         mapViewMutations.setLastViewedDetailMapId(payLoad);
 
         // 正しくセットされたかをチェック
-        const mapIndex: number = mapViewGetters.maps.findIndex((m: Map) => m.id === parentMapId);
-        const spotIndex: number = mapViewGetters.maps[mapIndex].spots.findIndex((s: Spot) => s.id === spotId);
+        const mapIndex: number = mapViewGetters.maps.findIndex((m: RawMapData) => m.id === parentMapId);
+        const spotIndex: number = mapViewGetters.maps[mapIndex].spots.findIndex((s: RawSpotData) => s.id === spotId);
         const actualDetailMapId: number | null = mapViewGetters.maps[mapIndex].spots[spotIndex].lastViewedDetailMapId;
         expect(actualDetailMapId).toBe(expectedDetailMapId);
     });
