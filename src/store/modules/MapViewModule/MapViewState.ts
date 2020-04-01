@@ -1,5 +1,9 @@
 import { RawMapData, DisplayLevelType, RawSpotData } from '@/store/types';
 import { sampleMaps } from '@/store/modules/sampleMaps';
+import Map from '@/Map/Map.ts';
+import setParentSpot from '@/Map/Map.ts';
+import addSpots from '@/Map/Map.ts';
+import Spot from '@/Spot/Spot.ts';
 
 /**
  * マップ中の全スポットに階層情報と親のスポットの名前を登録する
@@ -8,30 +12,46 @@ import { sampleMaps } from '@/store/modules/sampleMaps';
  * 空文字列を代入しておく
  * @return 情報追加後のマップ
  */
+
+/**
+ * インスタンス生成時にRawMapDataから受け取った情報を入れる。
+ * set、addを用い木構造に情報を入れる。
+ * return  RawMapDataを受けてMapクラス、Spotクラスの木構造を返す。
+ */ 
 function initMaps(): RawMapData[] {
     for (const map of sampleMaps) {
+        var mapdata = new Map(map.id, map.name, map.bounds, );
+        mapdata.setParentSpot();
         for (const spot of map.spots) {
-            spot.mapId = map.id;
-            spot.parentSpotName = '';
-            spot.floorName = '';
+            // 各スポット毎にRawSpotdataからSpotに情報を入れる。
+            // 各スポット毎に親マップ登録（map of sampleMaps）
+            var spotdata = new Spot(spot.id, spot.name, spot.coordinate, spot.shape?, spot.floorName?, spot.description?,spot.attachment?);
+            spotdata.setParentMap(mapdata);
+            // 各スポット毎に詳細マップ追加(nameでfindする？)
+            spotdata.addDetailMaps();
+            //各スポットをMapに追加
+            mapdata.addSpots([spotdata]);
+            // spot.mapId = map.id;
+            // spot.parentSpotName = '';
+            // spot.floorName = '';
         }
     }
-    for (const map of sampleMaps) {
-        for (const spot of map.spots) {
-            for (const detailMapId of spot.detailMapIds) {
-                const detailMap = sampleMaps.find((m: RawMapData) => m.id === detailMapId);
-                if (detailMap === undefined) {
-                    throw new Error('Illegal map id on sampleMaps.');
-                }
-                for (const detailMapSpot of detailMap.spots) {
-                    detailMapSpot.parentSpotName = spot.name;
-                    const detailMapIdIndex: number = spot.detailMapIds
-                        .findIndex((id: number) => id === detailMapId);
-                    detailMapSpot.floorName = spot.detailMapLevelNames[detailMapIdIndex];
-                }
-            }
-        }
-    }
+    // for (const map of sampleMaps) {
+    //     for (const spot of map.spots) {
+    //         for (const detailMapId of spot.detailMapIds) {
+    //             const detailMap = sampleMaps.find((m: RawMapData) => m.id === detailMapId);
+    //             if (detailMap === undefined) {
+    //                 throw new Error('Illegal map id on sampleMaps.');
+    //             }
+    //             for (const detailMapSpot of detailMap.spots) {
+    //                 detailMapSpot.parentSpotName = spot.name;
+    //                 const detailMapIdIndex: number = spot.detailMapIds
+    //                     .findIndex((id: number) => id === detailMapId);
+    //                 detailMapSpot.floorName = spot.detailMapLevelNames[detailMapIdIndex];
+    //             }
+    //         }
+    //     }
+    // }
     return sampleMaps;
 }
 
