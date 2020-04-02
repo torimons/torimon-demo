@@ -15,7 +15,7 @@ import Spot from '@/Spot/Spot.ts';
  * インスタンス生成時にRawMapDataから受け取った情報を入れる。
  * return  RawMapDataを受けてMapクラス、Spotクラスの木構造を返す。
  */ 
-function initMaps(): Map[] {
+function initMaps(): RawMapData[] {
     /**
      * rootMapId = 0を利用してrootMapのMapインスタンスを作る
      * rootMapのスポットを追加する
@@ -77,7 +77,7 @@ export class MapViewState {
      *   外部モジュールのsampleMapsで初期化
      * 将来的にはvuexのmutationで登録する
      */
-    public maps: Map[] = initMaps();
+    public maps: RawMapData[] = initMaps();
 
 
     /*
