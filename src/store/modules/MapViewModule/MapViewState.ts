@@ -53,7 +53,15 @@ function initMaps(): RawMapData[] {
 //     const rootMapData = sampleMaps[0];
 //     const rootMap = new Map(rootMapData.id, rootMapData.name, rootMapData.bounds, );
 //     for (const spot of rootMapData.spots) {
-//         const spotData = new Spot(spot.id, spot.name, spot.coordinate,spot.shape, spot.floorName, spot.description,spot.attachment);
+//         const spotData = new Spot(
+//             spot.id,
+//             spot.name,
+//             spot.coordinate,
+//             spot.shape,
+//             spot.floorName,
+//             spot.description,
+//             spot.attachment
+//             );
 //         rootMap.addSpots([spotData]);
 //         spotData.setParentMap(rootMap);
 //         for (const detailMapId of spot.detailMapIds) {
@@ -65,8 +73,15 @@ function initMaps(): RawMapData[] {
 //             spotData.addDetailMaps([childMapData]);
 //             childMapData.setParentSpot(spotData);
 //             for (const detailMapSpot of detailMap.spots){
-//                 const childSpotData =
-//                 new Spot(detailMapSpot.id, detailMapSpot.name, detailMapSpot.coordinate, detailMapSpot.shape, detailMapSpot.floorName, detailMapSpot.description,spot.attachment);
+//                 const childSpotData =　new Spot(
+//                     detailMapSpot.id,
+//                     detailMapSpot.name,
+//                     detailMapSpot.coordinate,
+//                     detailMapSpot.shape,
+//                     detailMapSpot.floorName,
+//                     detailMapSpot.description,
+//                     spot.attachment
+//                     );
 //                 childMapData.addSpots([childSpotData]);
 //                 childSpotData.setParentMap(childMapData);
 //             }
