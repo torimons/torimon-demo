@@ -41,13 +41,14 @@ function initMaps(): RawMapData[] {
  * 新
  * インスタンス生成時にRawMapDataから受け取った情報を入れる。
  * return  RawMapDataを受けてMapクラス、Spotクラスの木構造を返す。
- *rootMapId = 0を利用してrootMapのMapインスタンスを作る
+ * rootMapId = 0を利用してrootMapのMapインスタンスを作る
  * rootMapのスポットを追加する
  * for (rootMapの各スポット) {
  *    detailMapIdを取得，そのIdのマップインスタンスを作って今みているspotのMapに追加する
  *    spotをMapに追加
  * @return 情報追加後のマップ(Map型)
-*/
+ */
+
 // function initMaps(): Map {
 //     const rootMapData = sampleMaps[0];
 //     const rootMap = new Map(rootMapData.id, rootMapData.name, rootMapData.bounds, );
@@ -64,7 +65,7 @@ function initMaps(): RawMapData[] {
 //             spotData.addDetailMaps([childMapData]);
 //             childMapData.setParentSpot(spotData);
 //             for (const detailMapSpot of detailMap.spots){
-//                 const childSpotData = 
+//                 const childSpotData =
 //                 new Spot(detailMapSpot.id, detailMapSpot.name, detailMapSpot.coordinate, detailMapSpot.shape, detailMapSpot.floorName, detailMapSpot.description,spot.attachment);
 //                 childMapData.addSpots([childSpotData]);
 //                 childSpotData.setParentMap(childMapData);
