@@ -11,32 +11,32 @@ import Spot from '@/Spot/Spot.ts';
  * 空文字列を代入しておく
  * @return 情報追加後のマップ
  */
-// function initMaps(): RawMapData[] {
-//     for (const map of sampleMaps) {
-//         for (const spot of map.spots) {
-//             spot.mapId = map.id;
-//             spot.parentSpotName = '';
-//             spot.floorName = '';
-//         }
-//     }
-//     for (const map of sampleMaps) {
-//         for (const spot of map.spots) {
-//             for (const detailMapId of spot.detailMapIds) {
-//                 const detailMap = sampleMaps.find((m: RawMapData) => m.id === detailMapId);
-//                 if (detailMap === undefined) {
-//                     throw new Error('Illegal map id on sampleMaps.');
-//                 }
-//                 for (const detailMapSpot of detailMap.spots) {
-//                     detailMapSpot.parentSpotName = spot.name;
-//                     const detailMapIdIndex: number = spot.detailMapIds
-//                         .findIndex((id: number) => id === detailMapId);
-//                     detailMapSpot.floorName = spot.detailMapLevelNames[detailMapIdIndex];
-//                 }
-//             }
-//         }
-//     }
-//     return sampleMaps;
-// }
+function initMaps(): RawMapData[] {
+    for (const map of sampleMaps) {
+        for (const spot of map.spots) {
+            spot.mapId = map.id;
+            spot.parentSpotName = '';
+            spot.floorName = '';
+        }
+    }
+    for (const map of sampleMaps) {
+        for (const spot of map.spots) {
+            for (const detailMapId of spot.detailMapIds) {
+                const detailMap = sampleMaps.find((m: RawMapData) => m.id === detailMapId);
+                if (detailMap === undefined) {
+                    throw new Error('Illegal map id on sampleMaps.');
+                }
+                for (const detailMapSpot of detailMap.spots) {
+                    detailMapSpot.parentSpotName = spot.name;
+                    const detailMapIdIndex: number = spot.detailMapIds
+                        .findIndex((id: number) => id === detailMapId);
+                    detailMapSpot.floorName = spot.detailMapLevelNames[detailMapIdIndex];
+                }
+            }
+        }
+    }
+    return sampleMaps;
+}
 /**
  * 新
  * インスタンス生成時にRawMapDataから受け取った情報を入れる。
@@ -49,7 +49,7 @@ import Spot from '@/Spot/Spot.ts';
  * @return 情報追加後のマップ(Map型)
  */
 
-function initMaps(): Map {
+function initMapsVer2(): Map {
     const rootMapData = sampleMaps[0];
     const rootMap = new Map(rootMapData.id, rootMapData.name, rootMapData.bounds);
     for (const spotData of rootMapData.spots) {
@@ -73,7 +73,7 @@ function initMaps(): Map {
             spot.addDetailMaps([childMap]);
             childMap.setParentSpot(spot);
             for (const detailMapSpotData of detailMap.spots) {
-                const childSpot = new Spot(
+                const childSpotData = new Spot(
                     detailMapSpotData.id,
                     detailMapSpotData.name,
                     detailMapSpotData.coordinate,
@@ -82,8 +82,8 @@ function initMaps(): Map {
                     detailMapSpotData.description,
                     detailMapSpotData.attachment,
                     );
-                childMap.addSpots([childSpot]);
-                childSpot.setParentMap(childMap);
+                childMap.addSpots([childSpotData]);
+                childSpotData.setParentMap(childMap);
             }
         }
     }
@@ -99,11 +99,11 @@ export class MapViewState {
      *   外部モジュールのsampleMapsで初期化
      * 将来的にはvuexのmutationで登録する
      */
-    // public maps: RawMapData[] = initMaps();
+    public maps: RawMapData[] = initMaps();
     /**
      * 新
      */
-    public maps: Map = initMaps();
+    // public maps: Map = initMapsVer2();
 
     /*
      * 大元の親のMapのID
