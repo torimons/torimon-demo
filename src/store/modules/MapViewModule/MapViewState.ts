@@ -39,18 +39,14 @@ function initMaps(): RawMapData[] {
 }
 /**
  * 新
- * インスタンス生成時にRawMapDataから受け取った情報を入れる。
- * return  RawMapDataを受けてMapクラス、Spotクラスの木構造を返す。
+ * RawMapDataを受けとり、Mapクラス、Spotクラスの木構造を返す。
  * rootMapId = 0を利用してrootMapのMapインスタンスを作る
- * rootMapのスポットを追加する
- * for (rootMapの各スポット) {
- *    detailMapIdを取得，そのIdのマップインスタンスを作って今みているspotのMapに追加する
- *    spotをMapに追加
- * @return 情報追加後のマップ(Map型)
+ * @param 地図データ(RawMapDataの配列)
+ * @return 木構造の地図データ
  */
 
-function initMapsVer2(): Map {
-    const rootMapData = sampleMaps[0];
+export function initMapsVer2(mapData: RawMapData[]): Map {
+    const rootMapData = mapData[0];
     const rootMap = new Map(rootMapData.id, rootMapData.name, rootMapData.bounds);
     for (const spotData of rootMapData.spots) {
         const spot = new Spot(
@@ -65,7 +61,7 @@ function initMapsVer2(): Map {
         rootMap.addSpots([spot]);
         spot.setParentMap(rootMap);
         for (const detailMapId of spotData.detailMapIds) {
-            const detailMap = sampleMaps.find((m: RawMapData) => m.id === detailMapId);
+            const detailMap = mapData.find((m: RawMapData) => m.id === detailMapId);
             if (detailMap === undefined) {
                 throw new Error('Illegal map id on sampleMaps.');
             }
