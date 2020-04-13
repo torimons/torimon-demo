@@ -1,4 +1,4 @@
-import { RawMapData, DisplayLevelType, RawSpotData } from '@/store/types';
+import { RawMap, DisplayLevelType, RawSpot } from '@/store/types';
 import { sampleMaps } from '@/store/modules/sampleMaps';
 import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot.ts';
@@ -11,7 +11,7 @@ import Spot from '@/Spot/Spot.ts';
  * 空文字列を代入しておく
  * @return 情報追加後のマップ
  */
-function initMaps(): RawMapData[] {
+function initMaps(): RawMap[] {
     for (const map of sampleMaps) {
         for (const spot of map.spots) {
             spot.mapId = map.id;
@@ -22,7 +22,7 @@ function initMaps(): RawMapData[] {
     for (const map of sampleMaps) {
         for (const spot of map.spots) {
             for (const detailMapId of spot.detailMapIds) {
-                const detailMap = sampleMaps.find((m: RawMapData) => m.id === detailMapId);
+                const detailMap = sampleMaps.find((m: RawMap) => m.id === detailMapId);
                 if (detailMap === undefined) {
                     throw new Error('Illegal map id on sampleMaps.');
                 }
@@ -38,14 +38,17 @@ function initMaps(): RawMapData[] {
     return sampleMaps;
 }
 /**
- * 新
- * RawMapDataを受けとり、Mapクラス、Spotクラスの木構造を返す。
+ * 新 表示・検索機能が対応し次第こちらを使用
+ * RawMapを受けとり、Mapクラス、Spotクラスの木構造を返す。
  * rootMapId = 0を利用してrootMapのMapインスタンスを作る
- * @param 地図データ(RawMapDataの配列)
- * @return 木構造の地図データ
+ * @param mapData 地図データ(RawMapの配列)
+ * @return  木構造の地図データ
  */
 
-export function initMapsVer2(mapData: RawMapData[]): Map {
+export function toMapTree(mapData: RawMap[]): Map {
+    if (mapData.length === 0) {
+        throw new Error('空配列です');
+    }
     const rootMapData = mapData[0];
     const rootMap = new Map(rootMapData.id, rootMapData.name, rootMapData.bounds);
     for (const spotData of rootMapData.spots) {
@@ -57,19 +60,19 @@ export function initMapsVer2(mapData: RawMapData[]): Map {
             spotData.floorName,
             spotData.description,
             spotData.attachment,
-            );
+        );
         rootMap.addSpots([spot]);
         spot.setParentMap(rootMap);
         for (const detailMapId of spotData.detailMapIds) {
-            const detailMap = mapData.find((m: RawMapData) => m.id === detailMapId);
-            if (detailMap === undefined) {
+            const RawDetailMap = mapData.find((m: RawMap) => m.id === detailMapId);
+            if (RawDetailMap === undefined) {
                 throw new Error('Illegal map id on sampleMaps.');
             }
-            const childMap = new Map(detailMap.id, detailMap.name, detailMap.bounds);
-            spot.addDetailMaps([childMap]);
-            childMap.setParentSpot(spot);
-            for (const detailMapSpotData of detailMap.spots) {
-                const childSpotData = new Spot(
+            const detailMap = new Map(RawDetailMap.id, RawDetailMap.name, RawDetailMap.bounds);
+            spot.addDetailMaps([detailMap]);
+            detailMap.setParentSpot(spot);
+            for (const detailMapSpotData of RawDetailMap.spots) {
+                const detailSpotData = new Spot(
                     detailMapSpotData.id,
                     detailMapSpotData.name,
                     detailMapSpotData.coordinate,
@@ -77,9 +80,9 @@ export function initMapsVer2(mapData: RawMapData[]): Map {
                     detailMapSpotData.floorName,
                     detailMapSpotData.description,
                     detailMapSpotData.attachment,
-                    );
-                childMap.addSpots([childSpotData]);
-                childSpotData.setParentMap(childMap);
+                );
+                detailMap.addSpots([detailSpotData]);
+                detailSpotData.setParentMap(detailMap);
             }
         }
     }
@@ -95,7 +98,7 @@ export class MapViewState {
      *   外部モジュールのsampleMapsで初期化
      * 将来的にはvuexのmutationで登録する
      */
-    public maps: RawMapData[] = initMaps();
+    public maps: RawMap[] = initMaps();
     /**
      * 新
      */

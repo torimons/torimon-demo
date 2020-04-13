@@ -1,6 +1,6 @@
 import { mapViewGetters, mapViewMutations } from '@/store';
 import map from '@/components/MapView/index.vue';
-import { MapViewState, RawSpotData, Coordinate } from '@/store/types';
+import { MapViewState, RawSpot, Coordinate } from '@/store/types';
 import { shallowMount } from '@vue/test-utils';
 import { cloneDeep } from 'lodash';
 import { testMapViewState } from '../../../resources/testMapViewState';
@@ -57,7 +57,7 @@ describe('中央に最も近いスポットの取得，およびその更新の�
     });
 
     it('getNearestSpotId()で中央に最も近いスポットのIdを取得する', () => {
-        const spots: RawSpotData[] = mapViewGetters.maps[0].spots;
+        const spots: RawSpot[] = mapViewGetters.maps[0].spots;
         // 中央の座標を設定して中央に最も近いスポットのIdを取得する
         const center1: Coordinate = {lat: 33.595, lng: 130.700};
         const exepctedNearestSpotId1: number = 1;

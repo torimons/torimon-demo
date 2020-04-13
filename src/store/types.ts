@@ -3,7 +3,7 @@
  * MapViewコンポーネントの状態の情報を持つ型
  */
 export interface MapViewState {
-    maps: RawMapData[];
+    maps: RawMap[];
     rootMapId: number;
     focusedSpot: {
         mapId: number,
@@ -18,10 +18,10 @@ export interface MapViewState {
 /**
  * マップの情報を持つ型
  */
-export interface RawMapData {
+export interface RawMap {
     id: number;
     name: string;
-    spots: RawSpotData[];
+    spots: RawSpot[];
     nodes: Node[];
     edges: Edge[];
     bounds: Bounds;
@@ -31,7 +31,7 @@ export interface RawMapData {
 /**
  * スポットの情報全てを表す型
  */
-export interface RawSpotData {
+export interface RawSpot {
     id: number;
     mapId?: number;
     name: string;

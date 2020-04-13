@@ -4,9 +4,9 @@ import SearchBox from '@/components/SearchBox/index.vue';
 import SpotList from '@/components/SpotList/index.vue';
 import { mapViewMutations, mapViewGetters } from '@/store';
 import Search from '@/utils/Search';
-import { RawSpotData } from '@/store/types';
+import { RawSpot } from '@/store/types';
 
-const spotsForTest: RawSpotData[] = [
+const spotsForTest: RawSpot[] = [
     {
         mapId: 0,
         id: 0,

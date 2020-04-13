@@ -1,6 +1,6 @@
 import { Getters } from 'vuex-smart-module';
 import { MapViewState } from './MapViewState';
-import { RawMapData, RawSpotData, SpotInfo, SpotForMap, Bounds, DisplayLevelType, Coordinate, Node } from '@/store/types';
+import { RawMap, RawSpot, SpotInfo, SpotForMap, Bounds, DisplayLevelType, Coordinate, Node } from '@/store/types';
 import { NoDetailMapsError } from '@/store/errors/NoDetailMapsError';
 import { MapNotFoundError } from '@/store/errors/MapNotFoundError';
 import { SpotNotFoundError } from '@/store/errors/SpotNotFoundError';
@@ -10,7 +10,7 @@ export class MapViewGetters extends Getters<MapViewState> {
      * 全てのマップを返す
      * @return Map配列
      */
-    get maps(): RawMapData[] {
+    get maps(): RawMap[] {
         return this.state.maps;
     }
 
@@ -36,7 +36,7 @@ export class MapViewGetters extends Getters<MapViewState> {
      * @return SpotInfoコンポーネントに必要な情報*
      */
     public getSpotInfo(targetSpot: {mapId: number, spotId: number}): SpotInfo {
-        const spot: RawSpotData = this.getters.getSpotById({
+        const spot: RawSpot = this.getters.getSpotById({
             parentMapId: targetSpot.mapId,
             spotId: targetSpot.spotId,
         });
@@ -61,7 +61,7 @@ export class MapViewGetters extends Getters<MapViewState> {
      * @return マップの範囲
      */
     get rootMapBounds(): Bounds {
-        const rootMapIndex: number = this.state.maps.findIndex((m: RawMapData) => m.id === this.state.rootMapId);
+        const rootMapIndex: number = this.state.maps.findIndex((m: RawMap) => m.id === this.state.rootMapId);
         return this.state.maps[rootMapIndex].bounds;
     }
 
@@ -72,9 +72,9 @@ export class MapViewGetters extends Getters<MapViewState> {
      * @return Mapコンポーネントが必要なスポットの情報
      */
     public getSpotsForMap(mapId: number): SpotForMap[] {
-        const mapIndex: number = this.state.maps.findIndex((m: RawMapData) => m.id === mapId);
-        const spots: RawSpotData[] = this.state.maps[mapIndex].spots;
-        const spotsForMap: SpotForMap[] = spots.map((spot: RawSpotData) => {
+        const mapIndex: number = this.state.maps.findIndex((m: RawMap) => m.id === mapId);
+        const spots: RawSpot[] = this.state.maps[mapIndex].spots;
+        const spotsForMap: SpotForMap[] = spots.map((spot: RawSpot) => {
             return {
                 mapId,
                 spotId: spot.id,
@@ -93,12 +93,12 @@ export class MapViewGetters extends Getters<MapViewState> {
      * @throw MapNotFoundError 指定されたマップが見つからない場合に発生
      * @throw SpotNotFoundError 指定されたスポットが見つからない場合に発生
      */
-    public getSpotById(targetSpot: {parentMapId: number, spotId: number}): RawSpotData {
-        const map: RawMapData | undefined = this.state.maps.find((m: RawMapData) => m.id === targetSpot.parentMapId);
+    public getSpotById(targetSpot: {parentMapId: number, spotId: number}): RawSpot {
+        const map: RawMap | undefined = this.state.maps.find((m: RawMap) => m.id === targetSpot.parentMapId);
         if (map === undefined) {
             throw new MapNotFoundError('Map does not found...');
         }
-        const spot: RawSpotData | undefined = map.spots.find((s: RawSpotData) => s.id === targetSpot.spotId);
+        const spot: RawSpot | undefined = map.spots.find((s: RawSpot) => s.id === targetSpot.spotId);
         if (spot === undefined) {
             throw new SpotNotFoundError('Spot does not found...');
         }
