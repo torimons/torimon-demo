@@ -8,7 +8,7 @@ describe('MapViewState.tsのテスト', () => {
     it('toMapTreeがRawMapを受け取ってMap型の木構造を返す', () => {
         const testMapData: RawMap[] = testMapViewState3.maps;
         const actualMap: Map = toMapTree(testMapData);
-        const expectRawMap = testMapViewState3.maps
+        const expectRawMap = testMapViewState3.maps;
         const expectRootMapData = expectRawMap[0];
         const expectMapInstance: Map = createMapInstance(expectRootMapData);
         const expectSpot: Spot = createSpotInstance(expectRootMapData.spots[0]);
@@ -24,3 +24,4 @@ describe('MapViewState.tsのテスト', () => {
         expect(actualMap).toStrictEqual(expectMapInstance);
     });
 });
+

@@ -43,13 +43,13 @@ function initMaps(): RawMap[] {
  * @param RawMapData RawMap型
  * @return Map型
  */
-export function createMapInstance(mapData: RawMap): Map{
+export function createMapInstance(mapData: RawMap): Map {
     const mapInstance = new Map(
         mapData.id,
         mapData.name,
         mapData.bounds,
     );
-    return mapInstance; 
+    return mapInstance;
 }
 
 /**
@@ -57,7 +57,7 @@ export function createMapInstance(mapData: RawMap): Map{
  * @param RawSpotData RawSpot型
  * @return Spot型
  */
-export function createSpotInstance(spotData: RawSpot): Spot{
+export function createSpotInstance(spotData: RawSpot): Spot {
     const spotInstance = new Spot(
         spotData.id,
         spotData.name,
@@ -67,8 +67,9 @@ export function createSpotInstance(spotData: RawSpot): Spot{
         spotData.description,
         spotData.attachment,
     );
-    return spotInstance; 
+    return spotInstance;
 }
+
 /**
  * 新 表示・検索機能が対応し次第こちらを使用
  * RawMapを受けとり、Mapクラス、Spotクラスの木構造を返す。
