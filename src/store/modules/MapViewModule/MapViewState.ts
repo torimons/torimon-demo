@@ -37,6 +37,38 @@ function initMaps(): RawMap[] {
     }
     return sampleMaps;
 }
+
+/**
+ * RawMap型をMap型に変換する
+ * @param RawMapData RawMap型
+ * @return Map型
+ */
+export function createMapInstance(mapData: RawMap): Map{
+    const mapInstance = new Map(
+        mapData.id,
+        mapData.name,
+        mapData.bounds,
+    );
+    return mapInstance; 
+}
+
+/**
+ * RawSpot型をSpot型に変換する
+ * @param RawSpotData RawSpot型
+ * @return Spot型
+ */
+export function createSpotInstance(spotData: RawSpot): Spot{
+    const spotInstance = new Spot(
+        spotData.id,
+        spotData.name,
+        spotData.coordinate,
+        spotData.shape,
+        spotData.floorName,
+        spotData.description,
+        spotData.attachment,
+    );
+    return spotInstance; 
+}
 /**
  * 新 表示・検索機能が対応し次第こちらを使用
  * RawMapを受けとり、Mapクラス、Spotクラスの木構造を返す。
@@ -50,17 +82,9 @@ export function toMapTree(mapData: RawMap[]): Map {
         throw new Error('空配列です');
     }
     const rootMapData = mapData[0];
-    const rootMap = new Map(rootMapData.id, rootMapData.name, rootMapData.bounds);
+    const rootMap = createMapInstance(rootMapData);
     for (const spotData of rootMapData.spots) {
-        const spot = new Spot(
-            spotData.id,
-            spotData.name,
-            spotData.coordinate,
-            spotData.shape,
-            spotData.floorName,
-            spotData.description,
-            spotData.attachment,
-        );
+        const spot = createSpotInstance(spotData);
         rootMap.addSpots([spot]);
         spot.setParentMap(rootMap);
         for (const detailMapId of spotData.detailMapIds) {
@@ -68,19 +92,11 @@ export function toMapTree(mapData: RawMap[]): Map {
             if (RawDetailMap === undefined) {
                 throw new Error('Illegal map id on sampleMaps.');
             }
-            const detailMap = new Map(RawDetailMap.id, RawDetailMap.name, RawDetailMap.bounds);
+            const detailMap = createMapInstance(RawDetailMap);
             spot.addDetailMaps([detailMap]);
             detailMap.setParentSpot(spot);
             for (const detailMapSpotData of RawDetailMap.spots) {
-                const detailSpotData = new Spot(
-                    detailMapSpotData.id,
-                    detailMapSpotData.name,
-                    detailMapSpotData.coordinate,
-                    detailMapSpotData.shape,
-                    detailMapSpotData.floorName,
-                    detailMapSpotData.description,
-                    detailMapSpotData.attachment,
-                );
+                const detailSpotData = createSpotInstance(detailMapSpotData);
                 detailMap.addSpots([detailSpotData]);
                 detailSpotData.setParentMap(detailMap);
             }
