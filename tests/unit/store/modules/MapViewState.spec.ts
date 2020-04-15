@@ -9,14 +9,14 @@ describe('MapViewState.tsのテスト', () => {
         const testRawMap = testMapViewState3.maps;
         const testRawMapData = testRawMap[0];
         const testMapInstance = createMapInstance(testRawMapData);
-        const expectMapProperty = ["id", "name", "bounds", "floorName", "parentSpot", "spots"];
+        const expectMapProperty = ['id', 'name', 'bounds', 'floorName', 'parentSpot', 'spots'];
         expect(Object.keys(testMapInstance)).toStrictEqual(expectMapProperty);
     });
     it('createSpotInstanceがSpot型を返す', () => {
         const testRawMap = testMapViewState3.maps;
         const testRawMapData = testRawMap[0];
         const testSpotInstance = createSpotInstance(testRawMapData.spots[0]);
-        const expectSpotProperty = ["id", "name", "coordinate", "shape", "floorName", "description", "attachment", "parentMap", "detailMaps"];
+        const expectSpotProperty = ['id', 'name', 'coordinate', 'shape', 'floorName', 'description', 'attachment', 'parentMap', 'detailMaps'];
         expect(Object.keys(testSpotInstance)).toStrictEqual(expectSpotProperty);
     });
     it('toMapTreeがRawMapを受け取ってMap型の木構造を返す', () => {

@@ -80,7 +80,7 @@ export function createSpotInstance(spotData: RawSpot): Spot {
 
 export function toMapTree(mapData: RawMap[]): Map {
     if (mapData.length === 0) {
-        throw new Error('空配列です');
+        throw new Error('this map is empty');
     }
     const rootMapData = mapData[0];
     const rootMap = createMapInstance(rootMapData);
