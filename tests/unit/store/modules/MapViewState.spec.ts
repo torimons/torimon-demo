@@ -5,6 +5,20 @@ import Spot from '@/Spot/Spot.ts';
 import { createMapInstance, createSpotInstance, toMapTree } from '@/store/modules/MapViewmodule/MapViewState.ts';
 
 describe('MapViewState.tsのテスト', () => {
+    it('createMapInstanceがMap型を返す', () => {
+        const testRawMap = testMapViewState3.maps;
+        const testRawMapData = testRawMap[0];
+        const testMapInstance = createMapInstance(testRawMapData);
+        const expectMapProperty = ["id", "name", "bounds", "floorName", "parentSpot", "spots"];
+        expect(Object.keys(testMapInstance)).toStrictEqual(expectMapProperty);
+    });
+    it('createSpotInstanceがSpot型を返す', () => {
+        const testRawMap = testMapViewState3.maps;
+        const testRawMapData = testRawMap[0];
+        const testSpotInstance = createSpotInstance(testRawMapData.spots[0]);
+        const expectSpotProperty = ["id", "name", "coordinate", "shape", "floorName", "description", "attachment", "parentMap", "detailMaps"];
+        expect(Object.keys(testSpotInstance)).toStrictEqual(expectSpotProperty);
+    });
     it('toMapTreeがRawMapを受け取ってMap型の木構造を返す', () => {
         const testMapData: RawMap[] = testMapViewState3.maps;
         const actualMap: Map = toMapTree(testMapData);
