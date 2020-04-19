@@ -115,11 +115,11 @@ export class MapViewState {
      *   外部モジュールのsampleMapsで初期化
      * 将来的にはvuexのmutationで登録する
      */
-    public maps: RawMap[] = initMaps();
+    // public maps: RawMap[] = initMaps();
     /**
      * 新
      */
-    // public maps: Map = initMapsVer2();
+    // public maps: Map = toMapTree(sampleMaps);
 
     /*
      * 大元の親のMapのID

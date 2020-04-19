@@ -10,14 +10,26 @@ describe('MapViewState.tsのテスト', () => {
         const testRawMapData = testRawMap[0];
         const testMapInstance = createMapInstance(testRawMapData);
         const expectMapProperty = ['id', 'name', 'bounds', 'floorName', 'parentSpot', 'spots'];
+        const expectMapId = testRawMapData.id;
+        const expectMapName = testRawMapData.name;
+        const expectMapBounds = testRawMapData.bounds;
         expect(Object.keys(testMapInstance)).toStrictEqual(expectMapProperty);
+        expect((testMapInstance as any).id).toStrictEqual(expectMapId);
+        expect((testMapInstance as any).name).toStrictEqual(expectMapName);
+        expect((testMapInstance as any).bounds).toStrictEqual(expectMapBounds);
     });
     it('createSpotInstanceがSpot型を返す', () => {
         const testRawMap = testMapViewState3.maps;
         const testRawMapData = testRawMap[0];
         const testSpotInstance = createSpotInstance(testRawMapData.spots[0]);
         const expectSpotProperty = ['id', 'name', 'coordinate', 'shape', 'floorName', 'description', 'attachment', 'parentMap', 'detailMaps'];
+        const expectSpotId = testRawMapData.spots[0].id;
+        const expectSpotName = testRawMapData.spots[0].name;
+        const expectSpotCoordinate = testRawMapData.spots[0].coordinate;
         expect(Object.keys(testSpotInstance)).toStrictEqual(expectSpotProperty);
+        expect((testSpotInstance as any).id).toStrictEqual(expectSpotId);
+        expect((testSpotInstance as any).name).toStrictEqual(expectSpotName);
+        expect((testSpotInstance as any).coordinate).toStrictEqual(expectSpotCoordinate);
     });
     it('toMapTreeがRawMapを受け取ってMap型の木構造を返す', () => {
         const testMapData: RawMap[] = testMapViewState3.maps;
