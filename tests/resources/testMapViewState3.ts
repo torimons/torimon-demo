@@ -69,6 +69,7 @@ export const testMapViewState3: MapViewState = {
         {
             id: 1,
             name: 'SougouGakusyuPlaza_1F',
+            floorName: '1F',
             spots: [
                 {
                     id: 0,
