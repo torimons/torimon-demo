@@ -74,37 +74,29 @@ export function createSpotInstance(spotData: RawSpot): Spot {
 /**
  * 新 表示・検索機能が対応し次第こちらを使用
  * RawMapを受けとり、Mapクラス、Spotクラスの木構造を返す。
- * rootMapId = 0を利用してrootMapのMapインスタンスを作る
+ * rootMapId = 0を利用してrootMapのMapインスタンスを返す。
  * @param mapData 地図データ(RawMapの配列)
- * @return  木構造の地図データ
+ * @return rootマップのインスタンス
  */
-
-export function toMapTree(mapData: RawMap[]): Map {
-    if (mapData.length === 0) {
+export function toMapTree(rawMaps: RawMap[]): Map {
+    if (rawMaps.length === 0) {
         throw new Error('this map is empty');
     }
-    const rootMapData = mapData[0];
-    const rootMap = createMapInstance(rootMapData);
-    for (const spotData of rootMapData.spots) {
-        const spot = createSpotInstance(spotData);
-        rootMap.addSpots([spot]);
-        spot.setParentMap(rootMap);
-        for (const detailMapId of spotData.detailMapIds) {
-            const RawDetailMap = mapData.find((m: RawMap) => m.id === detailMapId);
-            if (RawDetailMap === undefined) {
-                throw new Error('Illegal map id on sampleMaps.');
-            }
-            const detailMap = createMapInstance(RawDetailMap);
-            spot.addDetailMaps([detailMap]);
-            detailMap.setParentSpot(spot);
-            for (const detailMapSpotData of RawDetailMap.spots) {
-                const detailSpotData = createSpotInstance(detailMapSpotData);
-                detailMap.addSpots([detailSpotData]);
-                detailSpotData.setParentMap(detailMap);
-            }
+    const mapDict: {[mapId: number]: Map} = {};
+    for (const rawMap of rawMaps) {
+        mapDict[rawMap.id] = createMapInstance(rawMap);
+    }
+    for (const rawMap of rawMaps) {
+        const parentMap: Map = mapDict[rawMap.id];
+        for (const rawSpot of rawMap.spots) {
+            const spot: Spot = createSpotInstance(rawSpot);
+            const detailMaps: Map[] = rawSpot.detailMapIds
+                .map((id: number) => mapDict[id]);
+            spot.setParentMap(parentMap);
+            spot.addDetailMaps(detailMaps);
         }
     }
-    return rootMap;
+    return mapDict[0];
 }
 
 export class MapViewState {
