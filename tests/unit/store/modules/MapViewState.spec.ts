@@ -2,7 +2,7 @@ import { RawMap } from '@/store/types';
 import { testMapViewState3 } from '../../../resources/testMapViewState3';
 import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot.ts';
-import { createMapInstance, createSpotInstance, toMapTree } from '@/store/modules/MapViewmodule/MapViewState.ts';
+import { createMapInstance, createSpotInstance, toMapTree } from '@/store/modules/MapViewModule/MapViewState.ts';
 
 describe('MapViewState.tsのテスト', () => {
     it('createMapInstanceがMap型を返す', () => {
