@@ -21,6 +21,7 @@ export interface MapViewState {
 export interface RawMap {
     id: number;
     name: string;
+    floorName?: string;
     spots: RawSpot[];
     nodes: Node[];
     edges: Edge[];

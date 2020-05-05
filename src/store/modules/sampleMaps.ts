@@ -236,6 +236,7 @@ export const sampleMaps: RawMap[] =  [
     {
         id: 1,
         name: '総合学習プラザ 1F',
+        floorName: '1F',
         spots: [
             {
                 id: 0,
@@ -484,6 +485,7 @@ export const sampleMaps: RawMap[] =  [
     {
         id: 2,
         name: '総合学習プラザ 2F',
+        floorName: '2F',
         spots: [
             {
                 id: 10,
@@ -978,6 +980,7 @@ export const sampleMaps: RawMap[] =  [
     {
         id: 3,
         name: 'ウエスト2号館 2F',
+        floorName: '2F',
         spots: [
             {
                 id: 201,
@@ -1204,6 +1207,7 @@ export const sampleMaps: RawMap[] =  [
     {
         id: 4,
         name: 'ウエスト2号館 3F',
+        floorName: '3F',
         spots: [
             {
                 id: 301,
@@ -1921,6 +1925,7 @@ export const sampleMaps: RawMap[] =  [
     {
         id: 6,
         name: 'ウエスト2号館 5F',
+        floorName: '5F',
         spots: [
             {
                 id: 501,

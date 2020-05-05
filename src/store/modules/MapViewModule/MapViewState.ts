@@ -48,6 +48,7 @@ export function createMapInstance(mapData: RawMap): Map {
         mapData.id,
         mapData.name,
         mapData.bounds,
+        mapData.floorName,
     );
     return mapInstance;
 }

@@ -55,4 +55,9 @@ export default class Map {
     public hasSpot(spot: Spot): boolean {
         return this.spots.includes(spot);
     }
+
+    public getFloorName(): string | undefined {
+        return this.floorName;
+    }
+
 }

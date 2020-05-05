@@ -24,6 +24,7 @@ export default class Spot {
             return;
         }
         this.parentMap = parentMap;
+        this.floorName = parentMap.getFloorName();
         parentMap.addSpots([this]);
     }
 
