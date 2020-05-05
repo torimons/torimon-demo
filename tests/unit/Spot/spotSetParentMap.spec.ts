@@ -9,12 +9,13 @@ describe('Spotクラスの親マップ登録のテスト', () => {
     };
     const testCoord = { lat: 0, lng: 0 };
 
-    it('指定した親マップがparentMapに登録される', () => {
+    it('setParentMapで親マップが登録され、floorNameがセットされる', () => {
         spot = new Spot(0, 'testSpot', testCoord, undefined, undefined, undefined, undefined);
-        const testMap = new Map(0, 'testMap', testBounds, undefined);
+        const testMap = new Map(0, 'testMap', testBounds, 'testFloorName');
         // 登録
         spot.setParentMap(testMap);
         expect((spot as any).parentMap).toBe(testMap);
+        expect((spot as any).floorName).toBe('testFloorName');
     });
 
     it('異なるparentMapの登録は禁止する', () => {

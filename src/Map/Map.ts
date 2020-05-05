@@ -56,6 +56,10 @@ export default class Map {
         return this.spots.includes(spot);
     }
 
+    /**
+     * floorNameを返す
+     * @return 階層名
+     */
     public getFloorName(): string | undefined {
         return this.floorName;
     }

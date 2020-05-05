@@ -44,4 +44,10 @@ describe('Mapクラスの親スポット登録のテスト', () => {
         (testMap as any).parentSpot = testSpot;
         expect(testMap.hasParentSpot()).toBe(true);
     });
+
+    it('getFloorNameでfloorNameを取得する',() => {
+        const map = new Map(0, 'testMap', testBounds, 'testFloorName');
+        const actualFloorName = map.getFloorName();
+        expect(actualFloorName).toBe('testFloorName');
+    });
 });
