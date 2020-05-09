@@ -80,7 +80,7 @@ export function createSpotInstance(spotData: RawSpot): Spot {
  */
 export function toMapTree(rawMaps: RawMap[]): Map {
     if (rawMaps.length === 0) {
-        throw new Error('this map is empty');
+        throw new Error('This map is empty.');
     }
     const mapDict: {[mapId: number]: Map} = {};
     for (const rawMap of rawMaps) {

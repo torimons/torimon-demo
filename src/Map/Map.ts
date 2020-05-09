@@ -17,7 +17,7 @@ export default class Map {
      * @param parentSpot セットする親スポット
      */
     public setParentSpot(parentSpot: Spot): void {
-        if (this.hasParentSpot()) {
+        if (this.hasParentSpot(parentSpot)) {
             return;
         }
         this.parentSpot = parentSpot;
@@ -40,11 +40,12 @@ export default class Map {
     }
 
     /**
-     * parentSpotを持つかどうかを判定する
-     * @return parentSpotを持つならtrue, 持っていなければfalse
+     * parentSpotとして引数のspotを持っているか判定する
+     * @param spot 判定対象のspot
+     * @return spotがparentSpotであるならばtrue, そうでなければfalse
      */
-    public hasParentSpot(): boolean {
-        return this.parentSpot !== undefined;
+    public hasParentSpot(spot: Spot): boolean {
+        return this.parentSpot === spot;
     }
 
     /**

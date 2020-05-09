@@ -18,17 +18,6 @@ describe('Spotクラスの親マップ登録のテスト', () => {
         expect((spot as any).floorName).toBe('testFloorName');
     });
 
-    it('異なるparentMapの登録は禁止する', () => {
-        const testMap: Map = new Map(0, 'testMap', testBounds, undefined);
-        const anotherMap: Map = new Map(1, 'testMap', testBounds, undefined);
-        const testSpot = new Spot(0, 'testSpot', testCoord, undefined, undefined, undefined);
-        // 登録
-        testSpot.setParentMap(testMap);
-        testSpot.setParentMap(anotherMap);
-        // 最初に登録されたparentSpotが登録されたままになる
-        expect((testSpot as any).parentMap).toStrictEqual(testMap);
-    });
-
     it('parentMap登録時に、parentMapの子spotとして自身を登録する', () => {
         const testMap: Map = new Map(0, 'testMap', testBounds, undefined);
         const testSpot = new Spot(0, 'testSpot', testCoord, undefined, undefined, undefined);
@@ -40,9 +29,9 @@ describe('Spotクラスの親マップ登録のテスト', () => {
         const testMap: Map = new Map(0, 'testMap', testBounds, undefined);
         const testSpot: Spot = new Spot(0, 'testSpot', testCoord, undefined, undefined, undefined, undefined);
         // 登録前の判定
-        expect(testSpot.hasParentMap()).toBe(false);
+        expect(testSpot.hasParentMap(testMap)).toBe(false);
         // 登録後の判定
         (testSpot as any).parentMap = testMap;
-        expect(testSpot.hasParentMap()).toBe(true);
+        expect(testSpot.hasParentMap(testMap)).toBe(true);
     });
 });

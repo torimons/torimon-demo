@@ -17,17 +17,6 @@ describe('Mapクラスの親スポット登録のテスト', () => {
         expect((map as any).parentSpot).toStrictEqual(testSpot);
     });
 
-    it('異なるparentSpotの登録は禁止する', () => {
-        map = new Map(0, 'testMap', testBounds, undefined);
-        const testSpot = new Spot(0, 'testSpot', testCoord, undefined, undefined, undefined);
-        const anotherSpot = new Spot(1, 'testSpot', testCoord, undefined, undefined, undefined);
-        // 登録
-        map.setParentSpot(testSpot);
-        map.setParentSpot(anotherSpot);
-        // 最初に登録されたparentSpotが登録されたままになる
-        expect((map as any).parentSpot).toStrictEqual(testSpot);
-    });
-
     it('parentSpot登録時に、parentSpotのdetailMapとして自身を登録する', () => {
         map = new Map(0, 'testMap', testBounds, undefined);
         const testSpot = new Spot(0, 'testSpot', testCoord, undefined, undefined, undefined);
@@ -39,10 +28,10 @@ describe('Mapクラスの親スポット登録のテスト', () => {
         const testMap: Map = new Map(0, 'testMap', testBounds, undefined);
         const testSpot: Spot = new Spot(0, 'testSpot', testCoord, undefined, undefined, undefined, undefined);
         // 登録前の判定
-        expect(testMap.hasParentSpot()).toBe(false);
+        expect(testMap.hasParentSpot(testSpot)).toBe(false);
         // 登録後の判定
         (testMap as any).parentSpot = testSpot;
-        expect(testMap.hasParentSpot()).toBe(true);
+        expect(testMap.hasParentSpot(testSpot)).toBe(true);
     });
 
     it('getFloorNameでfloorNameを取得する',() => {
