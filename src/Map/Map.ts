@@ -41,10 +41,6 @@ export default class Map {
      */
     public searchSpot(id: number): Spot | null {
         for (const spot of this.spots) {
-            // 自身の子が該当するかチェック
-            if (spot.getId() === id) {
-                return spot;
-            }
             // 子孫が該当するかチェック
             const foundSpot: Spot | null = spot.searchSpot(id);
             if (foundSpot === null) {

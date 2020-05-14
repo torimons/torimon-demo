@@ -65,10 +65,6 @@ export default class Spot {
      */
     public searchMap(id: number): Map | null {
         for (const map of this.detailMaps) {
-            // 自身の子マップを探す
-            if (map.getId() === id) {
-                return map;
-            }
             // 子孫が該当するかチェック
             const foundMap: Map | null = map.searchMap(id);
             if (foundMap === null) {

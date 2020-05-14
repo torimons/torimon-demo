@@ -39,7 +39,7 @@ describe('Mapクラス，searchSpot', () => {
         const targetSpot = new Spot(targetId, 'targetSpot', testCoord);
         // 親子関係を追加
         (map as any).spots = [childSpot];
-        // SpotクラスのsearchSpotをモック
+        // searchSpotをモック
         childSpot.searchSpot = jest.fn(() => {
             return targetSpot;
         });
