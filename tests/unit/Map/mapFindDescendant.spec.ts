@@ -1,7 +1,7 @@
 import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot.ts';
 
-describe('Mapクラス，findDescendantSpot', () => {
+describe('Mapクラス，searchSpot', () => {
     let map;
     const testBounds = {
         topL: {lat: 0, lng: 0},
@@ -9,17 +9,17 @@ describe('Mapクラス，findDescendantSpot', () => {
     };
     const testCoord = { lat: 0, lng: 0 };
 
-    it('子スポットがないor見つからない場合にnullを返す', () => {
+    it('Mapに子スポットがないor見つからない場合にnullを返す', () => {
         const searchId = 0;
-        // 子スポットなしの時
+        // 子スポットがない場合
         map = new Map(0, 'testMap', testBounds);
-        expect(map.findDescendantSpot(searchId)).toBe(null);
+        expect(map.searchSpot(searchId)).toBe(null);
 
-        // 見つからない場合
+        // 子スポットはあるが，検索対象が見つからない場合
         const notTargetId = 999;
         const notTargetSpot = new Spot(notTargetId, 'notTargetSpot', testCoord);
-        map.addSpots([notTargetSpot]);
-        expect(map.findDescendantSpot(searchId)).toBe(null);
+        (map as any).spots = [notTargetSpot]; // 子供に追加
+        expect(map.searchSpot(searchId)).toBe(null);
     });
 
     it('検索対象スポットが子スポットに存在する場合にそのスポットを返す', () => {
@@ -27,13 +27,64 @@ describe('Mapクラス，findDescendantSpot', () => {
         map = new Map(0, 'testMap', testBounds);
         // 検索したいスポット生成，登録
         const targetSpot = new Spot(targetId, 'targetSpot', testCoord);
-        map.addSpots([targetSpot]);
-        expect(map.findDescendantSpot(targetId)).toBe(targetSpot);
+        (map as any).spots = [targetSpot]; // 子供に追加
+        expect(map.searchSpot(targetId)).toBe(targetSpot);
+    });
+
+    it('検索対象スポットが子スポットの子孫に存在する場合にそのスポットを返す', () => {
+        // ひ孫に検索対象がある
+        const targetId = 999;
+        map = new Map(0, 'testMap', testBounds);
+        const childSpot = new Spot(1, 'childSpot', testCoord);
+        const targetSpot = new Spot(targetId, 'targetSpot', testCoord);
+        // 親子関係を追加
+        (map as any).spots = [childSpot];
+        // SpotクラスのsearchSpotをモック
+        childSpot.searchSpot = jest.fn(() => {
+            return targetSpot;
+        });
+        expect(map.searchSpot(targetId)).toBe(targetSpot);
     });
 });
 
-describe('Mapクラス，findDescendantMap', () => {
-    it.skip('placeholder', () => {
-        // do nothing
+describe('Mapクラス，searchMap', () => {
+    let map;
+    const testBounds = {
+        topL: {lat: 0, lng: 0},
+        botR: {lat: 0, lng: 0},
+    };
+    const testCoord = { lat: 0, lng: 0 };
+
+    it('検索対象が見つからない場合nullを返す', () => {
+        // 子スポットがない場合，null
+        const searchId = 999;
+        map = new Map(0, 'testMap', testBounds);
+        expect(map.searchMap(searchId)).toBe(null);
+
+        // スポットは存在するが，見つからない場合
+        map = new Map(0, 'testMap', testBounds);
+        const childSpot = new Spot(0, 'childSpot', testCoord);
+        (map as any).spots = [childSpot]; // 子供に追加
+        // 見つからない
+        childSpot.searchMap = jest.fn(() => {
+            return null;
+        });
+        expect(map.searchMap(searchId)).toBe(null);
+    });
+
+    it('Mapの子スポットの子孫に検索対象マップが存在する場合', () => {
+        const targetId = 999;
+        // ルートマップ
+        map = new Map(0, 'testMap', testBounds);
+        // 検索対象マップ
+        const targetMap = new Map(targetId, 'targetMap', testBounds);
+        // ルートマップの子スポット
+        const childSpot = new Spot(0, 'childSpot', testCoord);
+        (map as any).spots = [childSpot]; // 子供に追加
+        // スポット側のsearchMapをモックして検索対象マップを返すように
+        childSpot.searchMap = jest.fn(() => {
+            return targetMap;
+        });
+        expect(map.searchMap(targetId)).toBe(targetMap);
     });
 });

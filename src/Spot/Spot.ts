@@ -42,10 +42,14 @@ export default class Spot {
      * @params id 指定するid
      * @returns 該当するスポット，またはnull
      */
-    public findDescendantSpot(id: number): Spot | null {
+    public searchSpot(id: number): Spot | null {
+        // 自分自身が該当するかチェック
+        if (this.id === id) {
+            return this;
+        }
         // 自身の子マップの子孫を探す
         for (const map of this.detailMaps) {
-            const foundSpot: Spot | null = map.findDescendantSpot(id);
+            const foundSpot: Spot | null = map.searchSpot(id);
             if (foundSpot === null) {
                 continue;
             }
@@ -59,14 +63,14 @@ export default class Spot {
      * @params id 指定するid
      * @returns 該当するマップ，またはnull
      */
-    public findDescendantMap(id: number): Map | null {
+    public searchMap(id: number): Map | null {
         for (const map of this.detailMaps) {
             // 自身の子マップを探す
             if (map.getId() === id) {
                 return map;
             }
             // 子孫が該当するかチェック
-            const foundMap: Map | null = map.findDescendantMap(id);
+            const foundMap: Map | null = map.searchMap(id);
             if (foundMap === null) {
                 continue;
             }
