@@ -19,4 +19,12 @@ describe('Spotクラスの詳細マップ登録のテスト', () => {
         spot.addDetailMaps(testDetailMaps);
         expect((spot as any).detailMaps).toStrictEqual(testDetailMaps);
     });
+
+    it('詳細マップ追加時にlastViewedDetailMapが初期化されていない場合初期化される', () => {
+        spot = new Spot(0, 'testSpot', testCoord);
+        const testDetailMaps: Map[] = [new Map(0, 'testMap', testBounds)];
+        // 登録
+        spot.addDetailMaps(testDetailMaps);
+        expect(spot.getLastViewedDetailMap()).toStrictEqual(testDetailMaps[0]);
+    });
 });
