@@ -50,10 +50,9 @@ export default class Spot {
         // 自身の子マップの子孫を探す
         for (const map of this.detailMaps) {
             const foundSpot: Spot | null = map.findSpot(id);
-            if (foundSpot === null) {
-                continue;
+            if (foundSpot !== null) {
+                return foundSpot;
             }
-            return foundSpot;
         }
         return null;
     }
@@ -67,10 +66,9 @@ export default class Spot {
         for (const map of this.detailMaps) {
             // 子孫が該当するかチェック
             const foundMap: Map | null = map.findMap(id);
-            if (foundMap === null) {
-                continue;
+            if (foundMap !== null) {
+                return foundMap;
             }
-            return foundMap;
         }
         return null;
     }
