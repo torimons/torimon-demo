@@ -9,16 +9,16 @@ describe('Mapクラス，findSpot', () => {
     const testCoord = { lat: 0, lng: 0 };
 
     it('Mapに子スポットがないor見つからない場合にnullを返す', () => {
-        const searchId = 0;
+        const targetId = 0;
         // 子スポットがない場合
         const map = new Map(0, 'testMap', testBounds);
-        expect(map.findSpot(searchId)).toBe(null);
+        expect(map.findSpot(targetId)).toBe(null);
 
         // 子スポットはあるが，検索対象が見つからない場合
         const notTargetId = 999;
         const notTargetSpot = new Spot(notTargetId, 'notTargetSpot', testCoord);
         (map as any).spots = [notTargetSpot]; // 子供に追加
-        expect(map.findSpot(searchId)).toBe(null);
+        expect(map.findSpot(targetId)).toBe(null);
     });
 
     it('検索対象スポットが子スポットに存在する場合にそのスポットを返す', () => {
@@ -55,9 +55,9 @@ describe('Mapクラス，findMap', () => {
 
     it('検索対象が見つからない場合nullを返す', () => {
         // 子スポットがない場合，null
-        const searchId = 999;
+        const targetId = 999;
         const map = new Map(0, 'testMap', testBounds);
-        expect(map.findMap(searchId)).toBe(null);
+        expect(map.findMap(targetId)).toBe(null);
 
         // スポットは存在するが，見つからない場合
         const childSpot = new Spot(0, 'childSpot', testCoord);
@@ -66,7 +66,7 @@ describe('Mapクラス，findMap', () => {
         childSpot.findMap = jest.fn(() => {
             return null;
         });
-        expect(map.findMap(searchId)).toBe(null);
+        expect(map.findMap(targetId)).toBe(null);
     });
 
     it('Mapの子スポットの子孫に検索対象マップが存在する場合', () => {
