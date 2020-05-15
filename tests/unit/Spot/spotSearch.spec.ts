@@ -1,7 +1,7 @@
 import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot.ts';
 
-describe('Spotクラス，searchMap', () => {
+describe('Spotクラス，findMap', () => {
     let spot;
     const testBounds = {
         topL: {lat: 0, lng: 0},
@@ -13,13 +13,13 @@ describe('Spotクラス，searchMap', () => {
         const searchId = 0;
         // 子マップなしの時
         spot = new Spot(0, 'testSpot', testCoord);
-        expect(spot.searchMap(searchId)).toBe(null);
+        expect(spot.findMap(searchId)).toBe(null);
 
         // 子マップはあるが、検索対象が見つからない場合
         const notTargetId = 999;
         const notTargetMap = new Map(notTargetId, 'notTargetMap', testBounds);
         spot.addDetailMaps([notTargetMap]);
-        expect(spot.searchMap(searchId)).toBe(null);
+        expect(spot.findMap(searchId)).toBe(null);
     });
 
     it('検索対象マップが子マップに存在する場合にそのマップを返す', () => {
@@ -28,25 +28,25 @@ describe('Spotクラス，searchMap', () => {
         // 検索したいスポット生成，登録
         const targetMap = new Map(targetId, 'targetMap', testBounds);
         spot.addDetailMaps([targetMap]);
-        expect(spot.searchMap(targetId)).toBe(targetMap);
+        expect(spot.findMap(targetId)).toBe(targetMap);
     });
 
     it('検索対象マップが孫スポットに存在する場合にそのマップを返す', () => {
-        // MapクラスのsearchMapをモック
+        // MapクラスのfindMapをモック
         const targetId = 999;
         spot = new Spot(0, 'testMap', testCoord);
         const targetMap = new Map(999, 'targetMap', testBounds);
         const childMap = new Map(0, 'detailMap', testBounds);
         (spot as any).detailMaps = [childMap];
-        // MapクラスのsearchMapをモック
-        childMap.searchMap = jest.fn(() => {
+        // MapクラスのfindMapをモック
+        childMap.findMap = jest.fn(() => {
             return targetMap;
         });
-        expect(spot.searchMap(targetId)).toBe(targetMap);
+        expect(spot.findMap(targetId)).toBe(targetMap);
     });
 });
 
-describe('Spotクラス，searchSpot', () => {
+describe('Spotクラス，findSpot', () => {
     let spot;
     const testBounds = {
         topL: {lat: 0, lng: 0},
@@ -57,7 +57,7 @@ describe('Spotクラス，searchSpot', () => {
     it('検索対象が見つからない場合nullを返す', () => {
         const searchId = 0;
         spot = new Map(0, 'testMap', testBounds);
-        expect(spot.searchSpot(searchId)).toBe(null);
+        expect(spot.findSpot(searchId)).toBe(null);
     });
 
     it('Spotの子マップの子孫に検索対象スポットが存在する場合', () => {
@@ -69,10 +69,10 @@ describe('Spotクラス，searchSpot', () => {
         // ルートマップの孫スポット
         const targetSpot = new Spot(targetId, 'targetSpot', testCoord);
         (childMap as any).spots = [targetSpot];
-        // スポット側のsearchMapをモックして検索対象マップを返すように
-        targetSpot.searchMap = jest.fn(() => {
+        // スポット側のfindMapをモックして検索対象マップを返すように
+        targetSpot.findMap = jest.fn(() => {
             return childMap;
         });
-        expect(spot.searchSpot(targetId)).toBe(targetSpot);
+        expect(spot.findSpot(targetId)).toBe(targetSpot);
     });
 });
