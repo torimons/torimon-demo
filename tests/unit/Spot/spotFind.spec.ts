@@ -2,7 +2,6 @@ import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot.ts';
 
 describe('Spotクラス，findMap', () => {
-    let spot;
     const testBounds = {
         topL: {lat: 0, lng: 0},
         botR: {lat: 0, lng: 0},
@@ -10,21 +9,21 @@ describe('Spotクラス，findMap', () => {
     const testCoord = { lat: 0, lng: 0 };
 
     it('子マップがないor見つからない場合にnullを返す', () => {
-        const searchId = 0;
+        const targetId = 0;
         // 子マップなしの時
-        spot = new Spot(0, 'testSpot', testCoord);
-        expect(spot.findMap(searchId)).toBe(null);
+        const spot = new Spot(0, 'testSpot', testCoord);
+        expect(spot.findMap(targetId)).toBe(null);
 
         // 子マップはあるが、検索対象が見つからない場合
         const notTargetId = 999;
         const notTargetMap = new Map(notTargetId, 'notTargetMap', testBounds);
         spot.addDetailMaps([notTargetMap]);
-        expect(spot.findMap(searchId)).toBe(null);
+        expect(spot.findMap(targetId)).toBe(null);
     });
 
     it('検索対象マップが子マップに存在する場合にそのマップを返す', () => {
         const targetId = 0;
-        spot = new Spot(0, 'testMap', testCoord);
+        const spot = new Spot(0, 'testMap', testCoord);
         // 検索したいスポット生成，登録
         const targetMap = new Map(targetId, 'targetMap', testBounds);
         spot.addDetailMaps([targetMap]);
@@ -34,7 +33,7 @@ describe('Spotクラス，findMap', () => {
     it('検索対象マップが孫スポットに存在する場合にそのマップを返す', () => {
         // MapクラスのfindMapをモック
         const targetId = 999;
-        spot = new Spot(0, 'testMap', testCoord);
+        const spot = new Spot(0, 'testMap', testCoord);
         const targetMap = new Map(999, 'targetMap', testBounds);
         const childMap = new Map(0, 'detailMap', testBounds);
         (spot as any).detailMaps = [childMap];
@@ -47,7 +46,6 @@ describe('Spotクラス，findMap', () => {
 });
 
 describe('Spotクラス，findSpot', () => {
-    let spot;
     const testBounds = {
         topL: {lat: 0, lng: 0},
         botR: {lat: 0, lng: 0},
@@ -55,14 +53,14 @@ describe('Spotクラス，findSpot', () => {
     const testCoord = { lat: 0, lng: 0 };
 
     it('検索対象が見つからない場合nullを返す', () => {
-        const searchId = 0;
-        spot = new Map(0, 'testMap', testBounds);
-        expect(spot.findSpot(searchId)).toBe(null);
+        const targetId = 0;
+        const spot = new Map(0, 'testMap', testBounds);
+        expect(spot.findSpot(targetId)).toBe(null);
     });
 
     it('Spotの子マップの子孫に検索対象スポットが存在する場合', () => {
         const targetId = 999;
-        spot = new Spot(0, 'testMap', testCoord);
+        const spot = new Spot(0, 'testMap', testCoord);
         // 検索対象マップ
         const childMap = new Map(0, 'childMap', testBounds);
         (spot as any).detailMaps = [childMap];
