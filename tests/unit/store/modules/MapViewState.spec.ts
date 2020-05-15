@@ -4,7 +4,7 @@ import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot.ts';
 import { createMapInstance, createSpotInstance, toMapTree } from '@/store/modules/MapViewModule/MapViewState.ts';
 
-describe('MapViewState.tsのテスト', () => {
+describe('初期化に利用する関数のテスト', () => {
     it('createMapInstanceがMap型を返す', () => {
         const testRawMap = testMapViewState3.maps;
         const testRawMapData = testRawMap[1];
@@ -39,14 +39,29 @@ describe('MapViewState.tsのテスト', () => {
         };
         expect(actualSpotProperties).toStrictEqual(expectedSpotProperties);
     });
+});
 
-    it('toMapTreeがRawMapを受け取ってMap型の木構造を返す', () => {
-        const testMapData: RawMap[] = testMapViewState3.maps;
-        const actualRootMap: Map = toMapTree(testMapData);
-        const expectRawMap = testMapViewState3.maps;
-        const expectRootMapData = expectRawMap[0];
+describe('地図データ初期化のテスト', () => {
+    /**
+     * テストデータの構造は以下の通り。
+     * rootMap(id:0) -> rootSpot(id:0) -> detailMap(id:1) -> detailSpot(id:0)
+     * Mapインスタンス、Spotインスタンスそれぞれについてプロパティを検証する。
+     */
+    const testMapData: RawMap[] = testMapViewState3.maps;
+    // rootMap
+    const actualRootMap: Map = toMapTree(testMapData);
+    const expectRootMapData = testMapData[0];
+    // rootSpot
+    const actualRootSpot = (actualRootMap as any).spots[0];
+    const expectedRootSpotData = expectRootMapData.spots[0];
+    // detailMap
+    const actualDetailMap = (actualRootMap as any).spots[0].detailMaps[0];
+    const expectDetailMapData = testMapData[1];
+    // detailSpot
+    const actualDetailSpot = actualDetailMap.spots[0];
+    const expectedDetailSpotData = expectDetailMapData.spots[0];
 
-        // rootMapのプロパティ検証
+    it('rootMapのプロパティ検証', () => {
         const actualRootMapProperties = {
             id: (actualRootMap as any).id,
             name: (actualRootMap as any).name,
@@ -64,31 +79,29 @@ describe('MapViewState.tsのテスト', () => {
             spotsNum: 1,
         };
         expect(actualRootMapProperties).toStrictEqual(expectedRootMapProperties);
+    });
 
-        // rootMapのSpotのプロパティ検証
-        const actualSpot = (actualRootMap as any).spots[0];
-        const actualSpotProperties = {
-            id: actualSpot.id,
-            name: actualSpot.name,
-            coordinate: actualSpot.coordinate,
-            floorName: actualSpot.floorName,
-            parentMapName: actualSpot.parentMap.name,
-            detailMapNum: actualSpot.detailMaps.length,
+    it('rootMapが持つSpotのプロパティ検証', () => {
+        const actualRootSpotProperties = {
+            id: actualRootSpot.id,
+            name: actualRootSpot.name,
+            coordinate: actualRootSpot.coordinate,
+            floorName: actualRootSpot.floorName,
+            parentMapName: actualRootSpot.parentMap.name,
+            detailMapNum: actualRootSpot.detailMaps.length,
         };
-        const expectedSpot = expectRootMapData.spots[0];
-        const expectedSpotProperties = {
-            id: expectedSpot.id,
-            name: expectedSpot.name,
-            coordinate: expectedSpot.coordinate,
+        const expectedRootSpotDataProperties = {
+            id: expectedRootSpotData.id,
+            name: expectedRootSpotData.name,
+            coordinate: expectedRootSpotData.coordinate,
             floorName: undefined,
             parentMapName: 'Kyudai',
             detailMapNum: 1,
         };
-        expect(actualSpotProperties).toStrictEqual(expectedSpotProperties);
+        expect(actualRootSpotProperties).toStrictEqual(expectedRootSpotDataProperties);
+    });
 
-        // detailMapのプロパティ検証
-        const actualDetailMap = (actualRootMap as any).spots[0].detailMaps[0];
-        const expectDetailMapData = expectRawMap[1];
+    it('detailMapのプロパティ検証', () => {
         const actualDetailMapProperties = {
             id: actualDetailMap.id,
             name: actualDetailMap.name,
@@ -106,9 +119,9 @@ describe('MapViewState.tsのテスト', () => {
             spotsNum: 1,
         };
         expect(actualDetailMapProperties).toStrictEqual(expectedDetailMapProperties);
+    });
 
-        // detailMapのSpotのプロパティ検証
-        const actualDetailSpot = actualDetailMap.spots[0];
+    it('detailMapが持つSpotのプロパティ検証', () => {
         const actualDetailSpotProperties = {
             id: actualDetailSpot.id,
             name: actualDetailSpot.name,
@@ -117,15 +130,14 @@ describe('MapViewState.tsのテスト', () => {
             parentMapName: actualDetailSpot.parentMap.name,
             detailMapNum: actualDetailSpot.detailMaps.length,
         };
-        const expectedDetailSpot = expectDetailMapData.spots[0];
-        const expectedDetailSpotProperties = {
-            id: expectedDetailSpot.id,
-            name: expectedDetailSpot.name,
-            coordinate: expectedDetailSpot.coordinate,
+        const expectedDetailSpotDataProperties = {
+            id: expectedDetailSpotData.id,
+            name: expectedDetailSpotData.name,
+            coordinate: expectedDetailSpotData.coordinate,
             floorName: '1F',
             parentMapName: 'SougouGakusyuPlaza_1F',
             detailMapNum: 0,
         };
-        expect(actualDetailSpotProperties).toStrictEqual(expectedDetailSpotProperties);
+        expect(actualDetailSpotProperties).toStrictEqual(expectedDetailSpotDataProperties);
     });
 });
