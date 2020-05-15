@@ -13,14 +13,14 @@ export default class Map {
 
     /**
      * 自身のidを返す
-     * @returns id 自身のid
+     * @return id 自身のid
      */
     public getId(): number {
         return this.id;
     }
 
     /** 親スポットをセットする
-     * @params セットする親スポット
+     * @param セットする親スポット
      */
     public setParentSpot(parentSpot: Spot) {
         this.parentSpot = parentSpot;
@@ -28,7 +28,7 @@ export default class Map {
 
     /**
      * スポットを追加する
-     * @params 追加するスポット
+     * @param 追加するスポット
      */
     public addSpots(spots: Spot[]) {
         this.spots = this.spots.concat(spots);
@@ -36,12 +36,11 @@ export default class Map {
 
     /**
      * 指定したidをもつ子孫スポットを探す
-     * @params id 指定するid
-     * @returns 該当するスポット，またはnull
+     * @param id 指定するid
+     * @return 該当するスポット，またはnull
      */
     public findSpot(id: number): Spot | null {
         for (const spot of this.spots) {
-            // 子孫が該当するかチェック
             const foundSpot: Spot | null = spot.findSpot(id);
             if (foundSpot !== null) {
                 return foundSpot;
@@ -52,17 +51,15 @@ export default class Map {
 
     /**
      * 指定したidをもつ子孫マップを探す
-     * @params id 指定するid
-     * @returns 該当するマップ，またはnull
+     * @param id 指定するid
+     * @return 該当するマップ，またはnull
      */
     public findMap(id: number): Map | null {
-        // 自分自身が該当するかチェック
         if (this.id === id) {
             return this;
         }
-        // 自身の子スポットの子孫を探す
         for (const spot of this.spots) {
-            const foundMap = spot.findMap(id);
+            const foundMap: Map | null = spot.findMap(id);
             if (foundMap !== null) {
                 return foundMap;
             }
