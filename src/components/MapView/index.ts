@@ -1,6 +1,6 @@
 import { Component, Vue, Watch} from 'vue-property-decorator';
 import { mapViewGetters, mapViewMutations, store } from '@/store';
-import { SpotForMap, Coordinate, Bounds, Spot, DisplayLevelType } from '@/store/types';
+import { SpotForMap, Coordinate, Bounds, RawSpot, DisplayLevelType } from '@/store/types';
 import 'leaflet/dist/leaflet.css';
 import L, { Marker } from 'leaflet';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
@@ -166,7 +166,7 @@ export default class MapView extends Vue {
     private updateIdOfCenterSpotInRootMap(e: L.LeafletEvent): void {
         const centerPos: Coordinate = this.map.getCenter();
         const mapIndex: number = mapViewGetters.maps.findIndex((m) => m.id === mapViewGetters.rootMapId);
-        const spots: Spot[] = mapViewGetters.maps[mapIndex].spots;
+        const spots: RawSpot[] = mapViewGetters.maps[mapIndex].spots;
         const nearestSpotId: number = this.getNearestSpotId(centerPos, spots);
         // 距離のチェック
         const isNear: boolean = this.twoPointsIsNear(centerPos, spots[nearestSpotId].coordinate);
@@ -183,10 +183,10 @@ export default class MapView extends Vue {
      * @param spots 基準点と比較したいスポットの配列
      * @return nearestSpotId 基準点に一番近いスポットのId
      */
-    private getNearestSpotId(basePoint: Coordinate, spots: Spot[]): number {
-        const spotPositions: Coordinate[] = spots.map((s: Spot) => s.coordinate);
+    private getNearestSpotId(basePoint: Coordinate, spots: RawSpot[]): number {
+        const spotPositions: Coordinate[] = spots.map((s: RawSpot) => s.coordinate);
         const nearestSpotPos: GeolibInputCoordinates = findNearest(basePoint, spotPositions);
-        const nearestSpotIndex: number = spots.findIndex((s: Spot) => s.coordinate === nearestSpotPos);
+        const nearestSpotIndex: number = spots.findIndex((s: RawSpot) => s.coordinate === nearestSpotPos);
         const nearestSpotId: number = spots[nearestSpotIndex].id;
         return nearestSpotId;
     }
@@ -290,7 +290,7 @@ export default class MapView extends Vue {
                 if (spot.mapId !== mapViewGetters.rootMapId) {
                     zoomLevel = this.zoomLevelThreshold + 0.5;
                 }
-                const spotToDisplayInMapCenter: Spot
+                const spotToDisplayInMapCenter: RawSpot
                     = mapViewGetters.getSpotById({parentMapId: spot.mapId, spotId: spot.spotId});
                 const parentSpotId: number | null = mapViewGetters.findParentSpotId(spot);
                 if (parentSpotId !== null) {
