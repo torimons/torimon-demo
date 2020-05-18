@@ -15,8 +15,15 @@ export default class Spot {
     }
 
     /**
+     * 自身のidを返す
+     * @return id 自身のid
+     */
+    public getId(): number {
+        return this.id;
+    }
+
+    /**
      * 親mapをセットし,セットしたmapの子spotに自身を追加する.
-     * すでにセット済みであればセットしない。
      * @param parentMap セットする親map
      */
     public setParentMap(parentMap: Map): void {
@@ -59,5 +66,38 @@ export default class Spot {
      */
     public hasDetailMap(detailMap: Map): boolean {
         return this.detailMaps.includes(detailMap);
+    }
+
+    /**
+     * 指定したidをもつ子孫スポットを探す
+     * @param id 指定するid
+     * @return 該当するスポット，またはnull
+     */
+    public findSpot(id: number): Spot | null {
+        if (this.id === id) {
+            return this;
+        }
+        for (const map of this.detailMaps) {
+            const foundSpot: Spot | null = map.findSpot(id);
+            if (foundSpot !== null) {
+                return foundSpot;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 指定したidをもつ子孫マップを探す
+     * @param id 指定するid
+     * @return 該当するマップ，またはnull
+     */
+    public findMap(id: number): Map | null {
+        for (const map of this.detailMaps) {
+            const foundMap: Map | null = map.findMap(id);
+            if (foundMap !== null) {
+                return foundMap;
+            }
+        }
+        return null;
     }
 }
