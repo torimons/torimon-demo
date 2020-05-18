@@ -1,5 +1,5 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { Map, Spot } from '@/store/types';
+import { RawMap, RawSpot } from '@/store/types';
 import { mapViewGetters, mapViewMutations } from '@/store';
 import Search from '@/utils/Search';
 import SearchBox from '@/components/SearchBox/index.vue';
@@ -14,15 +14,15 @@ import SpotList from '@/components/SpotList/index.vue';
 export default class SpotSearch extends Vue {
     private searchWord: string = '';
     private spotListIsVisible: boolean = false;
-    private targetSpots: Spot[] = [];
-    private spotSearchResults: Spot[] = [];
+    private targetSpots: RawSpot[] = [];
+    private spotSearchResults: RawSpot[] = [];
     private search!: Search;
     private backgroundColor: 'transparent' | 'white' = 'transparent';
 
     public mounted() {
         // 全てのマップからスポットを取得，一つの配列に結合する
-        mapViewGetters.maps.map((map: Map) => map.spots)
-            .forEach((spots: Spot[]) => this.targetSpots = this.targetSpots.concat(spots));
+        mapViewGetters.maps.map((map: RawMap) => map.spots)
+            .forEach((spots: RawSpot[]) => this.targetSpots = this.targetSpots.concat(spots));
         // 上で取得したspotを検索対象にセットしたSearchクラスのインスタンス作成
         this.search = new Search(this.targetSpots);
     }

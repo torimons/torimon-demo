@@ -19,19 +19,57 @@ export default class Map {
         return this.id;
     }
 
-    /** 親スポットをセットする
-     * @param セットする親スポット
+    /**
+     * 親spotをセットし,セットしたspotのdetailMapに自身を追加する.
+     * @param parentSpot セットする親スポット
      */
-    public setParentSpot(parentSpot: Spot) {
+    public setParentSpot(parentSpot: Spot): void {
+        if (this.hasParentSpot(parentSpot)) {
+            return;
+        }
         this.parentSpot = parentSpot;
+        parentSpot.addDetailMaps([this]);
     }
 
     /**
-     * スポットを追加する
-     * @param 追加するスポット
+     * spotを追加し,追加したspotのparentMapとして自身をセットする.
+     * すでに追加済みであれば追加しない.
+     * @param spots 追加するspotの配列
      */
-    public addSpots(spots: Spot[]) {
-        this.spots = this.spots.concat(spots);
+    public addSpots(spots: Spot[]): void {
+        for (const spot of spots) {
+            if (this.hasSpot(spot)) {
+                continue;
+            }
+            this.spots.push(spot);
+            spot.setParentMap(this);
+        }
+    }
+
+    /**
+     * parentSpotとして引数のspotを持っているか判定する
+     * @param spot 判定対象のspot
+     * @return spotがparentSpotであるならばtrue, そうでなければfalse
+     */
+    public hasParentSpot(spot: Spot): boolean {
+        return this.parentSpot === spot;
+    }
+
+    /**
+     * spotがすでに登録済みかを判定する
+     * @param spot 判定対象のspot
+     * @return すでに登録済みならtrue, 未登録ならばfalse
+     */
+    public hasSpot(spot: Spot): boolean {
+        return this.spots.includes(spot);
+    }
+
+    /**
+     * floorNameを返す
+     * @return 階層名
+     */
+    public getFloorName(): string | undefined {
+        return this.floorName;
     }
 
     /**

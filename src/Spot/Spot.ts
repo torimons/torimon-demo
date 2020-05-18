@@ -24,23 +24,44 @@ export default class Spot {
     }
 
     /**
-     * 親マップをセットする
-     * @param parentMap セットする親マップ
+     * 親mapをセットし,セットしたmapの子spotに自身を追加する.
+     * @param parentMap セットする親map
      */
-    public setParentMap(parentMap: Map) {
+    public setParentMap(parentMap: Map): void {
+        if (this.hasParentMap(parentMap)) {
+            return;
+        }
         this.parentMap = parentMap;
+        this.floorName = parentMap.getFloorName();
+        parentMap.addSpots([this]);
     }
 
     /**
-     * 詳細マップを追加する
+     * 詳細mapを追加し,追加した詳細mapにparentSpotとして自身をセットする.
+     * すでに追加済みであれば追加しない.
      * @param detailMaps 追加する詳細マップの配列
      */
-    public addDetailMaps(detailMaps: Map[]) {
-        this.detailMaps = this.detailMaps.concat(detailMaps);
+    public addDetailMaps(detailMaps: Map[]): void {
+        for (const detailMap of detailMaps) {
+            if (this.hasDetailMap(detailMap)) {
+                continue;
+            }
+            this.detailMaps.push(detailMap);
+            detailMap.setParentSpot(this);
+        }
         // lastViewedDetailMapの初期化
         if (this.lastViewedDetailMap === undefined && detailMaps.length > 0) {
             this.lastViewedDetailMap = detailMaps[0];
         }
+    }
+
+    /**
+     * parentMapとして引数のmapを持っているか判定する
+     * @param map 判定対象のmap
+     * @return mapがparentMapであるならばtrue, そうでなければfalse
+     */
+    public hasParentMap(map: Map): boolean {
+        return this.parentMap === map;
     }
 
     /**
@@ -57,6 +78,15 @@ export default class Spot {
      */
     public setLastViewedDetailMap(lastViewedDetailMap: Map): void {
         this.lastViewedDetailMap = lastViewedDetailMap;
+    }
+
+    /**
+     * 詳細mapがすでに登録済みかを判定する
+     * @param detailMap 判定対象のmap
+     * @return すでに登録済みならtrue, 未登録ならばfalse
+     */
+    public hasDetailMap(detailMap: Map): boolean {
+        return this.detailMaps.includes(detailMap);
     }
 
     /**
