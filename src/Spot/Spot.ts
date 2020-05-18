@@ -4,6 +4,7 @@ import Map from '@/Map/Map.ts';
 export default class Spot {
     private parentMap: Map | undefined = undefined;
     private detailMaps: Map[] = [];
+    private lastViewedDetailMap: Map | undefined = undefined;
 
     constructor(private id: number,
                 private name: string,
@@ -48,6 +49,10 @@ export default class Spot {
             this.detailMaps.push(detailMap);
             detailMap.setParentSpot(this);
         }
+        // lastViewedDetailMapの初期化
+        if (this.lastViewedDetailMap === undefined && detailMaps.length > 0) {
+            this.lastViewedDetailMap = detailMaps[0];
+        }
     }
 
     /**
@@ -57,6 +62,22 @@ export default class Spot {
      */
     public hasParentMap(map: Map): boolean {
         return this.parentMap === map;
+    }
+
+    /**
+     * 最後に表示された詳細マップを返す
+     * @return 最後に表示された詳細マップ
+     */
+    public getLastViewedDetailMap(): Map | undefined {
+        return this.lastViewedDetailMap;
+    }
+
+    /**
+     * 最後に表示された詳細マップを更新する
+     * @param lastViewedDetailMap 最後に表示された詳細マップ
+     */
+    public setLastViewedDetailMap(lastViewedDetailMap: Map): void {
+        this.lastViewedDetailMap = lastViewedDetailMap;
     }
 
     /**
