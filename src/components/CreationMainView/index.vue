@@ -1,15 +1,17 @@
 <template>
-    <div id="creation-map-view">
-      
+    <div id="creation-main-view">
+      <CreationMapView/>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import CreationMapView from '@/components/CreationMapView/index.vue';
+
 
 @Component({
     components: {
-        
+        CreationMapView,
     },
 })
 export default class CreationMainView extends Vue {
