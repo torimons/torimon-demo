@@ -3,14 +3,15 @@ import { MapViewState } from './MapViewState';
 import { RawMap, RawSpot, DisplayLevelType } from '@/store/types';
 import { NoDetailMapIdInSpotError } from '@/store/errors/NoDetailMapIdInSpotError';
 import { mapViewGetters } from '@/store';
+import Map from '@/Map/Map.ts';
+import Spot from '@/Spot/Spot.ts';
 
 export class MapViewMutations extends Mutations<MapViewState> {
     /**
-     * Mapコンポーネント上でフォーカスされているスポットのIDを更新する
+     * Mapコンポーネント上でフォーカスされているスポットを更新する
      * @param newFocusedSpot 新しくフォーカスされるスポット
-     * 中にmapId, spotIdを持つ
      */
-    public setFocusedSpot(newFocusedSpot: {mapId: number, spotId: number}): void {
+    public setFocusedSpot(newFocusedSpot: Spot): void {
         this.state.focusedSpot = newFocusedSpot;
     }
 
@@ -20,30 +21,6 @@ export class MapViewMutations extends Mutations<MapViewState> {
      */
     public setSpotInfoIsVisible(newVisibleState: boolean): void {
         this.state.spotInfoIsVisible = newVisibleState;
-    }
-
-    /**
-     * 詳細マップ持ちスポットが最後に表示していた詳細マップのIdをセットする.
-     * @param detailMapId 最後に参照された詳細マップのId
-     * @param parentSpot どのマップのどのスポットかを示す情報
-     * @throw NoDetailMapIdInSpotError スポットに存在しない詳細マップをセットしようとすると例外が発生
-     */
-    public setLastViewedDetailMapId(
-        payload: {
-            detailMapId: number,
-            parentSpot: { parentMapId: number, spotId: number };
-        }): void {
-        const detailMapId = payload.detailMapId;
-        const parentMapId = payload.parentSpot.parentMapId;
-        const spotId = payload.parentSpot.spotId;
-        const spot = mapViewGetters.getSpotById({ parentMapId, spotId });
-        // detailMapIdがそのスポットに存在しない場合，例外を投げる
-        if (!spot.detailMapIds.includes(detailMapId)) {
-            throw new NoDetailMapIdInSpotError('Detail Map does not exist...');
-        }
-        const mapIndex: number = this.state.maps.findIndex((m: RawMap) => m.id === parentMapId);
-        const spotIndex: number = this.state.maps[mapIndex].spots.findIndex((s: RawSpot) => s.id === spotId);
-        this.state.maps[mapIndex].spots[spotIndex].lastViewedDetailMapId = detailMapId;
     }
 
     /**
@@ -58,11 +35,11 @@ export class MapViewMutations extends Mutations<MapViewState> {
      * - 画面上で表示されている
      * - 半径〇〇内で最も画面中央に近い
      * - 詳細マップを持っている
-     * スポットのIDを更新する
-     * @param idOfCenterSpotInRootMap 上記のスポットのID
+     * スポットを更新する
+     * @param centerSpotInRootMap 上記のスポット
      */
-    public setIdOfCenterSpotInRootMap(idOfCenterSpotInRootMap: number): void {
-        this.state.idOfCenterSpotInRootMap = idOfCenterSpotInRootMap;
+    public setCenterSpotInRootMap(centerSpotInRootMap: Spot): void {
+        this.state.centerSpotInRootMap = centerSpotInRootMap;
     }
 
     /**
@@ -72,10 +49,14 @@ export class MapViewMutations extends Mutations<MapViewState> {
      * スポットが存在していない状態にする
      */
     public setNonExistentOfCenterSpotInRootMap(): void {
-        this.state.idOfCenterSpotInRootMap = null;
+        this.state.centerSpotInRootMap = null;
     }
 
-    public setSpotToDisplayInMapCenter(spot: { mapId: number, spotId: number }): void {
+    /**
+     * 画面中央に近いspotをセットする
+     * @param spot セットしたいスポット
+     */
+    public setSpotToDisplayInMapCenter(spot: Spot): void {
         this.state.spotToDisplayInMapCenter = spot;
     }
 
@@ -85,12 +66,10 @@ export class MapViewMutations extends Mutations<MapViewState> {
      * @param mapState マップの状態
      */
     public setMapViewState(newMapViewState: MapViewState): void {
-        this.state.maps              = newMapViewState.maps;
-        this.state.rootMapId         = newMapViewState.rootMapId;
-        this.state.spotInfoIsVisible  = newMapViewState.spotInfoIsVisible;
-        this.state.focusedSpot.mapId  = newMapViewState.focusedSpot.mapId;
-        this.state.focusedSpot.spotId = newMapViewState.focusedSpot.spotId;
-        this.state.idOfCenterSpotInRootMap = newMapViewState.idOfCenterSpotInRootMap;
-        this.state.displayLevel       = newMapViewState.displayLevel;
+        this.state.rootMap             = newMapViewState.rootMap;
+        this.state.spotInfoIsVisible   = newMapViewState.spotInfoIsVisible;
+        this.state.focusedSpot         = newMapViewState.focusedSpot;
+        this.state.centerSpotInRootMap = newMapViewState.centerSpotInRootMap;
+        this.state.displayLevel        = newMapViewState.displayLevel;
     }
 }
