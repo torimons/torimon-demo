@@ -1,13 +1,19 @@
 <template>
     <div id="main-creation-view">
-      <EditorToolBar/>
+        <EditorToolBar/>
+        <CreationMapView/>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import CreationMapView from '@/components/CreationMapView/index.vue';
 
-@Component
+@Component({
+    components: {
+        CreationMapView,
+    },
+})
 export default class MainCreationView extends Vue {
 }
 </script>
@@ -23,5 +29,6 @@ body,
 
 body {
   margin: 0;
+  height: 100%;
 }
 </style>
