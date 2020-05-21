@@ -9,7 +9,7 @@ import { GeolibInputCoordinates } from 'geolib/es/types';
 import CurrentLocationMarker from '@/components/MapView/Marker/CurrentLocationMarker';
 import DefaultSpotMarker from '@/components/MapView/Marker/DefaultSpotMarker';
 import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
-
+import Map from '@/Map/Map.ts';
 
 @Component
 export default class MapView extends Vue {
@@ -28,7 +28,7 @@ export default class MapView extends Vue {
      * とりあえず地図の表示を行なっています．
      */
     public mounted() {
-        const rootMapCenter: Coordinate = this.calculateCenter(mapViewGetters.rootMapBounds);
+        const rootMapCenter: Coordinate = Map.calculateCenter(mapViewGetters.rootMapBounds);
         this.map = L.map('map').setView([rootMapCenter.lat, rootMapCenter.lng], this.defaultZoomLevel);
         this.tileLayer = L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -114,17 +114,6 @@ export default class MapView extends Vue {
                 }
             },
         );
-    }
-
-    /**
-     * 地図上の範囲から中心の座標を計算
-     * @param bounds 中心座標を計算したい地図の範囲
-     * @return 中心座標
-     */
-    private calculateCenter(bounds: Bounds): Coordinate {
-        const centerLat = (bounds.topL.lat + bounds.botR.lat) / 2;
-        const centerLng = (bounds.topL.lng + bounds.botR.lng) / 2;
-        return { lat: centerLat, lng: centerLng };
     }
 
     /**

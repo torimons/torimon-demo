@@ -1,14 +1,28 @@
 import Spot from '@/Spot/Spot.ts';
-import { Bounds } from '@/store/types';
+import { Bounds, Coordinate } from '@/store/types';
 
 export default class Map {
+    /**
+     * 地図上の範囲から中心の座標を計算
+     * TODO: 本クラスのインスタンスが現在取得できないので一時的にpublic staticにしてアクセス
+     * @param bounds 中心座標を計算したい地図の範囲
+     * @return 中心座標
+     */
+    public static calculateCenter(bounds: Bounds): Coordinate {
+        const centerLat = (bounds.topL.lat + bounds.botR.lat) / 2;
+        const centerLng = (bounds.topL.lng + bounds.botR.lng) / 2;
+        return { lat: centerLat, lng: centerLng };
+    }
+
     private parentSpot: Spot | undefined = undefined;
     private spots: Spot[] = [];
 
-    constructor(private id: number,
-                private name: string,
-                private bounds: Bounds,
-                private floorName?: string) {
+    constructor(
+        private id: number,
+        private name: string,
+        private bounds: Bounds,
+        private floorName?: string,
+    ) {
     }
 
     /**
@@ -104,4 +118,5 @@ export default class Map {
         }
         return null;
     }
+
 }

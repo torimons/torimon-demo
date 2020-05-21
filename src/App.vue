@@ -1,19 +1,19 @@
 <template>
     <div id="app">
-        <CreationMainView/>
-        <!-- <MainView/> -->
+        <!-- <CreationMainView/> -->
+        <MainView/>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-// import MainView from '@/components/MainView/index.vue';
-import CreationMainView from '@/components/CreationMainView/index.vue';
+import MainView from '@/components/MainView/index.vue';
+// import CreationMainView from '@/components/CreationMainView/index.vue';
 
 @Component({
     components: {
-        // MainView,
-        CreationMainView,
+        MainView,
+        // CreationMainView,
     },
 })
 export default class App extends Vue {}
