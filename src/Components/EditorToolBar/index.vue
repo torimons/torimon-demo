@@ -26,19 +26,13 @@
     </div>
 </template>
 
-<script lang="ts" src="index.ts">
+<script lang="ts" src="./index.ts">
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-html,
-body,
-#editor-tool-bar {
-  position: relative;
-  height: 100%;
-}
-
-body {
-  margin: 0;
+.v-btn-toggle {
+  flex-direction: column;
+  pointer-events: auto;
 }
 </style>
