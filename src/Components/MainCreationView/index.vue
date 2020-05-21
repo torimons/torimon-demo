@@ -1,6 +1,6 @@
 <template>
     <div id="main-creation-view">
-      
+      <EditorToolBar/>
     </div>
 </template>
 
