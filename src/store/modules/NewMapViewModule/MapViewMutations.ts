@@ -1,5 +1,5 @@
 import { Mutations } from 'vuex-smart-module';
-import { MapViewState } from './MapViewState';
+import { MapViewState, initMap } from './MapViewState';
 import { RawMap, RawSpot, DisplayLevelType } from '@/store/types';
 import { NoDetailMapIdInSpotError } from '@/store/errors/NoDetailMapIdInSpotError';
 import { mapViewGetters } from '@/store';
@@ -61,15 +61,15 @@ export class MapViewMutations extends Mutations<MapViewState> {
     }
 
     /**
-     * MapViewStateの情報を一括でset
-     * - 現状は単体テストの入力用の仮メソッド
-     * @param mapState マップの状態
+     * MapViewModuleにテストデータのマップをset
+     * 現状は単体テストの入力用の仮メソッド
+     * @param rawMaps テストに使用するRawMapの配列
      */
-    public setMapViewState(newMapViewState: MapViewState): void {
-        this.state.rootMap             = newMapViewState.rootMap;
-        this.state.spotInfoIsVisible   = newMapViewState.spotInfoIsVisible;
-        this.state.focusedSpot         = newMapViewState.focusedSpot;
-        this.state.centerSpotInRootMap = newMapViewState.centerSpotInRootMap;
-        this.state.displayLevel        = newMapViewState.displayLevel;
+    public setRootMapForTest(rawMaps: RawMap[]): void {
+        this.state.rootMap = initMap(rawMaps);
+        this.state.spotInfoIsVisible = false;
+        this.state.focusedSpot = undefined;
+        this.state.centerSpotInRootMap = null;
+        this.state.displayLevel = 'default';
     }
 }

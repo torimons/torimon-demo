@@ -2,7 +2,7 @@ import { RawMap } from '@/store/types';
 import { testMapViewState3 } from '../../../resources/testMapViewState3';
 import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot.ts';
-import { createMapInstance, createSpotInstance, toMapTree } from '@/store/modules/MapViewModule/MapViewState.ts';
+import { createMapInstance, createSpotInstance, initMap } from '@/store/modules/NewMapViewModule/MapViewState.ts';
 
 describe('初期化に利用する関数のテスト', () => {
     it('createMapInstanceがMap型を返す', () => {
@@ -49,7 +49,7 @@ describe('地図データ初期化のテスト', () => {
      */
     const testMapData: RawMap[] = testMapViewState3.maps;
     // rootMap
-    const actualRootMap: Map = toMapTree(testMapData);
+    const actualRootMap: Map = initMap(testMapData);
     const expectRootMapData = testMapData[0];
     // rootSpot
     const actualRootSpot = (actualRootMap as any).spots[0];
