@@ -3,7 +3,7 @@ import SpotSearch from '@/components/SpotSearch/index.vue';
 import SearchBox from '@/components/SearchBox/index.vue';
 import SpotList from '@/components/SpotList/index.vue';
 import { mapViewMutations, mapViewGetters } from '@/store';
-import Search from '@/utils/Search';
+import SearchSpot from '@/utils/SearchSpot';
 import { RawSpot } from '@/store/types';
 
 const spotsForTest: RawSpot[] = [
@@ -56,11 +56,11 @@ describe('SpotSearchコンポーネントのテスト', () => {
         wrapper.destroy();
     });
 
-    it('toggleSpotListイベントが発火するとsetSpotListIsVisibleが呼ばれる', () => {
+    it('toggleListイベントが発火するとsetSpotListIsVisibleが呼ばれる', () => {
         // 初期値はfalse
         expect(wrapper.vm.spotListIsVisible).toBe(false);
         // 子コンポーネント(SearchBox)からのemit
-        wrapper.find(SearchBox).vm.$emit('toggleSpotList', true);
+        wrapper.find(SearchBox).vm.$emit('toggleList', true);
         // trueに変わっていることを確認
         expect(wrapper.vm.spotListIsVisible).toBe(true);
         // 背景が白になっていることの確認
@@ -81,8 +81,8 @@ describe('SpotSearchコンポーネントのテスト', () => {
     it('1つ以上の検索結果がある場合SpotInfoを非表示に, 検索結果がない場合は表示にする', () => {
         // 検索対象の設定
         const targetSpotsForSearch = spotsForTest;
-        const searchObj = new Search(targetSpotsForSearch);
-        wrapper.vm.search = searchObj;
+        const searchSpotObj = new SearchSpot(targetSpotsForSearch);
+        wrapper.vm.search = searchSpotObj;
         // spotInfoIsVisibleの変更を確認するために最初はtrueをset
         mapViewMutations.setSpotInfoIsVisible(true);
         // 検索結果がある場合は非表示

@@ -1,25 +1,24 @@
-import { RawSpot } from '@/store/types';
+import { RawMap } from '@/store/types';
 
-export default class Search {
+export default class SearchMap {
+    private targetMaps: RawMap[];
 
-    private targetSpots: RawSpot[];
-
-    constructor(spots: RawSpot[]) {
-        this.targetSpots = spots;
+    constructor(targetMap: RawMap[]) {
+        this.targetMaps = targetMap;
     }
 
     /**
-     * 検索ワードを受け取って，条件にあったスポットのリストを返す．
+     * 検索ワードを受け取って，条件にあったマップのリストを返す．
      * 複数の検索ワードを受け取った場合、一致した検索ワードが多い順に結果を返す。
      * 例として、検索ワードが「'hoge', 'fuga', 'piyo'」だった場合、
      * 1. 'hoge' and 'huga' and 'piyo'に一致したもの
      * 2. 'hoge' and 'huga'に一致したもの
      * 3. 'hoge'に一致したもの
      * を順番に返す。
-     * @param keyword スポット検索ワード
-     * @return keywordにかかったスポットのリスト
+     * @param keyword マップ検索ワード
+     * @return keywordにかかったマップのリスト
      */
-    public searchSpots(keyword: string | null): RawSpot[] {
+    public searchMaps(keyword: string | null): RawMap[] {
         // 空文字チェックは、検索ボックスをバックスペース等で空にしたときに
         // 空文字による検索が走るのを防ぐために必要。
         // nullチェックは、検索ボックスの x ボタンをクリックしたときに、
@@ -28,15 +27,15 @@ export default class Search {
             return [];
         }
         const keywords: string[] = keyword.split(/\s+/).filter((word: string) => word !== '');
-        let searchResults: RawSpot[] = [];
+        let searchMapResults: RawMap[] = [];
         for (let i = keywords.length; i > 0; i--) {
             const keywordsRegExp = this.compileIntoSearchCondition(keywords.slice(0, i));
-            searchResults = searchResults.concat(
-                this.targetSpots
-                    .filter((s: RawSpot) => this.spotIsMatchToKeywords(s, keywordsRegExp)));
+            searchMapResults = searchMapResults.concat(
+                this.targetMaps
+                    .filter((m: RawMap) => this.mapIsMatchToKeywords(m, keywordsRegExp)));
         }
         // 重複を削除したものを返す
-        return searchResults.filter((x, i, self) => self.indexOf(x) === i);
+        return searchMapResults.filter((x, i, self) => self.indexOf(x) === i);
     }
 
     /**
@@ -57,20 +56,17 @@ export default class Search {
     }
 
     /**
-     * スポットが正規表現にマッチするかどうかを判定する
-     * @param spot filter対象のスポット
+     * マップが正規表現にマッチするかどうかを判定する
+     * @param map filter対象のマップ
      * @param keywordsRegExp 検索キーワードの正規表現オブジェクト
-     * @return isMatch スポットが検索ワードにマッチした場合true, マッチしなければfalse
+     * @return isMatch マップが検索ワードにマッチした場合true, マッチしなければfalse
      */
-    private spotIsMatchToKeywords(spot: RawSpot, keywordsRegExp: RegExp): boolean {
-        let target: string = spot.name;
-        if (spot.parentSpotName !== undefined) {
-            target = target + spot.parentSpotName;
-        }
-        if (spot.description !== undefined) {
-            target += spot.description;
+    private mapIsMatchToKeywords(map: RawMap, keywordsRegExp: RegExp): boolean {
+        let targetMap: string = map.name;
+        if (map.floorName !== undefined) {
+            targetMap += map.floorName;
         }
         // RegExp.test(target:str)は、targetにRegExpがマッチした場合にtrue, マッチしない場合falseを返す.
-        return keywordsRegExp.test(target);
+        return keywordsRegExp.test(targetMap);
     }
 }

@@ -1,4 +1,4 @@
-import Search from '@/utils/Search';
+import SearchSpot from '@/utils/SearchSpot';
 import { RawSpot } from '@/store/types';
 
 const spotsForTest: RawSpot[] = [
@@ -42,40 +42,40 @@ const spotsForTest: RawSpot[] = [
 
 describe('Searchクラスのテスト', () => {
     const targetSpotsForSearch = spotsForTest;
-    const searchObj = new Search(targetSpotsForSearch);
+    const searchSpotObj = new SearchSpot(targetSpotsForSearch);
 
     it('searchSpotsでスポットをキーワード検索', () => {
         // 'sougou'という文字を含んでいるスポットを検索(大文字小文字は区別しない)
         const keyword: string = 'sougou';
-        const actualResult: RawSpot[] = searchObj.searchSpots(keyword);
+        const actualResult: RawSpot[] = searchSpotObj.searchSpots(keyword);
         const expectedResult: RawSpot[] = spotsForTest;
         expect(actualResult).toStrictEqual(expectedResult);
     });
 
     it('検索ワードが空文字の場合，検索しない', () => {
         const keyword: string = '';
-        const actualResult: RawSpot[] = searchObj.searchSpots(keyword);
+        const actualResult: RawSpot[] = searchSpotObj.searchSpots(keyword);
         const expectedResult: RawSpot[] = [];
         expect(actualResult).toStrictEqual(expectedResult);
     });
 
     it('検索ワードがnullの場合，検索しない', () => {
         const keyword: null = null;
-        const actualResult: RawSpot[] = searchObj.searchSpots(keyword);
+        const actualResult: RawSpot[] = searchSpotObj.searchSpots(keyword);
         const expectedResult: RawSpot[] = [];
         expect(actualResult).toStrictEqual(expectedResult);
     });
 
-    it('複数キーワードによるor検索', () => {
+    it('複数キーワードによるスポットのor検索', () => {
         const keywords: string = 'sougou test';
-        const actualResult: RawSpot[] = searchObj.searchSpots(keywords);
+        const actualResult: RawSpot[] = searchSpotObj.searchSpots(keywords);
         const expectedResult: RawSpot[] = spotsForTest;
         expect(actualResult).toStrictEqual(expectedResult);
     });
 
     it('parentSpotNameを対象とした検索', () => {
         const keyword: string = 'sougou';
-        const actualResult: RawSpot[] = searchObj.searchSpots(keyword);
+        const actualResult: RawSpot[] = searchSpotObj.searchSpots(keyword);
         // 親スポットの名前で検索すると,親スポット自身と,parentSpotNameを設定された
         // スポットが検索結果として返る.
         const expectedResult: RawSpot[] = spotsForTest;
@@ -84,7 +84,7 @@ describe('Searchクラスのテスト', () => {
 
     it('descriptionを対象とした検索', () => {
         const keyword: string = 'comment';
-        const actualResult: RawSpot[] = searchObj.searchSpots(keyword);
+        const actualResult: RawSpot[] = searchSpotObj.searchSpots(keyword);
         const expectedResult: RawSpot[] = [spotsForTest[0]];
         expect(actualResult).toStrictEqual(expectedResult);
     });

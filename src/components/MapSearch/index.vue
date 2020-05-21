@@ -1,5 +1,5 @@
 <template>
-    <div id="spot-search">
+    <div id="map-search">
         <v-card
             tile
             flat
@@ -7,14 +7,14 @@
         >
             <SearchBox
                 @searchWordInput="setSearchWord"
-                @toggleList="setSpotListIsVisible"
+                @toggleMapList="setMapListIsVisible"
             />
-            <SpotList
-                :spotSearchResults="spotSearchResults"
-                @hideSpotList="setSpotListIsVisible"
-                v-show="spotListIsVisible"
+            <MapList
+                :mapSearchResults="mapSearchResults"
+                @hideMapList="setMapListIsVisible"
+                v-show="mapListIsVisible"
                 class="px-2 pb-2"
-            ></SpotList>
+            ></MapList>
         </v-card>
         <!-- PropでSpotListにデータを渡す -->
     </div>

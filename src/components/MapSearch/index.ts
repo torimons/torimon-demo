@@ -1,43 +1,42 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { RawMap, RawSpot } from '@/store/types';
+import { RawMap } from '@/store/types';
 import { mapViewGetters, mapViewMutations } from '@/store';
-import SearchSpot from '@/utils/SearchSpot';
+import SearchMap from '@/utils/SearchMap';
 import SearchBox from '@/components/SearchBox/index.vue';
-import SpotList from '@/components/SpotList/index.vue';
+import MapList from '@/components/MapList/index.vue';
 
 @Component({
     components: {
         SearchBox,
-        SpotList,
+        MapList,
     },
 })
-export default class SpotSearch extends Vue {
+export default class MapSearch extends Vue {
     private searchWord: string = '';
-    private spotListIsVisible: boolean = false;
-    private targetSpots: RawSpot[] = [];
-    private spotSearchResults: RawSpot[] = [];
-    private search!: SearchSpot;
+    private mapListIsVisible: boolean = false;
+    private targetMaps: RawMap[] = [];
+    private mapSearchResults: RawMap[] = [];
+    private search!: SearchMap;
     private backgroundColor: 'transparent' | 'white' = 'transparent';
 
     public mounted() {
-        // 全てのマップからスポットを取得，一つの配列に結合する
-        mapViewGetters.maps.map((map: RawMap) => map.spots)
-            .forEach((spots: RawSpot[]) => this.targetSpots = this.targetSpots.concat(spots));
+        // 全てのマップを取得，一つの配列に結合する
+        mapViewGetters.maps.map((map: RawMap) => this.targetMaps = this.targetMaps.concat(map));
         // 上で取得したspotを検索対象にセットしたSearchクラスのインスタンス作成
-        this.search = new SearchSpot(this.targetSpots);
+        this.search = new SearchMap(this.targetMaps);
     }
 
     /**
      * SpotListの描画のオンオフを切り替える
      * @param isVisible セットする値(true/false)
      */
-    public setSpotListIsVisible(isVisible: boolean) {
+    public setMapListIsVisible(isVisible: boolean) {
         if (isVisible === true) {
             this.backgroundColor = 'white';
         } else {
             this.backgroundColor = 'transparent';
         }
-        this.spotListIsVisible = isVisible;
+        this.mapListIsVisible = isVisible;
     }
 
     /**
@@ -52,14 +51,14 @@ export default class SpotSearch extends Vue {
      * searchWordの変更を検知して検索を行う
      */
     @Watch('searchWord')
-    public searchSpot(): void {
-        this.spotSearchResults = this.search.searchSpots(this.searchWord);
-        if (this.spotSearchResults.length > 0) {
-            this.setSpotListIsVisible(true);
+    public searchMap(): void {
+        this.mapSearchResults = this.search.searchMaps(this.searchWord);
+        if (this.mapSearchResults.length > 0) {
+            this.setMapListIsVisible(true);
             // SpotInfoを非表示にする
             mapViewMutations.setSpotInfoIsVisible(false);
         } else {
-            this.setSpotListIsVisible(false);
+            this.setMapListIsVisible(false);
             // focusedSpotが初期値ではない場合, SpotInfoを表示する
             // 直接focusedSpotを参照すると{mapId: [Getter/Setter], spotId: [Getter/Setter]}となり値が取得できないためIDごとに分離
             if (mapViewGetters.focusedSpot.mapId !== -1 && mapViewGetters.focusedSpot.spotId !== -1) {
