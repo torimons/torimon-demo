@@ -1,6 +1,6 @@
 <template>
-    <div id="creation-main-view">
-      <CreationMapView/>
+    <div id="main-creation-view">
+        <CreationMapView/>
     </div>
 </template>
 
@@ -8,13 +8,12 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import CreationMapView from '@/components/CreationMapView/index.vue';
 
-
 @Component({
     components: {
         CreationMapView,
     },
 })
-export default class CreationMainView extends Vue {
+export default class MainCreationView extends Vue {
 }
 </script>
 
@@ -22,7 +21,7 @@ export default class CreationMainView extends Vue {
 <style scoped>
 html,
 body,
-#creation-main-view {
+#main-creation-view {
   position: relative;
   height: 100%;
 }
