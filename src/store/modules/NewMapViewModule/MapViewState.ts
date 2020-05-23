@@ -37,7 +37,6 @@ export function createSpotInstance(spotData: RawSpot): Spot {
 }
 
 /**
- * 新 表示・検索機能が対応し次第こちらを使用
  * RawMapを受けとり、Mapクラス、Spotクラスの木構造を返す。
  * rootMapId = 0を利用してrootMapのMapインスタンスを返す。
  * @param mapData 地図データ(RawMapの配列)
