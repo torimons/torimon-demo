@@ -24,6 +24,14 @@ export default class Spot {
     }
 
     /**
+     * 詳細マップを返す
+     * @return detailMaps 詳細まっぷ
+     */
+    public getDetailMaps(): Map[] {
+        return this.detailMaps;
+    }
+
+    /**
      * 親mapをセットし,セットしたmapの子spotに自身を追加する.
      * @param parentMap セットする親map
      */

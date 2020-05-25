@@ -20,6 +20,13 @@ export default class Map {
     }
 
     /**
+     * 自身が持つspotを返す
+     */
+    public getSpots(): Spot[] {
+        return this.spots;
+    }
+
+    /**
      * 親spotをセットし,セットしたspotのdetailMapに自身を追加する.
      * @param parentSpot セットする親スポット
      */
