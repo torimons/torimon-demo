@@ -1,6 +1,6 @@
 import { Mutations } from 'vuex-smart-module';
 import { MapViewState } from './MapViewState';
-import { Map, Spot, DisplayLevelType } from '@/store/types';
+import { RawMap, RawSpot, DisplayLevelType } from '@/store/types';
 import { NoDetailMapIdInSpotError } from '@/store/errors/NoDetailMapIdInSpotError';
 import { mapViewGetters } from '@/store';
 
@@ -41,8 +41,8 @@ export class MapViewMutations extends Mutations<MapViewState> {
         if (!spot.detailMapIds.includes(detailMapId)) {
             throw new NoDetailMapIdInSpotError('Detail Map does not exist...');
         }
-        const mapIndex: number = this.state.maps.findIndex((m: Map) => m.id === parentMapId);
-        const spotIndex: number = this.state.maps[mapIndex].spots.findIndex((s: Spot) => s.id === spotId);
+        const mapIndex: number = this.state.maps.findIndex((m: RawMap) => m.id === parentMapId);
+        const spotIndex: number = this.state.maps[mapIndex].spots.findIndex((s: RawSpot) => s.id === spotId);
         this.state.maps[mapIndex].spots[spotIndex].lastViewedDetailMapId = detailMapId;
     }
 

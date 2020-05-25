@@ -1,6 +1,6 @@
-import { Map } from '@/store/types';
+import { RawMap } from '@/store/types';
 
-export const sampleMaps: Map[] =  [
+export const sampleMaps: RawMap[] =  [
     {
         id: 0,
         name: '九州大学',
@@ -236,6 +236,7 @@ export const sampleMaps: Map[] =  [
     {
         id: 1,
         name: '総合学習プラザ 1F',
+        floorName: '1F',
         spots: [
             {
                 id: 0,
@@ -484,6 +485,7 @@ export const sampleMaps: Map[] =  [
     {
         id: 2,
         name: '総合学習プラザ 2F',
+        floorName: '2F',
         spots: [
             {
                 id: 10,
@@ -978,6 +980,7 @@ export const sampleMaps: Map[] =  [
     {
         id: 3,
         name: 'ウエスト2号館 2F',
+        floorName: '2F',
         spots: [
             {
                 id: 201,
@@ -1204,6 +1207,7 @@ export const sampleMaps: Map[] =  [
     {
         id: 4,
         name: 'ウエスト2号館 3F',
+        floorName: '3F',
         spots: [
             {
                 id: 301,
@@ -1921,6 +1925,7 @@ export const sampleMaps: Map[] =  [
     {
         id: 6,
         name: 'ウエスト2号館 5F',
+        floorName: '5F',
         spots: [
             {
                 id: 501,
