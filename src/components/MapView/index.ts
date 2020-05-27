@@ -9,6 +9,7 @@ import { GeolibInputCoordinates } from 'geolib/es/types';
 import CurrentLocationMarker from '@/components/MapView/Marker/CurrentLocationMarker';
 import DefaultSpotMarker from '@/components/MapView/Marker/DefaultSpotMarker';
 import { MapViewGetters } from '@/store/modules/NewMapViewModule/MapViewGetters';
+import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot';
 
 
@@ -80,7 +81,7 @@ export default class MapView extends Vue {
      * @param idInfo マーカーを取得したいspotの{mapId, spotId}
      * @returns 見つかったマーカーのオブジェクト | null
      */
-    private findMarker(idInfo: {mapId: number, spotId: number}): DefaultSpotMarker | null {
+    private findMarker(spot: Spot | undefined): DefaultSpotMarker | null {
         const foundMarker: DefaultSpotMarker | undefined = this.spotMarkers
             .find((marker) => {
                 return marker.getIdInfo().mapId === idInfo.mapId && marker.getIdInfo().spotId === idInfo.spotId;
@@ -166,30 +167,29 @@ export default class MapView extends Vue {
      */
     private updateIdOfCenterSpotInRootMap(e: L.LeafletEvent): void {
         const centerPos: Coordinate = this.map.getCenter();
-        const mapIndex: number = mapViewGetters.maps.findIndex((m) => m.id === mapViewGetters.rootMapId);
-        const spots: RawSpot[] = mapViewGetters.maps[mapIndex].spots;
-        const nearestSpotId: number = this.getNearestSpotId(centerPos, spots);
+        const spots: Spot[] = mapViewGetters.rootMap.getSpots();
+        const nearestSpot: Spot = this.getNearestSpot(centerPos, spots);
         // 距離のチェック
-        const isNear: boolean = this.twoPointsIsNear(centerPos, spots[nearestSpotId].coordinate);
+        const isNear: boolean = this.twoPointsIsNear(centerPos, nearestSpot.getCoordinate());
         if (isNear === true) {
-            mapViewMutations.setIdOfCenterSpotInRootMap(nearestSpotId);
+            mapViewMutations.setCenterSpotInRootMap(nearestSpot);
         } else {
             mapViewMutations.setNonExistentOfCenterSpotInRootMap();
         }
     }
 
     /**
-     * スポット群から基準点に最も近いスポットのIdを返す．
+     * スポット群から基準点に最も近いスポットを返す．
      * @param point 基準点
      * @param spots 基準点と比較したいスポットの配列
-     * @return nearestSpotId 基準点に一番近いスポットのId
+     * @return nearestSpot 基準点に一番近いスポット
      */
-    private getNearestSpotId(basePoint: Coordinate, spots: RawSpot[]): number {
-        const spotPositions: Coordinate[] = spots.map((s: RawSpot) => s.coordinate);
+    private getNearestSpot(basePoint: Coordinate, spots: Spot[]): Spot {
+        const spotPositions: Coordinate[] = spots.map((s: Spot) => s.getCoordinate());
         const nearestSpotPos: GeolibInputCoordinates = findNearest(basePoint, spotPositions);
-        const nearestSpotIndex: number = spots.findIndex((s: RawSpot) => s.coordinate === nearestSpotPos);
-        const nearestSpotId: number = spots[nearestSpotIndex].id;
-        return nearestSpotId;
+        const nearestSpotIndex: number = spots.findIndex((s: Spot) => s.getCoordinate() === nearestSpotPos);
+        const nearestSpot: Spot = spots[nearestSpotIndex];
+        return nearestSpot;
     }
 
     /**
@@ -214,10 +214,10 @@ export default class MapView extends Vue {
      * @param spots storeのgetSpotsForMapの返り値.
      * @return geoJson形式のshapeデータ
      */
-    private spotShapeToGeoJson(spots: SpotForMap[]): GeoJsonObject {
+    private spotShapeToGeoJson(spots: Spot[]): GeoJsonObject {
         const shapes: Feature[] = [];
         for (const spot of spots) {
-            const shape = spot.shape as GeometryObject;
+            const shape = spot.getShape() as GeometryObject;
             const feature: Feature = {
                 properties: {},
                 type: 'Feature',
@@ -237,7 +237,7 @@ export default class MapView extends Vue {
      * polygonLayerメンバを変更して表示内容を変える．
      * @param spotsForDisplay 表示するスポットの配列
      */
-    private displayPolygons(spotsForDisplay: SpotForMap[]): void {
+    private displayPolygons(spotsForDisplay: Spot[]): void {
         // すでに表示されているポリゴンがある場合は先に削除する
         if (this.polygonLayer !== undefined) {
             this.map.removeLayer(this.polygonLayer);
@@ -256,55 +256,31 @@ export default class MapView extends Vue {
     }
 
     /**
-     * 指定された経由地の配列を受け取りを経路として表示する
-     * @param wayPoints: 2点間の経路の経由地（配列）の配列
-     */
-    private displayRouteLines(wayPoints: Coordinate[][]): void {
-        if (this.routeLayer !== undefined) {
-            this.map.removeLayer(this.routeLayer);
-        }
-        this.routeLines = wayPoints.map((wayPoint: Coordinate[]) => (L.polyline(wayPoint, {
-                color: '#555555',
-                weight: 5,
-                opacity: 0.7,
-            })));
-        this.routeLayer = L.layerGroup(this.routeLines);
-        this.addRouteToMap(this.routeLayer);
-    }
-
-    /**
-     * 経路をmapに追加する
-     * @param routeLayer: mapに追加する経路のレイヤー
-     */
-    private addRouteToMap(routeLayer: L.Layer): void {
-        this.map.addLayer(routeLayer);
-    }
-
-    /**
      * マップ表示の移動のためにStoreのgetterのウォッチを行う
      */
+    //TODO: テストを書く
     private watchStoreForMoveMapCenter(): void {
         store.watch(
             (state, getters: MapViewGetters) => mapViewGetters.spotToDisplayInMapCenter,
             (spot, oldSpot) => {
+                if(spot == null) {
+                    return;
+                }
                 let zoomLevel = this.defaultZoomLevel;
-                if (spot.mapId !== mapViewGetters.rootMapId) {
+                if (mapViewGetters.rootMap.hasSpot(spot)) {
                     zoomLevel = this.zoomLevelThreshold + 0.5;
                 }
-                const spotToDisplayInMapCenter: RawSpot
-                    = mapViewGetters.getSpotById({parentMapId: spot.mapId, spotId: spot.spotId});
-                const parentSpotId: number | null = mapViewGetters.findParentSpotId(spot);
-                if (parentSpotId !== null) {
-                    const payload = {
-                        detailMapId: spot.mapId,
-                        parentSpot: { parentMapId: mapViewGetters.rootMapId, spotId: parentSpotId },
-                    };
-                    mapViewMutations.setLastViewedDetailMapId(payload);
+                const parentMap: Map | undefined = spot.getParentMap();
+                if(parentMap !== undefined) {
+                    const parentSpot: Spot | undefined = parentMap.getParentSpot();
+                    if(parentSpot !== undefined) {
+                        parentSpot.setLastViewedDetailMap(parentMap);
+                    }
                 }
-                this.map.flyTo(spotToDisplayInMapCenter.coordinate, zoomLevel);
+                this.map.flyTo(spot.getCoordinate(), zoomLevel);
             },
         );
-    }
+    };
 
     /**
      * マップ表示の更新のためにStoreのgetterのウォッチを行う

@@ -40,6 +40,14 @@ export default class Spot {
     }
 
     /**
+     * スポットの図形情報を返す
+     * @return 図形情報
+     */
+    public getShape(): Shape | undefined {
+        return this.shape;
+    }
+
+    /**
      * スポットのnameを返す
      * @return スポットのname
      */
@@ -54,6 +62,14 @@ export default class Spot {
      */
     public getDetailMaps(): Map[] {
         return this.detailMaps;
+    }
+
+    /**
+     * 親マップが存在すれば親マップを返す
+     * @return 親マップ、存在しない場合undefined
+     */
+    public getParentMap(): Map | undefined {
+        return this.parentMap;
     }
 
     /**
