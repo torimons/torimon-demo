@@ -2,48 +2,6 @@ import { shallowMount } from '@vue/test-utils';
 import MapSearch from '@/components/MapSearch/index.vue';
 import SearchBox from '@/components/SearchBox/index.vue';
 import MapList from '@/components/MapList/index.vue';
-import { RawMap } from '@/store/types';
-
-const mapsForTest: RawMap[] = [
-    {
-        id: 0,
-        name: 'test0',
-        floorName: 'floor0',
-        spots: [],
-        nodes: [],
-        edges: [],
-        bounds: {
-            topL: {
-                lat: 0,
-                lng: 0,
-            },
-            botR: {
-                lat: 0,
-                lng: 0,
-            },
-        },
-        parentSpotId: 0,
-    },
-    {
-        id: 1,
-        name: 'test1',
-        floorName: 'floor1',
-        spots: [],
-        nodes: [],
-        edges: [],
-        bounds: {
-            topL: {
-                lat: 1,
-                lng: 1,
-            },
-            botR: {
-                lat: 1,
-                lng: 1,
-            },
-        },
-        parentSpotId: 1,
-    },
-];
 
 describe('MapSearchコンポーネントのテスト', () => {
     let wrapper: any;

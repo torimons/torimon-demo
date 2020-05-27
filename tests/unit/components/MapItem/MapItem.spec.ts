@@ -4,7 +4,7 @@ import Vuetify from 'vuetify';
 import { mapViewGetters, mapViewMutations } from '@/store';
 import MapItem from '@/components/MapItem/index.vue';
 
-describe('components/MapItem.vue', () => {
+describe('MapItemコンポーネントのテスト', () => {
     let localVue: any;
     let wrapper: any;
     let vuetify: any;
