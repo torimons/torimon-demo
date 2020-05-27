@@ -27,6 +27,14 @@ export default class Map {
     }
 
     /**
+     * 親スポットを返す
+     * @return parentSpot 自身の親スポット，なければundefined
+     */
+    public getParentSpot(): Spot | undefined {
+        return this.parentSpot;
+    }
+
+    /**
      * 親spotをセットし,セットしたspotのdetailMapに自身を追加する.
      * @param parentSpot セットする親スポット
      */

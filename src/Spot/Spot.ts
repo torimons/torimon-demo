@@ -2,7 +2,7 @@ import { Coordinate, Shape } from '@/store/types.ts';
 import Map from '@/Map/Map.ts';
 
 export default class Spot {
-    private parentMap: Map | undefined = undefined;
+    private parentMap!: Map;
     private detailMaps: Map[] = [];
     private lastViewedDetailMap: Map | undefined = undefined;
 
@@ -29,6 +29,14 @@ export default class Spot {
      */
     public getDetailMaps(): Map[] {
         return this.detailMaps;
+    }
+
+    /**
+     * 親マップを返す
+     * @return parentMap 親マップ
+     */
+    public getParentMap(): Map {
+        return this.parentMap;
     }
 
     /**
