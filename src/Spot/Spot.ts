@@ -25,10 +25,34 @@ export default class Spot {
 
     /**
      * 詳細マップを返す
-     * @return detailMaps 詳細まっぷ
+     * @return detailMaps 詳細マップ
      */
     public getDetailMaps(): Map[] {
         return this.detailMaps;
+    }
+
+    /**
+     * 自身の名前を返す
+     * @return 自身の名前
+     */
+    public getName(): string {
+        return this.name;
+    }
+
+    /**
+     * 自身の説明を返す
+     * @return description
+     */
+    public getDescription(): string | undefined {
+        return this.description;
+    }
+
+    /**
+     * 自身のアタッチメントを返す
+     * @return attachment，なければundefined
+     */
+    public getAttachment(): [{name: string, url: string}] | undefined {
+        return this.attachment;
     }
 
     /**

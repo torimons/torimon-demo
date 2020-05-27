@@ -1,20 +1,17 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { store, mapViewGetters, mapViewMutations } from '@/store';
-import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
-import { SpotInfo } from '@/store/types';
+import { store, mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex';
+import { MapViewGetters } from '@/store/modules/NewMapViewModule/MapViewGetters';
+import Spot from '@/Spot/Spot.ts';
 
 @Component
 /**
  * マップ上でスポットを選択した際に表示されるコンポーネント．
  * vuex上のstateを見て，表示内容，および表示/非表示を自動的に切り替える．
  */
-export default class SpotInfoCard extends Vue implements SpotInfo {
-
-    // SpotInfoインターフェースのメンバ
+export default class SpotInfoCard extends Vue {
     public name: string = '';
-    public description: string = '';
+    public description: string | undefined = '';
     public attachment: [{name: string, url: string}] = [{name: '', url: ''}];
-
     private isVisible: boolean = false;
 
     public mounted() {
@@ -31,15 +28,26 @@ export default class SpotInfoCard extends Vue implements SpotInfo {
     }
 
     /**
-     * 選択されているスポットIDの変更を検知すると，spotName, othersを更新して表示内容を更新する．
+     * 選択されているスポットIDの変更を検知すると，name, descriptionを更新して表示内容を更新する．
      * @param newFocusedSpot 変更後のマップIdとスポットId
      */
     private updateSpotInfoContent(
-        newFocusedSpot: {mapId: number, spotId: number},
+        newFocusedSpot: Spot | undefined,
     ): void {
-        const spotInfo: SpotInfo = mapViewGetters.getSpotInfo(newFocusedSpot);
-        this.name = spotInfo.name;
-        this.description = spotInfo.description;
+        if (newFocusedSpot !== undefined) {
+            this.name = newFocusedSpot.getName();
+            if (newFocusedSpot.getDescription() !== undefined) {
+                this.description = newFocusedSpot.getDescription();
+            } else {
+                this.description = '';
+            }
+            // 現在attachmentは使われていない，一応追加した
+            // this.attachment = newFocusedSpot.getAttachment();
+        } else {
+            this.name = '';
+            this.description = '';
+            // this.attachment = [{name: '', url: ''}];
+        }
     }
 
     /**
