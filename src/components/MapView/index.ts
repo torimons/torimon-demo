@@ -286,21 +286,20 @@ export default class MapView extends Vue {
      * マップ表示の更新のためにStoreのgetterのウォッチを行う
      */
     private watchStoreForDisplayMap(): void {
-        const getSwitchedFloorMapId = (getters: MapViewGetters): number | null => {
-            const centerSpotId = getters.idOfCenterSpotInRootMap;
-            if (centerSpotId != null) {
-                const centerSpot = { parentMapId: mapViewGetters.rootMapId, spotId: centerSpotId };
-                if (getters.spotHasDetailMaps(centerSpot)) {
-                    return getters.getLastViewedDetailMapId(centerSpot);
+        const getSwitchedFloorMap = (getters: MapViewGetters): Map | undefined => {
+            const centerSpot = getters.centerSpotInRootMap;
+            if (centerSpot != null) {
+                if (centerSpot.getDetailMaps().length > 0) {
+                    return centerSpot.getLastViewedDetailMap();
                 }
             }
-            return null;
+            return undefined;
         };
         store.watch(
             (state, getters: MapViewGetters) => [
                 getters.displayLevel,
-                getters.idOfCenterSpotInRootMap,
-                getSwitchedFloorMapId(getters),
+                getters.centerSpotInRootMap,
+                getSwitchedFloorMap(getters),
             ],
             (value, oldValue) => this.displayMap(),
         );
