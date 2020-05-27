@@ -1,20 +1,22 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { store, mapViewGetters, mapViewMutations } from '@/store';
-import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
+import { store, mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex.ts';
+import { MapViewGetters } from '@/store/modules/newMapViewModule/MapViewGetters';
 import { DisplayLevelType } from '@/store/types';
+import Map from '@/Map/Map.ts';
+import Spot from '@/Spot/Spot.ts';
 
 @Component
 export default class FloorSwitchButton extends Vue {
 
     // floorNamesとfloorMapIdsは表示の関係上,要素を逆順で保持する．
-    private floorNames: string[] = [];
+    private floorNames: Array<string | undefined> = [];
     private floorMapIds: number[] = [];
 
     // 階層ボタンの見た目に関するメンバ
     private selectedFloorButtonIndex: number | undefined = 0;
     private isVisible: boolean = false;
 
-    private spotId: number = 0;
+    private spot: Spot | undefined;
 
     public mounted() {
         store.watch(
@@ -22,7 +24,7 @@ export default class FloorSwitchButton extends Vue {
             (value, oldValue) => this.changeButtonIsVisible(value, oldValue),
         );
         store.watch(
-            (state, getters: MapViewGetters) => getters.idOfCenterSpotInRootMap,
+            (state, getters: MapViewGetters) => getters.centerSpotInRootMap,
             (value, oldValue) => this.updateContentOfFloorSwitchButton(value, oldValue),
         );
         this.watchFloorMapChangeOfDisplayedSpot();
@@ -38,24 +40,21 @@ export default class FloorSwitchButton extends Vue {
     }
 
     /**
-     * 階層ボタンを押した時にスポットのlastViewedDetailMapIdを更新する．
+     * 階層ボタンを押した時にスポットのlastViewedDetailMapを更新する．
      * @param floorName 押された階層ボタンの階層名
      */
-    private updateLastViewedDetailMapIdOnClick(index: number): void {
+    private updateLastViewedDetailMapOnClick(index: number): void {
         const lastViewedDetailMapId: number = this.floorMapIds[index];
-        const parentMapId: number = mapViewGetters.rootMapId;
-        const spotId: number | null = mapViewGetters.idOfCenterSpotInRootMap;
-        if (spotId === null) {
+        const spot: Spot | null = mapViewGetters.centerSpotInRootMap;
+        if (spot === null) {
             return;
         }
-        const payload = {
-            detailMapId: lastViewedDetailMapId,
-            parentSpot: {
-                parentMapId,
-                spotId,
-            },
-        };
-        mapViewMutations.setLastViewedDetailMapId(payload);
+        // spotのlastViewedDetailMapを更新する。
+        const lastViewedDetailMap: Map | null = spot.findMap(lastViewedDetailMapId);
+        if (lastViewedDetailMap === null) {
+            return;
+        }
+        spot.setLastViewedDetailMap(lastViewedDetailMap);
     }
 
     /**
@@ -64,26 +63,28 @@ export default class FloorSwitchButton extends Vue {
      * @params spotId 更新後のスポットID
      * @params oldSpotId 更新前のスポットID．未使用
      */
-    private updateContentOfFloorSwitchButton(spotId: number | null, oldSpotId: number | null): void {
-        if (spotId === null) {
+    private updateContentOfFloorSwitchButton(newSpot: Spot | null, oldSpot: Spot | null): void {
+        if (newSpot === null) {
             this.clearButtonContent();
             return;
         }
-        this.spotId = spotId;
-        const parentMapId: number = mapViewGetters.rootMapId;
-        const spot = mapViewGetters.getSpotById({parentMapId, spotId});
-        if (spot.detailMapIds.length === 0) {
+        // const parentMapId: number = mapViewGetters.rootMapId;
+        const rootMap: Map = mapViewGetters.rootMap;
+        this.spot = newSpot;
+        const detailMaps: Map[] = newSpot.getDetailMaps();
+        if (detailMaps.length === 0) {
             this.clearButtonContent();
             return;
         }
-        this.floorMapIds = spot.detailMapIds.slice().reverse();
-        this.floorNames = spot.detailMapLevelNames.slice().reverse();
-        const lastViewedDetailMapId: number | null = mapViewGetters.getLastViewedDetailMapId({parentMapId, spotId});
+        this.floorMapIds = (detailMaps.map((m: Map) => m.getId())).reverse();
+        this.floorNames = (detailMaps.map((m: Map) => m.getFloorName())).reverse();
+
+        const lastViewedDetailMap: Map | undefined = newSpot.getLastViewedDetailMap();
         // 最後に参照された階層（詳細マップ）が存在する場合，その階層が選択された状態にする．
         // 存在しない場合は初期階にあたる階にセットする．
-        if (lastViewedDetailMapId != null) {
+        if (lastViewedDetailMap !== undefined) {
             this.selectedFloorButtonIndex =
-                spot.detailMapIds.slice().reverse().findIndex((mapId: number) => mapId === lastViewedDetailMapId);
+                detailMaps.slice().reverse().findIndex((m: Map) => m === lastViewedDetailMap);
         } else {
             this.selectedFloorButtonIndex = this.floorMapIds.length - 1;
         }
@@ -99,6 +100,7 @@ export default class FloorSwitchButton extends Vue {
             this.isVisible = false;
         }
     }
+
     /**
      * 外部コンポーネントでのLastViewedDetailMapIdの切り替わりをウォッチして
      * ボタンの選択状態に反映
@@ -106,20 +108,27 @@ export default class FloorSwitchButton extends Vue {
     private watchFloorMapChangeOfDisplayedSpot(): void {
         store.watch(
             (state, getters: MapViewGetters) => {
-                const spot = { parentMapId: mapViewGetters.rootMapId, spotId: this.spotId };
-                if (mapViewGetters.spotHasDetailMaps(spot)) {
-                    return getters.getLastViewedDetailMapId(spot);
+                if (this.spot === undefined) {
+                    return null;
+                }
+                if (this.spot.getDetailMaps().length > 0) {
+                    const lastViewedDetailMap = this.spot.getLastViewedDetailMap();
+                    if (lastViewedDetailMap === undefined) {
+                        return null;
+                    }
+                    return lastViewedDetailMap.getId();
                 }
                 return null;
             },
             (newFloorMapId, oldFloorMapId) => {
-                if (newFloorMapId != null) {
-                    const spot = mapViewGetters.getSpotById({
-                        parentMapId: mapViewGetters.rootMapId,
-                        spotId: this.spotId,
-                    });
+                if (newFloorMapId !== null) {
+                    const spot: Spot | null = mapViewGetters.rootMap.findSpot(newFloorMapId);
+                    if (spot === null) {
+                        return;
+                    }
+                    const detailMaps = spot.getDetailMaps();
                     this.selectedFloorButtonIndex =
-                        spot.detailMapIds.slice().reverse().findIndex((mapId: number) => mapId === newFloorMapId);
+                        detailMaps.slice().reverse().findIndex((map: Map) => map.getId() === newFloorMapId);
                 }
             },
         );
