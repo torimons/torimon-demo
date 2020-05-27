@@ -116,6 +116,7 @@ export const testRawMapData: RawMap[] = [
     {
         id: 1,
         name: 'SougouGakusyuPlaza_1F',
+        floorName: '1F',
         spots: [
             {
                 id: 0,
@@ -157,6 +158,7 @@ export const testRawMapData: RawMap[] = [
     {
         id: 2,
         name: 'SougouGakusyuPlaza_2F',
+        floorName: '2F',
         spots: [
             {
                 id: 10,
