@@ -1,5 +1,5 @@
 import { Component, Vue, Watch} from 'vue-property-decorator';
-import { mapViewGetters, mapViewMutations, store } from '@/store';
+import { mapViewGetters, mapViewMutations, store } from '@/store/newMapViewIndex.ts';
 import { SpotForMap, Coordinate, Bounds, RawSpot, DisplayLevelType } from '@/store/types';
 import 'leaflet/dist/leaflet.css';
 import L, { Marker } from 'leaflet';
@@ -8,7 +8,8 @@ import { findNearest, getDistance } from 'geolib';
 import { GeolibInputCoordinates } from 'geolib/es/types';
 import CurrentLocationMarker from '@/components/MapView/Marker/CurrentLocationMarker';
 import DefaultSpotMarker from '@/components/MapView/Marker/DefaultSpotMarker';
-import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
+import { MapViewGetters } from '@/store/modules/NewMapViewModule/MapViewGetters';
+import Spot from '@/Spot/Spot';
 
 
 @Component
@@ -28,7 +29,7 @@ export default class MapView extends Vue {
      * とりあえず地図の表示を行なっています．
      */
     public mounted() {
-        const rootMapCenter: Coordinate = this.calculateCenter(mapViewGetters.rootMapBounds);
+        const rootMapCenter: Coordinate = this.calculateCenter(mapViewGetters.rootMap.getBounds());
         this.map = L.map('map').setView([rootMapCenter.lat, rootMapCenter.lng], this.defaultZoomLevel);
         this.tileLayer = L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -50,7 +51,7 @@ export default class MapView extends Vue {
      */
     private initMapDisplay(): void {
         // sampleMapのスポット表示
-        const rootMapSpots: SpotForMap[] = mapViewGetters.getSpotsForMap(mapViewGetters.rootMapId);
+        const rootMapSpots: Spot[] = mapViewGetters.rootMap.getSpots();
         this.displaySpotMarkers(rootMapSpots);
         // sampleMapのポリゴン表示
         this.displayPolygons(rootMapSpots);
@@ -131,10 +132,10 @@ export default class MapView extends Vue {
      * ズームレベルや階層が変更された際のマーカー表示切り替え
      * @param spotsToDisplay 新しく表示するスポットの配列
      */
-    private displaySpotMarkers(spotsToDisplay: SpotForMap[]): void {
+    private displaySpotMarkers(spotsToDisplay: Spot[]): void {
         this.spotMarkers.map((marker: Marker<any>) => marker.remove());
         this.spotMarkers = spotsToDisplay
-            .map((spot: SpotForMap) => new DefaultSpotMarker(spot.coordinate, spot.name, spot.mapId, spot.spotId));
+            .map((spot: Spot) => new DefaultSpotMarker(spot.getCoordinate(), spot.getName(), spot.parentMap.getId(), spot.getId()));
         this.addMarkersToMap(this.spotMarkers);
     }
 
