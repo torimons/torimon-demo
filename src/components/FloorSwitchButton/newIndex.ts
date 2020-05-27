@@ -83,8 +83,9 @@ export default class FloorSwitchButton extends Vue {
         // 最後に参照された階層（詳細マップ）が存在する場合，その階層が選択された状態にする．
         // 存在しない場合は初期階にあたる階にセットする．
         if (lastViewedDetailMap !== undefined) {
-            this.selectedFloorButtonIndex =
-                detailMaps.slice().reverse().findIndex((m: Map) => m === lastViewedDetailMap);
+            const index: number = detailMaps
+                .findIndex((m: Map) => m.getId() === lastViewedDetailMap.getId());
+            this.selectedFloorButtonIndex = detailMaps.length - index - 1;
         } else {
             this.selectedFloorButtonIndex = this.floorMapIds.length - 1;
         }
