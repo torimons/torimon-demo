@@ -69,7 +69,7 @@ export default class DefaultSpotMarker extends L.Marker {
         const widthRate: number = fontSize * 5 / 3;
         // だいたいfont-size:12のときwidthはString.length * 15くらいがちょうどいい
         let htmlTemplate;
-        // スポットがrootMapIdに属していなければスポットの名前を表示する
+        // スポットがrootMapに属していなければスポットの名前を表示する
         if (this.spot.getParentMap() !== mapViewGetters.rootMap) {
             htmlTemplate =
                 `<div

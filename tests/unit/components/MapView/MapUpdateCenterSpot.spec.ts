@@ -1,12 +1,10 @@
 import { mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex.ts';
 import map from '@/components/MapView/index.vue';
-import { MapViewState, RawSpot, Coordinate } from '@/store/types';
+import { Coordinate } from '@/store/types';
 import { shallowMount } from '@vue/test-utils';
 import { testRawMapData } from '../../../resources/testRawMapData';
 import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
 import Spot from '@/Spot/Spot';
-
-// const mapViewStateTestData: MapViewState = cloneDeep(testMapViewState);
 
 /**
  * モック用の関数，paramに与えた値を返す関数を返す
@@ -58,12 +56,12 @@ describe('中央に最も近いスポットの取得，およびその更新の�
 
     it('getNearestSpot()で中央に最も近いスポットを取得する', () => {
         const spots: Spot[] = mapViewGetters.rootMap.getSpots();
-        // 中央の座標を設定して中央に最も近いスポットのIdを取得する
+        // 中央の座標を設定して中央に最も近いスポットを取得する
         const center1: Coordinate = {lat: 33.595, lng: 130.700};
         const exepctedNearestSpot1: Spot = spots[1];
         const actualSpot1: Spot = wrapper.vm.getNearestSpot(center1, spots);
         expect(actualSpot1).toBe(exepctedNearestSpot1);
-        // 別の中央の座標を設定して中央に最も近いスポットのIdを取得する
+        // 別の中央の座標を設定して中央に最も近いスポットを取得する
         const center2: Coordinate = {lat: 33.595, lng: 130.218};
         const exepctedNearestSpot2: Spot = spots[0];
         const actualSpotId2: number = wrapper.vm.getNearestSpot(center2, spots);
@@ -71,7 +69,7 @@ describe('中央に最も近いスポットの取得，およびその更新の�
     });
 
     it('updateCenterSpotInRootMapで画面中央に近いスポットを更新する', () => {
-        // ある一定範囲内にスポットが存在する場合は，画面中央に最も近いスポットのIdをセットする．
+        // ある一定範囲内にスポットが存在する場合は，画面中央に最も近いスポットをセットする．
         const center1: Coordinate = {lat: 33.595, lng: 130.700};
         wrapper.vm.map.getCenter = setReturnOfGetCenter(center1); // L.Map.getCenter()のモック
         wrapper.vm.updateCenterSpotInRootMap();
