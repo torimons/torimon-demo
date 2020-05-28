@@ -2,51 +2,38 @@ import { shallowMount } from '@vue/test-utils';
 import SpotSearch from '@/components/SpotSearch/index.vue';
 import SearchBox from '@/components/SearchBox/index.vue';
 import SpotList from '@/components/SpotList/index.vue';
-import { mapViewMutations, mapViewGetters } from '@/store';
+import { mapViewMutations, mapViewGetters } from '@/store/newMapViewIndex';
 import Search from '@/utils/Search';
-import { RawSpot } from '@/store/types';
+import Spot from '@/Spot/Spot.ts';
+import Map from '@/Map/Map.ts';
 
-const spotsForTest: RawSpot[] = [
-    {
-        mapId: 0,
-        id: 0,
-        name: 'SougouGakusyuPlaza',
-        coordinate: {
-            lat: 33.595502,
-            lng: 130.218238,
-        },
-        shape: {
-            type: 'Polygon',
-            coordinates: [[[]]],
-        },
-        gateNodeIds: [],
-        detailMapIds: [1, 2],
-        detailMapLevelNames: ['1F', '2F'],
-        lastViewedDetailMapId: null,
-    },
-    {
-        mapId: 0,
-        id: 1,
-        name: 'SpotForTest',
-        coordinate: {
-            lat: 33.595502,
-            lng: 130.218238,
-        },
-        shape: {
-            type: 'Polygon',
-            coordinates: [[[]]],
-        },
-        gateNodeIds: [],
-        detailMapIds: [],
-        detailMapLevelNames: [],
-        lastViewedDetailMapId: null,
-    },
-];
 
 describe('SpotSearchコンポーネントのテスト', () => {
     let wrapper: any;
+    let spotsForTest: Spot[];
 
     beforeEach(() => {
+        spotsForTest = [
+            new Spot(
+                0,
+                'SougouGakusyuPlaza',
+                {
+                    lat: 33.595502,
+                    lng: 130.218238,
+                },
+            ),
+            new Spot(
+                1,
+                'SpotForTest',
+                {
+                    lat: 33.595502,
+                    lng: 130.218238,
+                },
+            ),
+        ];
+        const parentMap: Map = new Map(0, 'testMap', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined);
+        parentMap.addSpots(spotsForTest);
+
         wrapper = shallowMount(SpotSearch, {
             attachToDocument: true,
         });
@@ -92,7 +79,7 @@ describe('SpotSearchコンポーネントのテスト', () => {
         wrapper.find(SearchBox).vm.$emit('searchWordInput', 'abcd');
         expect(mapViewGetters.spotInfoIsVisible).toBe(false);
         // focusedSpotが初期値以外で, 検索結果がない場合は表示
-        mapViewMutations.setFocusedSpot({mapId: 0, spotId: 1});
+        mapViewMutations.setFocusedSpot(new Spot(-1, 'placeholder', {lat: 0, lng: 0}));
         wrapper.find(SearchBox).vm.$emit('searchWordInput', 'bcde');
         expect(mapViewGetters.spotInfoIsVisible).toBe(true);
     });

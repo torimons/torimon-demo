@@ -1,9 +1,10 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { RawMap, RawSpot } from '@/store/types';
-import { mapViewGetters, mapViewMutations } from '@/store';
+import { mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex';
 import Search from '@/utils/Search';
 import SearchBox from '@/components/SearchBox/index.vue';
 import SpotList from '@/components/SpotList/index.vue';
+import Map from '@/Map/Map.ts';
+import Spot from '@/Spot/Spot.ts';
 
 @Component({
     components: {
@@ -14,17 +15,30 @@ import SpotList from '@/components/SpotList/index.vue';
 export default class SpotSearch extends Vue {
     private searchWord: string = '';
     private spotListIsVisible: boolean = false;
-    private targetSpots: RawSpot[] = [];
-    private spotSearchResults: RawSpot[] = [];
+    private targetSpots: Spot[] = [];
+    private spotSearchResults: Spot[] = [];
     private search!: Search;
     private backgroundColor: 'transparent' | 'white' = 'transparent';
 
     public mounted() {
         // 全てのマップからスポットを取得，一つの配列に結合する
-        mapViewGetters.maps.map((map: RawMap) => map.spots)
-            .forEach((spots: RawSpot[]) => this.targetSpots = this.targetSpots.concat(spots));
+        this.getAllSpots(mapViewGetters.rootMap);
         // 上で取得したspotを検索対象にセットしたSearchクラスのインスタンス作成
         this.search = new Search(this.targetSpots);
+    }
+
+    /**
+     * 全てのスポットを取得する
+     * マップをみて，マップに属するスポットをtargetSpotsに追加，
+     * さらにそのスポットに詳細マップがあれば再起的にこの関数を呼ぶ
+     */
+    public getAllSpots(rootMap: Map) {
+        for (const spot of rootMap.getSpots()) {
+            this.targetSpots = this.targetSpots.concat(spot);
+            for (const map of spot.getDetailMaps()) {
+                this.getAllSpots(map);
+            }
+        }
     }
 
     /**
@@ -62,7 +76,7 @@ export default class SpotSearch extends Vue {
             this.setSpotListIsVisible(false);
             // focusedSpotが初期値ではない場合, SpotInfoを表示する
             // 直接focusedSpotを参照すると{mapId: [Getter/Setter], spotId: [Getter/Setter]}となり値が取得できないためIDごとに分離
-            if (mapViewGetters.focusedSpot.mapId !== -1 && mapViewGetters.focusedSpot.spotId !== -1) {
+            if (mapViewGetters.focusedSpot !== undefined) {
                 mapViewMutations.setSpotInfoIsVisible(true);
             }
         }
