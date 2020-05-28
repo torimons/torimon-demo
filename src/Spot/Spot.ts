@@ -48,6 +48,22 @@ export default class Spot {
     }
 
     /**
+     * 自身の座標を返す
+     * @return 自身の座標
+     */
+    public getCoordinate(): Coordinate {
+        return this.coordinate;
+    }
+
+    /**
+     * 自身の階層名を返す
+     * @return 自身の階層名
+     */
+    public getFloorName(): string | undefined {
+        return this.floorName;
+    }
+
+    /**
      * 自身の説明を返す
      * @return description
      */
