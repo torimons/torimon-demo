@@ -1,15 +1,10 @@
-import { mapViewGetters, mapViewMutations } from '@/store';
-import { MapViewState, SpotForMap, Coordinate } from '@/store/types';
+import { mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex.ts';
 import { shallowMount } from '@vue/test-utils';
 import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
-import Vue from 'vue';
 import MapView from '@/components/MapView/index.vue';
 import 'leaflet/dist/leaflet.css';
-import L, { map } from 'leaflet';
-import { cloneDeep } from 'lodash';
-import { testMapViewState } from '../../../resources/testMapViewState';
+import { testRawMapData } from '../../../resources/testRawMapData';
 
-const mapViewStoreTestData: MapViewState = cloneDeep(testMapViewState);
 
 /**
  * モック用の関数，paramに与えた値を返す関数を返す
@@ -26,7 +21,7 @@ describe('components/Map.vue zoomlevel切り替えのテスト', () => {
     let wrapper: any;
 
     beforeEach(() => {
-        mapViewMutations.setMapViewState(mapViewStoreTestData);
+        mapViewMutations.setRootMapForTest(testRawMapData);
         GeolocationWrapper.watchPosition = jest.fn();
         const initMapDisplay = jest.fn();
         const watchStoreForDisplayMap = jest.fn();

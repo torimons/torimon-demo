@@ -32,8 +32,8 @@ export default class Spot {
     }
 
     /**
-     * 自身のnameを返す
-     * @return 自身のname
+     * 自身の座標を返す
+     * @return 自身の座標
      */
     public getCoordinate(): Coordinate {
         return this.coordinate;

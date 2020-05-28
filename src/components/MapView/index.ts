@@ -1,6 +1,6 @@
-import { Component, Vue, Watch} from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { mapViewGetters, mapViewMutations, store } from '@/store/newMapViewIndex.ts';
-import { SpotForMap, Coordinate, Bounds, RawSpot, DisplayLevelType } from '@/store/types';
+import { Coordinate, Bounds, DisplayLevelType } from '@/store/types';
 import 'leaflet/dist/leaflet.css';
 import L, { Marker } from 'leaflet';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojson';
@@ -19,8 +19,6 @@ export default class MapView extends Vue {
     private defaultZoomLevel: number = 17;
     private tileLayer!: L.TileLayer;
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
-    private routeLines?: L.Polyline[];
-    private routeLayer?: L.Layer;
     private spotMarkers: DefaultSpotMarker[] = [];
     private currentLocationMarker: CurrentLocationMarker = new CurrentLocationMarker([0, 0]);
     private zoomLevelThreshold: number = 19; // とりあえず仮で閾値決めてます
@@ -84,7 +82,7 @@ export default class MapView extends Vue {
     private findMarker(spot: Spot | undefined): DefaultSpotMarker | null {
         const foundMarker: DefaultSpotMarker | undefined = this.spotMarkers
             .find((marker) => {
-                return marker.getIdInfo().mapId === spot.mapId && marker.getIdInfo().spotId === spot.spotId;
+                return marker.getSpot() === spot;
             });
         if (foundMarker === undefined) {
             return null;
@@ -136,7 +134,7 @@ export default class MapView extends Vue {
     private displaySpotMarkers(spotsToDisplay: Spot[]): void {
         this.spotMarkers.forEach((marker: Marker<any>) => marker.remove());
         this.spotMarkers = spotsToDisplay
-            .map((spot: Spot) => new DefaultSpotMarker(spot.getCoordinate(), spot.getName(), spot.getParentMap.getId(), spot.getId()));
+            .map((spot: Spot) => new DefaultSpotMarker(spot.getCoordinate(), spot.getName(), spot));
         this.addMarkersToMap(this.spotMarkers);
     }
 
@@ -258,29 +256,31 @@ export default class MapView extends Vue {
     /**
      * マップ表示の移動のためにStoreのgetterのウォッチを行う
      */
-    //TODO: テストを書く
+    // TODO: テストを書く
     private watchStoreForMoveMapCenter(): void {
         store.watch(
-            (state, getters: MapViewGetters) => mapViewGetters.spotToDisplayInMapCenter,
+            (state, getters: MapViewGetters) => getters.spotToDisplayInMapCenter,
             (spot, oldSpot) => {
-                if(spot == null) {
+                if (spot == null) {
                     return;
                 }
                 let zoomLevel = this.defaultZoomLevel;
-                if (mapViewGetters.rootMap.hasSpot(spot)) {
-                    zoomLevel = this.zoomLevelThreshold + 0.5;
+                // let zoomLevel = 1;
+                // console.log("HOGEHOGE");
+                if (!mapViewGetters.rootMap.hasSpot(spot)) {
+                    zoomLevel = this.zoomLevelThreshold + 1;
                 }
                 const parentMap: Map | undefined = spot.getParentMap();
-                if(parentMap !== undefined) {
+                if (parentMap !== undefined) {
                     const parentSpot: Spot | undefined = parentMap.getParentSpot();
-                    if(parentSpot !== undefined) {
+                    if (parentSpot !== undefined) {
                         parentSpot.setLastViewedDetailMap(parentMap);
                     }
                 }
                 this.map.flyTo(spot.getCoordinate(), zoomLevel);
             },
         );
-    };
+    }
 
     /**
      * マップ表示の更新のためにStoreのgetterのウォッチを行う

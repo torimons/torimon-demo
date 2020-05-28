@@ -1,19 +1,18 @@
-import { mapViewGetters, mapViewMutations } from '@/store';
+import { mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex.ts';
 import { MapViewState } from '@/store/types';
 import { shallowMount } from '@vue/test-utils';
 import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
 import MapView from '@/components/MapView';
 import 'leaflet/dist/leaflet.css';
-import { cloneDeep } from 'lodash';
 import { testMapViewState } from '../../../resources/testMapViewState';
+import { testRawMapData } from '../../../resources/testRawMapData';
 import DefaultSpotMarker from '@/components/MapView/Marker/DefaultSpotMarker';
-
-const mapViewStoreTestData: MapViewState = cloneDeep(testMapViewState);
+import Spot from '@/Spot/Spot';
 
 describe('components/Map.vue マーカー選択関連のテスト', () => {
     let wrapper: any;
     beforeEach(() => {
-        mapViewMutations.setMapViewState(mapViewStoreTestData);
+        mapViewMutations.setRootMapForTest(testRawMapData);
         GeolocationWrapper.watchPosition = jest.fn();
         const initMapDisplay = jest.fn();
         wrapper = shallowMount(MapView, {
@@ -29,27 +28,30 @@ describe('components/Map.vue マーカー選択関連のテスト', () => {
         wrapper.destroy();
     });
 
-    it('現在表示中のマーカーの中からmapIdとspotIdによってマーカーを取得する', () => {
-        const mapId = 0;
-        // (mapId, spotId) = (0, i)のマーカーを作成
+    it('現在表示中のマーカーの中からスポットによってマーカーを取得する', () => {
+        const markers: DefaultSpotMarker[] = [];
+        const testSpots: Spot[] = [];
+        // 五つのマーカーを作成
         for (let i = 0; i < 5; i++) {
-            wrapper.vm.spotMarkers.push(new DefaultSpotMarker([0, 0], 'testSpotName', mapId, i));
+            const testSpot = new Spot(i, 'testSpot', { lat: 0, lng: 0 });
+            testSpots.push(testSpot);
+            markers.push(new DefaultSpotMarker([0, 0], 'testSpotName', testSpot));
         }
-        // 存在しないidを指定した場合
-        expect(wrapper.vm.findMarker({mapId: 999, spotId: 999})).toBe(null);
-        // 存在するidの場合
-        const expectedSpotId = 1;
-        const foundMarker = wrapper.vm.findMarker({mapId, spotId: expectedSpotId});
-        expect(foundMarker.getIdInfo().mapId).toBe(mapId);
-        expect(foundMarker.getIdInfo().spotId).toBe(expectedSpotId);
+        wrapper.vm.spotMarkers = markers;
+        // 存在しないスポットを指定した場合
+        expect(wrapper.vm.findMarker(new Spot(99, 'testSpot', { lat: 0, lng: 0 }))).toBe(null);
+        // 存在するスポットの場合
+        const foundMarker: DefaultSpotMarker = wrapper.vm.findMarker(testSpots[0]);
+        const expectedMarker = markers[0];
+        expect(foundMarker).not.toBeNull();
+        expect(foundMarker).toBe(expectedMarker);
     });
 
     it('onMapClickでfocusedSpotを非選択状態にしてSpotInfoを非表示にする', () => {
-        const mapId = 0;
-        const spotId = 1;
-        const marker = new DefaultSpotMarker([0, 0], 'testSpotName', mapId, spotId);
+        const testSpot: Spot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
+        const marker = new DefaultSpotMarker([0, 0], 'testSpotName', testSpot);
         marker.setSelected(true);
-        mapViewMutations.setFocusedSpot({mapId, spotId});
+        mapViewMutations.setFocusedSpot(testSpot);
         // focusedMarkerを探す部分をモック
         wrapper.vm.findMarker = jest.fn((focusedSpot) => {
             return marker;

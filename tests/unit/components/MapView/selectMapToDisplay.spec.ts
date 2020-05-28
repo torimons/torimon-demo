@@ -77,7 +77,7 @@ describe('components/map/index.ts/ selectMapToDisplay()', () => {
         const testDetailMap: Map = new Map(0, 'testMap', testBounds);
         const testDetailMap2: Map = new Map(1, 'testMap2', testBounds);
         testSpot.addDetailMaps([testDetailMap, testDetailMap2]);
-        testSpot.setLastViewedDetailMap(testDetailMap2)
+        testSpot.setLastViewedDetailMap(testDetailMap2);
         mapViewMutations.setCenterSpotInRootMap(testSpot);
 
         const expectedMap = testDetailMap2;

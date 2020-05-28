@@ -2,7 +2,6 @@ import { mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex.ts';
 import map from '@/components/MapView/index.vue';
 import { MapViewState, RawSpot, Coordinate } from '@/store/types';
 import { shallowMount } from '@vue/test-utils';
-import { cloneDeep } from 'lodash';
 import { testRawMapData } from '../../../resources/testRawMapData';
 import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
 import Spot from '@/Spot/Spot';

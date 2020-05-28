@@ -1,9 +1,9 @@
 import L, {LatLngExpression} from 'leaflet';
-import { mapViewMutations, mapViewGetters } from '@/store';
+import { mapViewMutations, mapViewGetters } from '@/store/newMapViewIndex.ts';
+import Spot from '@/Spot/Spot';
 
 export default class DefaultSpotMarker extends L.Marker {
-    private mapId: number;
-    private spotId: number;
+    private spot: Spot;
     private spotName!: string;
     private normalColor: string = '#3F8373';
     private selectedColor: string = '#AE56B3';
@@ -14,16 +14,15 @@ export default class DefaultSpotMarker extends L.Marker {
         iconAnchor: [24, 50],
     });
 
-    constructor(latlng: LatLngExpression, spotName: string, mapId: number, spotId: number) {
+    constructor(latlng: LatLngExpression, spotName: string, spot: Spot) {
         super(latlng);
         this.setIcon(this.icon);
         this.spotName = spotName;
-        this.mapId = mapId;
-        this.spotId = spotId;
+        this.spot = spot;
         this.createNameLabelMarker(latlng);
         // マーカー生成時にfocusedSpotの場合選択状態にしておく
         const focusedSpot = mapViewGetters.focusedSpot;
-        if (focusedSpot.mapId === mapId && focusedSpot.spotId === spotId) {
+        if (focusedSpot === spot) {
             this.setSelected(true);
         }
     }
@@ -39,11 +38,11 @@ export default class DefaultSpotMarker extends L.Marker {
     }
 
     /**
-     * マーカーのmapIdとspotIdを返す
-     * @returns 自身のmapId, spotId
+     * マーカーの示すスポットを返す
+     * @returns スポット
      */
-    public getIdInfo(): {mapId: number, spotId: number} {
-        return {mapId: this.mapId, spotId: this.spotId};
+    public getSpot(): Spot {
+        return this.spot;
     }
     /**
      * マーカーの選択状態によって色を切り替える
@@ -71,7 +70,7 @@ export default class DefaultSpotMarker extends L.Marker {
         // だいたいfont-size:12のときwidthはString.length * 15くらいがちょうどいい
         let htmlTemplate;
         // スポットがrootMapIdに属していなければスポットの名前を表示する
-        if (this.mapId !== mapViewGetters.rootMapId) {
+        if (this.spot.getParentMap() !== mapViewGetters.rootMap) {
             htmlTemplate =
                 `<div
                     style="width:${Math.round(this.spotName.length * widthRate)}px;font-size:${fontSize}px;"
@@ -92,7 +91,7 @@ export default class DefaultSpotMarker extends L.Marker {
      * マーカーが押されたときに呼び出されるコールバック関数
      */
     private updateFocusedMarker(): void {
-        mapViewMutations.setFocusedSpot({mapId: this.mapId, spotId: this.spotId});
+        mapViewMutations.setFocusedSpot(this.spot);
         mapViewMutations.setSpotInfoIsVisible(true);
     }
 }

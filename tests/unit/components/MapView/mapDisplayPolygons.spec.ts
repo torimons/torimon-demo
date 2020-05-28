@@ -1,14 +1,11 @@
 import { mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex.ts';
 import map from '@/components/MapView/index.vue';
-import { MapViewState } from '@/store/types';
 import { FeatureCollection } from 'geojson';
 import { shallowMount } from '@vue/test-utils';
-import { cloneDeep } from 'lodash';
 import { testRawMapData } from '../../../resources/testRawMapData';
 import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
 import Spot from '@/Spot/Spot';
 
-// const mapViewStateTestData: MapViewState = cloneDeep(testMapViewState);
 
 const expectedGeoJsonObject: FeatureCollection = {
     type: 'FeatureCollection',
