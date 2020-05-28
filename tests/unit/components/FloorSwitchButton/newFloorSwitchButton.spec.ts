@@ -126,4 +126,7 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
         expect(wrapper.find('.v-btn').exists()).toBe(true);
     });
 
+    it('displayLevel切替時に階層ボタンの選択状態が維持される', () => {
+        
+    })
 });
