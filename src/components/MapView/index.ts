@@ -74,9 +74,9 @@ export default class MapView extends Vue {
     }
 
     /**
-     * mapIdとspotIdから現在表示されているマーカーのオブジェクトを取得する
+     * 現在表示されているマーカーからspot情報をもとに検索
      * 見つからない場合nullを返す
-     * @param idInfo マーカーを取得したいspotの{mapId, spotId}
+     * @param spot 検索したいマーカーのスポット
      * @returns 見つかったマーカーのオブジェクト | null
      */
     private findMarker(spot: Spot | undefined): DefaultSpotMarker | null {
@@ -207,10 +207,9 @@ export default class MapView extends Vue {
     }
 
     /**
-     * storeのgetSpotsForMapで取得したspotの情報から
-     * shapeの情報を取り出してleafletで扱える形式に変換する．
-     * @param spots storeのgetSpotsForMapの返り値.
-     * @return geoJson形式のshapeデータ
+     * spotの情報からshapeの情報を取り出してleafletで扱える形式に変換する．
+     * @param spots GeoJson形式に変換したいspotの配列 .
+     * @return GeoJson形式のshapeデータ
      */
     private spotShapeToGeoJson(spots: Spot[]): GeoJsonObject {
         const shapes: Feature[] = [];
@@ -256,7 +255,6 @@ export default class MapView extends Vue {
     /**
      * マップ表示の移動のためにStoreのgetterのウォッチを行う
      */
-    // TODO: テストを書く
     private watchStoreForMoveMapCenter(): void {
         store.watch(
             (state, getters: MapViewGetters) => getters.spotToDisplayInMapCenter,
@@ -310,7 +308,7 @@ export default class MapView extends Vue {
      */
     private displayMap(): void {
         const newMapToDisplay = this.selectMapToDisplay();
-        // 表示するマップのidが変わった時だけマーカー,ポリゴンの表示を行う
+        // 表示するマップが変わった時だけマーカー,ポリゴンの表示を行う
         if (newMapToDisplay !== this.mapToDisplay) {
             const newSpotsForDisplayMap: Spot[] = newMapToDisplay.getSpots();
             this.displaySpotMarkers(newSpotsForDisplayMap);
