@@ -39,7 +39,7 @@ export default class MapView extends Vue {
             },
         ).addTo(this.map);
         this.map.on('zoomend', this.updateDisplayLevel);
-        this.map.on('move', this.updateIdOfCenterSpotInRootMap);
+        this.map.on('move', this.updateCenterSpotInRootMap);
         this.map.zoomControl.setPosition('bottomright');
         this.watchStoreForMoveMapCenter();
         this.watchStoreForDisplayMap();
@@ -84,7 +84,7 @@ export default class MapView extends Vue {
     private findMarker(spot: Spot | undefined): DefaultSpotMarker | null {
         const foundMarker: DefaultSpotMarker | undefined = this.spotMarkers
             .find((marker) => {
-                return marker.getIdInfo().mapId === idInfo.mapId && marker.getIdInfo().spotId === idInfo.spotId;
+                return marker.getIdInfo().mapId === spot.mapId && marker.getIdInfo().spotId === spot.spotId;
             });
         if (foundMarker === undefined) {
             return null;
@@ -134,9 +134,9 @@ export default class MapView extends Vue {
      * @param spotsToDisplay 新しく表示するスポットの配列
      */
     private displaySpotMarkers(spotsToDisplay: Spot[]): void {
-        this.spotMarkers.map((marker: Marker<any>) => marker.remove());
+        this.spotMarkers.forEach((marker: Marker<any>) => marker.remove());
         this.spotMarkers = spotsToDisplay
-            .map((spot: Spot) => new DefaultSpotMarker(spot.getCoordinate(), spot.getName(), spot.parentMap.getId(), spot.getId()));
+            .map((spot: Spot) => new DefaultSpotMarker(spot.getCoordinate(), spot.getName(), spot.getParentMap.getId(), spot.getId()));
         this.addMarkersToMap(this.spotMarkers);
     }
 
@@ -161,11 +161,11 @@ export default class MapView extends Vue {
     }
 
     /**
-     * マップ移動時に画面中央に最も近い&ある一定距離以内に存在するスポットをidOfCenterSpotInRootMapにセットする．
-     * 一定距離内であればスポットIdを，一定距離外であればnullをセット．距離の判定はtwoPointsIsNearが行う．
+     * マップ移動時に画面中央に最も近い&ある一定距離以内に存在するスポットをcenterSpotInRootMapにセットする．
+     * 一定距離内であればスポットを，一定距離外であればnullをセット．距離の判定はtwoPointsIsNearが行う．
      * @params e leafletのイベント
      */
-    private updateIdOfCenterSpotInRootMap(e: L.LeafletEvent): void {
+    private updateCenterSpotInRootMap(e: L.LeafletEvent): void {
         const centerPos: Coordinate = this.map.getCenter();
         const spots: Spot[] = mapViewGetters.rootMap.getSpots();
         const nearestSpot: Spot = this.getNearestSpot(centerPos, spots);

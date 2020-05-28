@@ -1,12 +1,13 @@
-import { mapViewGetters, mapViewMutations } from '@/store';
+import { mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex.ts';
 import map from '@/components/MapView/index.vue';
 import { MapViewState, RawSpot, Coordinate } from '@/store/types';
 import { shallowMount } from '@vue/test-utils';
 import { cloneDeep } from 'lodash';
-import { testMapViewState } from '../../../resources/testMapViewState';
+import { testRawMapData } from '../../../resources/testRawMapData';
 import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
+import Spot from '@/Spot/Spot';
 
-const mapViewStateTestData: MapViewState = cloneDeep(testMapViewState);
+// const mapViewStateTestData: MapViewState = cloneDeep(testMapViewState);
 
 /**
  * モック用の関数，paramに与えた値を返す関数を返す
@@ -23,7 +24,7 @@ describe('中央に最も近いスポットの取得，およびその更新の�
     let wrapper: any;
     beforeEach(() => {
         // テスト用データをstoreにセット
-        mapViewMutations.setMapViewState(mapViewStateTestData);
+        mapViewMutations.setRootMapForTest(testRawMapData);
         GeolocationWrapper.watchPosition = jest.fn();
         const initMapDisplay = jest.fn();
         const watchStoreForDisplayMap = jest.fn();
@@ -56,44 +57,46 @@ describe('中央に最も近いスポットの取得，およびその更新の�
         expect(actualValFar).toBe(expectedValFar);
     });
 
-    it('getNearestSpotId()で中央に最も近いスポットのIdを取得する', () => {
-        const spots: RawSpot[] = mapViewGetters.maps[0].spots;
+    it('getNearestSpot()で中央に最も近いスポットを取得する', () => {
+        const spots: Spot[] = mapViewGetters.rootMap.getSpots();
         // 中央の座標を設定して中央に最も近いスポットのIdを取得する
         const center1: Coordinate = {lat: 33.595, lng: 130.700};
-        const exepctedNearestSpotId1: number = 1;
-        const actualSpotId1: number = wrapper.vm.getNearestSpotId(center1, spots);
-        expect(actualSpotId1).toBe(exepctedNearestSpotId1);
+        const exepctedNearestSpot1: Spot = spots[1];
+        const actualSpot1: Spot = wrapper.vm.getNearestSpot(center1, spots);
+        expect(actualSpot1).toBe(exepctedNearestSpot1);
         // 別の中央の座標を設定して中央に最も近いスポットのIdを取得する
         const center2: Coordinate = {lat: 33.595, lng: 130.218};
-        const exepctedNearestSpotId2: number = 0;
-        const actualSpotId2: number = wrapper.vm.getNearestSpotId(center2, spots);
-        expect(actualSpotId2).toBe(exepctedNearestSpotId2);
+        const exepctedNearestSpot2: Spot = spots[0];
+        const actualSpotId2: number = wrapper.vm.getNearestSpot(center2, spots);
+        expect(actualSpotId2).toBe(exepctedNearestSpot2);
     });
 
-    it('updateIdOfCenterSpotInRootMapで画面中央に近いスポットを更新する', () => {
+    it('updateCenterSpotInRootMapで画面中央に近いスポットを更新する', () => {
         // ある一定範囲内にスポットが存在する場合は，画面中央に最も近いスポットのIdをセットする．
         const center1: Coordinate = {lat: 33.595, lng: 130.700};
-        wrapper.vm.map.getCenter = setReturnOfGetCenter(center1);
-        wrapper.vm.updateIdOfCenterSpotInRootMap();
-        const expectedCenterSpotId1: number = 1;
-        const actualCenterSpotId1: number | null = mapViewGetters.idOfCenterSpotInRootMap;
-        expect(actualCenterSpotId1).toBe(expectedCenterSpotId1);
+        wrapper.vm.map.getCenter = setReturnOfGetCenter(center1); // L.Map.getCenter()のモック
+        wrapper.vm.updateCenterSpotInRootMap();
+        const spots: Spot[] = mapViewGetters.rootMap.getSpots();
+        const expectedCenterSpot1: Spot = spots[1];
+        const actualCenterSpot1: Spot | null = mapViewGetters.centerSpotInRootMap;
+        expect(actualCenterSpot1).toBe(expectedCenterSpot1);
 
         // 一定範囲内にスポットが存在しない場合はnullをセットする．
         const center2: Coordinate = {lat: 0, lng: 0};
-        wrapper.vm.map.getCenter = setReturnOfGetCenter(center2);
-        wrapper.vm.updateIdOfCenterSpotInRootMap();
-        const expectedCenterSpotId2: null = null;
-        const actualCenterSpotId2: number | null = mapViewGetters.idOfCenterSpotInRootMap;
-        expect(actualCenterSpotId2).toBe(expectedCenterSpotId2);
+        wrapper.vm.map.getCenter = setReturnOfGetCenter(center2); // L.Map.getCenter()のモック
+        wrapper.vm.updateCenterSpotInRootMap();
+        const expectedCenterSpot2: null = null;
+        const actualCenterSpot2: Spot | null = mapViewGetters.centerSpotInRootMap;
+        expect(actualCenterSpot2).toBe(expectedCenterSpot2);
     });
 
-    it('moveイベントでupdateIdOfCenterSpotInRootMapが呼び出されているか確認', () => {
+    it('moveイベントでupdateCenterSpotInRootMapが呼び出されているか確認', () => {
         const center: Coordinate = {lat: 33.595, lng: 130.700};
         wrapper.vm.map.getCenter = setReturnOfGetCenter(center);
         wrapper.vm.map.fire('move');
-        const expectedCenterSpotId: number = 1;
-        const actualCenterSpotId: number | null = mapViewGetters.idOfCenterSpotInRootMap;
-        expect(actualCenterSpotId).toBe(expectedCenterSpotId);
+        const spots: Spot[] = mapViewGetters.rootMap.getSpots();
+        const expectedCenterSpot: Spot = spots[1];
+        const actualCenterSpot: Spot | null = mapViewGetters.centerSpotInRootMap;
+        expect(actualCenterSpot).toBe(expectedCenterSpot);
     });
 });

@@ -1,4 +1,4 @@
-import { mapViewGetters, mapViewMutations } from '@/store';
+import { mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex.ts';
 import { MapViewState, SpotForMap, Coordinate } from '@/store/types';
 import { shallowMount } from '@vue/test-utils';
 import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
@@ -7,9 +7,9 @@ import MapView from '@/components/MapView';
 import 'leaflet/dist/leaflet.css';
 import L, { map } from 'leaflet';
 import { cloneDeep } from 'lodash';
-import { testMapViewState } from '../../../resources/testMapViewState';
+import { testRawMapData } from '../../../resources/testRawMapData';
+import Spot from '@/Spot/Spot';
 
-const mapViewStoreTestData: MapViewState = cloneDeep(testMapViewState);
 
 describe('components/Map.vue マーカー切り替えのテスト', () => {
     let wrapper: any;
@@ -36,7 +36,7 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
     ];
 
     beforeEach(() => {
-        mapViewMutations.setMapViewState(mapViewStoreTestData);
+        mapViewMutations.setRootMapForTest(testRawMapData);
         GeolocationWrapper.watchPosition = jest.fn();
         const initMapDisplay = jest.fn();
         wrapper = shallowMount(MapView, {
@@ -53,11 +53,15 @@ describe('components/Map.vue マーカー切り替えのテスト', () => {
     });
 
     it('displaySpotMarkersにspotの配列を渡してMapのspotMarkersに登録', () => {
+        const testSpots: Spot[] = [
+            new Spot(0, 'testSpot0', { lat: 0, lng: 0 }),
+            new Spot(1, 'testSpot1', { lat: 0, lng: 0 })
+        ]
         wrapper.vm.displaySpotMarkers(testSpots);
         const actualMarkers: L.Marker[] = wrapper.vm.spotMarkers;
         for (let i = 0; i < actualMarkers.length; i++) {
-            const testLat: number = testSpots[i].coordinate.lat;
-            const testLng: number = testSpots[i].coordinate.lng;
+            const testLat: number = testSpots[i].getCoordinate().lat;
+            const testLng: number = testSpots[i].getCoordinate().lng;
             const actLatLng: L.LatLng = actualMarkers[i].getLatLng();
             // testSpotとactualSpotの座標がlatLng型で一致してるか
             expect(actLatLng).toStrictEqual(L.latLng(testLat, testLng));
