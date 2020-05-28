@@ -40,6 +40,14 @@ export default class Spot {
     }
 
     /**
+     * 親マップの親スポットを取得する
+     * @return parentSpot
+     */
+    public getParentSpot(): Spot | undefined {
+        return this.parentMap.getParentSpot();
+    }
+
+    /**
      * 自身の名前を返す
      * @return 自身の名前
      */

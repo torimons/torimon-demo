@@ -10,16 +10,6 @@ export default class SpotItem extends Vue {
     private spot!: Spot;
     @Prop()
     private distance!: number;
-    private parentSpotName!: string;
-
-    public mounted() {
-        const parentSpot = this.spot.getParentMap().getParentSpot();
-        if (parentSpot === undefined) {
-            this.parentSpotName = '';
-        } else {
-            this.parentSpotName = parentSpot.getName();
-        }
-    }
 
     /**
      * SpotItemがクリックされると呼ばれ，SpotListを非表示にする．

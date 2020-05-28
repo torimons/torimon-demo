@@ -65,7 +65,7 @@ export default class Search {
      */
     private spotIsMatchToKeywords(spot: Spot, keywordsRegExp: RegExp): boolean {
         let target: string = spot.getName();
-        const parentSpot: Spot | undefined = spot.getParentMap().getParentSpot();
+        const parentSpot: Spot | undefined = spot.getParentSpot();
         if (parentSpot !== undefined) {
             target = target + parentSpot.getName();
         }
