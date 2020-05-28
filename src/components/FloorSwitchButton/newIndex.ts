@@ -16,7 +16,7 @@ export default class FloorSwitchButton extends Vue {
     private selectedFloorButtonIndex: number | undefined = 0;
     private isVisible: boolean = false;
 
-    private spot: Spot | undefined;
+    private spotWithFloors: Spot | undefined;
 
     public mounted() {
         store.watch(
@@ -68,14 +68,12 @@ export default class FloorSwitchButton extends Vue {
             this.clearButtonContent();
             return;
         }
-        // const parentMapId: number = mapViewGetters.rootMapId;
-        const rootMap: Map = mapViewGetters.rootMap;
-        this.spot = newSpot;
         const detailMaps: Map[] = newSpot.getDetailMaps();
         if (detailMaps.length === 0) {
             this.clearButtonContent();
             return;
         }
+        this.spotWithFloors = newSpot;
         this.floorMapIds = (detailMaps.map((m: Map) => m.getId())).reverse();
         this.floorNames = (detailMaps.map((m: Map) => m.getFloorName())).reverse();
 
@@ -109,28 +107,26 @@ export default class FloorSwitchButton extends Vue {
     private watchFloorMapChangeOfDisplayedSpot(): void {
         store.watch(
             (state, getters: MapViewGetters) => {
-                if (this.spot === undefined) {
+                if (this.spotWithFloors === undefined) {
                     return null;
                 }
-                if (this.spot.getDetailMaps().length > 0) {
-                    const lastViewedDetailMap = this.spot.getLastViewedDetailMap();
-                    if (lastViewedDetailMap === undefined) {
-                        return null;
-                    }
-                    return lastViewedDetailMap.getId();
+                const lastViewedDetailMap: Map | undefined = this.spotWithFloors.getLastViewedDetailMap();
+                if (lastViewedDetailMap === undefined) {
+                    return null;
                 }
-                return null;
+                return lastViewedDetailMap.getId();
             },
             (newFloorMapId, oldFloorMapId) => {
-                if (newFloorMapId !== null) {
-                    const spot: Spot | null = mapViewGetters.rootMap.findSpot(newFloorMapId);
-                    if (spot === null) {
-                        return;
-                    }
-                    const detailMaps = spot.getDetailMaps();
-                    this.selectedFloorButtonIndex =
-                        detailMaps.slice().reverse().findIndex((map: Map) => map.getId() === newFloorMapId);
+                if (newFloorMapId === null) {
+                    return;
                 }
+                if (this.spotWithFloors === undefined) {
+                    return;
+                }
+                const detailMaps: Map[] = this.spotWithFloors.getDetailMaps();
+                const index: number = detailMaps
+                    .findIndex((m: Map) => m.getId() === newFloorMapId);
+                this.selectedFloorButtonIndex = detailMaps.length - index - 1;
             },
         );
     }
