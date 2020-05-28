@@ -1,14 +1,17 @@
 import Vuex from 'vuex';
 import map from '@/components/MapView/index.vue';
-import { mapViewMutations } from '@/store';
-import { testMapViewState2 } from '../../../resources/testMapViewState2';
+import { mapViewMutations } from '@/store/newMapViewIndex.ts';
+import { testRawMapData } from '../../../resources/testRawMapData';
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper.ts';
+import Map from '@/Map/Map.ts';
+import { RawMap } from '@/store/types';
+import Spot from '@/Spot/Spot';
 
 describe('components/map/index.ts/ selectMapToDisplay()', () => {
     let wrapper: any;
     beforeEach(() => {
-        mapViewMutations.setMapViewState(testMapViewState2);
+        mapViewMutations.setRootMapForTest(testRawMapData);
         GeolocationWrapper.watchPosition = jest.fn();
         const initMapDisplay = jest.fn();
         const watchStoreForDisplayMap = jest.fn();
@@ -25,38 +28,60 @@ describe('components/map/index.ts/ selectMapToDisplay()', () => {
         wrapper.destroy();
     });
 
-    it('表示ズームレベルがdefaultの場合，rootMapIdを返す', () => {
-        const actualMapId = wrapper.vm.selectMapToDisplay();
-        expect(actualMapId).toBe(testMapViewState2.rootMapId);
+    it('表示ズームレベルがdefaultの場合，rootMapを返す', () => {
+        const actualMap: Map = wrapper.vm.selectMapToDisplay() as Map;
+        const rootMap: RawMap = testRawMapData[0];
+        expect(actualMap.getId()).toBe(rootMap.id);
     });
 
-    it('表示レベルがdetailで，ルートマップ中央にスポットがない場合，rootMapのIDを返す', () => {
+    it('表示レベルがdetailで，ルートマップ中央にスポットがない場合，rootMapを返す', () => {
         mapViewMutations.setDisplayLevel('detail');
         mapViewMutations.setNonExistentOfCenterSpotInRootMap();
-        const actualMapId = wrapper.vm.selectMapToDisplay();
-        expect(actualMapId).toBe(testMapViewState2.rootMapId);
+        const actualMap: Map = wrapper.vm.selectMapToDisplay();
+        const rootMap: RawMap = testRawMapData[0];
+        expect(actualMap.getId()).toBe(rootMap.id);
     });
 
-    it('表示レベルがdetailで，centerSpotInRootMapがdetailMapを持っていない時，そのrootMapのIDを返す', () => {
+    it('表示レベルがdetailで，centerSpotInRootMapがdetailMapを持っていない時，そのrootMapを返す', () => {
         mapViewMutations.setDisplayLevel('detail');
-        mapViewMutations.setIdOfCenterSpotInRootMap(1);
-        const actualMapId = wrapper.vm.selectMapToDisplay();
-        expect(actualMapId).toBe(testMapViewState2.rootMapId);
+        const testSpot: Spot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
+        mapViewMutations.setCenterSpotInRootMap(testSpot);
+        const actualMap: Map = wrapper.vm.selectMapToDisplay();
+        const rootMap: RawMap = testRawMapData[0];
+        expect(actualMap.getId()).toBe(rootMap.id);
     });
 
-    it('表示レベルがdetailで，centerSpotInRootMapがdetailMapを持っており，初めてそのMapが表示される場合，そのdetailMapの中から一つ目のMapのIDを返す', () => {
+    it('表示レベルがdetailで，centerSpotInRootMapがdetailMapを持っており，初めてそのMapが表示される場合，そのdetailMapの中から一つ目のMapを返す', () => {
         mapViewMutations.setDisplayLevel('detail');
-        mapViewMutations.setIdOfCenterSpotInRootMap(0);
-        const expectedMapId: number = 1;
-        const actualMapId = wrapper.vm.selectMapToDisplay();
-        expect(actualMapId).toBe(expectedMapId);
+        const testBounds = {
+            topL: {lat: 0, lng: 0},
+            botR: {lat: 0, lng: 0},
+        };
+        const testSpot: Spot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
+        const testDetailMap: Map = new Map(0, 'testMap', testBounds);
+        testSpot.addDetailMaps([testDetailMap]);
+        mapViewMutations.setCenterSpotInRootMap(testSpot);
+
+        const expectedMap = testDetailMap;
+        const actualMap: Map = wrapper.vm.selectMapToDisplay();
+        expect(actualMap).toBe(expectedMap);
     });
 
-    it('表示レベルがdetailで，centerSpotInRootMapがdetailMapを持っており，過去に表示されたdetailMapがある場合，そのdetailMapのIdを返す', () => {
+    it('表示レベルがdetailで，centerSpotInRootMapがdetailMapを持っており，過去に表示されたdetailMapがある場合，そのdetailMapを返す', () => {
         mapViewMutations.setDisplayLevel('detail');
-        mapViewMutations.setIdOfCenterSpotInRootMap(2);
-        const expectedMapId: number = 3;
-        const actualMapId = wrapper.vm.selectMapToDisplay();
-        expect(actualMapId).toBe(expectedMapId);
+        const testBounds = {
+            topL: {lat: 0, lng: 0},
+            botR: {lat: 0, lng: 0},
+        };
+        const testSpot: Spot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
+        const testDetailMap: Map = new Map(0, 'testMap', testBounds);
+        const testDetailMap2: Map = new Map(1, 'testMap2', testBounds);
+        testSpot.addDetailMaps([testDetailMap, testDetailMap2]);
+        testSpot.setLastViewedDetailMap(testDetailMap2)
+        mapViewMutations.setCenterSpotInRootMap(testSpot);
+
+        const expectedMap = testDetailMap2;
+        const actualMap = wrapper.vm.selectMapToDisplay();
+        expect(actualMap).toBe(expectedMap);
     });
 });

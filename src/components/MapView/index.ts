@@ -24,7 +24,7 @@ export default class MapView extends Vue {
     private spotMarkers: DefaultSpotMarker[] = [];
     private currentLocationMarker: CurrentLocationMarker = new CurrentLocationMarker([0, 0]);
     private zoomLevelThreshold: number = 19; // とりあえず仮で閾値決めてます
-    private mapIdToDisplay!: number;
+    private mapToDisplay!: Map;
 
     /**
      * とりあえず地図の表示を行なっています．
@@ -311,36 +311,35 @@ export default class MapView extends Vue {
     private displayMap(): void {
         const newMapToDisplay = this.selectMapToDisplay();
         // 表示するマップのidが変わった時だけマーカー,ポリゴンの表示を行う
-        if (newMapToDisplay !== this.mapIdToDisplay) {
-            const newSpotsForDisplayMap: SpotForMap[] = mapViewGetters.getSpotsForMap(newMapToDisplay);
+        if (newMapToDisplay !== this.mapToDisplay) {
+            const newSpotsForDisplayMap: Spot[] = newMapToDisplay.getSpots();
             this.displaySpotMarkers(newSpotsForDisplayMap);
             this.displayPolygons(newSpotsForDisplayMap);
         }
-        this.mapIdToDisplay = newMapToDisplay;
+        this.mapToDisplay = newMapToDisplay;
     }
 
     /**
-     * Storeを参照して新しく表示するマップのIDを選択する
-     * @return 新しく表示するマップのID
+     * Storeを参照して新しく表示するマップを選択する
+     * @return 新しく表示するマップ
      */
-    private selectMapToDisplay(): number {
+    private selectMapToDisplay(): Map {
         const displayLevel: DisplayLevelType = mapViewGetters.displayLevel;
         if (displayLevel === 'default') {
-            return mapViewGetters.rootMapId;
+            return mapViewGetters.rootMap;
         }
-        const centerSpotId: number | null = mapViewGetters.idOfCenterSpotInRootMap;
-        if (centerSpotId === null) {
-            return mapViewGetters.rootMapId;
+        const centerSpot: Spot | null = mapViewGetters.centerSpotInRootMap;
+        if (centerSpot === null) {
+            return mapViewGetters.rootMap;
         }
-        const centerSpot = { parentMapId: mapViewGetters.rootMapId, spotId: centerSpotId };
-        if (!mapViewGetters.spotHasDetailMaps(centerSpot)) {
-            return mapViewGetters.rootMapId;
+        if (centerSpot.getDetailMaps().length === 0) {
+            return mapViewGetters.rootMap;
         }
-        const lastViewedDetailMapId: number | null = mapViewGetters.getLastViewedDetailMapId(centerSpot);
-        if (lastViewedDetailMapId != null) {
-            return lastViewedDetailMapId;
+        const lastViewedDetailMap: Map | undefined = centerSpot.getLastViewedDetailMap();
+        if (lastViewedDetailMap != null) {
+            return lastViewedDetailMap;
         }
-        const firstDetailMapId: number = mapViewGetters.getSpotById(centerSpot).detailMapIds[0];
-        return firstDetailMapId;
+        const firstDetailMap: Map = centerSpot.getDetailMaps()[0];
+        return firstDetailMap;
     }
 }
