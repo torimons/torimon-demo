@@ -1,13 +1,13 @@
 import { store, mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex.ts';
-import { RawMap } from '@/store/types';
 import { createLocalVue, mount } from '@vue/test-utils';
-import { initMap } from '@/store/modules/NewMapViewModule/MapViewState';
-import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
-import FloorSwitchButton from '@/components/FloorSwitchButton/newIndex.vue';
-import 'leaflet/dist/leaflet.css';
-import { cloneDeep } from 'lodash';
-import { testRawMapData } from '../../../resources/testRawMapData';
 import Vuetify from 'vuetify';
+import 'leaflet/dist/leaflet.css';
+import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
+import { cloneDeep } from 'lodash';
+import { RawMap } from '@/store/types';
+import { testRawMapData } from '../../../resources/testRawMapData';
+import { initMap } from '@/store/modules/NewMapViewModule/MapViewState';
+import FloorSwitchButton from '@/components/FloorSwitchButton/newIndex.vue';
 import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot.ts';
 
@@ -37,12 +37,11 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
     });
 
     it('updateLastViewedDetailMapOnClickでlastViewedDetailMapを更新する', () => {
-        // updateLastViewedDetailMapOnClickは
-        // centerSpotがセットされ、階層ボタンが表示されている必要があるため、
+        // updateLastViewedDetailMapOnClickは階層ボタンが表示されている必要があるため、
         // centerSpotをセットする。
         const targetSpot = mapViewGetters.rootMap.findSpot(0);
         if (targetSpot === null) {
-            throw new Error('Target spot is null.');
+            throw new Error('\'target\' spot is null.');
         }
         mapViewMutations.setCenterSpotInRootMap(targetSpot);
 
@@ -69,11 +68,10 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
 
     it('中心付近のスポットの切り替わりに合わせて階層ボタンの内容を切り替える', () => {
         // 中心付近にrootMapの詳細マップ持ちスポットが存在する場合．
-        // まだ一度も参照されていないスポットの場合，初期階が選択された状態となる．
-        // mapViewMutations.setIdOfCenterSpotInRootMap(0);
+        // まだ一度も参照されていないスポットは初期階が選択された状態となる．
         const targetSpotWithDetailMaps = mapViewGetters.rootMap.findSpot(0);
         if (targetSpotWithDetailMaps === null) {
-            throw new Error('Target spot is null.');
+            throw new Error('\'targetSpotWithDetailMaps\' is null.');
         }
         mapViewMutations.setCenterSpotInRootMap(targetSpotWithDetailMaps);
         expect(wrapper.vm.floorNames).toEqual(['2F', '1F']);
@@ -83,7 +81,7 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
         // 中心付近にrootMapのスポットが存在するが，詳細マップを持たない場合．
         const targetSpotWithNoDetailMaps = testRootMap.findSpot(1);
         if (targetSpotWithNoDetailMaps === null) {
-            throw new Error('Target spot is null.');
+            throw new Error('\'targetSpotWithNoDetailMaps\' is null.');
         }
         mapViewMutations.setCenterSpotInRootMap(targetSpotWithNoDetailMaps);
         expect(wrapper.vm.floorNames).toEqual([]);
