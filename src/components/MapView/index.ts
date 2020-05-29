@@ -70,22 +70,22 @@ export default class MapView extends Vue {
         if (focusedSpot === undefined) {
             return;
         }
-        const focusedMarker = this.findMarker(focusedSpot);
+        const focusedMarker = this.findMarker(focusedSpot.getId());
         if (focusedMarker !== null) {
             focusedMarker.setSelected(false);
         }
     }
 
     /**
-     * 現在表示されているマーカーからspot情報をもとに検索
+     * 現在表示されているマーカーからspotIdをもとに検索
      * 見つからない場合nullを返す
-     * @param spot 検索したいマーカーのスポット
+     * @param spotId 検索したいマーカーのスポットID
      * @returns 見つかったマーカーのオブジェクト | null
      */
-    private findMarker(spot: Spot): DefaultSpotMarker | null {
+    private findMarker(spotId: number): DefaultSpotMarker | null {
         const foundMarker: DefaultSpotMarker | undefined = this.spotMarkers
             .find((marker) => {
-                return marker.getSpot().getId() === spot.getId();
+                return marker.getSpot().getId() === spotId;
             });
         if (foundMarker === undefined) {
             return null;
@@ -105,14 +105,14 @@ export default class MapView extends Vue {
                 // 表示するmapが変わった場合など，以前のfocusedMarkerが存在しない場合がある
                 // valueとoldValueは配列なので[0]で渡している
                 if (oldValue !== undefined) {
-                    const oldSelectedMarker = this.findMarker(oldValue);
+                    const oldSelectedMarker = this.findMarker(oldValue.getId());
                     if (oldSelectedMarker != null) {
                         oldSelectedMarker.setSelected(false);
                     }
                 }
                 // 新しいfocusedSpotを選択状態にする
                 if (value !== undefined) {
-                    const newSelectedMarker = this.findMarker(value);
+                    const newSelectedMarker = this.findMarker(value.getId());
                     if (newSelectedMarker != null) {
                         newSelectedMarker.setSelected(true);
                     }

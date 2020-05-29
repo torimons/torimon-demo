@@ -37,9 +37,9 @@ describe('components/Map.vue マーカー選択関連のテスト', () => {
         }
         wrapper.vm.spotMarkers = markers;
         // 存在しないスポットを指定した場合
-        expect(wrapper.vm.findMarker(new Spot(99, 'testSpot', { lat: 0, lng: 0 }))).toBe(null);
+        expect(wrapper.vm.findMarker(99)).toBe(null);
         // 存在するスポットの場合
-        const foundMarker: DefaultSpotMarker = wrapper.vm.findMarker(testSpots[0]);
+        const foundMarker: DefaultSpotMarker = wrapper.vm.findMarker(testSpots[0].getId());
         const expectedMarker = markers[0];
         expect(foundMarker).not.toBeNull();
         expect(foundMarker).toBe(expectedMarker);
@@ -51,7 +51,7 @@ describe('components/Map.vue マーカー選択関連のテスト', () => {
         marker.setSelected(true);
         mapViewMutations.setFocusedSpot(testSpot);
         // focusedMarkerを探す部分をモック
-        wrapper.vm.findMarker = jest.fn((focusedSpot) => {
+        wrapper.vm.findMarker = jest.fn((focusedSpotId) => {
             return marker;
         });
         wrapper.vm.onMapClick();
