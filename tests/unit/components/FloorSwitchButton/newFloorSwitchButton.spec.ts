@@ -39,17 +39,11 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
     it('updateLastViewedDetailMapOnClickでlastViewedDetailMapを更新する', () => {
         // updateLastViewedDetailMapOnClickは階層ボタンが表示されている必要があるため、
         // centerSpotをセットする。
-        const targetSpot = mapViewGetters.rootMap.findSpot(0);
-        if (targetSpot === null) {
-            throw new Error('\'target\' spot is null.');
-        }
+        const targetSpot = mapViewGetters.rootMap.getSpots()[0];
         mapViewMutations.setCenterSpotInRootMap(targetSpot);
 
         // click前（初期値がセットされているので検証）
-        const actualMapBeforeClick: Map | undefined = targetSpot.getLastViewedDetailMap();
-        if (actualMapBeforeClick === undefined) {
-            throw new Error('\'actualMapBeforeClick\' is undefined.');
-        }
+        const actualMapBeforeClick: Map = targetSpot.getLastViewedDetailMap() as Map;
         const expectedMapIdBeforeClick = 1;
         expect(actualMapBeforeClick.getId()).toBe(expectedMapIdBeforeClick);
 
@@ -58,10 +52,7 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
         wrapper.vm.updateLastViewedDetailMapOnClick(indexOfClickedButton);
 
         // click後
-        const actualMapAfterClick: Map | undefined = targetSpot.getLastViewedDetailMap();
-        if (actualMapAfterClick === undefined) {
-            throw new Error('\'actualMapAfterClick\' is undefined.');
-        }
+        const actualMapAfterClick: Map = targetSpot.getLastViewedDetailMap() as Map;
         const expectedMapIdAfterClick = 2;
         expect(actualMapAfterClick.getId()).toBe(expectedMapIdAfterClick);
     });
@@ -69,20 +60,14 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
     it('中心付近のスポットの切り替わりに合わせて階層ボタンの内容を切り替える', () => {
         // 中心付近にrootMapの詳細マップ持ちスポットが存在する場合．
         // まだ一度も参照されていないスポットは初期階が選択された状態となる．
-        const targetSpotWithDetailMaps = mapViewGetters.rootMap.findSpot(0);
-        if (targetSpotWithDetailMaps === null) {
-            throw new Error('\'targetSpotWithDetailMaps\' is null.');
-        }
+        const targetSpotWithDetailMaps = mapViewGetters.rootMap.getSpots()[0];
         mapViewMutations.setCenterSpotInRootMap(targetSpotWithDetailMaps);
         expect(wrapper.vm.floorNames).toEqual(['2F', '1F']);
         expect(wrapper.vm.floorMapIds).toEqual([2, 1]);
         expect(wrapper.vm.selectedFloorButtonIndex).toBe(1);
 
         // 中心付近にrootMapのスポットが存在するが，詳細マップを持たない場合．
-        const targetSpotWithNoDetailMaps = testRootMap.findSpot(1);
-        if (targetSpotWithNoDetailMaps === null) {
-            throw new Error('\'targetSpotWithNoDetailMaps\' is null.');
-        }
+        const targetSpotWithNoDetailMaps = testRootMap.getSpots()[1];
         mapViewMutations.setCenterSpotInRootMap(targetSpotWithNoDetailMaps);
         expect(wrapper.vm.floorNames).toEqual([]);
         expect(wrapper.vm.floorMapIds).toEqual([]);
@@ -90,9 +75,7 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
 
         // 一度参照したスポットを再度参照する場合．
         // 階層ボタンは最後に参照された階層が選択された状態となる．2階が参照された状態にしてテスト
-
-        // 2Fのマップを選択済みにする
-        const targetMap = (testRootMap as any).spots[0].detailMaps[1];
+        const targetMap = testRootMap.getSpots()[0].getDetailMaps()[1];
         targetSpotWithDetailMaps.setLastViewedDetailMap(targetMap);
 
         mapViewMutations.setCenterSpotInRootMap(targetSpotWithDetailMaps);
@@ -126,7 +109,18 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
         expect(wrapper.find('.v-btn').exists()).toBe(true);
     });
 
-    it('displayLevel切替時に階層ボタンの選択状態が維持される', () => {
-        
-    })
+    it('lastViewedDetailMapの切り替わりによって階層ボタンの選択状態が更新される', () => {
+        const spot: Spot = mapViewGetters.rootMap.getSpots()[0];
+        // 階層ボタン表示のためにcenterSpotをセット
+        mapViewMutations.setCenterSpotInRootMap(spot);
+
+        // 初期階が選択されている（1F）が選択状態
+        expect(wrapper.vm.floorNames).toEqual(['2F', '1F']);
+        expect(wrapper.vm.floorMapIds).toEqual([2, 1]);
+        expect(wrapper.vm.selectedFloorButtonIndex).toBe(1);
+
+        // lastViewedDetailMapが更新され、合わせて選択状態も更新される（2Fが選択状態）
+        spot.setLastViewedDetailMap(spot.getDetailMaps()[1]);
+        expect(wrapper.vm.selectedFloorButtonIndex).toBe(0);
+    });
 });
