@@ -16,8 +16,6 @@ export default class FloorSwitchButton extends Vue {
     private selectedFloorButtonIndex: number | undefined = 0;
     private isVisible: boolean = false;
 
-    private centerSpotWithFloors: Spot | undefined;
-
     public mounted() {
         store.watch(
             (state, getters: MapViewGetters) => getters.displayLevel,
@@ -26,6 +24,7 @@ export default class FloorSwitchButton extends Vue {
         store.watch(
             (state, getters: MapViewGetters) => getters.centerSpotInRootMap,
             (value, oldValue) => this.updateContentOfFloorSwitchButton(value, oldValue),
+            {deep: true},
         );
     }
 
@@ -44,14 +43,15 @@ export default class FloorSwitchButton extends Vue {
      */
     private updateLastViewedDetailMapOnClick(index: number): void {
         const lastViewedDetailMapId: number = this.floorMapIds[index];
-        if (this.centerSpotWithFloors === undefined) {
+        const centerSpot: Spot | null = mapViewGetters.centerSpotInRootMap;
+        if (centerSpot === null) {
             return;
         }
-        const lastViewedDetailMap: Map | null = this.centerSpotWithFloors.findMap(lastViewedDetailMapId);
+        const lastViewedDetailMap: Map | null = centerSpot.findMap(lastViewedDetailMapId);
         if (lastViewedDetailMap === null) {
             return;
         }
-        this.centerSpotWithFloors.setLastViewedDetailMap(lastViewedDetailMap);
+        centerSpot.setLastViewedDetailMap(lastViewedDetailMap);
     }
 
     /**
@@ -70,7 +70,6 @@ export default class FloorSwitchButton extends Vue {
             this.clearButtonContent();
             return;
         }
-        this.centerSpotWithFloors = newCenterSpot;
         this.floorMapIds = (detailMaps.map((m: Map) => m.getId())).reverse();
         this.floorNames = (detailMaps.map((m: Map) => m.getFloorName())).reverse();
 
@@ -97,24 +96,5 @@ export default class FloorSwitchButton extends Vue {
         } else {
             this.isVisible = false;
         }
-    }
-
-    /**
-     * 外部コンポーネントでのLastViewedDetailMapIdの切り替わりをウォッチして
-     * ボタンの選択状態に反映
-     */
-    @Watch('centerSpotWithFloors', {deep: true})
-    private watchFloorMapChangeOfDisplayedSpot(newSpot: Spot | undefined, oldSpot: Spot | undefined): void {
-        if (newSpot === undefined) {
-            return;
-        }
-        const lastViewedDetailMap: Map | undefined = newSpot.getLastViewedDetailMap();
-        if (lastViewedDetailMap === undefined) {
-            return;
-        }
-        const detailMaps: Map[] = newSpot.getDetailMaps();
-        const index: number = detailMaps
-            .findIndex((m: Map) => m.getId() === lastViewedDetailMap.getId());
-        this.selectedFloorButtonIndex = detailMaps.length - index - 1;
     }
 }
