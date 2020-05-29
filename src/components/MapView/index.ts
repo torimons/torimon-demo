@@ -63,14 +63,17 @@ export default class MapView extends Vue {
      * マーカーの選択状態を解除してSpotInfoを非表示にする
      */
     private onMapClick(): void {
+        // SpotItemを非表示にする
+        mapViewMutations.setSpotInfoIsVisible(false);
         // focusedSpotがある場合そのスポットを未選択に設定する
         const focusedSpot = mapViewGetters.focusedSpot;
+        if (focusedSpot === undefined) {
+            return;
+        }
         const focusedMarker = this.findMarker(focusedSpot);
         if (focusedMarker !== null) {
             focusedMarker.setSelected(false);
         }
-        // SpotItemを非表示にする
-        mapViewMutations.setSpotInfoIsVisible(false);
     }
 
     /**
@@ -79,10 +82,10 @@ export default class MapView extends Vue {
      * @param spot 検索したいマーカーのスポット
      * @returns 見つかったマーカーのオブジェクト | null
      */
-    private findMarker(spot: Spot | undefined): DefaultSpotMarker | null {
+    private findMarker(spot: Spot): DefaultSpotMarker | null {
         const foundMarker: DefaultSpotMarker | undefined = this.spotMarkers
             .find((marker) => {
-                return marker.getSpot() === spot;
+                return marker.getSpot().getId() === spot.getId();
             });
         if (foundMarker === undefined) {
             return null;
@@ -96,21 +99,23 @@ export default class MapView extends Vue {
      */
     private watchFocusedSpotChange(): void {
         store.watch(
-            (state, getters: MapViewGetters) => [
-                getters.focusedSpot,
-            ],
+            (state, getters: MapViewGetters) => getters.focusedSpot,
             (value, oldValue) => {
                 // 古いfocusedSpotを非選択状態にする
                 // 表示するmapが変わった場合など，以前のfocusedMarkerが存在しない場合がある
                 // valueとoldValueは配列なので[0]で渡している
-                const oldSelectedMarker = this.findMarker(oldValue[0]);
-                if (oldSelectedMarker != null) {
-                    oldSelectedMarker.setSelected(false);
+                if (oldValue !== undefined) {
+                    const oldSelectedMarker = this.findMarker(oldValue);
+                    if (oldSelectedMarker != null) {
+                        oldSelectedMarker.setSelected(false);
+                    }
                 }
                 // 新しいfocusedSpotを選択状態にする
-                const newSelectedMarker = this.findMarker(value[0]);
-                if (newSelectedMarker != null) {
-                    newSelectedMarker.setSelected(true);
+                if (value !== undefined) {
+                    const newSelectedMarker = this.findMarker(value);
+                    if (newSelectedMarker != null) {
+                        newSelectedMarker.setSelected(true);
+                    }
                 }
             },
         );
