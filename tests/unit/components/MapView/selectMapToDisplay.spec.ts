@@ -1,6 +1,6 @@
 import Vuex from 'vuex';
 import map from '@/components/MapView/index.vue';
-import { mapViewMutations } from '@/store/newMapViewIndex.ts';
+import { mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex.ts';
 import { testRawMapData } from '../../../resources/testRawMapData';
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper.ts';
@@ -30,8 +30,8 @@ describe('components/map/index.ts/ selectMapToDisplay()', () => {
 
     it('表示ズームレベルがdefaultの場合，rootMapを返す', () => {
         const actualMap: Map = wrapper.vm.selectMapToDisplay() as Map;
-        const rootMap: RawMap = testRawMapData[0];
-        expect(actualMap.getId()).toBe(rootMap.id);
+        const rootMap: Map = mapViewGetters.rootMap;
+        expect(actualMap).toBe(rootMap);
     });
 
     it('表示レベルがdetailで，ルートマップ中央にスポットがない場合，rootMapを返す', () => {
