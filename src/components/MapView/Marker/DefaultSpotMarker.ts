@@ -14,12 +14,12 @@ export default class DefaultSpotMarker extends L.Marker {
         iconAnchor: [24, 50],
     });
 
-    constructor(latlng: LatLngExpression, spotName: string, spot: Spot) {
-        super(latlng);
+    constructor(spot: Spot) {
+        super(spot.getCoordinate());
         this.setIcon(this.icon);
-        this.spotName = spotName;
+        this.spotName = spot.getName();
         this.spot = spot;
-        this.createNameLabelMarker(latlng);
+        this.createNameLabelMarker(spot.getCoordinate());
         // マーカー生成時にfocusedSpotの場合選択状態にしておく
         const focusedSpot = mapViewGetters.focusedSpot;
         if (focusedSpot === spot) {

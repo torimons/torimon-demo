@@ -134,7 +134,7 @@ export default class MapView extends Vue {
     private displaySpotMarkers(spotsToDisplay: Spot[]): void {
         this.spotMarkers.forEach((marker: Marker<any>) => marker.remove());
         this.spotMarkers = spotsToDisplay
-            .map((spot: Spot) => new DefaultSpotMarker(spot.getCoordinate(), spot.getName(), spot));
+            .map((spot: Spot) => new DefaultSpotMarker(spot));
         this.addMarkersToMap(this.spotMarkers);
     }
 
@@ -263,8 +263,6 @@ export default class MapView extends Vue {
                     return;
                 }
                 let zoomLevel = this.defaultZoomLevel;
-                // let zoomLevel = 1;
-                // console.log("HOGEHOGE");
                 if (!mapViewGetters.rootMap.hasSpot(spot)) {
                     zoomLevel = this.zoomLevelThreshold + 1;
                 }

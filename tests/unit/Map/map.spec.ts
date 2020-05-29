@@ -11,22 +11,22 @@ describe('Mapクラスのgetterのテスト', () => {
     it('getIdのテスト', () => {
         const map = new Map(1, 'testMap', testBounds, 'testFloorName');
         const actualMapId: number = map.getId();
-        const expectMapId = 1;
-        expect(actualMapId).toEqual(expectMapId);
+        const expectedMapId = 1;
+        expect(actualMapId).toEqual(expectedMapId);
     });
 
     it('getNameのテスト', () => {
         const map = new Map(1, 'testMap', testBounds, 'testFloorName');
         const actualMapName: string = map.getName();
-        const expectMapName = 'testMap';
-        expect(actualMapName).toEqual(expectMapName);
+        const expectedMapName = 'testMap';
+        expect(actualMapName).toEqual(expectedMapName);
     });
 
     it('getBoundsのテスト', () => {
         const map = new Map(1, 'testMap', testBounds, 'testFloorName');
         const actualMapBounds: Bounds = map.getBounds();
-        const expectMapBounds = testBounds;
-        expect(actualMapBounds).toEqual(expectMapBounds);
+        const expectedMapBounds = testBounds;
+        expect(actualMapBounds).toEqual(expectedMapBounds);
     });
 
     it('getFloorNameでfloorNameを取得する', () => {
@@ -38,7 +38,7 @@ describe('Mapクラスのgetterのテスト', () => {
     it('floorNameが初期化されていない場合, getFloorNameがundefinedを返す', () => {
         const map = new Map(1, 'testMap', testBounds);
         const actualMapFloorName = map.getFloorName();
-        const expectMapFloorName = undefined;
-        expect(actualMapFloorName).toEqual(expectMapFloorName);
+        const expectedMapFloorName = undefined;
+        expect(actualMapFloorName).toEqual(expectedMapFloorName);
     });
 });

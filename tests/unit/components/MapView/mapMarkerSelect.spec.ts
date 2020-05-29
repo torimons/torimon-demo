@@ -1,10 +1,8 @@
 import { mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex.ts';
-import { MapViewState } from '@/store/types';
 import { shallowMount } from '@vue/test-utils';
 import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
 import MapView from '@/components/MapView';
 import 'leaflet/dist/leaflet.css';
-import { testMapViewState } from '../../../resources/testMapViewState';
 import { testRawMapData } from '../../../resources/testRawMapData';
 import DefaultSpotMarker from '@/components/MapView/Marker/DefaultSpotMarker';
 import Spot from '@/Spot/Spot';
@@ -35,7 +33,7 @@ describe('components/Map.vue マーカー選択関連のテスト', () => {
         for (let i = 0; i < 5; i++) {
             const testSpot = new Spot(i, 'testSpot', { lat: 0, lng: 0 });
             testSpots.push(testSpot);
-            markers.push(new DefaultSpotMarker([0, 0], 'testSpotName', testSpot));
+            markers.push(new DefaultSpotMarker(testSpot));
         }
         wrapper.vm.spotMarkers = markers;
         // 存在しないスポットを指定した場合
@@ -49,7 +47,7 @@ describe('components/Map.vue マーカー選択関連のテスト', () => {
 
     it('onMapClickでfocusedSpotを非選択状態にしてSpotInfoを非表示にする', () => {
         const testSpot: Spot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
-        const marker = new DefaultSpotMarker([0, 0], 'testSpotName', testSpot);
+        const marker = new DefaultSpotMarker(testSpot);
         marker.setSelected(true);
         mapViewMutations.setFocusedSpot(testSpot);
         // focusedMarkerを探す部分をモック
