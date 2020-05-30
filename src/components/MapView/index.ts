@@ -264,7 +264,7 @@ export default class MapView extends Vue {
         store.watch(
             (state, getters: MapViewGetters) => getters.spotToDisplayInMapCenter,
             (spot, oldSpot) => {
-                if (spot == null) {
+                if (spot === null) {
                     return;
                 }
                 let zoomLevel = this.defaultZoomLevel;
@@ -289,7 +289,7 @@ export default class MapView extends Vue {
     private watchStoreForDisplayMap(): void {
         const getSwitchedFloorMap = (getters: MapViewGetters): Map | undefined => {
             const centerSpot = getters.centerSpotInRootMap;
-            if (centerSpot != null) {
+            if (centerSpot !== null) {
                 if (centerSpot.getDetailMaps().length > 0) {
                     return centerSpot.getLastViewedDetailMap();
                 }
@@ -337,7 +337,7 @@ export default class MapView extends Vue {
             return mapViewGetters.rootMap;
         }
         const lastViewedDetailMap: Map | undefined = centerSpot.getLastViewedDetailMap();
-        if (lastViewedDetailMap != null) {
+        if (lastViewedDetailMap !== undefined) {
             return lastViewedDetailMap;
         }
         const firstDetailMap: Map = centerSpot.getDetailMaps()[0];

@@ -38,8 +38,8 @@ describe('components/map/index.ts/ selectMapToDisplay()', () => {
         mapViewMutations.setDisplayLevel('detail');
         mapViewMutations.setNonExistentOfCenterSpotInRootMap();
         const actualMap: Map = wrapper.vm.selectMapToDisplay();
-        const rootMap: RawMap = testRawMapData[0];
-        expect(actualMap.getId()).toBe(rootMap.id);
+        const rootMap: Map = mapViewGetters.rootMap;
+        expect(actualMap).toBe(rootMap);
     });
 
     it('表示レベルがdetailで，centerSpotInRootMapがdetailMapを持っていない時，そのrootMapを返す', () => {
@@ -47,8 +47,8 @@ describe('components/map/index.ts/ selectMapToDisplay()', () => {
         const testSpot: Spot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
         mapViewMutations.setCenterSpotInRootMap(testSpot);
         const actualMap: Map = wrapper.vm.selectMapToDisplay();
-        const rootMap: RawMap = testRawMapData[0];
-        expect(actualMap.getId()).toBe(rootMap.id);
+        const rootMap: Map = mapViewGetters.rootMap;
+        expect(actualMap).toBe(rootMap);
     });
 
     it('表示レベルがdetailで，centerSpotInRootMapがdetailMapを持っており，初めてそのMapが表示される場合，そのdetailMapの中から一つ目のMapを返す', () => {
