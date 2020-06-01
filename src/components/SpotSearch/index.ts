@@ -28,20 +28,6 @@ export default class SpotSearch extends Vue {
     }
 
     /**
-     * 全てのスポットを取得する
-     * マップをみて，マップに属するスポットをtargetSpotsに追加，
-     * さらにそのスポットに詳細マップがあれば再起的にこの関数を呼ぶ
-     */
-    public getAllSpots(rootMap: Map) {
-        for (const spot of rootMap.getSpots()) {
-            this.targetSpots.push(spot);
-            for (const map of spot.getDetailMaps()) {
-                this.getAllSpots(map);
-            }
-        }
-    }
-
-    /**
      * SpotListの描画のオンオフを切り替える
      * @param isVisible セットする値(true/false)
      */
@@ -77,6 +63,20 @@ export default class SpotSearch extends Vue {
             // focusedSpotが初期値ではない場合, SpotInfoを表示する
             if (mapViewGetters.focusedSpot !== undefined) {
                 mapViewMutations.setSpotInfoIsVisible(true);
+            }
+        }
+    }
+
+    /**
+     * 全てのスポットを取得する
+     * マップをみて，マップに属するスポットをtargetSpotsに追加，
+     * さらにそのスポットに詳細マップがあれば再起的にこの関数を呼ぶ
+     */
+    private getAllSpots(rootMap: Map) {
+        for (const spot of rootMap.getSpots()) {
+            this.targetSpots.push(spot);
+            for (const map of spot.getDetailMaps()) {
+                this.getAllSpots(map);
             }
         }
     }
