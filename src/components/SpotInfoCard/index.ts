@@ -28,8 +28,8 @@ export default class SpotInfoCard extends Vue {
     }
 
     /**
-     * 選択されているスポットIDの変更を検知すると，name, descriptionを更新して表示内容を更新する．
-     * @param newFocusedSpot 変更後のマップIdとスポットId
+     * 選択されているスポットの変更を検知すると，name, descriptionを更新して表示内容を更新する．
+     * @param newFocusedSpot 変更後のスポット
      */
     private updateSpotInfoContent(
         newFocusedSpot: Spot | undefined,

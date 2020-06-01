@@ -34,7 +34,7 @@ export default class SpotSearch extends Vue {
      */
     public getAllSpots(rootMap: Map) {
         for (const spot of rootMap.getSpots()) {
-            this.targetSpots = this.targetSpots.concat(spot);
+            this.targetSpots.push(spot);
             for (const map of spot.getDetailMaps()) {
                 this.getAllSpots(map);
             }
@@ -75,7 +75,6 @@ export default class SpotSearch extends Vue {
         } else {
             this.setSpotListIsVisible(false);
             // focusedSpotが初期値ではない場合, SpotInfoを表示する
-            // 直接focusedSpotを参照すると{mapId: [Getter/Setter], spotId: [Getter/Setter]}となり値が取得できないためIDごとに分離
             if (mapViewGetters.focusedSpot !== undefined) {
                 mapViewMutations.setSpotInfoIsVisible(true);
             }

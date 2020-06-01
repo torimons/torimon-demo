@@ -29,7 +29,7 @@ describe('components/SpotItem.vue', () => {
         });
     });
 
-    it('SpotList内のSpotItemが選択されるとfocusedSpotIdの更新をおこなう', () => {
+    it('SpotList内のSpotItemが選択されるとfocusedSpotの更新をおこなう', () => {
         wrapper.find('.v-card').trigger('click');
         expect(mapViewGetters.focusedSpot).toStrictEqual(testSpot);
     });
