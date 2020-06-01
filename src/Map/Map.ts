@@ -13,17 +13,42 @@ export default class Map {
 
     /**
      * 自身のidを返す
-     * @return id 自身のid
+     * @return 自身のid
      */
     public getId(): number {
         return this.id;
     }
 
     /**
-     * 自身が持つspotを返す
+     * マップの名前を返す
+     * @return マップ名
+     */
+    public getName(): string {
+        return this.name;
+    }
+
+    /**
+     * マップが持つスポットを返す
+     * @return スポットの配列
      */
     public getSpots(): Spot[] {
         return this.spots;
+    }
+
+    /**
+     * マップが表現する範囲を返す
+     * @return マップの範囲
+     */
+    public getBounds(): Bounds {
+        return this.bounds;
+    }
+
+    /**
+     * 親スポットが存在すれば親スポットを返す
+     * @return 親スポット．存在しない場合undefined
+     */
+    public getParentSpot(): Spot | undefined {
+        return this.parentSpot;
     }
 
     /**

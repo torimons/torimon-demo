@@ -17,18 +17,59 @@ export default class Spot {
 
     /**
      * 自身のidを返す
-     * @return id 自身のid
+     * @return 自身のid
      */
     public getId(): number {
         return this.id;
     }
 
     /**
+     * スポットのnameを返す
+     * @return スポットのname
+     */
+    public getName(): string {
+        return this.name;
+    }
+
+    /**
+     * 自身の座標を返す
+     * @return 自身の座標
+     */
+    public getCoordinate(): Coordinate {
+        return this.coordinate;
+    }
+
+    /**
+     * スポットの図形情報を返す
+     * @return 図形情報
+     */
+    public getShape(): Shape | undefined {
+        return this.shape;
+    }
+
+    /**
+     * スポットのnameを返す
+     * @return スポットのname
+     */
+    public getFloorName(): string | undefined {
+        return this.floorName;
+    }
+
+
+    /**
      * 詳細マップを返す
-     * @return detailMaps 詳細まっぷ
+     * @return 詳細マップ
      */
     public getDetailMaps(): Map[] {
         return this.detailMaps;
+    }
+
+    /**
+     * 親マップが存在すれば親マップを返す
+     * @return 親マップ、存在しない場合undefined
+     */
+    public getParentMap(): Map | undefined {
+        return this.parentMap;
     }
 
     /**
