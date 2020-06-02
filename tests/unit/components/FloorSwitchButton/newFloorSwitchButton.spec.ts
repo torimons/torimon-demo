@@ -43,7 +43,10 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
         mapViewMutations.setCenterSpotInRootMap(targetSpot);
 
         // click前（初期値がセットされているので検証）
-        const actualMapBeforeClick: Map = targetSpot.getLastViewedDetailMap() as Map;
+        const actualMapBeforeClick: Map | undefined = targetSpot.getLastViewedDetailMap();
+        if (actualMapBeforeClick === undefined) {
+            throw new Error('\'actualMapBeforeClick\' is undefined.');
+        }
         const expectedMapIdBeforeClick = 1;
         expect(actualMapBeforeClick.getId()).toBe(expectedMapIdBeforeClick);
 
@@ -52,7 +55,10 @@ describe('components/FloorSwitchButton.vue 階層ボタンのテスト', () => {
         wrapper.vm.updateLastViewedDetailMapOnClick(indexOfClickedButton);
 
         // click後
-        const actualMapAfterClick: Map = targetSpot.getLastViewedDetailMap() as Map;
+        const actualMapAfterClick: Map | undefined = targetSpot.getLastViewedDetailMap();
+        if (actualMapAfterClick === undefined) {
+            throw new Error('\'actualMapAfterClick\' is undefined.');
+        }
         const expectedMapIdAfterClick = 2;
         expect(actualMapAfterClick.getId()).toBe(expectedMapIdAfterClick);
     });
