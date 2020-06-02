@@ -2,6 +2,7 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { store, mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex.ts';
 import { MapViewGetters } from '@/store/modules/newMapViewModule/MapViewGetters';
 import { DisplayLevelType } from '@/store/types';
+import { NoDetailMapError } from '@/store/errors/NoDetailMapError';
 import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot.ts';
 
@@ -40,6 +41,7 @@ export default class FloorSwitchButton extends Vue {
     /**
      * 階層ボタンを押した時にスポットのlastViewedDetailMapを更新する．
      * @param index 階層ボタンのインデックス
+     * @throw NoDetailMapError スポットが指定された詳細マップを持っていない場合に発生.
      */
     private updateLastViewedDetailMapOnClick(index: number): void {
         const lastViewedDetailMapId: number = this.floorMapIds[index];
@@ -47,9 +49,10 @@ export default class FloorSwitchButton extends Vue {
         if (centerSpot === null) {
             return;
         }
-        const lastViewedDetailMap: Map | null = centerSpot.findMap(lastViewedDetailMapId);
-        if (lastViewedDetailMap === null) {
-            return;
+        const lastViewedDetailMap: Map | undefined = centerSpot.getDetailMaps()
+            .find((m: Map) => m.getId() === lastViewedDetailMapId);
+        if (lastViewedDetailMap === undefined) {
+            throw new NoDetailMapError('Spot cannot find target map.');
         }
         centerSpot.setLastViewedDetailMap(lastViewedDetailMap);
     }
