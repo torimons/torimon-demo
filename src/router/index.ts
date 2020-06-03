@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import MainView from '../components/MainView/index.vue';
-import MapSelection from '@/components/MapSelectionScreen/index.vue';
+import MapSelection from '../views/MapSelection.vue';
 
 Vue.use(VueRouter);
 
