@@ -1,10 +1,10 @@
 import { RawSpot } from '@/store/types';
 
-export default class SearchSpot {
+export default class Search {
     private targetSpots: RawSpot[];
 
-    constructor(targetSpot: RawSpot[]) {
-        this.targetSpots = targetSpot;
+    constructor(spots: RawSpot[]) {
+        this.targetSpots = spots;
     }
 
     /**
@@ -27,15 +27,15 @@ export default class SearchSpot {
             return [];
         }
         const keywords: string[] = keyword.split(/\s+/).filter((word: string) => word !== '');
-        let searchSpotResults: RawSpot[] = [];
+        let searchResults: RawSpot[] = [];
         for (let i = keywords.length; i > 0; i--) {
             const keywordsRegExp = this.compileIntoSearchCondition(keywords.slice(0, i));
-            searchSpotResults = searchSpotResults.concat(
+            searchResults = searchResults.concat(
                 this.targetSpots
                     .filter((s: RawSpot) => this.spotIsMatchToKeywords(s, keywordsRegExp)));
         }
         // 重複を削除したものを返す
-        return searchSpotResults.filter((x, i, self) => self.indexOf(x) === i);
+        return searchResults.filter((x, i, self) => self.indexOf(x) === i);
     }
 
     /**
@@ -62,14 +62,14 @@ export default class SearchSpot {
      * @return isMatch スポットが検索ワードにマッチした場合true, マッチしなければfalse
      */
     private spotIsMatchToKeywords(spot: RawSpot, keywordsRegExp: RegExp): boolean {
-        let targetSpot: string = spot.name;
+        let target: string = spot.name;
         if (spot.parentSpotName !== undefined) {
-            targetSpot = targetSpot + spot.parentSpotName;
+            target = target + spot.parentSpotName;
         }
         if (spot.description !== undefined) {
-            targetSpot += spot.description;
+            target += spot.description;
         }
         // RegExp.test(target:str)は、targetにRegExpがマッチした場合にtrue, マッチしない場合falseを返す.
-        return keywordsRegExp.test(targetSpot);
+        return keywordsRegExp.test(target);
     }
 }
