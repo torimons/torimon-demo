@@ -3,7 +3,7 @@ import SpotSearch from '@/components/SpotSearch/index.vue';
 import SearchBox from '@/components/SearchBox/index.vue';
 import SpotList from '@/components/SpotList/index.vue';
 import { mapViewMutations, mapViewGetters } from '@/store';
-import SearchSpot from '@/utils/SearchSpot';
+import SearchSpot from '@/utils/Search';
 import { RawSpot } from '@/store/types';
 
 const spotsForTest: RawSpot[] = [

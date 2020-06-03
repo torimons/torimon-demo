@@ -1,4 +1,4 @@
-import SearchSpot from '@/utils/SearchSpot';
+import Search from '@/utils/Search';
 import { RawSpot } from '@/store/types';
 
 const spotsForTest: RawSpot[] = [
@@ -42,7 +42,7 @@ const spotsForTest: RawSpot[] = [
 
 describe('Searchクラスのテスト', () => {
     const targetSpotsForSearch = spotsForTest;
-    const searchSpotObj = new SearchSpot(targetSpotsForSearch);
+    const searchSpotObj = new Search(targetSpotsForSearch);
 
     it('searchSpotsでスポットをキーワード検索', () => {
         // 'sougou'という文字を含んでいるスポットを検索(大文字小文字は区別しない)

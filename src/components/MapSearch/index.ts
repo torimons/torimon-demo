@@ -1,8 +1,8 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { RawMap } from '@/store/types';
+import Map from '@/Map/Map.ts';
 import { mapViewGetters, mapViewMutations } from '@/store';
-import SearchMap from '@/utils/SearchMap';
 import SearchBox from '@/components/SearchBox/index.vue';
+import Search from '@/utils/Search';
 import MapList from '@/components/MapList/index.vue';
 
 @Component({
@@ -14,16 +14,16 @@ import MapList from '@/components/MapList/index.vue';
 export default class MapSearch extends Vue {
     private searchWord: string = '';
     private mapListIsVisible: boolean = false;
-    private targetMaps: RawMap[] = [];
-    private mapSearchResults: RawMap[] = [];
-    private search!: SearchMap;
+    private targetMaps: Map[] = [];
+    private mapSearchResults: Map[] = [];
+    private search!: Search;
     private backgroundColor: 'transparent' | 'white' = 'transparent';
 
     public mounted() {
         // 全てのマップを取得，一つの配列に結合する
-        mapViewGetters.maps.map((map: RawMap) => this.targetMaps = this.targetMaps.concat(map));
-        // 上で取得したmapを検索対象にセットしたSearchクラスのインスタンス作成
-        this.search = new SearchMap(this.targetMaps);
+        // mapViewGetters.maps.map((map: Map) => this.targetMaps = this.targetMaps.concat(map));
+        // 上で取得したmapを検索対象にセットしたSearchクラスのインスタンス作成もしくはSearchクラスの変更が必要
+        // this.search = new Search(this.targetMaps);
     }
 
     /**
@@ -52,7 +52,7 @@ export default class MapSearch extends Vue {
      */
     @Watch('searchWord')
     public searchMap(): void {
-        this.mapSearchResults = this.search.searchMaps(this.searchWord);
+        // this.mapSearchResults = this.search.searchMaps(this.searchWord);
         if (this.mapSearchResults.length > 0) {
             this.setMapListIsVisible(true);
         } else {
