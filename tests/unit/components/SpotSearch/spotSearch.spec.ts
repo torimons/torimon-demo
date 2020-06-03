@@ -3,7 +3,7 @@ import SpotSearch from '@/components/SpotSearch/index.vue';
 import SearchBox from '@/components/SearchBox/index.vue';
 import SpotList from '@/components/SpotList/index.vue';
 import { mapViewMutations, mapViewGetters } from '@/store';
-import SearchSpot from '@/utils/Search';
+import Search from '@/utils/Search';
 import { RawSpot } from '@/store/types';
 
 const spotsForTest: RawSpot[] = [
@@ -81,8 +81,8 @@ describe('SpotSearchコンポーネントのテスト', () => {
     it('1つ以上の検索結果がある場合SpotInfoを非表示に, 検索結果がない場合は表示にする', () => {
         // 検索対象の設定
         const targetSpotsForSearch = spotsForTest;
-        const searchSpotObj = new SearchSpot(targetSpotsForSearch);
-        wrapper.vm.search = searchSpotObj;
+        const searchObj = new Search(targetSpotsForSearch);
+        wrapper.vm.search = searchObj;
         // spotInfoIsVisibleの変更を確認するために最初はtrueをset
         mapViewMutations.setSpotInfoIsVisible(true);
         // 検索結果がある場合は非表示

@@ -23,7 +23,7 @@ describe('MapItemコンポーネントのテスト', () => {
             },
         });
     });
-    
+
     it.skip('', () => {
         // do nothing
     });
