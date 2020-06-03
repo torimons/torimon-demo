@@ -2,14 +2,14 @@
   <div id="main-creation-view">
     <v-app>
       <CreationMapView/>
-      <v-container id="bottom-container" class="pa-0">
+      <v-container fluid id="bottom-container">
         <v-row no-gutters>
           <v-col
             cols="12"
-            sm="5"
-            class="pa-0"
+            sm="1"
+            class="pa-0 ml-auto"
           >
-          <EditorToolBar/>
+            <EditorToolBar/>
           </v-col>
         </v-row>
       </v-container>
@@ -42,8 +42,8 @@ body,
 }
 #bottom-container {
   position: absolute;
-  left: 0px;
-  bottom: 0px;
+  right: 0px;
+  top: 0px;
   z-index: 1000;
   pointer-events: none;
 }

@@ -1,28 +1,24 @@
 <template>
     <div id="editor-tool-bar">
-      <v-container class="pa-0">
-            <v-row
-                no-gutters
+        <v-btn-toggle
+            tile
+            mandatory
+            color="primary"
+        >
+            <!-- <v-overflow-btn
+            :items="spotIcons"
+            label="s"
+            hide-details
+            class="pa-0"
+            > </v-overflow-btn> -->
+
+            <v-btn
+                v-for="(icon, index) in icons"
+                v-bind:key="index"
             >
-                <v-col>
-                    <v-btn-toggle
-                        tile
-                        mandatory
-                        color="primary"
-                    >
-                        <v-btn>
-                            hoge
-                        </v-btn>
-                        <v-btn>
-                            hoge
-                        </v-btn>
-                        <v-btn>
-                            hoge
-                        </v-btn>
-                    </v-btn-toggle>
-                </v-col>
-            </v-row>
-        </v-container>
+                <i class="material-icons" style="font-size:32px;">{{ icon }}</i>
+            </v-btn>
+        </v-btn-toggle>
     </div>
 </template>
 
