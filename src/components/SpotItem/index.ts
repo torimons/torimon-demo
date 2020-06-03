@@ -9,7 +9,7 @@ export default class SpotItem extends Vue {
     @Prop()
     private spot!: Spot;
     @Prop()
-    private distance!: number;
+    private distance!: string;
 
     /**
      * SpotItemがクリックされると呼ばれ，SpotListを非表示にする．

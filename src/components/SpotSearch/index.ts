@@ -71,6 +71,7 @@ export default class SpotSearch extends Vue {
      * 全てのスポットを取得する
      * マップをみて，マップに属するスポットをtargetSpotsに追加，
      * さらにそのスポットに詳細マップがあれば再起的にこの関数を呼ぶ
+     * @param スポットを取得したいルートマップ
      */
     private getAllSpots(rootMap: Map) {
         for (const spot of rootMap.getSpots()) {
