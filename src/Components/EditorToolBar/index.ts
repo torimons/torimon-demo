@@ -6,11 +6,12 @@ export default class EditorToolBar extends Vue {
         'pan_tool',
         'rotate_right',
         'rotate_left',
-        'editor',
+        'edit',
         'place',
     ];
+    private fab: boolean = false;
     private spotIcons = [
-        { html: '<i class="material-icons" style="font-size:32px;">place</i>' },
+        { text: '<i class="material-icons" style="font-size:32px;">place</i>' },
     ];
 }
 
