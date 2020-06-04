@@ -56,7 +56,7 @@ describe('components/SpotItem.vue', () => {
         });
         expect(wrapper.find('.v-list-item__title').text())
             .toBe(parentSpot.getName() + ' ' + testSpotWithFloorName.getName());
-        expect(wrapper.find('.v-list-item__subtitle').text()).
-            toBe(testSpotWithFloorName.getFloorName() + ' ' + '1km');
+        expect(wrapper.find('.v-list-item__subtitle').text())
+            .toBe(testSpotWithFloorName.getFloorName() + ' ' + '1km');
     });
 });
