@@ -43,5 +43,5 @@ import Menu from '@/components/Menu/index.vue';
     },
 })
 export default class Home extends Vue {
-};
+}
 </script>
