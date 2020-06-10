@@ -2,7 +2,7 @@ import { Coordinate, Shape } from '@/store/types.ts';
 import Map from '@/Map/Map.ts';
 
 export default class Spot {
-    private parentMap: Map | undefined = undefined;
+    private parentMap!: Map;
     private detailMaps: Map[] = [];
     private lastViewedDetailMap: Map | undefined = undefined;
 
@@ -65,11 +65,35 @@ export default class Spot {
     }
 
     /**
+     * 自身の説明を返す
+     * @return description
+     */
+    public getDescription(): string | undefined {
+        return this.description;
+    }
+
+    /**
+     * 自身のアタッチメントを返す
+     * @return attachment，なければundefined
+     */
+    public getAttachment(): [{name: string, url: string}] | undefined {
+        return this.attachment;
+    }
+
+    /**
      * 親マップが存在すれば親マップを返す
      * @return 親マップ、存在しない場合undefined
      */
     public getParentMap(): Map | undefined {
         return this.parentMap;
+    }
+
+    /**
+     * 親マップの親スポットを取得する
+     * @return parentSpot
+     */
+    public getParentSpot(): Spot | undefined {
+        return this.parentMap.getParentSpot();
     }
 
     /**

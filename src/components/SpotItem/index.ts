@@ -1,21 +1,15 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { mapViewMutations } from '@/store';
+import { mapViewMutations } from '@/store/newMapViewIndex';
+import Spot from '@/Spot/Spot.ts';
+import Map from '@/Map/Map.ts';
 
 @Component
 export default class SpotItem extends Vue {
     // 親からスポット名と距離を受けとり表示する
     @Prop()
-    private spotName!: string;
+    private spot!: Spot;
     @Prop()
-    private parentSpotName!: string;
-    @Prop()
-    private floorName!: string;
-    @Prop()
-    private distance!: number;
-    @Prop()
-    private mapId!: number;
-    @Prop()
-    private spotId!: number;
+    private distance!: string;
 
     /**
      * SpotItemがクリックされると呼ばれ，SpotListを非表示にする．
@@ -37,9 +31,9 @@ export default class SpotItem extends Vue {
      * SpotList内のSpotItemを選択した際にfocusedSpotを更新する関数
      */
     private updateFocusedSpot(): void {
-        mapViewMutations.setFocusedSpot({mapId: this.mapId, spotId: this.spotId});
+        mapViewMutations.setFocusedSpot(this.spot);
     }
     private moveMapViewToThisSpot(): void {
-        mapViewMutations.setSpotToDisplayInMapCenter({ mapId: this.mapId, spotId: this.spotId });
+        mapViewMutations.setSpotToDisplayInMapCenter(this.spot);
     }
 }
