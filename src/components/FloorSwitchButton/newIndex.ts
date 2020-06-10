@@ -60,8 +60,8 @@ export default class FloorSwitchButton extends Vue {
     /**
      * 画面中央の詳細マップ持ちスポットに合わせて階層切り替えボタンの内容を更新する．
      * 下の階が下に表示されるようにセットする．
-     * @params newCenterSpot 更新後のスポット
-     * @params oldCenterSpot 更新前のスポット
+     * @param newCenterSpot 更新後のスポット
+     * @param oldCenterSpot 更新前のスポット
      */
     private updateContentOfFloorSwitchButton(newCenterSpot: Spot | null, oldCenterSpot: Spot | null): void {
         if (newCenterSpot === null) {
