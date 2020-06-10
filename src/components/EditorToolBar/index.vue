@@ -10,10 +10,11 @@
                 color="primary"
                 icon
                 class="mb-2"
-                v-for="(icon, index) in icons"
+                v-for="(mode, index) in modes"
                 v-bind:key="index"
+                @click="switchMode(mode.key)"
               >
-              <v-icon icon>{{ icon }}</v-icon>
+              <v-icon icon>{{ mode.icon }}</v-icon>
             </v-btn>
             <v-speed-dial
               direction="left"
@@ -26,7 +27,8 @@
                   icon
                 >
                   <v-icon v-if="fabVisible">close</v-icon>
-                  <v-icon v-else>place</v-icon>
+                  <v-icon v-if="!fabVisible && mode != 'spot'">place</v-icon>
+                  <v-icon v-if="!fabVisible && mode == 'spot'">{{ selectedIcon }}</v-icon>
                 </v-btn>
               </template>
               <v-btn 
@@ -35,6 +37,7 @@
                 v-bind:key="index"
                 fab
                 small
+                @click="switchMode('spot'); setSelectedIcon(spotIcon)"
               >
                 <v-icon>{{ spotIcon }}</v-icon>
               </v-btn>
