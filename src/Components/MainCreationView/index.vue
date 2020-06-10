@@ -6,6 +6,12 @@
         <v-row no-gutters>
           <v-col
             cols="12"
+            sm="3"
+          >
+            <SpotEditor/>
+          </v-col>
+          <v-col
+            cols="12"
             sm="1"
             class="pa-0 ml-auto"
           >
@@ -21,11 +27,13 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import CreationMapView from '@/components/CreationMapView/index.vue';
 import EditorToolBar from '@/components/EditorToolBar/index.vue';
+import SpotEditor from '@/components/SpotEditor/index.vue';
 
 @Component({
     components: {
         CreationMapView,
         EditorToolBar,
+        SpotEditor,
     },
 })
 export default class MainCreationView extends Vue {
