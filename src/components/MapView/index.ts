@@ -1,5 +1,5 @@
 import { Component, Vue } from 'vue-property-decorator';
-import { mapViewGetters, mapViewMutations, store } from '@/store/newMapViewIndex.ts';
+import { mapViewGetters, mapViewMutations, store } from '@/store';
 import { Coordinate, Bounds, DisplayLevelType } from '@/store/types';
 import 'leaflet/dist/leaflet.css';
 import L, { Marker } from 'leaflet';
@@ -8,7 +8,7 @@ import { findNearest, getDistance } from 'geolib';
 import { GeolibInputCoordinates } from 'geolib/es/types';
 import CurrentLocationMarker from '@/components/MapView/Marker/CurrentLocationMarker';
 import DefaultSpotMarker from '@/components/MapView/Marker/DefaultSpotMarker';
-import { MapViewGetters } from '@/store/modules/NewMapViewModule/MapViewGetters';
+import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
 import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot';
 

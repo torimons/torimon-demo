@@ -1,6 +1,6 @@
 import DefaultSpotMarker from '@/components/MapView/Marker/DefaultSpotMarker';
 import L from 'leaflet';
-import { mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex.ts';
+import { mapViewGetters, mapViewMutations } from '@/store';
 import Spot from '@/Spot/Spot';
 
 describe('DefaultSpotMarkers', () => {

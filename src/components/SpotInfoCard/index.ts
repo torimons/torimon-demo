@@ -1,6 +1,6 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { store, mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex';
-import { MapViewGetters } from '@/store/modules/NewMapViewModule/MapViewGetters';
+import { store, mapViewGetters, mapViewMutations } from '@/store';
+import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
 import Spot from '@/Spot/Spot.ts';
 
 @Component

@@ -1,6 +1,6 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { store, mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex.ts';
-import { MapViewGetters } from '@/store/modules/newMapViewModule/MapViewGetters';
+import { store, mapViewGetters, mapViewMutations } from '@/store';
+import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
 import { DisplayLevelType } from '@/store/types';
 import { NoDetailMapError } from '@/store/errors/NoDetailMapError';
 import Map from '@/Map/Map.ts';

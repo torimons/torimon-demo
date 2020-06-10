@@ -1,4 +1,4 @@
-import { mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex.ts';
+import { mapViewGetters, mapViewMutations } from '@/store';
 import map from '@/components/MapView/index.vue';
 import { FeatureCollection } from 'geojson';
 import { shallowMount } from '@vue/test-utils';

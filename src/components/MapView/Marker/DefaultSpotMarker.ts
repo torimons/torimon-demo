@@ -1,5 +1,5 @@
 import L, {LatLngExpression} from 'leaflet';
-import { mapViewMutations, mapViewGetters } from '@/store/newMapViewIndex.ts';
+import { mapViewMutations, mapViewGetters } from '@/store';
 import Spot from '@/Spot/Spot';
 
 export default class DefaultSpotMarker extends L.Marker {

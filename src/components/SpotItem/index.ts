@@ -1,5 +1,5 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { mapViewMutations } from '@/store/newMapViewIndex';
+import { mapViewMutations } from '@/store';
 import Spot from '@/Spot/Spot.ts';
 import Map from '@/Map/Map.ts';
 

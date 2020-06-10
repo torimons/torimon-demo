@@ -2,7 +2,7 @@ import { RawMap } from '@/store/types';
 import { testMapViewState3 } from '../../../resources/testMapViewState3';
 import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot.ts';
-import { createMapInstance, createSpotInstance, initMap } from '@/store/modules/NewMapViewModule/MapViewState.ts';
+import { createMapInstance, createSpotInstance, initMap } from '@/store/modules/MapViewModule/MapViewState';
 
 describe('初期化に利用する関数のテスト', () => {
     it('createMapInstanceがMap型を返す', () => {

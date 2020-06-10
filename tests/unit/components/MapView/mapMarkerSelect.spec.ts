@@ -1,4 +1,4 @@
-import { mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex.ts';
+import { mapViewGetters, mapViewMutations } from '@/store';
 import { shallowMount } from '@vue/test-utils';
 import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
 import MapView from '@/components/MapView';

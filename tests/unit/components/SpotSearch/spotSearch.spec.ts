@@ -2,7 +2,7 @@ import { shallowMount } from '@vue/test-utils';
 import SpotSearch from '@/components/SpotSearch/index.vue';
 import SearchBox from '@/components/SearchBox/index.vue';
 import SpotList from '@/components/SpotList/index.vue';
-import { mapViewMutations, mapViewGetters } from '@/store/newMapViewIndex';
+import { mapViewMutations, mapViewGetters } from '@/store';
 import Search from '@/utils/Search';
 import Spot from '@/Spot/Spot.ts';
 import Map from '@/Map/Map.ts';

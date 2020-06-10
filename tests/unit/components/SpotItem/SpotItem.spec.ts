@@ -1,7 +1,7 @@
 import { createLocalVue, mount } from '@vue/test-utils';
 import Vuex from 'vuex';
 import Vuetify from 'vuetify';
-import { mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex';
+import { mapViewGetters, mapViewMutations } from '@/store';
 import SpotItem from '@/components/SpotItem/index.vue';
 import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot.ts';

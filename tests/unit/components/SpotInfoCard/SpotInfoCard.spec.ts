@@ -1,7 +1,7 @@
 import { createLocalVue, mount } from '@vue/test-utils';
 import SpotInfoCard from '@/components/SpotInfoCard/index.vue';
-import { mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex';
-import { initMap } from '@/store/modules/NewMapViewModule/MapViewState';
+import { mapViewGetters, mapViewMutations } from '@/store';
+import { initMap } from '@/store/modules/MapViewModule/MapViewState';
 import { cloneDeep } from 'lodash';
 import Vuetify from 'vuetify';
 import { RawMap } from '@/store/types';

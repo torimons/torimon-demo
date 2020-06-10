@@ -1,4 +1,4 @@
-import { store, mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex.ts';
+import { store, mapViewGetters, mapViewMutations } from '@/store';
 import { createLocalVue, mount } from '@vue/test-utils';
 import Vuetify from 'vuetify';
 import 'leaflet/dist/leaflet.css';
@@ -6,7 +6,7 @@ import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
 import { cloneDeep } from 'lodash';
 import { RawMap } from '@/store/types';
 import { testRawMapData } from '../../../resources/testRawMapData';
-import { initMap } from '@/store/modules/NewMapViewModule/MapViewState';
+import { initMap } from '@/store/modules/MapViewModule/MapViewState';
 import FloorSwitchButton from '@/components/FloorSwitchButton/index.vue';
 import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot.ts';

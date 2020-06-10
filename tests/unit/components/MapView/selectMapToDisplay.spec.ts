@@ -1,6 +1,6 @@
 import Vuex from 'vuex';
 import map from '@/components/MapView/index.vue';
-import { mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex.ts';
+import { mapViewGetters, mapViewMutations } from '@/store';
 import { testRawMapData } from '../../../resources/testRawMapData';
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper.ts';
