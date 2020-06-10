@@ -97,5 +97,5 @@ export class MapViewState {
     /**
      * マップ表示の中心の移動先のスポット
      */
-    public spotToDisplayInMapCenter: Spot = this.rootMap.getSpots()[0];
+    public spotToDisplayInMapCenter: Spot | null = this.rootMap.getSpots()[0];
 }
