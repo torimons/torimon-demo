@@ -17,39 +17,15 @@ export default class Spot {
 
     /**
      * 自身のidを返す
-     * @return id 自身のid
+     * @return 自身のid
      */
     public getId(): number {
         return this.id;
     }
 
     /**
-     * 詳細マップを返す
-     * @return detailMaps 詳細マップ
-     */
-    public getDetailMaps(): Map[] {
-        return this.detailMaps;
-    }
-
-    /**
-     * 親マップを返す
-     * @return parentMap 親マップ
-     */
-    public getParentMap(): Map {
-        return this.parentMap;
-    }
-
-    /**
-     * 親マップの親スポットを取得する
-     * @return parentSpot
-     */
-    public getParentSpot(): Spot | undefined {
-        return this.parentMap.getParentSpot();
-    }
-
-    /**
-     * 自身の名前を返す
-     * @return 自身の名前
+     * スポットのnameを返す
+     * @return スポットのname
      */
     public getName(): string {
         return this.name;
@@ -64,11 +40,28 @@ export default class Spot {
     }
 
     /**
-     * 自身の階層名を返す
-     * @return 自身の階層名
+     * スポットの図形情報を返す
+     * @return 図形情報
+     */
+    public getShape(): Shape | undefined {
+        return this.shape;
+    }
+
+    /**
+     * スポットのnameを返す
+     * @return スポットのname
      */
     public getFloorName(): string | undefined {
         return this.floorName;
+    }
+
+
+    /**
+     * 詳細マップを返す
+     * @return 詳細マップ
+     */
+    public getDetailMaps(): Map[] {
+        return this.detailMaps;
     }
 
     /**
@@ -85,6 +78,22 @@ export default class Spot {
      */
     public getAttachment(): [{name: string, url: string}] | undefined {
         return this.attachment;
+    }
+
+    /**
+     * 親マップが存在すれば親マップを返す
+     * @return 親マップ、存在しない場合undefined
+     */
+    public getParentMap(): Map | undefined {
+        return this.parentMap;
+    }
+
+    /**
+     * 親マップの親スポットを取得する
+     * @return parentSpot
+     */
+    public getParentSpot(): Spot | undefined {
+        return this.parentMap.getParentSpot();
     }
 
     /**

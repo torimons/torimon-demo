@@ -50,16 +50,16 @@ describe('地図データ初期化のテスト', () => {
     const testMapData: RawMap[] = testMapViewState3.maps;
     // rootMap
     const actualRootMap: Map = initMap(testMapData);
-    const expectRootMapData = testMapData[0];
+    const expectedRootMapData = testMapData[0];
     // rootSpot
     const actualRootSpot = (actualRootMap as any).spots[0];
-    const expectedRootSpotData = expectRootMapData.spots[0];
+    const expectedRootSpotData = expectedRootMapData.spots[0];
     // detailMap
     const actualDetailMap = (actualRootMap as any).spots[0].detailMaps[0];
-    const expectDetailMapData = testMapData[1];
+    const expectedDetailMapData = testMapData[1];
     // detailSpot
     const actualDetailSpot = actualDetailMap.spots[0];
-    const expectedDetailSpotData = expectDetailMapData.spots[0];
+    const expectedDetailSpotData = expectedDetailMapData.spots[0];
 
     it('rootMapのプロパティ検証', () => {
         const actualRootMapProperties = {
@@ -71,10 +71,10 @@ describe('地図データ初期化のテスト', () => {
             spotsNum: (actualRootMap as any).spots.length,
         };
         const expectedRootMapProperties = {
-            id: expectRootMapData.id,
-            name: expectRootMapData.name,
-            bounds: expectRootMapData.bounds,
-            floorName: expectRootMapData.floorName,
+            id: expectedRootMapData.id,
+            name: expectedRootMapData.name,
+            bounds: expectedRootMapData.bounds,
+            floorName: expectedRootMapData.floorName,
             parentSpot: undefined,
             spotsNum: 1,
         };
@@ -111,10 +111,10 @@ describe('地図データ初期化のテスト', () => {
             spotsNum: actualDetailMap.spots.length,
         };
         const expectedDetailMapProperties = {
-            id: expectDetailMapData.id,
-            name: expectDetailMapData.name,
-            bounds: expectDetailMapData.bounds,
-            floorName: expectDetailMapData.floorName,
+            id: expectedDetailMapData.id,
+            name: expectedDetailMapData.name,
+            bounds: expectedDetailMapData.bounds,
+            floorName: expectedDetailMapData.floorName,
             parentSpotName: 'SougouGakusyuPlaza',
             spotsNum: 1,
         };
