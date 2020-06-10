@@ -1,19 +1,15 @@
 <template>
     <div id="app">
-        <!-- <MainCreationView/> -->
-        <MainView/>
+        <router-view>
+        </router-view>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import MainView from '@/components/MainView/index.vue';
-// import MainCreationView from '@/components/MainCreationView/index.vue';
 
 @Component({
     components: {
-        MainView,
-        // MainCreationView,
     },
 })
 export default class App extends Vue {}
