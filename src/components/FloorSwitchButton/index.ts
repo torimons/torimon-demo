@@ -1,20 +1,21 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { store, mapViewGetters, mapViewMutations } from '@/store';
-import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
+import { store, mapViewGetters, mapViewMutations } from '@/store/newMapViewIndex.ts';
+import { MapViewGetters } from '@/store/modules/newMapViewModule/MapViewGetters';
 import { DisplayLevelType } from '@/store/types';
+import { NoDetailMapError } from '@/store/errors/NoDetailMapError';
+import Map from '@/Map/Map.ts';
+import Spot from '@/Spot/Spot.ts';
 
 @Component
 export default class FloorSwitchButton extends Vue {
 
     // floorNamesとfloorMapIdsは表示の関係上,要素を逆順で保持する．
-    private floorNames: string[] = [];
+    private floorNames: Array<string | undefined> = [];
     private floorMapIds: number[] = [];
 
     // 階層ボタンの見た目に関するメンバ
     private selectedFloorButtonIndex: number | undefined = 0;
     private isVisible: boolean = false;
-
-    private spotId: number = 0;
 
     public mounted() {
         store.watch(
@@ -22,10 +23,10 @@ export default class FloorSwitchButton extends Vue {
             (value, oldValue) => this.changeButtonIsVisible(value, oldValue),
         );
         store.watch(
-            (state, getters: MapViewGetters) => getters.idOfCenterSpotInRootMap,
+            (state, getters: MapViewGetters) => getters.centerSpotInRootMap,
             (value, oldValue) => this.updateContentOfFloorSwitchButton(value, oldValue),
+            {deep: true},
         );
-        this.watchFloorMapChangeOfDisplayedSpot();
     }
 
     /**
@@ -38,59 +39,59 @@ export default class FloorSwitchButton extends Vue {
     }
 
     /**
-     * 階層ボタンを押した時にスポットのlastViewedDetailMapIdを更新する．
-     * @param floorName 押された階層ボタンの階層名
+     * 階層ボタンを押した時にスポットのlastViewedDetailMapを更新する．
+     * @param index 階層ボタンのインデックス
+     * @throw NoDetailMapError スポットが指定された詳細マップを持っていない場合に発生.
      */
-    private updateLastViewedDetailMapIdOnClick(index: number): void {
+    private updateLastViewedDetailMapOnClick(index: number): void {
         const lastViewedDetailMapId: number = this.floorMapIds[index];
-        const parentMapId: number = mapViewGetters.rootMapId;
-        const spotId: number | null = mapViewGetters.idOfCenterSpotInRootMap;
-        if (spotId === null) {
+        const centerSpot: Spot | null = mapViewGetters.centerSpotInRootMap;
+        if (centerSpot === null) {
             return;
         }
-        const payload = {
-            detailMapId: lastViewedDetailMapId,
-            parentSpot: {
-                parentMapId,
-                spotId,
-            },
-        };
-        mapViewMutations.setLastViewedDetailMapId(payload);
+        const lastViewedDetailMap: Map | undefined = centerSpot.getDetailMaps()
+            .find((m: Map) => m.getId() === lastViewedDetailMapId);
+        if (lastViewedDetailMap === undefined) {
+            throw new NoDetailMapError('Spot cannot find target map.');
+        }
+        centerSpot.setLastViewedDetailMap(lastViewedDetailMap);
     }
 
     /**
      * 画面中央の詳細マップ持ちスポットに合わせて階層切り替えボタンの内容を更新する．
      * 下の階が下に表示されるようにセットする．
-     * @params spotId 更新後のスポットID
-     * @params oldSpotId 更新前のスポットID．未使用
+     * @param newCenterSpot 更新後のスポット
+     * @param oldCenterSpot 更新前のスポット
      */
-    private updateContentOfFloorSwitchButton(spotId: number | null, oldSpotId: number | null): void {
-        if (spotId === null) {
+    private updateContentOfFloorSwitchButton(newCenterSpot: Spot | null, oldCenterSpot: Spot | null): void {
+        if (newCenterSpot === null) {
             this.clearButtonContent();
             return;
         }
-        this.spotId = spotId;
-        const parentMapId: number = mapViewGetters.rootMapId;
-        const spot = mapViewGetters.getSpotById({parentMapId, spotId});
-        if (spot.detailMapIds.length === 0) {
+        const detailMaps: Map[] = newCenterSpot.getDetailMaps();
+        if (detailMaps.length === 0) {
             this.clearButtonContent();
             return;
         }
-        this.floorMapIds = spot.detailMapIds.slice().reverse();
-        this.floorNames = spot.detailMapLevelNames.slice().reverse();
-        const lastViewedDetailMapId: number | null = mapViewGetters.getLastViewedDetailMapId({parentMapId, spotId});
+        this.floorMapIds = (detailMaps.map((m: Map) => m.getId())).reverse();
+        this.floorNames = (detailMaps.map((m: Map) => m.getFloorName())).reverse();
+
+        const lastViewedDetailMap: Map | undefined = newCenterSpot.getLastViewedDetailMap();
         // 最後に参照された階層（詳細マップ）が存在する場合，その階層が選択された状態にする．
         // 存在しない場合は初期階にあたる階にセットする．
-        if (lastViewedDetailMapId != null) {
-            this.selectedFloorButtonIndex =
-                spot.detailMapIds.slice().reverse().findIndex((mapId: number) => mapId === lastViewedDetailMapId);
+        if (lastViewedDetailMap !== undefined) {
+            const index: number = detailMaps
+                .findIndex((m: Map) => m.getId() === lastViewedDetailMap.getId());
+            this.selectedFloorButtonIndex = detailMaps.length - index - 1;
         } else {
-            this.selectedFloorButtonIndex = this.floorMapIds.length - 1;
+            this.selectedFloorButtonIndex = detailMaps.length - 1;
         }
     }
 
     /**
      * displayLevelに合わせて階層切り替えボタンの表示/非表示を切り替える．
+     * @param newDisplayLevel 更新後のdisplayLevel
+     * @param oldDisplayLevel 更新後のdisplayLevel
      */
     private changeButtonIsVisible(newDisplayLevel: DisplayLevelType, oldDisplayLevel: DisplayLevelType): void {
         if (newDisplayLevel === 'detail') {
@@ -98,30 +99,5 @@ export default class FloorSwitchButton extends Vue {
         } else {
             this.isVisible = false;
         }
-    }
-    /**
-     * 外部コンポーネントでのLastViewedDetailMapIdの切り替わりをウォッチして
-     * ボタンの選択状態に反映
-     */
-    private watchFloorMapChangeOfDisplayedSpot(): void {
-        store.watch(
-            (state, getters: MapViewGetters) => {
-                const spot = { parentMapId: mapViewGetters.rootMapId, spotId: this.spotId };
-                if (mapViewGetters.spotHasDetailMaps(spot)) {
-                    return getters.getLastViewedDetailMapId(spot);
-                }
-                return null;
-            },
-            (newFloorMapId, oldFloorMapId) => {
-                if (newFloorMapId != null) {
-                    const spot = mapViewGetters.getSpotById({
-                        parentMapId: mapViewGetters.rootMapId,
-                        spotId: this.spotId,
-                    });
-                    this.selectedFloorButtonIndex =
-                        spot.detailMapIds.slice().reverse().findIndex((mapId: number) => mapId === newFloorMapId);
-                }
-            },
-        );
     }
 }
