@@ -27,6 +27,7 @@
                             <v-spacer></v-spacer>
                             <v-card-actions>
                                 <v-btn
+                                    id="close"
                                     text
                                     @click="close"
                                 >
