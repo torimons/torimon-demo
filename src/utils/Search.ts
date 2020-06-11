@@ -5,10 +5,10 @@
  */
 export default class Search<T extends {isMatchToKeywords(arg: RegExp): boolean}> {
 
-    private targetSpots: T[];
+    private targets: T[];
 
     constructor(targets: T[]) {
-        this.targetSpots = targets;
+        this.targets = targets;
     }
 
     /**
@@ -35,7 +35,7 @@ export default class Search<T extends {isMatchToKeywords(arg: RegExp): boolean}>
         for (let i = keywords.length; i > 0; i--) {
             const keywordsRegExp = this.compileIntoSearchCondition(keywords.slice(0, i));
             searchResults = searchResults.concat(
-                this.targetSpots
+                this.targets
                     .filter((target: T) => target.isMatchToKeywords(keywordsRegExp)));
         }
         // 重複を削除したものを返す
