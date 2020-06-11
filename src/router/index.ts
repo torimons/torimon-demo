@@ -31,6 +31,11 @@ const routes = [
         // which is lazy-loaded when the route is visited.
         component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
     },
+    {
+        path: '/map-detail',
+        name: 'map-detail',
+        component: () => import('../components/MapDetailCard/index.vue'),
+    },
 ];
 
 const router = new VueRouter({
