@@ -1,7 +1,6 @@
 import { RawSpot } from '@/store/types';
 
 export default class Search {
-
     private targetSpots: RawSpot[];
 
     constructor(spots: RawSpot[]) {
