@@ -4,9 +4,9 @@ import SearchBox from '@/components/SearchBox/index.vue';
 import SpotList from '@/components/SpotList/index.vue';
 import { mapViewMutations, mapViewGetters } from '@/store';
 import Search from '@/utils/Search';
-import { Spot } from '@/store/types';
+import { RawSpot } from '@/store/types';
 
-const spotsForTest: Spot[] = [
+const spotsForTest: RawSpot[] = [
     {
         mapId: 0,
         id: 0,
@@ -56,11 +56,11 @@ describe('SpotSearchコンポーネントのテスト', () => {
         wrapper.destroy();
     });
 
-    it('toggleSpotListイベントが発火するとsetSpotListIsVisibleが呼ばれる', () => {
+    it('toggleListイベントが発火するとsetSpotListIsVisibleが呼ばれる', () => {
         // 初期値はfalse
         expect(wrapper.vm.spotListIsVisible).toBe(false);
         // 子コンポーネント(SearchBox)からのemit
-        wrapper.find(SearchBox).vm.$emit('toggleSpotList', true);
+        wrapper.find(SearchBox).vm.$emit('toggleList', true);
         // trueに変わっていることを確認
         expect(wrapper.vm.spotListIsVisible).toBe(true);
         // 背景が白になっていることの確認
