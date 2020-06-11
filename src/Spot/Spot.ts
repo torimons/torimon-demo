@@ -15,6 +15,14 @@ export default class Spot {
     }
 
     /**
+     * スポットのnameを返す
+     * @return スポットのname
+     */
+    public getName(): string {
+        return this.name;
+    }
+
+    /**
      * 親マップをセットする
      * @params セットする親マップ
      */
@@ -28,5 +36,25 @@ export default class Spot {
      */
     public addDetailMaps(detailMaps: Map[]) {
         this.detailMaps = this.detailMaps.concat(detailMaps);
+    }
+
+    /**
+     * 検索条件を満たすかを判定する
+     * @param keyword
+     */
+    public isMatchToKeywords(keywordsRegExp: RegExp): boolean {
+        let searchTargetString: string = this.name;
+        const parentMap: Map | undefined = this.parentMap;
+        if (parentMap !== undefined) {
+            const parentSpot = parentMap.getParentSpot();
+            if (parentSpot !== undefined) {
+                searchTargetString += parentSpot.getName();
+            }
+        }
+        if (this.description !== undefined) {
+            searchTargetString += this.description;
+        }
+        // RegExp.test(target:str)は、targetにRegExpがマッチした場合にtrue, マッチしない場合falseを返す.
+        return keywordsRegExp.test(searchTargetString);
     }
 }
