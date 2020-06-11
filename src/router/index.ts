@@ -13,7 +13,7 @@ const routes = [
         component: Home,
     },
     {
-        path: '/MapSelect',
+        path: '/mapselect',
         name: 'MapSelect',
         component: MapSelection,
     },

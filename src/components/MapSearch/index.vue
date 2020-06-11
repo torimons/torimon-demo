@@ -16,7 +16,6 @@
                 class="px-2 pb-2"
             ></MapList>
         </v-card>
-        <!-- PropでSpotListにデータを渡す -->
     </div>
 </template>
 
