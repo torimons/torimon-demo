@@ -3,7 +3,7 @@
  * isMatchToKeywords(RegExp)メソッドをもつ型(現状ではMap, Spotクラス)でのみSearchクラスを作成できる
  * そのオブジェクトが検索キーワードにマッチしているかはMap, Spotクラスに移行
  */
-export default class Search<T extends {isMatchToKeywords(arg: RegExp): boolean}> {
+export default class Search<T extends { isMatchToKeywords(arg: RegExp): boolean }> {
 
     private targets: T[];
 
