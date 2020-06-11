@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import MainView from '../components/MainView/index.vue';
-import MainCreationView from '../components/MainCreationView/index.vue';
+import CreationMapView from '../components/CreationMapView/index.vue';
 
 Vue.use(VueRouter);
 
@@ -19,9 +19,9 @@ const routes = [
         // とりあえずMainViewにアクセスすると今までのマップを表示する
     },
     {
-        path: '/MainCreationView',
-        name: 'MainCreationView',
-        component: MainCreationView,
+        path: '/CreationMapView',
+        name: 'CreationMapView',
+        component: CreationMapView,
     },
     {
         path: '/about',
