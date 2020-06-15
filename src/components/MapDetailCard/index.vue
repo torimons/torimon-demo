@@ -23,6 +23,7 @@
                             <v-btn
                                 text
                                 @click="openMap"
+                                to="/mainview"
                             >
                                 Open Map
                             </v-btn>
