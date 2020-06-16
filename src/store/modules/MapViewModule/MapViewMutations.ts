@@ -12,8 +12,9 @@ export class MapViewMutations extends Mutations<MapViewState> {
      * @param newFocusedSpot 新しくフォーカスされるスポット
      */
     public setFocusedSpot(newFocusedSpot: Spot): void {
-        // 今まで{id:1}みたいなオブジェクトをsetしていたのでwatchできていたが，
-        // Spotのインスタンスに変更したので変更が検知されなくなった．
+        // 今まで{id:1}みたいなオブジェクトを毎回生成してsetしていたので変更をwatchできていたが，
+        // Spotの全く同じインスタンスをsetしようとすると変更が検知できない．
+        // 例:検索でSpotItemをクリック，マップのマーカー以外をクリックする，再び検索で同じSpotItemをクリックする
         // 応急処置としてundefinedをsetしている
         this.state.focusedSpot = undefined;
         this.state.focusedSpot = newFocusedSpot;
@@ -61,8 +62,9 @@ export class MapViewMutations extends Mutations<MapViewState> {
      * @param spot セットしたいスポット
      */
     public setSpotToDisplayInMapCenter(spot: Spot): void {
-        // 今まで{id:1}みたいなオブジェクトをsetしていたのでwatchできていたが，
-        // Spotのインスタンスに変更したので変更が検知されなくなった．
+        // 今まで{id:1}みたいなオブジェクトを毎回生成してsetしていたので変更をwatchできていたが，
+        // Spotの全く同じインスタンスをsetしようとすると変更が検知できない．
+        // 例:検索でSpotItemをクリック，マップのマーカー以外をクリックする，再び検索で同じSpotItemをクリックする
         // 応急処置としてnullをsetしている
         this.state.spotToDisplayInMapCenter = null;
         this.state.spotToDisplayInMapCenter = spot;
