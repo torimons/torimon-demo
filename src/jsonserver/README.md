@@ -4,7 +4,7 @@
 # 使い方
 - torimonのルートから
 ```
-$ ./node_modules/.bin/json-server --watch src/utils/jsonserver/db.json
+$ npm run jserver
 ```
 
 # API
