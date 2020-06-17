@@ -1,9 +1,10 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { Map, Spot } from '@/store/types';
 import { mapViewGetters, mapViewMutations } from '@/store';
 import Search from '@/utils/Search';
 import SearchBox from '@/components/SearchBox/index.vue';
 import SpotList from '@/components/SpotList/index.vue';
+import Map from '@/Map/Map.ts';
+import Spot from '@/Spot/Spot.ts';
 
 @Component({
     components: {
@@ -21,8 +22,7 @@ export default class SpotSearch extends Vue {
 
     public mounted() {
         // 全てのマップからスポットを取得，一つの配列に結合する
-        mapViewGetters.maps.map((map: Map) => map.spots)
-            .forEach((spots: Spot[]) => this.targetSpots = this.targetSpots.concat(spots));
+        this.getAllSpots(mapViewGetters.rootMap);
         // 上で取得したspotを検索対象にセットしたSearchクラスのインスタンス作成
         this.search = new Search(this.targetSpots);
     }
@@ -61,9 +61,23 @@ export default class SpotSearch extends Vue {
         } else {
             this.setSpotListIsVisible(false);
             // focusedSpotが初期値ではない場合, SpotInfoを表示する
-            // 直接focusedSpotを参照すると{mapId: [Getter/Setter], spotId: [Getter/Setter]}となり値が取得できないためIDごとに分離
-            if (mapViewGetters.focusedSpot.mapId !== -1 && mapViewGetters.focusedSpot.spotId !== -1) {
+            if (mapViewGetters.focusedSpot !== undefined) {
                 mapViewMutations.setSpotInfoIsVisible(true);
+            }
+        }
+    }
+
+    /**
+     * 全てのスポットを取得する
+     * マップをみて，マップに属するスポットをtargetSpotsに追加，
+     * さらにそのスポットに詳細マップがあれば再起的にこの関数を呼ぶ
+     * @param スポットを取得したいルートマップ
+     */
+    private getAllSpots(rootMap: Map) {
+        for (const spot of rootMap.getSpots()) {
+            this.targetSpots.push(spot);
+            for (const map of spot.getDetailMaps()) {
+                this.getAllSpots(map);
             }
         }
     }

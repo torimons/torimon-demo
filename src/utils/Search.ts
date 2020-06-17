@@ -1,4 +1,5 @@
-import { Spot } from '@/store/types';
+import Spot from '@/Spot/Spot.ts';
+import Map from '@/Map/Map.ts';
 
 export default class Search {
 
@@ -63,12 +64,13 @@ export default class Search {
      * @return isMatch スポットが検索ワードにマッチした場合true, マッチしなければfalse
      */
     private spotIsMatchToKeywords(spot: Spot, keywordsRegExp: RegExp): boolean {
-        let target: string = spot.name;
-        if (spot.parentSpotName !== undefined) {
-            target = target + spot.parentSpotName;
+        let target: string = spot.getName();
+        const parentSpot: Spot | undefined = spot.getParentSpot();
+        if (parentSpot !== undefined) {
+            target = target + parentSpot.getName();
         }
-        if (spot.description !== undefined) {
-            target += spot.description;
+        if (spot.getDescription() !== undefined) {
+            target += spot.getDescription();
         }
         // RegExp.test(target:str)は、targetにRegExpがマッチした場合にtrue, マッチしない場合falseを返す.
         return keywordsRegExp.test(target);

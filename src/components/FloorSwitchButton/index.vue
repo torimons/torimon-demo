@@ -14,7 +14,7 @@
                         <v-btn
                             v-for="(floorName, index) in floorNames"
                             v-bind:key="index"
-                            @click="updateLastViewedDetailMapIdOnClick(index)"
+                            @click="updateLastViewedDetailMapOnClick(index)"
                         >
                             {{ floorName }}
                         </v-btn>

@@ -1,44 +1,39 @@
 import Search from '@/utils/Search';
-import { Spot } from '@/store/types';
+import Spot from '@/Spot/Spot.ts';
+import Map from '@/Map/Map.ts';
 
+const rootMap: Map = new Map(0, 'rootMap', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined);
 const spotsForTest: Spot[] = [
-    {
-        mapId: 0,
-        id: 0,
-        name: 'SougouGakusyuPlaza',
-        coordinate: {
+    new Spot(
+        1,
+        'SougouGakusyuPlaza',
+        {
             lat: 33.595502,
             lng: 130.218238,
         },
-        shape: {
-            type: 'Polygon',
-            coordinates: [[[]]],
-        },
-        description: 'this is a comment for test',
-        gateNodeIds: [],
-        detailMapIds: [1, 2],
-        detailMapLevelNames: ['1F', '2F'],
-        lastViewedDetailMapId: null,
-    },
-    {
-        mapId: 0,
-        id: 1,
-        name: 'SpotForTest',
-        coordinate: {
+        undefined,
+        undefined,
+        'this is a comment for test',
+    ),
+    new Spot(
+        2,
+        'SpotForTest',
+        {
             lat: 33.595502,
             lng: 130.218238,
         },
-        shape: {
-            type: 'Polygon',
-            coordinates: [[[]]],
-        },
-        parentSpotName: 'SougouGakusyuPlaza',
-        gateNodeIds: [],
-        detailMapIds: [],
-        detailMapLevelNames: [],
-        lastViewedDetailMapId: null,
-    },
+        undefined,
+        undefined,
+    ),
 ];
+// rootMap -> 総合学習プラザ
+rootMap.addSpots([spotsForTest[0]]);
+// 総合学習プラザ -> testMap
+const testMap: Map = new Map(3, 'testMap', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined);
+// testMap -> SpotForTest
+spotsForTest[0].addDetailMaps([testMap]);
+testMap.addSpots([spotsForTest[1]]);
+// SpotForTest.getParentMap().getParentSpot()が総合学習プラザになるようにセット
 
 describe('Searchクラスのテスト', () => {
     const targetSpotsForSearch = spotsForTest;

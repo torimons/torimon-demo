@@ -1,9 +1,11 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import SpotItem from '@/components/SpotItem/index.vue';
-import { Spot, Coordinate } from '@/store/types';
+import { RawSpot, Coordinate } from '@/store/types';
 import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
 import { LatLngExpression } from 'leaflet';
 import { getDistance } from 'geolib';
+import Map from '@/Map/Map.ts';
+import Spot from '@/Spot/Spot.ts';
 
 @Component({
     components: {
@@ -54,7 +56,7 @@ export default class SpotList extends Vue {
         if (this.currentPosition === undefined) {
             return '';
         }
-        const distance = getDistance(spot.coordinate, this.currentPosition);
+        const distance = getDistance(spot.getCoordinate(), this.currentPosition);
         return this.formatDistance(distance);
     }
 
