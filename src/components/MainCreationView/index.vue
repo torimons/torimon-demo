@@ -2,20 +2,17 @@
   <div id="main-creation-view">
     <v-app>
       <CreationMapView/>
-      <v-container fluid id="bottom-container">
+      <v-container fluid id="toolbar-container">
         <v-row no-gutters>
           <v-col
-            cols="12"
-            sm="3"
+            cols="5"
+            md="3"
           >
             <SpotEditor/>
           </v-col>
-          <v-col
-            cols="12"
-            sm="1"
-            class="pa-0 ml-auto"
-          >
-            <EditorToolBar/>
+            <v-row justify="end" no-gutters>
+              <EditorToolBar/>
+            </v-row>
           </v-col>
         </v-row>
       </v-container>
@@ -48,7 +45,7 @@ body,
   position: relative;
   height: 100%;
 }
-#bottom-container {
+#toolbar-container {
   position: absolute;
   right: 0px;
   top: 0px;

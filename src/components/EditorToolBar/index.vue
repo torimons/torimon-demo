@@ -4,11 +4,11 @@
         max-width="60"
     >
       <v-container fluid>
-        <v-row>
-          <v-col class="ml-auto">
+        <v-row no-gutters>
+          <v-col>
               <v-btn
-                icon
                 color="primary"
+                icon
                 class="mb-2"
                 v-for="(icon, index) in icons"
                 v-bind:key="index"
@@ -17,22 +17,26 @@
             </v-btn>
             <v-speed-dial
               direction="left"
-              v-model="fab"
+              v-model="fabVisible"
             >
               <template v-slot:activator>
                 <v-btn
-                  v-model="fab"
+                  color="primary"
+                  v-model="fabVisible"
                   icon
                 >
-                  <v-icon v-if="fab">close</v-icon>
-                  <v-icon v-else>edit</v-icon>
+                  <v-icon v-if="fabVisible">close</v-icon>
+                  <v-icon v-else>place</v-icon>
                 </v-btn>
               </template>
-              <v-btn fab small>
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
-              <v-btn fab small>
-                <v-icon>mdi-account-circle</v-icon>
+              <v-btn 
+                color="primary"
+                v-for="(spotIcon, index) in spotIcons"
+                v-bind:key="index"
+                fab
+                small
+              >
+                <v-icon>{{ spotIcon }}</v-icon>
               </v-btn>
             </v-speed-dial>
           </v-col> 

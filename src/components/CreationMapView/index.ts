@@ -15,7 +15,7 @@ export default class CreationMapView extends Vue {
      * とりあえず地図の表示を行なっています．
      */
     public mounted() {
-        const rootMapCenter: Coordinate = Map.calculateCenter(mapViewGetters.rootMapBounds);
+        const rootMapCenter: Coordinate = Map.calculateCenter(mapViewGetters.rootMap.getBounds());
         this.map = L.map('creation-map-view').setView([rootMapCenter.lat, rootMapCenter.lng], this.defaultZoomLevel);
         this.tileLayer = L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
