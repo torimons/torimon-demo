@@ -1,10 +1,12 @@
 import { Component, Vue } from 'vue-property-decorator';
 import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
+import L, { LeafletEvent, Marker } from 'leaflet';
 import { Coordinate } from '@/store/types';
 import { mapViewGetters } from '@/store';
 import Map from '@/Map/Map.ts';
 import EditorToolBar from '@/components/EditorToolBar/index.vue';
+import Spot from '@/Spot/Spot';
+import DefaultSpotMarker from '../MapView/Marker/DefaultSpotMarker';
 
 @Component({
     components: {
@@ -29,6 +31,11 @@ export default class CreationMapView extends Vue {
                 maxNativeZoom: 19,
             },
         ).addTo(this.map);
+        this.map.on('click', this.onMapClick);
+    }
+
+    public onMapClick(e: any): void {
+        const newSpot: Spot = new Spot(0, 'Spot', e.latlng);
     }
 
     public zoomIn() {
