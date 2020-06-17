@@ -45,6 +45,14 @@ export default class Map {
     }
 
     /**
+     * マップのdescriptionを返す
+     * @return description，存在しなければundefined
+     */
+    public getDescription(): string | undefined {
+        return this.description;
+    }
+
+    /**
      * 親スポットが存在すれば親スポットを返す
      * @return 親スポット．存在しない場合undefined
      */
@@ -139,20 +147,28 @@ export default class Map {
     }
 
     /**
-     * 検索条件を満たすかを判定する
+     * 検索対象を満たすかを判定する際の文字列を生成する
      * マップクラスで検索対象になるのは
      * - マップ自身の名前
      * - desctiption
      * の2つ
-     * @param regExp 正規表現オブジェクト
-     * @return bool値，検索対象文字列が正規表現にマッチするか否か
+     * @return 検索対象文字列
      */
-    public isMatchToRegExp(regExp: RegExp): boolean {
+    public generateSearchTargetString(): string {
         let searchTargetString: string = this.name;
         if (this.description !== undefined) {
             searchTargetString += this.description;
         }
-        // RegExp.test(target:str)は、targetにRegExpがマッチした場合にtrue, マッチしない場合falseを返す.
-        return regExp.test(searchTargetString);
+        return searchTargetString;
+    }
+
+    /**
+     * 検索条件を満たすかを判定する
+     * @param regExp 正規表現オブジェクト
+     * @return bool値，検索対象文字列が正規表現にマッチするか否か
+     */
+    public isMatchToRegExp(regExp: RegExp): boolean {
+       // RegExp.test(target:str)は、targetにRegExpがマッチした場合にtrue, マッチしない場合falseを返す.
+        return regExp.test(this.generateSearchTargetString());
     }
 }
