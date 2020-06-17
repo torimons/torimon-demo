@@ -33,10 +33,4 @@ describe('Mapクラスの親スポット登録のテスト', () => {
         (testMap as any).parentSpot = testSpot;
         expect(testMap.hasParentSpot(testSpot)).toBe(true);
     });
-
-    it('getFloorNameでfloorNameを取得する', () => {
-        const testMap = new Map(0, 'testMap', testBounds, 'testFloorName');
-        const actualFloorName = testMap.getFloorName();
-        expect(actualFloorName).toBe('testFloorName');
-    });
 });
