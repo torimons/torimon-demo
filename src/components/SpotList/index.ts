@@ -4,6 +4,8 @@ import { RawSpot, Coordinate } from '@/store/types';
 import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
 import { LatLngExpression } from 'leaflet';
 import { getDistance } from 'geolib';
+import Map from '@/Map/Map.ts';
+import Spot from '@/Spot/Spot.ts';
 
 @Component({
     components: {
@@ -11,7 +13,7 @@ import { getDistance } from 'geolib';
     },
 })
 export default class SpotList extends Vue {
-    @Prop() public spotSearchResults!: RawSpot[];
+    @Prop() public spotSearchResults!: Spot[];
     private currentPositionHandler?: number;
     private currentPosition?: Coordinate;
 
@@ -50,11 +52,11 @@ export default class SpotList extends Vue {
      * @return 空文字列
      * @return 文字列型の単位付きの距離
      */
-    private calculateDistanceFromCurrentPosition(spot: RawSpot): string {
+    private calculateDistanceFromCurrentPosition(spot: Spot): string {
         if (this.currentPosition === undefined) {
             return '';
         }
-        const distance = getDistance(spot.coordinate, this.currentPosition);
+        const distance = getDistance(spot.getCoordinate(), this.currentPosition);
         return this.formatDistance(distance);
     }
 

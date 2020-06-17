@@ -9,8 +9,8 @@
         >
             <v-list-item two-line>
                 <v-list-item-content>
-                    <v-list-item-title class="headline">{{ parentSpotName + " " + spotName }}</v-list-item-title>
-                    <v-list-item-subtitle>{{ floorName + " " + distance }}</v-list-item-subtitle>
+                    <v-list-item-title class="headline">{{ (spot.getParentSpot() && spot.getParentSpot().getName() || "") + " " + spot.getName() }}</v-list-item-title>
+                    <v-list-item-subtitle>{{ (spot.getFloorName() || "") + " " + distance }}</v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
         </v-card>

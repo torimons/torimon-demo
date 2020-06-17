@@ -1,44 +1,39 @@
 import Search from '@/utils/Search';
-import { RawSpot } from '@/store/types';
+import Spot from '@/Spot/Spot.ts';
+import Map from '@/Map/Map.ts';
 
-const spotsForTest: RawSpot[] = [
-    {
-        mapId: 0,
-        id: 0,
-        name: 'SougouGakusyuPlaza',
-        coordinate: {
+const rootMap: Map = new Map(0, 'rootMap', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined);
+const spotsForTest: Spot[] = [
+    new Spot(
+        1,
+        'SougouGakusyuPlaza',
+        {
             lat: 33.595502,
             lng: 130.218238,
         },
-        shape: {
-            type: 'Polygon',
-            coordinates: [[[]]],
-        },
-        description: 'this is a comment for test',
-        gateNodeIds: [],
-        detailMapIds: [1, 2],
-        detailMapLevelNames: ['1F', '2F'],
-        lastViewedDetailMapId: null,
-    },
-    {
-        mapId: 0,
-        id: 1,
-        name: 'SpotForTest',
-        coordinate: {
+        undefined,
+        undefined,
+        'this is a comment for test',
+    ),
+    new Spot(
+        2,
+        'SpotForTest',
+        {
             lat: 33.595502,
             lng: 130.218238,
         },
-        shape: {
-            type: 'Polygon',
-            coordinates: [[[]]],
-        },
-        parentSpotName: 'SougouGakusyuPlaza',
-        gateNodeIds: [],
-        detailMapIds: [],
-        detailMapLevelNames: [],
-        lastViewedDetailMapId: null,
-    },
+        undefined,
+        undefined,
+    ),
 ];
+// rootMap -> 総合学習プラザ
+rootMap.addSpots([spotsForTest[0]]);
+// 総合学習プラザ -> testMap
+const testMap: Map = new Map(3, 'testMap', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined);
+// testMap -> SpotForTest
+spotsForTest[0].addDetailMaps([testMap]);
+testMap.addSpots([spotsForTest[1]]);
+// SpotForTest.getParentMap().getParentSpot()が総合学習プラザになるようにセット
 
 describe('Searchクラスのテスト', () => {
     const targetSpotsForSearch = spotsForTest;
@@ -47,45 +42,45 @@ describe('Searchクラスのテスト', () => {
     it('searchSpotsでスポットをキーワード検索', () => {
         // 'sougou'という文字を含んでいるスポットを検索(大文字小文字は区別しない)
         const keyword: string = 'sougou';
-        const actualResult: RawSpot[] = searchObj.searchSpots(keyword);
-        const expectedResult: RawSpot[] = spotsForTest;
+        const actualResult: Spot[] = searchObj.searchSpots(keyword);
+        const expectedResult: Spot[] = spotsForTest;
         expect(actualResult).toStrictEqual(expectedResult);
     });
 
     it('検索ワードが空文字の場合，検索しない', () => {
         const keyword: string = '';
-        const actualResult: RawSpot[] = searchObj.searchSpots(keyword);
-        const expectedResult: RawSpot[] = [];
+        const actualResult: Spot[] = searchObj.searchSpots(keyword);
+        const expectedResult: Spot[] = [];
         expect(actualResult).toStrictEqual(expectedResult);
     });
 
     it('検索ワードがnullの場合，検索しない', () => {
         const keyword: null = null;
-        const actualResult: RawSpot[] = searchObj.searchSpots(keyword);
-        const expectedResult: RawSpot[] = [];
+        const actualResult: Spot[] = searchObj.searchSpots(keyword);
+        const expectedResult: Spot[] = [];
         expect(actualResult).toStrictEqual(expectedResult);
     });
 
     it('複数キーワードによるor検索', () => {
         const keywords: string = 'sougou test';
-        const actualResult: RawSpot[] = searchObj.searchSpots(keywords);
-        const expectedResult: RawSpot[] = spotsForTest;
+        const actualResult: Spot[] = searchObj.searchSpots(keywords);
+        const expectedResult: Spot[] = spotsForTest;
         expect(actualResult).toStrictEqual(expectedResult);
     });
 
     it('parentSpotNameを対象とした検索', () => {
         const keyword: string = 'sougou';
-        const actualResult: RawSpot[] = searchObj.searchSpots(keyword);
+        const actualResult: Spot[] = searchObj.searchSpots(keyword);
         // 親スポットの名前で検索すると,親スポット自身と,parentSpotNameを設定された
         // スポットが検索結果として返る.
-        const expectedResult: RawSpot[] = spotsForTest;
+        const expectedResult: Spot[] = spotsForTest;
         expect(actualResult).toStrictEqual(expectedResult);
     });
 
     it('descriptionを対象とした検索', () => {
         const keyword: string = 'comment';
-        const actualResult: RawSpot[] = searchObj.searchSpots(keyword);
-        const expectedResult: RawSpot[] = [spotsForTest[0]];
+        const actualResult: Spot[] = searchObj.searchSpots(keyword);
+        const expectedResult: Spot[] = [spotsForTest[0]];
         expect(actualResult).toStrictEqual(expectedResult);
     });
 
