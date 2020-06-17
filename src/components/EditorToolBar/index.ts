@@ -1,4 +1,5 @@
 import { Component, Vue, Emit } from 'vue-property-decorator';
+import { SpotType } from '@/store/types';
 
 @Component
 export default class EditorToolBar extends Vue {
@@ -21,26 +22,39 @@ export default class EditorToolBar extends Vue {
     private selectedSpotIcon: string = '';
     private fabVisible: boolean = false;
 
-    @Emit('zoomIn')
-    public callZoomIn(): boolean {
-        return true;
-    }
-
-    @Emit('zoomOut')
-    public callZoomOut(): boolean {
-        return true;
+    @Emit('spot')
+    private hoge(selectedSpotIcon: string): SpotType {
+        if (selectedSpotIcon === 'place') {
+            return 'default';
+        }
+        if (selectedSpotIcon === 'add_location') {
+            return 'withDetailMap';
+        }
+        if (selectedSpotIcon === 'place') {
+            return 'restroom';
+        }
+        throw new Error();
     }
 
     private onButtonClick(action: Action): void {
         if (action === 'zoomIn') {
-            this.callZoomIn();
+            this.$emit('zoomIn');
             return;
         }
         if (action === 'zoomOut') {
-            this.callZoomOut();
+            this.$emit('zoomOut');
             return;
         }
         this.switchMode(action);
+        if (action === 'spot') {
+            this.hoge(this.selectedSpotIcon);
+        }
+        if (action === 'move') {
+            this.$emit('move');
+        }
+        if (action === 'select') {
+            this.$emit('select');
+        }
     }
 
     private switchMode(action: Action): void {

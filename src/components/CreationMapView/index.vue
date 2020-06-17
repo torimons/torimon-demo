@@ -11,8 +11,11 @@
               class="pa-0 ml-auto"
             >
               <EditorToolBar
+                @move="setEmptyMethodOnMapClick"
                 @zoomIn="zoomIn"
                 @zoomOut="zoomOut"
+                @select="setEmptyMethodOnMapClick"
+                @spot="setAddSpotMethodOnMapClick"
               />
             </v-col>
           </v-row>

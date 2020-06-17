@@ -6,7 +6,7 @@ import { mapViewGetters } from '@/store';
 import Map from '@/Map/Map.ts';
 import EditorToolBar from '@/components/EditorToolBar/index.vue';
 import Spot from '@/Spot/Spot';
-import DefaultSpotMarker from '../MapView/Marker/DefaultSpotMarker';
+import DefaultSpotMarker from '@/components/MapView/Marker/DefaultSpotMarker';
 
 @Component({
     components: {
@@ -14,35 +14,62 @@ import DefaultSpotMarker from '../MapView/Marker/DefaultSpotMarker';
     },
 })
 export default class CreationMapView extends Vue {
-    private map!: L.Map;
+    private lMap!: L.Map;
     private defaultZoomLevel: number = 17;
     private tileLayer!: L.TileLayer;
+    private map: Map = new Map(0, 'New Map', {
+        topL: {lat: 0, lng: 0},
+        botR: {lat: 0, lng: 0},
+    });
 
     /**
      * とりあえず地図の表示を行なっています．
      */
     public mounted() {
-        const rootMapCenter: Coordinate = Map.calculateCenter(mapViewGetters.rootMapBounds);
-        this.map = L.map('map', {zoomControl: false})
+        const rootMapCenter: Coordinate = Map.calculateCenter(mapViewGetters.rootMap.getBounds());
+        this.lMap = L.map('map', {zoomControl: false})
             .setView([rootMapCenter.lat, rootMapCenter.lng], this.defaultZoomLevel);
         this.tileLayer = L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 23,
                 maxNativeZoom: 19,
             },
-        ).addTo(this.map);
-        this.map.on('click', this.onMapClick);
+        ).addTo(this.lMap);
+        this.lMap.on('click', this.on);
     }
 
-    public onMapClick(e: any): void {
-        const newSpot: Spot = new Spot(0, 'Spot', e.latlng);
+    public setAddSpotMethodOnMapClick(): void {
+        this.onMapClick = this.addSpot;
+    }
+
+    public setEmptyMethodOnMapClick(): void {
+        this.onMapClick = (e: any) => undefined;
+    }
+
+    public on(e: any): void {
+        this.onMapClick(e);
+    }
+
+    public addSpot(e: any): void {
+        const maxNumOfId = this.map.getSpots()
+            .map((spot) => spot.getId())
+            .reduce((accum, newValue) => Math.max(accum, newValue), -1);
+        const newId = maxNumOfId + 1;
+        const newSpot: Spot = new Spot(
+            newId, 'No name', e.latlng, undefined, undefined, undefined, undefined, 'default',
+        );
+        this.map.addSpots([newSpot]);
+        const newMarker: Marker = new DefaultSpotMarker(newSpot);
+        newMarker.addTo(this.lMap);
     }
 
     public zoomIn() {
-        this.map.zoomIn();
+        this.lMap.zoomIn();
     }
 
     public zoomOut() {
-        this.map.zoomOut();
+        this.lMap.zoomOut();
     }
+
+    private onMapClick: (e: any) => void = (e: any) => undefined;
 }

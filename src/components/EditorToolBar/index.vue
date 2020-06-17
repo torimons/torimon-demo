@@ -37,7 +37,7 @@
                 v-bind:key="index"
                 fab
                 small
-                @click="onButtonClick('spot'); setSelectedSpotIcon(spotIcon)"
+                @click="setSelectedSpotIcon(spotIcon); onButtonClick('spot')"
               >
                 <v-icon>{{ spotIcon }}</v-icon>
               </v-btn>
