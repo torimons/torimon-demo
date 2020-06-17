@@ -1,10 +1,11 @@
-import { RawSpot } from '@/store/types';
+import Spot from '@/Spot/Spot.ts';
+import Map from '@/Map/Map.ts';
 
 export default class Search {
 
-    private targetSpots: RawSpot[];
+    private targetSpots: Spot[];
 
-    constructor(spots: RawSpot[]) {
+    constructor(spots: Spot[]) {
         this.targetSpots = spots;
     }
 
@@ -19,7 +20,7 @@ export default class Search {
      * @param keyword スポット検索ワード
      * @return keywordにかかったスポットのリスト
      */
-    public searchSpots(keyword: string | null): RawSpot[] {
+    public searchSpots(keyword: string | null): Spot[] {
         // 空文字チェックは、検索ボックスをバックスペース等で空にしたときに
         // 空文字による検索が走るのを防ぐために必要。
         // nullチェックは、検索ボックスの x ボタンをクリックしたときに、
@@ -28,12 +29,12 @@ export default class Search {
             return [];
         }
         const keywords: string[] = keyword.split(/\s+/).filter((word: string) => word !== '');
-        let searchResults: RawSpot[] = [];
+        let searchResults: Spot[] = [];
         for (let i = keywords.length; i > 0; i--) {
             const keywordsRegExp = this.compileIntoSearchCondition(keywords.slice(0, i));
             searchResults = searchResults.concat(
                 this.targetSpots
-                    .filter((s: RawSpot) => this.spotIsMatchToKeywords(s, keywordsRegExp)));
+                    .filter((s: Spot) => this.spotIsMatchToKeywords(s, keywordsRegExp)));
         }
         // 重複を削除したものを返す
         return searchResults.filter((x, i, self) => self.indexOf(x) === i);
@@ -62,13 +63,14 @@ export default class Search {
      * @param keywordsRegExp 検索キーワードの正規表現オブジェクト
      * @return isMatch スポットが検索ワードにマッチした場合true, マッチしなければfalse
      */
-    private spotIsMatchToKeywords(spot: RawSpot, keywordsRegExp: RegExp): boolean {
-        let target: string = spot.name;
-        if (spot.parentSpotName !== undefined) {
-            target = target + spot.parentSpotName;
+    private spotIsMatchToKeywords(spot: Spot, keywordsRegExp: RegExp): boolean {
+        let target: string = spot.getName();
+        const parentSpot: Spot | undefined = spot.getParentSpot();
+        if (parentSpot !== undefined) {
+            target = target + parentSpot.getName();
         }
-        if (spot.description !== undefined) {
-            target += spot.description;
+        if (spot.getDescription() !== undefined) {
+            target += spot.getDescription();
         }
         // RegExp.test(target:str)は、targetにRegExpがマッチした場合にtrue, マッチしない場合falseを返す.
         return keywordsRegExp.test(target);
