@@ -2,7 +2,7 @@ import { Coordinate, Shape } from '@/store/types.ts';
 import Map from '@/Map/Map.ts';
 
 export default class Spot {
-    private parentMap: Map | undefined = undefined;
+    private parentMap!: Map;
     private detailMaps: Map[] = [];
     private lastViewedDetailMap: Map | undefined = undefined;
 
@@ -17,10 +17,83 @@ export default class Spot {
 
     /**
      * 自身のidを返す
-     * @return id 自身のid
+     * @return 自身のid
      */
     public getId(): number {
         return this.id;
+    }
+
+    /**
+     * スポットのnameを返す
+     * @return スポットのname
+     */
+    public getName(): string {
+        return this.name;
+    }
+
+    /**
+     * 自身の座標を返す
+     * @return 自身の座標
+     */
+    public getCoordinate(): Coordinate {
+        return this.coordinate;
+    }
+
+    /**
+     * スポットの図形情報を返す
+     * @return 図形情報
+     */
+    public getShape(): Shape | undefined {
+        return this.shape;
+    }
+
+    /**
+     * スポットのnameを返す
+     * @return スポットのname
+     */
+    public getFloorName(): string | undefined {
+        return this.floorName;
+    }
+
+
+    /**
+     * 詳細マップを返す
+     * @return 詳細マップ
+     */
+    public getDetailMaps(): Map[] {
+        return this.detailMaps;
+    }
+
+    /**
+     * 自身の説明を返す
+     * @return description
+     */
+    public getDescription(): string | undefined {
+        return this.description;
+    }
+
+    /**
+     * 自身のアタッチメントを返す
+     * @return attachment，なければundefined
+     */
+    public getAttachment(): [{name: string, url: string}] | undefined {
+        return this.attachment;
+    }
+
+    /**
+     * 親マップが存在すれば親マップを返す
+     * @return 親マップ、存在しない場合undefined
+     */
+    public getParentMap(): Map | undefined {
+        return this.parentMap;
+    }
+
+    /**
+     * 親マップの親スポットを取得する
+     * @return parentSpot
+     */
+    public getParentSpot(): Spot | undefined {
+        return this.parentMap.getParentSpot();
     }
 
     /**

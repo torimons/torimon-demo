@@ -5,15 +5,11 @@
         >
             <SpotItem
                 v-for="spotSearchResult in spotSearchResults"
-                v-bind:key="spotSearchResult.id + spotSearchResult.name"
-                :spotId="spotSearchResult.id"
-                :mapId="spotSearchResult.mapId"
-                :spotName="spotSearchResult.name"
+                v-bind:key="spotSearchResult.getId() + spotSearchResult.getName()"
+                :spot="spotSearchResult"
                 :distance="calculateDistanceFromCurrentPosition(spotSearchResult)"
-                :parentSpotName="spotSearchResult.parentSpotName"
-                :floorName="spotSearchResult.floorName"
                 @hideSpotList="hideSpotList"
-                :position="spotSearchResult.coordinate"
+                :position="spotSearchResult.getCoordinate()"
             >
             </SpotItem>
         </v-list>
