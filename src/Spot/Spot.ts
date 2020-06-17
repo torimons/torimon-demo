@@ -1,18 +1,22 @@
-import { Coordinate, Shape } from '@/store/types.ts';
+import { Coordinate, Shape, SpotType } from '@/store/types.ts';
 import Map from '@/Map/Map.ts';
 
 export default class Spot {
     private parentMap!: Map;
     private detailMaps: Map[] = [];
     private lastViewedDetailMap: Map | undefined = undefined;
+    private type: SpotType = 'default';
 
-    constructor(private id: number,
-                private name: string,
-                private coordinate: Coordinate,
-                private shape?: Shape,
-                private floorName?: string,
-                private description?: string,
-                private attachment?: [{name: string, url: string}]) {
+    constructor(
+            private id: number,
+            private name: string,
+            private coordinate: Coordinate,
+            private shape?: Shape,
+            private floorName?: string,
+            private description?: string,
+            private attachment?: [{name: string, url: string}],
+            type?: SpotType ) {
+        /* 何もしない */
     }
 
     /**
@@ -78,6 +82,14 @@ export default class Spot {
      */
     public getAttachment(): [{name: string, url: string}] | undefined {
         return this.attachment;
+    }
+
+    /**
+     * スポットのtypeを返す
+     * @return スポットのtype
+     */
+    public getType(): SpotType {
+        return this.type;
     }
 
     /**

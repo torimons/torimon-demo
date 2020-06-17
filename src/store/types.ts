@@ -127,3 +127,10 @@ export interface Edge {
  * ズームレベルで切り替わる表示レベルの種類
  */
 export type DisplayLevelType = 'default' | 'detail';
+
+/**
+ * スポットの種別
+ * withDetailMap: 詳細マップ持ちスポット
+ * restroom: トイレ
+ */
+export type SpotType = 'default' | 'withDetailMap' | 'restroom';
