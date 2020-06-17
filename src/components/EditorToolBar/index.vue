@@ -4,7 +4,7 @@
         max-width="60"
     >
       <v-container fluid>
-        <v-row>
+        <v-row no-gutters>
           <v-col>
               <v-btn
                 color="primary"
