@@ -1,8 +1,9 @@
 import { shallowMount } from '@vue/test-utils';
 import SpotList from '@/components/SpotList/index.vue';
 import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
-import { Spot } from '@/store/types';
 import { getDistance } from 'geolib';
+import Spot from '@/Spot/Spot.ts';
+import Map from '@/Map/Map.ts';
 
 describe('SpotListコンポーネントのテスト', () => {
     let wrapper: any;
@@ -18,25 +19,21 @@ describe('SpotListコンポーネントのテスト', () => {
         wrapper.destroy();
     });
 
-    const testSpot: Spot = {
-        id: 1,
-        name: 'ウエスト2号館',
-        coordinate: {
+    const testSpot: Spot = new Spot(
+        1,
+        'ウエスト2号館',
+        {
             lat: 33.59600170923035,
             lng: 130.21851181983948,
         },
-        gateNodeIds: [],
-        detailMapIds: [],
-        detailMapLevelNames: [],
-        lastViewedDetailMapId: null,
-    };
+    );
 
     it('calculateDistanceFromCurrentPositionが取得された現在地とスポット間の距離を計算してformatした結果を返す', () => {
         const currentPosition = {
             lat: 33.595502,
             lng: 130.218238,
         };
-        const expectedDistance = getDistance(testSpot.coordinate, currentPosition);
+        const expectedDistance = getDistance(testSpot.getCoordinate(), currentPosition);
         wrapper.vm.currentPosition = currentPosition;
         wrapper.vm.formatDistance = jest.fn((distance) => {
             return distance.toString();

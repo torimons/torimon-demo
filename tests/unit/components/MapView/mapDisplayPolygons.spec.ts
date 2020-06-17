@@ -1,13 +1,11 @@
 import { mapViewGetters, mapViewMutations } from '@/store';
 import map from '@/components/MapView/index.vue';
-import { MapViewState } from '@/store/types';
 import { FeatureCollection } from 'geojson';
 import { shallowMount } from '@vue/test-utils';
-import { cloneDeep } from 'lodash';
-import { testMapViewState } from '../../../resources/testMapViewState';
+import { testRawMapData } from '../../../resources/testRawMapData';
 import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
+import Spot from '@/Spot/Spot';
 
-const mapViewStateTestData: MapViewState = cloneDeep(testMapViewState);
 
 const expectedGeoJsonObject: FeatureCollection = {
     type: 'FeatureCollection',
@@ -52,7 +50,7 @@ describe('mapコンポーネントのポリゴン表示', () => {
     let wrapper: any;
     beforeEach(() => {
         // テスト用データをstoreにセット
-        mapViewMutations.setMapViewState(mapViewStateTestData);
+        mapViewMutations.setRootMapForTest(testRawMapData);
         GeolocationWrapper.watchPosition = jest.fn();
         const initMapDisplay = jest.fn();
         const watchStoreForDisplayMap = jest.fn();
@@ -65,9 +63,9 @@ describe('mapコンポーネントのポリゴン表示', () => {
         });
     });
 
-    it('storeのgetter(getSpotsForMap)で取得したspotのshape情報をgeoJson形式に変換する', () => {
-        const spotsForMap = mapViewGetters.getSpotsForMap(0);
-        const actualGeoJsonFormat =  wrapper.vm.spotShapeToGeoJson(spotsForMap);
+    it('spotのshape情報をgeoJson形式に変換する', () => {
+        const spots: Spot[] = mapViewGetters.rootMap.getSpots();
+        const actualGeoJsonFormat =  wrapper.vm.spotShapeToGeoJson(spots);
         const expectedGeoJsonFormat = expectedGeoJsonObject;
         expect(actualGeoJsonFormat).toStrictEqual(expectedGeoJsonFormat);
     });

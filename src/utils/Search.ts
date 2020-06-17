@@ -1,3 +1,5 @@
+import Spot from '@/Spot/Spot.ts';
+import Map from '@/Map/Map.ts';
 
 /**
  * isMatchToKeywords(RegExp)メソッドをもつ型(現状ではMap, Spotクラス)でのみSearchクラスを作成できる
@@ -57,5 +59,24 @@ export default class Search<T extends { isMatchToKeywords(arg: RegExp): boolean 
         };
         const rx: string = joinAnd(keywords.map(escape));
         return new RegExp(rx, 'i'); // iオプションで大文字小文字の区別をしない.
+    }
+
+    /**
+     * スポットが正規表現にマッチするかどうかを判定する
+     * @param spot filter対象のスポット
+     * @param keywordsRegExp 検索キーワードの正規表現オブジェクト
+     * @return isMatch スポットが検索ワードにマッチした場合true, マッチしなければfalse
+     */
+    private spotIsMatchToKeywords(spot: Spot, keywordsRegExp: RegExp): boolean {
+        let target: string = spot.getName();
+        const parentSpot: Spot | undefined = spot.getParentSpot();
+        if (parentSpot !== undefined) {
+            target = target + parentSpot.getName();
+        }
+        if (spot.getDescription() !== undefined) {
+            target += spot.getDescription();
+        }
+        // RegExp.test(target:str)は、targetにRegExpがマッチした場合にtrue, マッチしない場合falseを返す.
+        return keywordsRegExp.test(target);
     }
 }
