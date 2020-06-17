@@ -13,14 +13,6 @@ export default class Map {
     }
 
     /**
-     * 親スポットが存在すれば親スポットを返す
-     * @return 親スポット．存在しない場合undefined
-     */
-    public getParentSpot(): Spot | undefined {
-        return this.parentSpot;
-    }
-
-    /**
      * 自身のidを返す
      * @return 自身のid
      */
@@ -148,14 +140,19 @@ export default class Map {
 
     /**
      * 検索条件を満たすかを判定する
-     * @param keyword
+     * マップクラスで検索対象になるのは
+     * - マップ自身の名前
+     * - desctiption
+     * の2つ
+     * @param regExp 正規表現オブジェクト
+     * @return bool値，検索対象文字列が正規表現にマッチするか否か
      */
-    public isMatchToKeywords(keywordsRegExp: RegExp): boolean {
+    public isMatchToRegExp(regExp: RegExp): boolean {
         let searchTargetString: string = this.name;
         if (this.description !== undefined) {
             searchTargetString += this.description;
         }
         // RegExp.test(target:str)は、targetにRegExpがマッチした場合にtrue, マッチしない場合falseを返す.
-        return keywordsRegExp.test(searchTargetString);
+        return regExp.test(searchTargetString);
     }
 }
