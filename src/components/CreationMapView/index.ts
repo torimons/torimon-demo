@@ -40,19 +40,39 @@ export default class CreationMapView extends Vue {
         this.lMap.on('click', this.onMapClickForCallBack);
     }
 
+    /**
+     * マップがクリックされた時に実行されるonMapClick(メソッド型の変数)にaddSpotメソッドを代入
+     * EditorToolBarコンポーネントでclickSpotイベントが発生した時に実行される
+     * @param spotType クリックされたスポットの種類 (clickSpotイベントから送られてくる)
+     */
     public setAddSpotMethodOnMapClick(spotType: SpotType): void {
         this.onMapClick = this.addSpot;
         this.spotTypeToAddNext = spotType;
     }
 
+    /**
+     * マップがクリックされた時に実行されるonMapClick(メソッド型の変数)に何も行わないundefinedを
+     * セットし，クリック時に何も行われないようにする
+     * EditorToolBarコンポーネントでclickSpotイベント以外が発生した時に実行される
+     */
     public setEmptyMethodOnMapClick(): void {
         this.onMapClick = (e: any) => undefined;
     }
 
+    /**
+     * マップがクリックされた時に実行されるonMapClick(メソッド型の変数)をL.MapにonClickイベントに
+     * 登録するためのラッパーメソッド
+     * @param e Leafletイベント(addSpotメソッドでe.latlngを取得するためにany型にしている)
+     */
     public onMapClickForCallBack(e: any): void {
         this.onMapClick(e);
     }
 
+    /**
+     * スポットを作成しマーカーをL.Mapに追加する
+     * 作成するスポットのIDは既存のスポットのIDの中から最も大きい数値+1の値
+     * @param e Leafletイベント(e.latlngを取得するためにany型にしている)
+     */
     public addSpot(e: any): void {
         const maxNumOfId = this.map.getSpots()
             .map((spot) => spot.getId())
@@ -66,13 +86,27 @@ export default class CreationMapView extends Vue {
         newMarker.addTo(this.lMap);
     }
 
+    /**
+     * マップを拡大する
+     * EditorToolBarコンポーネントがclickZoomInイベントを発生させた時に実行される
+     */
     public zoomIn() {
         this.lMap.zoomIn();
     }
 
+    /**
+     * マップを縮小する
+     * EditorToolBarコンポーネントがclickZoomOutイベントを発生させた時に実行される
+     */
     public zoomOut() {
         this.lMap.zoomOut();
     }
 
+    /**
+     * マップをクリックしたときに実行される
+     * EditorToolBarからEmitされるイベントによって中身が切り替わる
+     * デフォルトでは何もしない(undefined)
+     * @param e Leafletイベント(addSpotメソッドでe.latlngを取得するためにany型にしている)
+     */
     private onMapClick: (e: any) => void = (e: any) => undefined;
 }

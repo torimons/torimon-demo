@@ -12,7 +12,7 @@ export default class EditorToolBar extends Vue {
         {action: 'zoomOut', icon: 'zoom_out', color: this.defaultColor},
         {action: 'select',  icon: 'edit',     color: this.defaultColor},
     ];
-    private spotColor: string = this.defaultColor;
+    private spotButtonColor: string = this.defaultColor;
     private spotIcons: string[] = [
         'place',
         'add_location',
@@ -22,7 +22,12 @@ export default class EditorToolBar extends Vue {
     private selectedSpotIcon: string = '';
     private fabVisible: boolean = false;
 
-    @Emit('spot')
+    /**
+     * スポットボタンがクリックされた時にCreationMapViewにスポットの
+     * SpotTypeをEmitするメソッド
+     * @param selectedSpotIcon クリックで選ばれたスポットのSpotType
+     */
+    @Emit('clickSpot')
     private emitSpotType(selectedSpotIcon: string): SpotType {
         if (selectedSpotIcon === 'place') {
             return 'default';
@@ -36,13 +41,19 @@ export default class EditorToolBar extends Vue {
         throw new Error();
     }
 
+    /**
+     * ツールバーの各ボタンがクリックされた場合に実行される
+     * CreationMapViewに選択されたボタンの種類をemitする
+     * また現在選択されているボタンをモードとして保持する
+     * @param action 選択されたボタンの種類
+     */
     private onButtonClick(action: Action): void {
         if (action === 'zoomIn') {
-            this.$emit('zoomIn');
+            this.$emit('clickZoomIn');
             return;
         }
         if (action === 'zoomOut') {
-            this.$emit('zoomOut');
+            this.$emit('clickZoomOut');
             return;
         }
         this.switchMode(action);
@@ -50,25 +61,32 @@ export default class EditorToolBar extends Vue {
             this.emitSpotType(this.selectedSpotIcon);
         }
         if (action === 'move') {
-            this.$emit('move');
+            this.$emit('clickMove');
         }
         if (action === 'select') {
-            this.$emit('select');
+            this.$emit('clickSelect');
         }
     }
 
+    /**
+     * 選択されているボタンの情報をモードとしてメンバ変数に反映する
+     * ボタンの選択情報を色に反映する
+     */
     private switchMode(action: Action): void {
         this.selectedMode = action;
-        this.spotColor = this.defaultColor;
+        this.spotButtonColor = this.defaultColor;
         this.buttons.forEach((b) => b.color = this.defaultColor);
         if (action === 'spot') {
-            this.spotColor = this.selectedColor;
+            this.spotButtonColor = this.selectedColor;
         } else {
             const index = this.buttons.findIndex((b) => b.action === action);
             this.buttons[index].color = this.selectedColor;
         }
     }
 
+    /**
+     * 選択されているスポットアイコンがどのスポットかをセットする
+     */
     private setSelectedSpotIcon(icon: string): void {
         this.selectedSpotIcon = icon;
     }
