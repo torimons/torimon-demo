@@ -1,7 +1,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import 'leaflet/dist/leaflet.css';
 import L, { LeafletEvent, Marker } from 'leaflet';
-import { Coordinate } from '@/store/types';
+import { Coordinate, SpotType } from '@/store/types';
 import { mapViewGetters } from '@/store';
 import Map from '@/Map/Map.ts';
 import EditorToolBar from '@/components/EditorToolBar/index.vue';
@@ -21,6 +21,8 @@ export default class CreationMapView extends Vue {
         topL: {lat: 0, lng: 0},
         botR: {lat: 0, lng: 0},
     });
+    // 次にクリックしたときに設置されるスポットタイプ
+    private spotTypeToAddNext: SpotType = 'default';
 
     /**
      * とりあえず地図の表示を行なっています．
@@ -38,8 +40,9 @@ export default class CreationMapView extends Vue {
         this.lMap.on('click', this.on);
     }
 
-    public setAddSpotMethodOnMapClick(): void {
+    public setAddSpotMethodOnMapClick(spotType: SpotType): void {
         this.onMapClick = this.addSpot;
+        this.spotTypeToAddNext = spotType;
     }
 
     public setEmptyMethodOnMapClick(): void {
@@ -56,7 +59,7 @@ export default class CreationMapView extends Vue {
             .reduce((accum, newValue) => Math.max(accum, newValue), -1);
         const newId = maxNumOfId + 1;
         const newSpot: Spot = new Spot(
-            newId, 'No name', e.latlng, undefined, undefined, undefined, undefined, 'default',
+            newId, 'Spot ' + newId, e.latlng, undefined, undefined, undefined, undefined, this.spotTypeToAddNext,
         );
         this.map.addSpots([newSpot]);
         const newMarker: Marker = new DefaultSpotMarker(newSpot);

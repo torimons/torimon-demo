@@ -1,6 +1,7 @@
 import L, {LatLngExpression} from 'leaflet';
 import { mapViewMutations, mapViewGetters } from '@/store';
 import Spot from '@/Spot/Spot';
+import { SpotType } from '@/store/types';
 
 export default class DefaultSpotMarker extends L.Marker {
     private spot: Spot;
@@ -8,14 +9,26 @@ export default class DefaultSpotMarker extends L.Marker {
     private normalColor: string = '#3F8373';
     private selectedColor: string = '#AE56B3';
     private nameLabelMarker!: L.Marker;
+    private iconName: string = 'place';
+    private iconNameMaps: Array<{ key: SpotType, iconName: string }> = [
+        { key: 'default', iconName: 'place' },
+        { key: 'withDetailMap', iconName: 'add_location' },
+        { key: 'restroom', iconName: 'wc' },
+    ];
     private icon: L.DivIcon = L.divIcon({
         className: 'custom-div-icon',
-        html: `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${this.normalColor};">room</i>`,
+        html: `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${this.normalColor};">${this.iconName}</i>`,
         iconAnchor: [24, 50],
     });
 
     constructor(spot: Spot) {
         super(spot.getCoordinate());
+        const iconName = this.iconNameMaps.find((iconNameMap) => iconNameMap.key === spot.getType())?.iconName;
+        if (iconName !== undefined) {
+            this.iconName = iconName;
+        } else {
+            this.iconName = 'default';
+        }
         this.setIcon(this.icon);
         this.spotName = spot.getName();
         this.spot = spot;

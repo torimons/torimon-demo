@@ -23,14 +23,14 @@ export default class EditorToolBar extends Vue {
     private fabVisible: boolean = false;
 
     @Emit('spot')
-    private hoge(selectedSpotIcon: string): SpotType {
+    private emitSpotType(selectedSpotIcon: string): SpotType {
         if (selectedSpotIcon === 'place') {
             return 'default';
         }
         if (selectedSpotIcon === 'add_location') {
             return 'withDetailMap';
         }
-        if (selectedSpotIcon === 'place') {
+        if (selectedSpotIcon === 'wc') {
             return 'restroom';
         }
         throw new Error();
@@ -47,7 +47,7 @@ export default class EditorToolBar extends Vue {
         }
         this.switchMode(action);
         if (action === 'spot') {
-            this.hoge(this.selectedSpotIcon);
+            this.emitSpotType(this.selectedSpotIcon);
         }
         if (action === 'move') {
             this.$emit('move');
