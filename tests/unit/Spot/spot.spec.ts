@@ -72,11 +72,19 @@ describe('Spotクラスのgetterのテスト', () => {
         expect(actualSpotType).toEqual(expectedSpotType);
     });
 
-    it('SpotTypeがundefinedのとき、getTypedefaultを返す', () => {
+    it('SpotTypeがundefinedのとき、getTypeが"default"を返す', () => {
         const testSpot
             = new Spot(1, 'testMap', testCoord, undefined, 'testFloorName', undefined, undefined, undefined);
         const actualSpotType: SpotType = testSpot.getType();
         const expectedSpotType = 'default';
         expect(actualSpotType).toEqual(expectedSpotType);
+    });
+
+    it('getIconNameのテスト', () => {
+        const testSpot
+            = new Spot(1, 'testMap', testCoord, undefined, 'testFloorName', undefined, undefined, 'restroom');
+        const actualIconName: string = testSpot.getIconName();
+        const expectedIconName = 'wc';
+        expect(actualIconName).toEqual(expectedIconName);
     });
 });

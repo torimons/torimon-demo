@@ -95,6 +95,23 @@ export default class Spot {
     }
 
     /**
+     * スポットのアイコン名を返す
+     * @return アイコン名, 存在しない場合'place'アイコン
+     */
+    public getIconName(): string {
+        const iconNameMaps: Array<{ key: SpotType, iconName: string }> = [
+            { key: 'default',       iconName: 'place' },
+            { key: 'withDetailMap', iconName: 'add_location' },
+            { key: 'restroom',      iconName: 'wc' },
+        ];
+        const iconName = iconNameMaps.find((iconNameMap) => iconNameMap.key === this.getType())?.iconName;
+        if (iconName === undefined) {
+            throw new Error("Illegal 'iconNameMaps'.");
+        }
+        return iconName;
+    }
+
+    /**
      * 親マップが存在すれば親マップを返す
      * @return 親マップ、存在しない場合undefined
      */
