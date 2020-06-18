@@ -8,7 +8,7 @@
           :value="spot.getName()"
           @input="(value) => spot.setName(value)"
           label="スポット名"
-          prepend-inner-icon="place"
+          :prepend-inner-icon="spot.getIconName()"
           clearable
           counter="15"
         ></v-text-field>
