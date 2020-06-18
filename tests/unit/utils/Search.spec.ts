@@ -3,11 +3,12 @@ import Spot from '@/Spot/Spot.ts';
 import Map from '@/Map/Map.ts';
 
 /**
- * Searchクラスで扱うisMatchToRegExpを
+ * Searchクラスで扱うisMatchToRegExpをもつクラス
  */
 class SearchTarget {
     private targetString: string;
 
+    // ここでわたすtargetStringがそのまま検索対象になる
     constructor(targetString: string) {
         this.targetString = targetString;
     }

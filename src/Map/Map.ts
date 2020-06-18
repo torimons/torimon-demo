@@ -147,22 +147,6 @@ export default class Map {
     }
 
     /**
-     * 検索対象を満たすかを判定する際の文字列を生成する
-     * マップクラスで検索対象になるのは
-     * - マップ自身の名前
-     * - desctiption
-     * の2つ
-     * @return 検索対象文字列
-     */
-    public generateSearchTargetString(): string {
-        let searchTargetString: string = this.name;
-        if (this.description !== undefined) {
-            searchTargetString += this.description;
-        }
-        return searchTargetString;
-    }
-
-    /**
      * 検索条件を満たすかを判定する
      * @param regExp 正規表現オブジェクト
      * @return bool値，検索対象文字列が正規表現にマッチするか否か
@@ -170,5 +154,21 @@ export default class Map {
     public isMatchToRegExp(regExp: RegExp): boolean {
        // RegExp.test(target:str)は、targetにRegExpがマッチした場合にtrue, マッチしない場合falseを返す.
         return regExp.test(this.generateSearchTargetString());
+    }
+
+    /**
+     * 検索対象を満たすかを判定する際の文字列を生成する
+     * マップクラスで検索対象になるのは
+     * - マップ自身の名前
+     * - desctiption
+     * の2つ
+     * @return 検索対象文字列
+     */
+    private generateSearchTargetString(): string {
+        let searchTargetString: string = this.name;
+        if (this.description !== undefined) {
+            searchTargetString += this.description;
+        }
+        return searchTargetString;
     }
 }
