@@ -20,8 +20,7 @@ export default class MapDetailCard extends Vue {
      * open mapボタンを押すとMap利用画面に移動
      */
     private openMap() {
-        // setするマップが現状ないためコメントアウトしてます
-        // mapViewMutations.setRootMap(this.map);
+        mapViewMutations.setRootMap(this.map);
     }
 
 }
