@@ -3,7 +3,7 @@ import { SpotType } from '@/store/types';
 
 @Component
 export default class EditorToolBar extends Vue {
-
+    // 色は仮
     private selectedColor: string = 'indigo darken-4';
     private defaultColor: string = 'light-blue lighten-1';
     private buttons: Array<{ action: Action, icon: string, color: string }> = [

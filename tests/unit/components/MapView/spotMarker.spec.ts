@@ -1,4 +1,4 @@
-import SpotMarker from '@/components/MapView/Marker/SpotMarker' ;
+import SpotMarker from '@/components/MapView/Marker/SpotMarker';
 import L from 'leaflet';
 import { mapViewGetters, mapViewMutations } from '@/store';
 import Spot from '@/Spot/Spot';

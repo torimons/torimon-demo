@@ -6,7 +6,7 @@ import { mapViewGetters } from '@/store';
 import Map from '@/Map/Map.ts';
 import EditorToolBar from '@/components/EditorToolBar/index.vue';
 import Spot from '@/Spot/Spot';
-import DefaultSpotMarker from '@/components/MapView/Marker/DefaultSpotMarker';
+import SpotMarker from '@/components/MapView/Marker/SpotMarker';
 
 @Component({
     components: {
@@ -62,7 +62,7 @@ export default class CreationMapView extends Vue {
             newId, 'Spot ' + newId, e.latlng, undefined, undefined, undefined, undefined, this.spotTypeToAddNext,
         );
         this.map.addSpots([newSpot]);
-        const newMarker: Marker = new DefaultSpotMarker(newSpot);
+        const newMarker: Marker = new SpotMarker(newSpot);
         newMarker.addTo(this.lMap);
     }
 

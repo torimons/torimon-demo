@@ -3,7 +3,7 @@ import { mapViewMutations, mapViewGetters } from '@/store';
 import Spot from '@/Spot/Spot';
 import { SpotType } from '@/store/types';
 
-export default class DefaultSpotMarker extends L.Marker {
+export default class SpotMarker extends L.Marker {
     private spot: Spot;
     private spotName!: string;
     private normalColor: string = '#3F8373';
@@ -64,9 +64,9 @@ export default class DefaultSpotMarker extends L.Marker {
      */
     private createIcon(spotType: SpotType): L.DivIcon {
         const iconNameMaps: Array<{ key: SpotType, iconName: string }> = [
-            { key: 'default', iconName: 'place' },
+            { key: 'default',       iconName: 'place' },
             { key: 'withDetailMap', iconName: 'add_location' },
-            { key: 'restroom', iconName: 'wc' },
+            { key: 'restroom',      iconName: 'wc' },
         ];
         const iconName = iconNameMaps.find((iconNameMap) => iconNameMap.key === spotType)?.iconName;
         if (iconName !== undefined) {
