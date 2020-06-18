@@ -10,12 +10,4 @@ import Map from '@/Map/Map.ts';
 export default class MapList extends Vue {
     @Prop()
     public mapSearchResults!: Map[];
-
-    /**
-     * MapItemからemitを受け取ると，MapSearchにMapList(自身)を
-     * 非表示にするようにemitする．
-     */
-    public hideMapList() {
-        this.$emit('hideMapList', false);
-    }
 }

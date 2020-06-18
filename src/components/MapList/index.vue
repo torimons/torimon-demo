@@ -8,7 +8,6 @@
                 v-bind:key="mapSearchResult.id + mapSearchResult.name"
                 :mapName="mapSearchResult.mapName"
                 :userName="mapSearchResult.userName"
-                @hideMapList="hideMapList"
             >
             </MapItem>
         </v-list>
