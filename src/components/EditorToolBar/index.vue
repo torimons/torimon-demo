@@ -4,7 +4,7 @@
         max-width="60"
     >
       <v-container fluid>
-        <v-row>
+        <v-row no-gutters>
           <v-col>
               <v-btn
                 icon
@@ -22,7 +22,7 @@
             >
               <template v-slot:activator>
                 <v-btn
-                  :color="spotColor"
+                  :color="spotButtonColor"
                   v-model="fabVisible"
                   icon
                 >

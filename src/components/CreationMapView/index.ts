@@ -5,12 +5,14 @@ import { Coordinate, SpotType } from '@/store/types';
 import { mapViewGetters } from '@/store';
 import Map from '@/Map/Map.ts';
 import EditorToolBar from '@/components/EditorToolBar/index.vue';
+import SpotEditor from '@/components/SpotEditor/index.vue';
 import Spot from '@/Spot/Spot';
 import SpotMarker from '@/components/MapView/Marker/SpotMarker';
 
 @Component({
     components: {
         EditorToolBar,
+        SpotEditor,
     },
 })
 export default class CreationMapView extends Vue {

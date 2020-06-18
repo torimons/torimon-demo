@@ -6,17 +6,21 @@
         <v-container fluid id="bottom-container">
           <v-row no-gutters>
             <v-col
-              cols="12"
-              sm="1"
-              class="pa-0 ml-auto"
+              cols="5"
+              md="3"
             >
-              <EditorToolBar
-                @clickMove="setEmptyMethodOnMapClick"
-                @clickZoomIn="zoomIn"
-                @clickZoomOut="zoomOut"
-                @clickSelect="setEmptyMethodOnMapClick"
-                @clickSpot="setAddSpotMethodOnMapClick"
-              />
+              <SpotEditor/>
+            </v-col>
+            <v-col>
+              <v-row justify="end" no-gutters>
+                <EditorToolBar
+                  @clickMove="setEmptyMethodOnMapClick"
+                  @clickZoomIn="zoomIn"
+                  @clickZoomOut="zoomOut"
+                  @clickSelect="setEmptyMethodOnMapClick"
+                  @clickSpot="setAddSpotMethodOnMapClick"
+                />
+              </v-row>
             </v-col>
           </v-row>
         </v-container>
