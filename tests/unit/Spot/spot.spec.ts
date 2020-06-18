@@ -1,6 +1,6 @@
 import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot.ts';
-import { Bounds, Coordinate, Shape } from '@/store/types';
+import { Bounds, Coordinate, Shape, SpotType } from '@/store/types';
 
 describe('Spotクラスのgetterのテスト', () => {
     const testCoord = { lat: 0, lng: 0 };
@@ -62,5 +62,21 @@ describe('Spotクラスのgetterのテスト', () => {
         const actualSpotFloorName = testSpot.getFloorName();
         const expectedSpotFloorName = undefined;
         expect(actualSpotFloorName).toEqual(expectedSpotFloorName);
+    });
+
+    it('getTypeのテスト', () => {
+        const testSpot
+            = new Spot(1, 'testMap', testCoord, undefined, 'testFloorName', undefined, undefined, 'restroom');
+        const actualSpotType: SpotType = testSpot.getType();
+        const expectedSpotType = 'restroom';
+        expect(actualSpotType).toEqual(expectedSpotType);
+    });
+
+    it('SpotTypeがundefinedのとき、getTypedefaultを返す', () => {
+        const testSpot
+            = new Spot(1, 'testMap', testCoord, undefined, 'testFloorName', undefined, undefined, undefined);
+        const actualSpotType: SpotType = testSpot.getType();
+        const expectedSpotType = 'default';
+        expect(actualSpotType).toEqual(expectedSpotType);
     });
 });
