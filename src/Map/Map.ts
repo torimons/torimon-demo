@@ -21,8 +21,7 @@ export default class Map {
         private id: number,
         private name: string,
         private bounds: Bounds,
-        private floorName?: string,
-    ) {
+        private floorName?: string) {
     }
 
     /**
@@ -151,4 +150,13 @@ export default class Map {
         return null;
     }
 
+    public toJSON(): object {
+        return {
+            id: this.id,
+            name: this.name,
+            bounds: this.bounds,
+            floorName: this.floorName,
+            spots: this.spots.map((s: Spot) => s.toJson()),
+        };
+    }
 }
