@@ -36,7 +36,6 @@
             color="#3FA590"
             tile
             icon
-            @click="closeSpotInfoCard"
         >
           <v-icon>close</v-icon>
         </v-btn>
