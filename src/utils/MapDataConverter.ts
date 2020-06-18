@@ -6,11 +6,10 @@ import { Coordinate, Shape, Bounds } from '@/store/types';
 export default class MapDataConverter {
     /**
      * jsonをMap, Spot型の木構造に変換する
-     * @param jsonString string型のjson
+     * @param json
      */
-    public static json2tree(jsonString: string): Map {
+    public static json2tree(json: any): Map {
         // JSON型にしたいがjson.idとかでアクセスできなくなるのでany型に
-        const json: any = JSON.parse(jsonString);
         return this.recCreateMap(json);
     }
 

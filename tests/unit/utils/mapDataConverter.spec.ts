@@ -3,8 +3,22 @@ import { sampleMaps } from '@/store/modules/sampleMaps';
 import { initMap } from '@/store/modules/MapViewModule/MapViewState';
 import Map from '@/Map/Map.ts';
 import { before } from 'lodash';
+// import axios from 'axios';
 
 describe('MapDataConverterのテスト', () => {
+
+    // it('apiから取得して変換するテスト(確認用)', (done) => {
+    //     let res;
+    //     axios.get('http://localhost:3000/maps/0').then((response) => {
+    //         res = response;
+    //         // console.log(res.data);
+    //         const conv = MapDataConverter.json2tree(res.data);
+    //         // console.log(conv);
+    //         // console.log((conv as any).spots[0]);
+    //         done();
+    //     });
+    // });
+
     it('recCreateMapでJsonのプロパティとMapインスタンスのプロパティが一致する', () => {
         const testBounds = {
             topL: {lat: 123, lng: 10},
@@ -65,7 +79,7 @@ describe('MapDataConverterのテスト', () => {
         (MapDataConverter as any).recCreateSpot = jest.fn(
             (json) => new Map(0, 'testMap', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}),
         );
-        const testJsonString = '{"test": 0}';
-        expect(MapDataConverter.json2tree(testJsonString)).toBeInstanceOf(Map);
+        const testJson: any = {test: 0};
+        expect(MapDataConverter.json2tree(testJson)).toBeInstanceOf(Map);
     });
 });
