@@ -34,12 +34,15 @@
                                     Close
                                 </v-btn>
                                 <v-spacer></v-spacer>
-                                <v-btn
-                                    text
-                                    @click="openMap"
-                                >
-                                    Open Map
-                                </v-btn>
+                                <router-link to="/MainView">
+                                    <v-btn
+                                        id="openMap"
+                                        text
+                                        @click="openMap"
+                                    >
+                                        Open Map
+                                    </v-btn>
+                                </router-link>
                             </v-card-actions>
                         </v-card>
                     </v-dialog>

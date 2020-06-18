@@ -1,7 +1,6 @@
 import { createLocalVue, mount } from '@vue/test-utils';
 import Vuex from 'vuex';
 import Vuetify from 'vuetify';
-import { mapViewGetters, mapViewMutations } from '@/store';
 import MapItem from '@/components/MapItem/index.vue';
 
 describe('MapItemコンポーネントのテスト', () => {
@@ -24,7 +23,10 @@ describe('MapItemコンポーネントのテスト', () => {
         });
     });
 
-    it.skip('', () => {
-        // do nothing
+    it('MapItemをクリックするとopenMapDetailCardが呼び出されemitを行う', () => {
+        wrapper.find('.v-card').trigger('click');
+        expect(wrapper.emitted().dialog).toBeTruthy();
+        expect(wrapper.emitted().dialog.length).toBe(1);
+        expect(wrapper.emitted().dialog[0][0]).toStrictEqual(true);
     });
 });

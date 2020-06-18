@@ -22,6 +22,7 @@ export default class Map {
         private name: string,
         private bounds: Bounds,
         private floorName?: string,
+        private description?: string,
     ) {
     }
 
@@ -116,6 +117,14 @@ export default class Map {
      */
     public getFloorName(): string | undefined {
         return this.floorName;
+    }
+
+    /**
+     * descriptionを返す
+     * @return 説明
+     */
+    public getDescription(): string | undefined {
+        return this.description;
     }
 
     /**

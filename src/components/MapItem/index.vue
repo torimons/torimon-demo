@@ -1,14 +1,13 @@
 <template>
-	<div id="spot-item">
+	<div id="map-item">
         <v-card
             tile
-            @click="hideMapList();
-                    popupDetailScreen()"
+            @click="openMapDetailCard"
         >
             <v-list-item two-line>
                 <v-list-item-content>
                     <v-list-item-title class="headline">{{ mapName }}</v-list-item-title>
-                    <v-list-item-subtitle>{{ userName }}</v-list-item-subtitle>
+                    <v-list-item-subtitle>{{ description }}</v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
         </v-card>

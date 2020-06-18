@@ -5,10 +5,11 @@
         >
             <MapItem
                 v-for="mapSearchResult in mapSearchResults"
-                v-bind:key="mapSearchResult.id + mapSearchResult.name"
-                :mapName="mapSearchResult.mapName"
-                :userName="mapSearchResult.userName"
+                v-bind:key="mapSearchResult.getId() + mapSearchResult.getName()"
+                :map="mapSearchResult"
+                :description="mapSearchResult.getDescription()"
                 @hideMapList="hideMapList"
+                @dialog="openMapDetailCard"
             >
             </MapItem>
         </v-list>

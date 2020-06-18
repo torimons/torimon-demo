@@ -4,11 +4,13 @@ import { mapViewGetters, mapViewMutations } from '@/store';
 import SearchBox from '@/components/SearchBox/index.vue';
 import Search from '@/utils/Search';
 import MapList from '@/components/MapList/index.vue';
+import MapDetailCard from '@/components/MapDetailCard/index.vue';
 
 @Component({
     components: {
         SearchBox,
         MapList,
+        MapDetailCard,
     },
 })
 export default class MapSearch extends Vue {
@@ -18,6 +20,7 @@ export default class MapSearch extends Vue {
     private mapSearchResults: Map[] = [];
     private search!: Search;
     private backgroundColor: 'transparent' | 'white' = 'transparent';
+    private dialog!: boolean;
 
     public mounted() {
         // 全てのマップを取得，一つの配列に結合する
