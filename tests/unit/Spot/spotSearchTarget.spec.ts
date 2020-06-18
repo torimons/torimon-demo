@@ -26,13 +26,13 @@ describe('Spotの検索対象文字列のテスト', () => {
         // sougouは親マップ(rootMap)があり，rootMapには親スポットがない
         // => 自身の名前+descriptionになる
         const expectedString = sougou.getName() + sougou.getDescription();
-        expect(sougou.generateSearchTargetString()).toBe(expectedString);
+        expect((sougou as any).generateSearchTargetString()).toBe(expectedString);
     });
 
     it('親マップあり，親スポットあり，descriptionなしのスポットの検索対象文字列は自身の名前と親スポットの名前になる', () => {
         // testSpotは親マップ(testMap)，親スポット(sougou)があり，desctiptionはない．
         // => 自身の名前+parentSpotの名前になる
         const expectedString = testSpot.getName() + sougou.getName();
-        expect(testSpot.generateSearchTargetString()).toBe(expectedString);
+        expect((testSpot as any).generateSearchTargetString()).toBe(expectedString);
     });
 });

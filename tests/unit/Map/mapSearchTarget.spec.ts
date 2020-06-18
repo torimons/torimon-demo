@@ -17,11 +17,11 @@ describe('Mapの検索対象文字列のテスト', () => {
 
     it('descriptionありのMapの検索対象文字列は自身の名前とdescriptionになる', () => {
         const expectedString = rootMap.getName() + rootMap.getDescription();
-        expect(rootMap.generateSearchTargetString()).toBe(expectedString);
+        expect((rootMap as any).generateSearchTargetString()).toBe(expectedString);
     });
 
     it('descriptionなしのMapの検索対象文字列は自身の名前のみになる', () => {
         const expectedString = rootMapNoDescription.getName();
-        expect(rootMapNoDescription.generateSearchTargetString()).toBe(expectedString);
+        expect((rootMapNoDescription as any).generateSearchTargetString()).toBe(expectedString);
     });
 });
