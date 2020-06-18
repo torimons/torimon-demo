@@ -199,6 +199,7 @@ export default class Spot {
         return {
             id: this.id,
             name: this.name,
+            coordinate: this.coordinate,
             shape: this.shape,
             floorName: this.floorName,
             description: this.description,
