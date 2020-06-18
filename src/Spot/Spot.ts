@@ -5,7 +5,6 @@ export default class Spot {
     private parentMap!: Map;
     private detailMaps: Map[] = [];
     private lastViewedDetailMap: Map | undefined = undefined;
-    private type: SpotType = 'default';
 
     constructor(
             private id: number,
@@ -15,7 +14,7 @@ export default class Spot {
             private floorName?: string,
             private description?: string,
             private attachment?: [{name: string, url: string}],
-            type?: SpotType ) {
+            private type?: SpotType ) {
         /* 何もしない */
     }
 
@@ -86,9 +85,12 @@ export default class Spot {
 
     /**
      * スポットのtypeを返す
-     * @return スポットのtype
+     * @return スポットのtype, undefinedの場合'default'を返す
      */
     public getType(): SpotType {
+        if (this.type === undefined) {
+            return 'default';
+        }
         return this.type;
     }
 

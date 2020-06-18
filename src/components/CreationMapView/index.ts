@@ -37,7 +37,7 @@ export default class CreationMapView extends Vue {
                 maxNativeZoom: 19,
             },
         ).addTo(this.lMap);
-        this.lMap.on('click', this.on);
+        this.lMap.on('click', this.onMapClickForCallBack);
     }
 
     public setAddSpotMethodOnMapClick(spotType: SpotType): void {
@@ -49,7 +49,7 @@ export default class CreationMapView extends Vue {
         this.onMapClick = (e: any) => undefined;
     }
 
-    public on(e: any): void {
+    public onMapClickForCallBack(e: any): void {
         this.onMapClick(e);
     }
 

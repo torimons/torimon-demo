@@ -10,26 +10,10 @@ export default class DefaultSpotMarker extends L.Marker {
     private selectedColor: string = '#AE56B3';
     private nameLabelMarker!: L.Marker;
     private iconName: string = 'place';
-    private iconNameMaps: Array<{ key: SpotType, iconName: string }> = [
-        { key: 'default', iconName: 'place' },
-        { key: 'withDetailMap', iconName: 'add_location' },
-        { key: 'restroom', iconName: 'wc' },
-    ];
-    private icon: L.DivIcon = L.divIcon({
-        className: 'custom-div-icon',
-        html: `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${this.normalColor};">${this.iconName}</i>`,
-        iconAnchor: [24, 50],
-    });
 
     constructor(spot: Spot) {
         super(spot.getCoordinate());
-        const iconName = this.iconNameMaps.find((iconNameMap) => iconNameMap.key === spot.getType())?.iconName;
-        if (iconName !== undefined) {
-            this.iconName = iconName;
-        } else {
-            this.iconName = 'default';
-        }
-        this.setIcon(this.icon);
+        this.setIcon(this.createIcon(spot.getType()));
         this.spotName = spot.getName();
         this.spot = spot;
         this.createNameLabelMarker(spot.getCoordinate());
@@ -64,13 +48,38 @@ export default class DefaultSpotMarker extends L.Marker {
     public setSelected(isSelected: boolean): void {
         const color = isSelected ? this.selectedColor : this.normalColor;
         const htmlTemplate =
-            `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${color};">room</i>`;
+            `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${color};">${this.iconName}</i>`;
         const icon = L.divIcon({
             className: 'custom-div-icon',
             html: htmlTemplate,
             iconAnchor: [24, 50],
         });
         this.setIcon(icon);
+    }
+
+    /**
+     * スポットクラスのSpotTypeを元にアイコン画像を決定しL.DivIconを作成する
+     * @param spotType スポットの種類
+     * @return アイコン
+     */
+    private createIcon(spotType: SpotType): L.DivIcon {
+        const iconNameMaps: Array<{ key: SpotType, iconName: string }> = [
+            { key: 'default', iconName: 'place' },
+            { key: 'withDetailMap', iconName: 'add_location' },
+            { key: 'restroom', iconName: 'wc' },
+        ];
+        const iconName = iconNameMaps.find((iconNameMap) => iconNameMap.key === spotType)?.iconName;
+        if (iconName !== undefined) {
+            this.iconName = iconName;
+        } else {
+            this.iconName = 'default';
+        }
+        const icon = L.divIcon({
+            className: 'custom-div-icon',
+            html: `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${this.normalColor};">${this.iconName}</i>`,
+            iconAnchor: [24, 50],
+        });
+        return icon;
     }
 
     /**
