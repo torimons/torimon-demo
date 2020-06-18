@@ -38,6 +38,7 @@
             color="#3FA590"
             tile
             icon
+            @click="$emit('close')"
         >
           <v-icon>close</v-icon>
         </v-btn>

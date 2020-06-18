@@ -11,6 +11,7 @@
             >
               <SpotEditor
                 :isVisible="spotEditorIsVisible"
+                @close="spotEditorIsVisible = false"
                 :spot="focusedSpot"
               />
             </v-col>

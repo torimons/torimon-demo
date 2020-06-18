@@ -90,11 +90,11 @@ export default class CreationMapView extends Vue {
         this.map.addSpots([newSpot]);
         const newMarker: Marker = new SpotMarker(newSpot);
         newMarker.addTo(this.lMap);
-        newMarker.on('click', (e: any) => {
-            const spotMarker: SpotMarker = e.target;
+        newMarker.on('click', (event: any) => {
+            const spotMarker: SpotMarker = event.target;
             this.focusedSpot = spotMarker.getSpot();
             this.spotEditorIsVisible = true;
-        })
+        });
         this.spotEditorIsVisible = true;
         this.focusedSpot = newSpot;
     }
