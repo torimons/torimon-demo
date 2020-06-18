@@ -7,6 +7,7 @@ export default class MapDataConverter {
     /**
      * jsonをMap, Spot型の木構造に変換する
      * @param json
+     * @retutn 木構造の根のMapインスタンス
      */
     public static json2tree(json: any): Map {
         // JSON型にしたいがjson.idとかでアクセスできなくなるのでany型に
@@ -16,6 +17,7 @@ export default class MapDataConverter {
     /**
      * Map, Spot型の木構造からjsonに変換する
      * @param rootMap 根のMapインスタンス
+     * @return 木構造に変換したjson
      */
     public static tree2json(rootMap: Map): any {
         return JSON.stringify(rootMap);
