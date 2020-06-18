@@ -1,11 +1,12 @@
 <template>
-  <div id="spot-editor">
+  <div id="spot-editor" v-show="isVisible">
     <v-card
       outlined
     >
       <v-card-title>
         <v-text-field
-          v-model="name"
+          :value="spot.getName()"
+          @input="(value) => spot.setName(value)"
           label="スポット名"
           prepend-inner-icon="place"
           clearable
@@ -14,7 +15,8 @@
       </v-card-title>
       <v-card-subtitle>
         <v-textarea
-          v-model="description"
+          :value="spot.getDescription()"
+          @input="(value) => spot.setDescription(value)"
           label="概要"
           clearable
           counter="100"

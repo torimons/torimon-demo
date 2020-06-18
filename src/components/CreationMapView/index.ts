@@ -25,6 +25,8 @@ export default class CreationMapView extends Vue {
     });
     // 次にクリックしたときに設置されるスポットタイプ
     private spotTypeToAddNext: SpotType = 'default';
+    private spotEditorIsVisible: boolean = false;
+    private focusedSpot: Spot = new Spot(0, 'temp', { lat: 0, lng: 0});
 
     /**
      * とりあえず地図の表示を行なっています．
@@ -58,7 +60,9 @@ export default class CreationMapView extends Vue {
      * EditorToolBarコンポーネントでclickSpotイベント以外が発生した時に実行される
      */
     public setEmptyMethodOnMapClick(): void {
-        this.onMapClick = (e: any) => undefined;
+        this.onMapClick = (e: any) => {
+            this.spotEditorIsVisible = false;
+        };
     }
 
     /**
@@ -86,6 +90,13 @@ export default class CreationMapView extends Vue {
         this.map.addSpots([newSpot]);
         const newMarker: Marker = new SpotMarker(newSpot);
         newMarker.addTo(this.lMap);
+        newMarker.on('click', (e: any) => {
+            const spotMarker: SpotMarker = e.target;
+            this.focusedSpot = spotMarker.getSpot();
+            this.spotEditorIsVisible = true;
+        })
+        this.spotEditorIsVisible = true;
+        this.focusedSpot = newSpot;
     }
 
     /**

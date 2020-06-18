@@ -9,7 +9,10 @@
               cols="5"
               md="3"
             >
-              <SpotEditor/>
+              <SpotEditor
+                :isVisible="spotEditorIsVisible"
+                :spot="focusedSpot"
+              />
             </v-col>
             <v-col>
               <v-row justify="end" no-gutters>

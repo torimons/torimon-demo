@@ -111,6 +111,22 @@ export default class Spot {
     }
 
     /**
+     * スポット名をセットする 
+     * @param name スポット名
+     */
+    public setName(name: string): void {
+        this.name = name;
+    } 
+
+    /**
+     * スポットの概要をセットする 
+     * @param description 概要
+     */
+    public setDescription(description: string): void {
+        this.description = description;name;
+    } 
+
+    /**
      * 親mapをセットし,セットしたmapの子spotに自身を追加する.
      * @param parentMap セットする親map
      */
