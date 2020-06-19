@@ -37,7 +37,7 @@ export default class CreationMapView extends Vue {
                 maxNativeZoom: 19,
             },
         ).addTo(this.lMap);
-        this.lMap.on('click', this.onMapClickForCallBack);
+        this.lMap.on('click', (e) => this.onMapClick(e));
     }
 
     /**
@@ -57,15 +57,6 @@ export default class CreationMapView extends Vue {
      */
     private setEmptyMethodOnMapClick(): void {
         this.onMapClick = (e: any) => undefined;
-    }
-
-    /**
-     * マップがクリックされた時に実行されるonMapClick(メソッド型の変数)をL.MapにonClickイベントに
-     * 登録するためのラッパーメソッド
-     * @param e Leafletイベント(addSpotメソッドでe.latlngを取得するためにany型にしている)
-     */
-    private onMapClickForCallBack(e: any): void {
-        this.onMapClick(e);
     }
 
     /**

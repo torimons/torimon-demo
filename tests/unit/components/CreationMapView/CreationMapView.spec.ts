@@ -1,15 +1,13 @@
-import { mapViewGetters, mapViewMutations } from '@/store';
+import { mapViewMutations } from '@/store';
 import { shallowMount } from '@vue/test-utils';
-import { GeolocationWrapper } from '@/components/MapView/GeolocationWrapper';
-import MapView from '@/components/MapView/index.vue';
 import 'leaflet/dist/leaflet.css';
 import { testRawMapData } from '../../../resources/testRawMapData';
-import { SpotType } from '@/store/types';
 import EditorToolBar from '@/components/EditorToolBar';
 import CreationMapView from '@/components/CreationMapView';
+import Map from '@/Map/Map';
 
 
-describe('components/CreationMapView/index.vue zoomlevel切り替えのテスト', () => {
+describe('components/CreationMapView', () => {
     let wrapper: any;
 
     beforeEach(() => {
@@ -24,13 +22,25 @@ describe('components/CreationMapView/index.vue zoomlevel切り替えのテスト
         wrapper.destroy();
     });
 
-    it('setAddSpotMethodOnMapClickのテスト', () => {
-        wrapper.vm.addSpot = jest.fn();
-        wrapper.vm.setAddSpotMethodOnMapClick();
+    it('setAddSpotMethodOnMapClickによってonMapClickにSpot関数が代入される', () => {
+        const mockedAddSpot = jest.fn();
+        wrapper.vm.addSpot = mockedAddSpot;
+        wrapper.vm.setAddSpotMethodOnMapClick('default');
+        wrapper.vm.onMapClick();
+        expect(mockedAddSpot.mock.calls.length).toBe(1);
     });
 
-    it('addSpotのテスト', () => {
-        
+    it('setAddSpotMethodOnMapClickに渡した引数がspotTypeToAddNextフィールドにセットされる', () => {
+        wrapper.vm.setAddSpotMethodOnMapClick('restroom');
+        expect(wrapper.vm.spotTypeToAddNext).toBe('restroom');
+    });
+
+    it('addSpotにより新しいスポットがmapに追加される', () => {
+        const map: Map = wrapper.vm.map;
+        expect(map.getSpots().length).toBe(0);
+        const e = { latlng: { lat: 0, lng: 0 } };
+        wrapper.vm.addSpot(e);
+        expect(map.getSpots().length).toBe(1);
     });
 
     it('zoomInによってzoomLevelが大きくなる', () => {
