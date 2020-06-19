@@ -150,6 +150,12 @@ export default class Map {
         return null;
     }
 
+    /**
+     * JSON.stringifyの引数に渡された時に呼ばれる
+     * プロパティをオブジェクトに入れて返す
+     * spotsプロパティは再起的にtoJSONを呼び出す
+     * @return プロパティを入れたオブジェクト
+     */
     public toJSON(): object {
         return {
             id: this.id,
