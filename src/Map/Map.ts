@@ -151,4 +151,12 @@ export default class Map {
         return null;
     }
 
+    /**
+     * 指定したidをもつスポットを削除
+     * @param id 指定するid
+     */
+    public removeSpot(id: number): void {
+        this.spots = this.spots.filter(spot => spot.getId() !== id);
+    }
+
 }

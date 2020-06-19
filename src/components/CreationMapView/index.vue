@@ -13,6 +13,7 @@
                 :isVisible="spotEditorIsVisible"
                 @close="spotEditorIsVisible = false"
                 :spot="focusedSpot"
+                @delete="deleteFocusedSpot"
               />
             </v-col>
             <v-col>

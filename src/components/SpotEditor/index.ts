@@ -8,4 +8,5 @@ export default class SpotEditor extends Vue {
     @Prop()
     public isVisible!: boolean;
     public attachment: [{name: string, url: string}] = [{name: '', url: ''}];
+    public dialog: boolean = false;
 }
