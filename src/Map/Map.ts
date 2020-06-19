@@ -156,7 +156,7 @@ export default class Map {
      * @param id 指定するid
      */
     public removeSpot(id: number): void {
-        this.spots = this.spots.filter(spot => spot.getId() !== id);
+        this.spots = this.spots.filter((spot) => spot.getId() !== id);
     }
 
 }

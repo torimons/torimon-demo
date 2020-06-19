@@ -61,7 +61,7 @@ export default class CreationMapView extends Vue {
      * セットし，クリック時に何も行われないようにする
      * EditorToolBarコンポーネントでclickSpotイベント以外が発生した時に実行される
      */
-    public setEmptyMethodOnMapClick(): void {
+    private setEmptyMethodOnMapClick(): void {
         this.onMapClick = (e: any) => {
             this.spotEditorIsVisible = false;
         };
@@ -91,18 +91,19 @@ export default class CreationMapView extends Vue {
     }
 
     private switchFocusedMarker(newMarker: SpotMarker): void {
-        const focusedMarker = this.spotMarkers.find(((marker) => marker.getSpot().getId() === this.focusedSpot.getId()));
+        const focusedMarker = this.spotMarkers
+            .find(((marker) => marker.getSpot().getId() === this.focusedSpot.getId()));
         focusedMarker?.setSelected(false);
         newMarker.setSelected(true);
         this.focusedSpot = newMarker.getSpot();
         this.spotEditorIsVisible = true;
     }
 
-    public deleteFocusedSpot() {
+    private deleteFocusedSpot(): void {
         this.spotEditorIsVisible = false;
-        this.spotMarkers.find(spotMarker => spotMarker.getSpot().getId() === this.focusedSpot.getId())?.remove();
+        this.spotMarkers.find((marker) => marker.getSpot().getId() === this.focusedSpot.getId())?.remove();
         this.spotMarkers = this.spotMarkers
-            .filter(spotMarker => spotMarker.getSpot().getId() !== this.focusedSpot.getId());
+            .filter((marker) => marker.getSpot().getId() !== this.focusedSpot.getId());
         this.focusedSpot.getParentMap()?.removeSpot(this.focusedSpot.getId());
     }
 
