@@ -22,7 +22,7 @@
             >
               <template v-slot:activator>
                 <v-btn
-                  :color="spotColor"
+                  :color="spotButtonColor"
                   v-model="fabVisible"
                   icon
                 >
