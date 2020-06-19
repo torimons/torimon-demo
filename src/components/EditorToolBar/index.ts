@@ -13,10 +13,10 @@ export default class EditorToolBar extends Vue {
         {action: 'select',  icon: 'edit',     color: this.defaultColor},
     ];
     private spotButtonColor: string = this.defaultColor;
-    private spotIcons: string[] = [
-        'place',
-        'add_location',
-        'wc',
+    private spotIconMaps: Array<{iconName: string, spotType: SpotType}> = [
+        { iconName: 'place',        spotType: 'default' },
+        { iconName: 'add_location', spotType: 'withDetailMap' },
+        { iconName: 'wc',           spotType: 'restroom' },
     ];
     private selectedMode: Action = 'move';
     private selectedSpotIcon: string = '';
@@ -28,17 +28,12 @@ export default class EditorToolBar extends Vue {
      * @param selectedSpotIcon クリックで選ばれたスポットのSpotType
      */
     @Emit('clickSpot')
-    private emitSpotType(selectedSpotIcon: string): SpotType {
-        if (selectedSpotIcon === 'place') {
-            return 'default';
+    private emitSpotType(selectedSpotIconName: string): SpotType {
+        const spotType = this.spotIconMaps.find((map) => map.iconName === selectedSpotIconName);
+        if (spotType === undefined) {
+            throw new Error('Selected icon name is not found in icon name maps.');
         }
-        if (selectedSpotIcon === 'add_location') {
-            return 'withDetailMap';
-        }
-        if (selectedSpotIcon === 'wc') {
-            return 'restroom';
-        }
-        throw new Error();
+        return spotType.spotType;
     }
 
     /**
@@ -93,4 +88,4 @@ export default class EditorToolBar extends Vue {
 
 }
 
-type Action = 'move' | 'zoomIn' | 'zoomOut' | 'select' | 'spot';
+export type Action = 'move' | 'zoomIn' | 'zoomOut' | 'select' | 'spot';

@@ -3,7 +3,7 @@
       <v-app>
         <div id="map">
         </div>
-        <v-container fluid id="bottom-container">
+        <v-container fluid id="toolbar-container">
           <v-row no-gutters>
             <v-col
               cols="5"
@@ -46,7 +46,7 @@ body,
   position: relative;
   height: 100%;
 }
-#bottom-container {
+#toolbar-container {
   position: absolute;
   right: 0px;
   top: 0px;

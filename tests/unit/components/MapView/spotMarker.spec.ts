@@ -26,7 +26,7 @@ describe('SpotMarkers', () => {
         const testMarker = new SpotMarker(testSpot);
         const selectedColor: string = '#AE56B3';
         const htmlTemplate =
-            `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${selectedColor};">room</i>`;
+            `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${selectedColor};">place</i>`;
         const expectedIcon = L.divIcon({
             className: 'custom-div-icon',
             html: htmlTemplate,

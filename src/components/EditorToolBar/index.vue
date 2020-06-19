@@ -33,13 +33,13 @@
               </template>
               <v-btn 
                 color="primary"
-                v-for="(spotIcon, index) in spotIcons"
+                v-for="(spotIconMap, index) in spotIconMaps"
                 v-bind:key="index"
                 fab
                 small
-                @click="setSelectedSpotIcon(spotIcon); onButtonClick('spot')"
+                @click="setSelectedSpotIcon(spotIconMap.iconName); onButtonClick('spot')"
               >
-                <v-icon>{{ spotIcon }}</v-icon>
+                <v-icon>{{ spotIconMap.iconName }}</v-icon>
               </v-btn>
             </v-speed-dial>
           </v-col> 

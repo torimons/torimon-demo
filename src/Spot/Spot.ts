@@ -106,7 +106,7 @@ export default class Spot {
         ];
         const iconName = iconNameMaps.find((iconNameMap) => iconNameMap.key === this.getType())?.iconName;
         if (iconName === undefined) {
-            throw new Error("Illegal 'iconNameMaps'.");
+            throw new Error('Illegal implements of "iconNameMaps".');
         }
         return iconName;
     }
