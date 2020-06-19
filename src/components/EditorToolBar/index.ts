@@ -88,4 +88,4 @@ export default class EditorToolBar extends Vue {
 
 }
 
-type Action = 'move' | 'zoomIn' | 'zoomOut' | 'select' | 'spot';
+export type Action = 'move' | 'zoomIn' | 'zoomOut' | 'select' | 'spot';
