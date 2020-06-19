@@ -3,20 +3,18 @@
       <v-app>
         <div id="map">
         </div>
-        <v-container fluid id="bottom-container">
+        <v-container fluid id="toolbar-container">
           <v-row no-gutters>
-            <v-col
-              cols="12"
-              sm="1"
-              class="pa-0 ml-auto"
-            >
-              <EditorToolBar
-                @clickMove="setEmptyMethodOnMapClick"
-                @clickZoomIn="zoomIn"
-                @clickZoomOut="zoomOut"
-                @clickSelect="setEmptyMethodOnMapClick"
-                @clickSpot="setAddSpotMethodOnMapClick"
-              />
+            <v-col>
+              <v-row justify="end" no-gutters>
+                <EditorToolBar
+                  @clickMove="setEmptyMethodOnMapClick"
+                  @clickZoomIn="zoomIn"
+                  @clickZoomOut="zoomOut"
+                  @clickSelect="setEmptyMethodOnMapClick"
+                  @clickSpot="setAddSpotMethodOnMapClick"
+                />
+              </v-row>
             </v-col>
           </v-row>
         </v-container>
@@ -37,7 +35,7 @@ body,
   position: relative;
   height: 100%;
 }
-#bottom-container {
+#toolbar-container {
   position: absolute;
   right: 0px;
   top: 0px;
