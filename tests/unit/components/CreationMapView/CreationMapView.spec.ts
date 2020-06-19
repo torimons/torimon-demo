@@ -25,7 +25,8 @@ describe('components/CreationMapView/index.vue zoomlevel切り替えのテスト
     });
 
     it('setAddSpotMethodOnMapClickのテスト', () => {
-        
+        wrapper.vm.addSpot = jest.fn();
+        wrapper.vm.setAddSpotMethodOnMapClick();
     });
 
     it('addSpotのテスト', () => {
@@ -33,14 +34,14 @@ describe('components/CreationMapView/index.vue zoomlevel切り替えのテスト
     });
 
     it('zoomInによってzoomLevelが大きくなる', () => {
-        //ZoomInボタンのclickイベント発火
+        // ZoomInボタンのclickイベント発火
         wrapper.find(EditorToolBar).vm.$emit('clickZoomIn');
         const actualZoomLevel: number = wrapper.vm.lMap.getZoom();
         expect(actualZoomLevel).toBeGreaterThan(17);
     });
 
     it('zoomOutによってzoomLevelが小さくなる', () => {
-        //ZoomOutボタンのclickイベント発火
+        // ZoomOutボタンのclickイベント発火
         wrapper.find(EditorToolBar).vm.$emit('clickZoomOut');
         const actualZoomLevel: number = wrapper.vm.lMap.getZoom();
         expect(actualZoomLevel).toBeLessThan(17);

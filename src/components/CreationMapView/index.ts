@@ -45,7 +45,7 @@ export default class CreationMapView extends Vue {
      * EditorToolBarコンポーネントでclickSpotイベントが発生した時に実行される
      * @param spotType クリックされたスポットの種類 (clickSpotイベントから送られてくる)
      */
-    public setAddSpotMethodOnMapClick(spotType: SpotType): void {
+    private setAddSpotMethodOnMapClick(spotType: SpotType): void {
         this.onMapClick = this.addSpot;
         this.spotTypeToAddNext = spotType;
     }
@@ -55,7 +55,7 @@ export default class CreationMapView extends Vue {
      * セットし，クリック時に何も行われないようにする
      * EditorToolBarコンポーネントでclickSpotイベント以外が発生した時に実行される
      */
-    public setEmptyMethodOnMapClick(): void {
+    private setEmptyMethodOnMapClick(): void {
         this.onMapClick = (e: any) => undefined;
     }
 
@@ -64,7 +64,7 @@ export default class CreationMapView extends Vue {
      * 登録するためのラッパーメソッド
      * @param e Leafletイベント(addSpotメソッドでe.latlngを取得するためにany型にしている)
      */
-    public onMapClickForCallBack(e: any): void {
+    private onMapClickForCallBack(e: any): void {
         this.onMapClick(e);
     }
 
@@ -73,7 +73,7 @@ export default class CreationMapView extends Vue {
      * 作成するスポットのIDは既存のスポットのIDの中から最も大きい数値+1の値
      * @param e Leafletイベント(e.latlngを取得するためにany型にしている)
      */
-    public addSpot(e: any): void {
+    private addSpot(e: any): void {
         const maxNumOfId = this.map.getSpots()
             .map((spot) => spot.getId())
             .reduce((accum, newValue) => Math.max(accum, newValue), -1);
@@ -90,7 +90,7 @@ export default class CreationMapView extends Vue {
      * マップを拡大する
      * EditorToolBarコンポーネントがclickZoomInイベントを発生させた時に実行される
      */
-    public zoomIn() {
+    private zoomIn() {
         this.lMap.zoomIn();
     }
 
@@ -98,7 +98,7 @@ export default class CreationMapView extends Vue {
      * マップを縮小する
      * EditorToolBarコンポーネントがclickZoomOutイベントを発生させた時に実行される
      */
-    public zoomOut() {
+    private zoomOut() {
         this.lMap.zoomOut();
     }
 
