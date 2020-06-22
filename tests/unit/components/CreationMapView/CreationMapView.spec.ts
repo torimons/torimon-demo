@@ -25,7 +25,7 @@ describe('components/CreationMapView', () => {
         wrapper.destroy();
     });
 
-    it('setAddSpotMethodOnMapClickによってonMapClickにSpot関数が代入される', () => {
+    it('setAddSpotMethodOnMapClickによってonMapClickにaddSpot関数が代入される', () => {
         const mockedAddSpot = jest.fn();
         wrapper.vm.addSpot = mockedAddSpot;
         wrapper.vm.setAddSpotMethodOnMapClick('default');
