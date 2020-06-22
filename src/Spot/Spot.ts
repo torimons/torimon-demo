@@ -153,7 +153,7 @@ export default class Spot {
         }
         this.parentMap = parentMap;
         this.floorName = parentMap.getFloorName();
-        parentMap.addSpots([this]);
+        parentMap.addSpot(this);
     }
 
     /**

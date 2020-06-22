@@ -80,7 +80,7 @@ export default class CreationMapView extends Vue {
         const newSpot: Spot = new Spot(
             newId, 'Spot ' + newId, e.latlng, undefined, undefined, undefined, undefined, this.spotTypeToAddNext,
         );
-        this.map.addSpots([newSpot]);
+        this.map.addSpot(newSpot);
 
         const newMarker: SpotMarker = new SpotMarker(newSpot);
         newMarker.addTo(this.lMap);
@@ -90,6 +90,10 @@ export default class CreationMapView extends Vue {
         this.switchFocusedMarker(newMarker);
     }
 
+    /**
+     * 地図上でフォーカスされるマーカーを切り替える
+     * @param newMarker 新しくフォーカスされるマーカー
+     */
     private switchFocusedMarker(newMarker: SpotMarker): void {
         const focusedMarker = this.spotMarkers
             .find(((marker) => marker.getSpot().getId() === this.focusedSpot.getId()));
@@ -99,6 +103,9 @@ export default class CreationMapView extends Vue {
         this.spotEditorIsVisible = true;
     }
 
+    /**
+     * フォーカスされているスポットをマップから消去する
+     */
     private deleteFocusedSpot(): void {
         this.spotEditorIsVisible = false;
         this.spotMarkers.find((marker) => marker.getSpot().getId() === this.focusedSpot.getId())?.remove();

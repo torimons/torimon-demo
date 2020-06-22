@@ -57,7 +57,7 @@ describe('Mapクラスのgetterのテスト', () => {
     it('指定したidの子スポットを削除する', () => {
         const map = new Map(1, 'testMap', testBounds);
         const spot =  new Spot(0, 'testSpot', { lat: 0, lng: 0 });
-        map.addSpots([spot]);
+        map.addSpot(spot);
         map.removeSpot(0);
         const actualSpots = map.getSpots();
         const expectedSpots: Spot[] = [];

@@ -27,12 +27,12 @@ const spotsForTest: Spot[] = [
     ),
 ];
 // rootMap -> 総合学習プラザ
-rootMap.addSpots([spotsForTest[0]]);
+rootMap.addSpot(spotsForTest[0]);
 // 総合学習プラザ -> testMap
 const testMap: Map = new Map(3, 'testMap', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined);
 // testMap -> SpotForTest
 spotsForTest[0].addDetailMaps([testMap]);
-testMap.addSpots([spotsForTest[1]]);
+testMap.addSpot(spotsForTest[1]);
 // SpotForTest.getParentMap().getParentSpot()が総合学習プラザになるようにセット
 
 describe('Searchクラスのテスト', () => {
