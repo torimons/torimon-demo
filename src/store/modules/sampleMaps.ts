@@ -31,6 +31,7 @@ export const sampleMaps: RawMap[] =  [
                 detailMapLevelNames: ['1F', '2F'],
                 lastViewedDetailMapId: null,
                 description: '全学・工学系の共通講義と大学院統合新領域学府オートモーティブサイエンス専攻の教育研究等を行う施設',
+                type: 'withDetailMap',
             },
             {
                 id: 1,
@@ -64,6 +65,7 @@ export const sampleMaps: RawMap[] =  [
                 detailMapLevelNames: ['2F', '3F', '5F'],
                 lastViewedDetailMapId: null,
                 description: '見どころスポット：フーコーの振り子',
+                type: 'withDetailMap',
             },
             {
                 id: 2,
