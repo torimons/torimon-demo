@@ -20,7 +20,7 @@ export default class MapDataConverter {
      * @return 木構造に変換したjson
      */
     public static tree2json(rootMap: Map): any {
-        return JSON.stringify(rootMap);
+        return rootMap.toJSON();
     }
 
     /**

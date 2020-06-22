@@ -11,10 +11,10 @@ describe('MapDataConverterのテスト', () => {
     //     let res;
     //     axios.get('http://localhost:3000/maps/0').then((response) => {
     //         res = response;
-    //         // console.log(res.data);
+    //         console.log(res.data);
     //         const conv = MapDataConverter.json2tree(res.data);
-    //         // console.log(conv);
-    //         // console.log((conv as any).spots[0]);
+    //         console.log(conv);
+    //         console.log((conv as any).spots[0]);
     //         done();
     //     });
     // });
