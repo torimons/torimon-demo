@@ -24,7 +24,6 @@
         <v-file-input
           multiple
           label="画像"
-          filled
           prepend-icon="mdi-camera"
         ></v-file-input>
       </v-card-subtitle>
