@@ -12,6 +12,7 @@
             <MapList
                 :mapSearchResults="mapSearchResults"
                 @hideMapList="setMapListIsVisible"
+                @dialog="openPopup"
                 v-show="mapListIsVisible"
                 class="px-2 pb-2"
             ></MapList>

@@ -1,6 +1,6 @@
 import { createLocalVue, mount } from '@vue/test-utils';
 import MapDetailCard from '@/components/MapDetailCard/index.vue';
-import router from '@/router'
+import router from '@/router';
 import Vuetify from 'vuetify';
 import { mapViewGetters } from '@/store';
 import Map from '@/Map/Map.ts';
@@ -22,7 +22,7 @@ describe('MapDetailCardコンポーネントのテスト', () => {
             attachToDocument: true,
             propsData: {
                 map: testMap,
-            }
+            },
         });
     });
 
