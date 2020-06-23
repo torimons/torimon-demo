@@ -114,11 +114,13 @@ export default class CreationMapView extends Vue {
         this.focusedSpot.getParentMap()?.removeSpot(this.focusedSpot.getId());
     }
 
+    /**
+     * フォーカスされている地図上のスポットマーカーの名前表示を更新する
+     */
     private updateFocusedMarkerName(): void {
         this.spotMarkers
             .find((marker) => marker.getSpot().getId() === this.focusedSpot.getId())?.addTo(this.lMap);
     }
-
 
     /**
      * マップを拡大する
