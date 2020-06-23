@@ -6,12 +6,16 @@
       <v-card-title>
         <v-text-field
           :value="spot.getName()"
-          @input="(value) => spot.setName(value)"
+          @input="(value) => {spot.setName(value); $emit('spotInput');}"
           label="スポット名"
           :prepend-inner-icon="spot.getIconName()"
           clearable
           counter="15"
         ></v-text-field>
+        <v-checkbox
+          label="マップ上に表示"
+          color="#3fa590"
+        ></v-checkbox>
       </v-card-title>
       <v-card-subtitle>
         <v-textarea
@@ -30,7 +34,7 @@
       <v-card-actions>
         <v-btn
             class="ma-1"
-            color="#3FA590"
+            color="#3fa590"
             outlined
             disabled
         >

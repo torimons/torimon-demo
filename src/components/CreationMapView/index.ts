@@ -78,7 +78,7 @@ export default class CreationMapView extends Vue {
             .reduce((accum, newValue) => Math.max(accum, newValue), -1);
         const newId = maxNumOfId + 1;
         const newSpot: Spot = new Spot(
-            newId, 'Spot ' + newId, e.latlng, undefined, undefined, undefined, undefined, this.spotTypeToAddNext,
+            newId, 'スポット ' + newId, e.latlng, undefined, undefined, undefined, undefined, this.spotTypeToAddNext,
         );
         this.map.addSpot(newSpot);
 
@@ -112,6 +112,11 @@ export default class CreationMapView extends Vue {
         this.spotMarkers = this.spotMarkers
             .filter((marker) => marker.getSpot().getId() !== this.focusedSpot.getId());
         this.focusedSpot.getParentMap()?.removeSpot(this.focusedSpot.getId());
+    }
+
+    private updateFocusedMarkerName(): void {
+        this.spotMarkers
+            .find((marker) => marker.getSpot().getId() === this.focusedSpot.getId())?.addTo(this.lMap);
     }
 
 

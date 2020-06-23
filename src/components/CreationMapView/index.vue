@@ -10,6 +10,7 @@
               md="3"
             >
               <SpotEditor
+                @spotInput="updateFocusedMarkerName"
                 :isVisible="spotEditorIsVisible"
                 @close="spotEditorIsVisible = false"
                 :spot="focusedSpot"
