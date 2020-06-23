@@ -80,6 +80,20 @@ describe('Spotクラスのgetterのテスト', () => {
         expect(actualSpotType).toEqual(expectedSpotType);
     });
 
+    it('shouldDisplayNameOnMapのテスト', () => {
+        const testSpot
+            = new Spot(1, 'testSpot', testCoord, undefined, 'testFloorName', undefined, undefined, 'restroom', false);
+        const actual: boolean = testSpot.shouldDisplayNameOnMap();
+        expect(actual).toEqual(false);
+    });
+
+    it('shouldDisplayNameOnMapがundefinedの時trueを返す', () => {
+        const testSpot
+            = new Spot(1, 'testSpot', testCoord, undefined, 'testFloorName', undefined, undefined, 'restroom');
+        const actual: boolean = testSpot.shouldDisplayNameOnMap();
+        expect(actual).toEqual(true);
+    });
+
     it('getIconNameのテスト', () => {
         const testSpot
             = new Spot(1, 'testSpot', testCoord, undefined, 'testFloorName', undefined, undefined, 'restroom');
@@ -104,5 +118,13 @@ describe('Spotクラスのgetterのテスト', () => {
         testSpot.setDescription(expectedDescription);
         const actualDescription = testSpot.getDescription();
         expect(actualDescription).toEqual(expectedDescription);
+    });
+
+    it('setShouldDisplayNameOnMapのテスト', () => {
+        const testSpot
+            = new Spot(1, 'testSpot', testCoord, undefined, 'testFloorName', undefined, undefined, 'restroom', false);
+        testSpot.setShouldDisplayNameOnMap(true);
+        const actual: boolean = testSpot.shouldDisplayNameOnMap();
+        expect(actual).toEqual(true);
     });
 });

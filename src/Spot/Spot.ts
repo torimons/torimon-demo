@@ -155,6 +155,10 @@ export default class Spot {
         this.description = description;
     }
 
+    /**
+     * スポットの名前をマップ上のマーカー下に表示するかどうかを設定する
+     * @param shouldDisplayNameOnMap スポットの名前をマップ上のマーカー下に表示するかどうか
+     */
     public setShouldDisplayNameOnMap(shouldDisplayNameOnMap: boolean): void {
         this._shouldDisplayNameOnMap = shouldDisplayNameOnMap;
     }
