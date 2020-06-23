@@ -56,6 +56,7 @@ export interface RawSpot {
         }
     ];
     type?: SpotType;
+    shouldDisplayNameOnMap?: boolean;
 }
 
 

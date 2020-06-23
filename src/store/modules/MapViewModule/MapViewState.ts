@@ -33,6 +33,7 @@ export function createSpotInstance(spotData: RawSpot): Spot {
         spotData.description,
         spotData.attachment,
         spotData.type,
+        spotData.shouldDisplayNameOnMap,
     );
     return spotInstance;
 }
