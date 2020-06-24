@@ -195,6 +195,25 @@ export default class Spot {
         return null;
     }
 
+    /*
+     * JSON.stringifyの引数に渡された時に呼ばれる
+     * プロパティをオブジェクトに入れて返す
+     * detailMapsプロパティは再起的にtoJSONを呼び出す
+     * @return プロパティを入れたオブジェクト
+     */
+    public toJson(): object {
+        return {
+            id: this.id,
+            name: this.name,
+            coordinate: this.coordinate,
+            shape: this.shape,
+            floorName: this.floorName,
+            description: this.description,
+            attachment: this.attachment,
+            detailMaps: this.detailMaps.map((m: Map) => m.toJSON()),
+        };
+    }
+
     /**
      * 検索条件を満たすかを判定する
      * @param regExp 正規表現オブジェクト

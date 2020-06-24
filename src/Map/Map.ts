@@ -17,11 +17,13 @@ export default class Map {
     private parentSpot: Spot | undefined = undefined;
     private spots: Spot[] = [];
 
-    constructor(private id: number,
-                private name: string,
-                private bounds: Bounds,
-                private floorName?: string,
-                private description?: string) {
+    constructor(
+        private id: number,
+        private name: string,
+        private bounds: Bounds,
+        private floorName?: string,
+        private description?: string
+    ) {
     }
 
     /**
@@ -156,6 +158,22 @@ export default class Map {
             }
         }
         return null;
+    }
+
+    /*
+     * JSON.stringifyの引数に渡された時に呼ばれる
+     * プロパティをオブジェクトに入れて返す
+     * spotsプロパティは再起的にtoJSONを呼び出す
+     * @return プロパティを入れたオブジェクト
+     */
+    public toJSON(): object {
+        return {
+            id: this.id,
+            name: this.name,
+            bounds: this.bounds,
+            floorName: this.floorName,
+            spots: this.spots.map((s: Spot) => s.toJson()),
+        };
     }
 
     /**
