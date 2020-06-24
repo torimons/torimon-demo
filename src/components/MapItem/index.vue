@@ -11,47 +11,10 @@
                 </v-list-item-content>
             </v-list-item>
         </v-card>
-        <v-dialog
-            v-model="dialog"
-            persistent
-            no-click-animation
-            max-width="500"
-        >
-            <v-card
-                class="d-flex flex-column"
-            >
-                <v-card-title>{{ name }}</v-card-title>
-                <v-card-text>{{ description }}</v-card-text>
-                <v-divider></v-divider>
-                <v-container>
-                    <v-img
-                        src="https://picsum.photos/500"
-                        style="height: 40vh;"
-                    ></v-img>
-                </v-container>
-                <v-divider></v-divider>
-                <v-spacer></v-spacer>
-                <v-card-actions>
-                    <v-btn
-                        id="close"
-                        text
-                        @click.stop="closeDialog"
-                    >
-                        Close
-                    </v-btn>
-                    <v-spacer></v-spacer>
-                    <router-link to="/MainView">
-                        <v-btn
-                            id="openMap"
-                            text
-                            @click="openMap"
-                        >
-                            Open Map
-                        </v-btn>
-                    </router-link>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+        <MapDetailCard
+            ref="mapDialog"
+            :map="map"
+        ></MapDetailCard>
     </div>
 </template>
 

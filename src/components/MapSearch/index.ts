@@ -17,7 +17,6 @@ const mockMaps: Map[] = [
     components: {
         SearchBox,
         MapList,
-        MapDetailCard,
     },
 })
 export default class MapSearch extends Vue {
@@ -27,7 +26,6 @@ export default class MapSearch extends Vue {
     private mapSearchResults: Map[] = mockMaps;
     private search!: Search;
     private backgroundColor: 'transparent' | 'white' = 'transparent';
-    private dialog!: boolean;
 
     public mounted() {
         // 全てのマップを取得，一つの配列に結合する
