@@ -15,6 +15,7 @@ describe('MapDetailCardコンポーネントのテスト', () => {
             localVue,
             vuetify,
             attachToDocument: true,
+            stubs: ['router-link'],
         });
     });
 
