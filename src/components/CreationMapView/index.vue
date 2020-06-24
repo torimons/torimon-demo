@@ -14,6 +14,7 @@
                 :isVisible="spotEditorIsVisible"
                 @close="spotEditorIsVisible = false"
                 :spot="focusedSpot"
+                @clickAddShapeButton="setAddPointMethodOnMapClick"
                 @delete="deleteFocusedSpot"
               />
             </v-col>

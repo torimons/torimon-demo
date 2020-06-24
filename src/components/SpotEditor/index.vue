@@ -33,10 +33,10 @@
       </v-card-subtitle>
       <v-card-actions>
         <v-btn
-            class="ma-1"
-            color="#3fa590"
-            outlined
-            disabled
+          class="ma-1"
+          color="#3fa590"
+          outlined
+          @click="$emit('clickAddShapeButton')"
         >
             <span>形状</span>
             <v-icon right>add_circle</v-icon>
@@ -48,11 +48,11 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-                class="ma-1"
-                color="#3FA590"
-                outlined
-                v-bind="attrs"
-                v-on="on"
+              class="ma-1"
+              color="#3FA590"
+              outlined
+              v-bind="attrs"
+              v-on="on"
             >
                 <span>削除</span>
                 <v-icon right>delete</v-icon>

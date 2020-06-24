@@ -2,12 +2,13 @@ import { Component, Vue } from 'vue-property-decorator';
 import 'leaflet/dist/leaflet.css';
 import { mapViewGetters } from '@/store';
 import L, { LeafletEvent, Marker } from 'leaflet';
-import { Coordinate, SpotType } from '@/store/types';
+import { Coordinate, SpotType, Shape } from '@/store/types';
 import Map from '@/Map/Map.ts';
 import EditorToolBar from '@/components/EditorToolBar/index.vue';
 import SpotEditor from '@/components/SpotEditor/index.vue';
 import Spot from '@/Spot/Spot';
 import SpotMarker from '@/components/MapView/Marker/SpotMarker';
+import { GeoJsonObject, GeometryObject, Feature, FeatureCollection, Polygon } from 'geojson';
 
 @Component({
     components: {
@@ -19,6 +20,8 @@ export default class CreationMapView extends Vue {
     private lMap!: L.Map;
     private defaultZoomLevel: number = 17;
     private tileLayer!: L.TileLayer;
+    private routeLayer?: L.Layer;
+    private routeLine!: L.Polyline;
     private map: Map = new Map(0, 'New Map', {
         topL: {lat: 0, lng: 0},
         botR: {lat: 0, lng: 0},
@@ -28,6 +31,7 @@ export default class CreationMapView extends Vue {
     private spotEditorIsVisible: boolean = false;
     private focusedSpot: Spot = new Spot(0, '', { lat: 0, lng: 0});
     private spotMarkers: SpotMarker[] = [];
+    private coordinates: Coordinate[] = [];
 
     /**
      * とりあえず地図の表示を行なっています．
@@ -120,6 +124,38 @@ export default class CreationMapView extends Vue {
     private updateFocusedMarkerName(): void {
         this.spotMarkers
             .find((marker) => marker.getSpot().getId() === this.focusedSpot.getId())?.addTo(this.lMap);
+    }
+
+    private setAddPointMethodOnMapClick(): void {
+        this.onMapClick = this.addPoint;
+    }
+
+    private addPoint(e: any): void {
+        this.coordinates.push(e.latlng);
+        L.circleMarker(e.latlng, {
+            radius: 4, weight: 1, color: 'black', fill: true, fillColor: 'white', fillOpacity: 1,
+        }).addTo(this.lMap);
+        if (this.coordinates.length > 0) {
+            if (this.routeLine !== undefined) {
+                this.routeLine.remove();
+            }
+            this.routeLine = L.polyline(this.coordinates, {
+                color: '#555555',
+                weight: 5,
+                opacity: 0.7,
+            });
+            this.routeLine.addTo(this.lMap);
+        }
+    }
+
+    private addEndPoint(e: any): void {
+        this.coordinates.push(e.latlng);
+        if (this.routeLine !== undefined) {
+            this.routeLine.remove();
+        }
+        const coords: number[][][] = [this.coordinates.map((coordinate) => {
+            return [coordinate.lat, coordinate.lng];
+        })];
     }
 
     /**
