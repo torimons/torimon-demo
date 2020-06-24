@@ -4,6 +4,7 @@ import { mapViewGetters, mapViewMutations } from '@/store';
 import SearchBox from '@/components/SearchBox/index.vue';
 import Search from '@/utils/Search';
 import MapList from '@/components/MapList/index.vue';
+import MapDataConverter from '@/utils/MapDataConverter';
 import axios from 'axios';
 
 @Component({
@@ -22,10 +23,15 @@ export default class MapSearch extends Vue {
 
     public async mounted() {
         // APIからマップデータを取得してセットする
-        // TODO: ベタ書きからtypes?かどこかに移動
+        // TODO: ベタ書きからtypes?かどこかに移動?
         const mapURL: string = 'http://localhost:3000/maps';
         const res = await axios.get(mapURL);
-        // TODO: jsonを木構造に変換してtargetMapsにセットする
+        // searchクラスに与えるMapを準備
+        const targetMaps: Map[] = [];
+        res.data.map((jsonMap: any) => {
+            targetMaps.push(MapDataConverter.json2tree(jsonMap));
+        });
+        this.search = new Search<Map>(targetMaps);
     }
 
     /**
@@ -41,6 +47,6 @@ export default class MapSearch extends Vue {
      */
     @Watch('searchWord')
     public searchMap(): void {
-        // this.mapSearchResults = this.search.searchMaps(this.searchWord);
+        this.mapSearchResults = this.search.search(this.searchWord);
     }
 }
