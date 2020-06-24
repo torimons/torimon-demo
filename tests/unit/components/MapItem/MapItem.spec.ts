@@ -2,13 +2,19 @@ import { createLocalVue, mount } from '@vue/test-utils';
 import Vuex from 'vuex';
 import Vuetify from 'vuetify';
 import MapItem from '@/components/MapItem/index.vue';
+import MapDetailCard from '@/components/MapDetailCard/index.vue';
 import Map from '@/Map/Map.ts';
 
 describe('MapItemコンポーネントのテスト', () => {
     let localVue: any;
     let wrapper: any;
     let vuetify: any;
-    const testMap: Map = new Map(0, 'testMap', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}});
+    const testMap: Map = new Map(
+        0,
+        'testMap',
+        {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}},
+        undefined,
+        'test description');
     beforeEach(() => {
         vuetify = new Vuetify();
         localVue = createLocalVue();
@@ -25,10 +31,16 @@ describe('MapItemコンポーネントのテスト', () => {
         });
     });
 
-    it.skip('MapItemをクリックするとopenMapDetailCardが呼び出されemitを行う', () => {
+    it('MapItemをクリックするとopenMapDetailCardが呼び出されMapDetailCardが表示される', () => {
+        // クリック前は非表示
+        expect(wrapper.find('.v-dialog').exists()).toBe(false);
         wrapper.find('.v-card').trigger('click');
-        expect(wrapper.emitted().dialog).toBeTruthy();
-        expect(wrapper.emitted().dialog.length).toBe(1);
-        expect(wrapper.emitted().dialog[0][0]).toStrictEqual(true);
+        // クリック後は表示される
+        expect(wrapper.find('.v-dialog').exists()).toBe(true);
+    });
+
+    it('MapItemにMapのnameとdescriptionがセットされている', () => {
+        expect(wrapper.vm.name).toBe('testMap');
+        expect(wrapper.vm.description).toBe('test description');
     });
 });

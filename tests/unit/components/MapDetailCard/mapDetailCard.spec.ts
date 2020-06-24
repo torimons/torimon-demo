@@ -26,13 +26,6 @@ describe('MapDetailCardコンポーネントのテスト', () => {
         });
     });
 
-    it('closeボタンを押すとポップアップが閉じる', () => {
-        wrapper.setData({dialog: true});
-        expect(wrapper.vm.dialog).toBe(true);
-        wrapper.find('.v-dialog').find('.v-btn#close').trigger('click');
-        expect(wrapper.vm.dialog).toBe(false);
-    });
-
     it('openMapボタンを押すとrootMapを更新して/MainViewに遷移する', () => {
         wrapper.setData({dialog: true});
         expect(wrapper.vm.dialog).toBe(true);
