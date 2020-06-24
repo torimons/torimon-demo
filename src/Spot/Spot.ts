@@ -6,13 +6,15 @@ export default class Spot {
     private detailMaps: Map[] = [];
     private lastViewedDetailMap: Map | undefined = undefined;
 
-    constructor(private id: number,
-                private name: string,
-                private coordinate: Coordinate,
-                private shape?: Shape,
-                private floorName?: string,
-                private description?: string,
-                private attachment?: [{name: string, url: string}]) {
+    constructor(
+        private id: number,
+        private name: string,
+        private coordinate: Coordinate,
+        private shape?: Shape,
+        private floorName?: string,
+        private description?: string,
+        private attachment?: [{name: string, url: string}],
+    ) {
     }
 
     /**

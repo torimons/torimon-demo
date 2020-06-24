@@ -22,7 +22,7 @@ export default class Map {
         private name: string,
         private bounds: Bounds,
         private floorName?: string,
-        private description?: string
+        private description?: string,
     ) {
     }
 
