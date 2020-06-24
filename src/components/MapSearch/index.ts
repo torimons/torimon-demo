@@ -6,6 +6,13 @@ import Search from '@/utils/Search';
 import MapList from '@/components/MapList/index.vue';
 import MapDetailCard from '@/components/MapDetailCard/index.vue';
 
+const mockMaps: Map[] = [
+    new Map(0, 'mock0', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined, 'desctiption of mock 0'),
+    new Map(1, 'mock1', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined, 'desctiption of mock 1'),
+    new Map(2, 'mock2', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined, 'desctiption of mock 2'),
+    new Map(3, 'mock3', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined, 'desctiption of mock 3'),
+];
+
 @Component({
     components: {
         SearchBox,
@@ -17,7 +24,7 @@ export default class MapSearch extends Vue {
     private searchWord: string = '';
     private mapListIsVisible: boolean = false;
     private targetMaps: Map[] = [];
-    private mapSearchResults: Map[] = [];
+    private mapSearchResults: Map[] = mockMaps;
     private search!: Search;
     private backgroundColor: 'transparent' | 'white' = 'transparent';
     private dialog!: boolean;
