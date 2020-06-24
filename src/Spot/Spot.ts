@@ -2,7 +2,7 @@ import { Coordinate, Shape } from '@/store/types.ts';
 import Map from '@/Map/Map.ts';
 
 export default class Spot {
-    private parentMap: Map | undefined = undefined;
+    private parentMap!: Map;
     private detailMaps: Map[] = [];
     private lastViewedDetailMap: Map | undefined = undefined;
 
@@ -17,10 +17,83 @@ export default class Spot {
 
     /**
      * 自身のidを返す
-     * @return id 自身のid
+     * @return 自身のid
      */
     public getId(): number {
         return this.id;
+    }
+
+    /**
+     * スポットのnameを返す
+     * @return スポットのname
+     */
+    public getName(): string {
+        return this.name;
+    }
+
+    /**
+     * 自身の座標を返す
+     * @return 自身の座標
+     */
+    public getCoordinate(): Coordinate {
+        return this.coordinate;
+    }
+
+    /**
+     * スポットの図形情報を返す
+     * @return 図形情報
+     */
+    public getShape(): Shape | undefined {
+        return this.shape;
+    }
+
+    /**
+     * スポットのnameを返す
+     * @return スポットのname
+     */
+    public getFloorName(): string | undefined {
+        return this.floorName;
+    }
+
+
+    /**
+     * 詳細マップを返す
+     * @return 詳細マップ
+     */
+    public getDetailMaps(): Map[] {
+        return this.detailMaps;
+    }
+
+    /**
+     * 自身の説明を返す
+     * @return description
+     */
+    public getDescription(): string | undefined {
+        return this.description;
+    }
+
+    /**
+     * 自身のアタッチメントを返す
+     * @return attachment，なければundefined
+     */
+    public getAttachment(): [{name: string, url: string}] | undefined {
+        return this.attachment;
+    }
+
+    /**
+     * 親マップが存在すれば親マップを返す
+     * @return 親マップ、存在しない場合undefined
+     */
+    public getParentMap(): Map | undefined {
+        return this.parentMap;
+    }
+
+    /**
+     * 親マップの親スポットを取得する
+     * @return parentSpot
+     */
+    public getParentSpot(): Spot | undefined {
+        return this.parentMap.getParentSpot();
     }
 
     /**
@@ -120,5 +193,39 @@ export default class Spot {
             }
         }
         return null;
+    }
+
+    /**
+     * 検索条件を満たすかを判定する
+     * @param regExp 正規表現オブジェクト
+     * @return bool値，検索対象文字列が正規表現にマッチするか否か
+     */
+    public isMatchToRegExp(regExp: RegExp): boolean {
+        // RegExp.test(target:str)は、targetにRegExpがマッチした場合にtrue, マッチしない場合falseを返す.
+        return regExp.test(this.generateSearchTargetString());
+    }
+
+    /**
+     * 検索条件を満たすかを判定する際の文字列を作成する
+     * スポットで検索対象になるのは
+     * - スポット自身の名前
+     * - 親マップの名前
+     * - 親マップの親スポットの名前
+     * - desctiption
+     * の4つ
+     */
+    private generateSearchTargetString(): string {
+        let searchTargetString: string = this.name;
+        const parentMap: Map | undefined = this.parentMap;
+        if (parentMap !== undefined) {
+            const parentSpot = parentMap.getParentSpot();
+            if (parentSpot !== undefined) {
+                searchTargetString += parentSpot.getName();
+            }
+        }
+        if (this.description !== undefined) {
+            searchTargetString += this.description;
+        }
+        return searchTargetString;
     }
 }
