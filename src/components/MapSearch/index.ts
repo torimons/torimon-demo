@@ -27,11 +27,10 @@ export default class MapSearch extends Vue {
         const mapURL: string = 'http://localhost:3000/maps';
         const res = await axios.get(mapURL);
         // searchクラスに与えるMapを準備
-        const targetMaps: Map[] = [];
         res.data.map((jsonMap: any) => {
-            targetMaps.push(MapDataConverter.json2tree(jsonMap));
+            this.targetMaps.push(MapDataConverter.json2tree(jsonMap));
         });
-        this.search = new Search<Map>(targetMaps);
+        this.search = new Search<Map>(this.targetMaps);
     }
 
     /**
@@ -47,6 +46,11 @@ export default class MapSearch extends Vue {
      */
     @Watch('searchWord')
     public searchMap(): void {
-        this.mapSearchResults = this.search.search(this.searchWord);
+        // 検索がないときは全データ表示する
+        if (this.searchWord.length === 0) {
+            this.mapSearchResults = this.targetMaps;
+        } else {
+            this.mapSearchResults = this.search.search(this.searchWord);
+        }
     }
 }
