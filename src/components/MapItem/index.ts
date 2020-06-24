@@ -6,13 +6,4 @@ export default class MapItem extends Vue {
     @Prop()
     private mapName!: string;
     private userName!: string;
-
-    /**
-     * mapItemがクリックされると呼ばれ，mapListを非表示にする．
-     * ただし，直接非表示にするのでなく，MapItem -> MapList -> MapSearchまで
-     * Emitして，MapSearchで最終的に非表示にする．
-     */
-    public hideMapList() {
-        this.$emit('hideMapList');
-    }
 }

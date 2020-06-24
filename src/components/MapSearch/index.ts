@@ -29,19 +29,6 @@ export default class MapSearch extends Vue {
     }
 
     /**
-     * MapListの描画のオンオフを切り替える
-     * @param isVisible セットする値(true/false)
-     */
-    public setMapListIsVisible(isVisible: boolean) {
-        if (isVisible === true) {
-            this.backgroundColor = 'white';
-        } else {
-            this.backgroundColor = 'transparent';
-        }
-        this.mapListIsVisible = isVisible;
-    }
-
-    /**
      * 検索文字列をセットする．SearchBoxからemitで呼ばれる？
      * @param searchWord 検索文字列
      */
@@ -55,10 +42,5 @@ export default class MapSearch extends Vue {
     @Watch('searchWord')
     public searchMap(): void {
         // this.mapSearchResults = this.search.searchMaps(this.searchWord);
-        if (this.mapSearchResults.length > 0) {
-            this.setMapListIsVisible(true);
-        } else {
-            this.setMapListIsVisible(false);
-        }
     }
 }

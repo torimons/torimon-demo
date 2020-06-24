@@ -2,8 +2,6 @@
 	<div id="spot-item">
         <v-card
             tile
-            @click="hideMapList();
-                    popupDetailScreen()"
         >
             <v-list-item two-line>
                 <v-list-item-content>
