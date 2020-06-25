@@ -261,4 +261,13 @@ export default class Spot {
         }
         return null;
     }
+
+    /**
+     * 指定されたidを持つ詳細マップを取り除く
+     * @param id 詳細マップのid
+     */
+    public deleteDetailMap(id: number): void {
+        this.detailMaps = this.detailMaps.filter((m: Map) => m.getId() !== id);
+    }
+
 }
