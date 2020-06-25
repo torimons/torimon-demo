@@ -4,6 +4,7 @@ import Home from '../views/Home.vue';
 import MainView from '../components/MainView/index.vue';
 import MapSelection from '../views/MapSelection.vue';
 import MainCreationView from '../components/MainCreationView/index.vue';
+import MapUpload from '@/components/MapUpload/index.vue';
 
 Vue.use(VueRouter);
 
@@ -41,6 +42,11 @@ const routes = [
         path: '/map-detail',
         name: 'map-detail',
         component: () => import('../components/MapDetailCard/index.vue'),
+    },
+    {
+        path: '/map-upload',
+        name: 'map-upload',
+        component: MapUpload,
     },
 ];
 
