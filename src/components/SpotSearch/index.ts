@@ -17,7 +17,7 @@ export default class SpotSearch extends Vue {
     private spotListIsVisible: boolean = false;
     private targetSpots: Spot[] = [];
     private spotSearchResults: Spot[] = [];
-    private search!: Search;
+    private search!: Search<Spot>;
     private backgroundColor: 'transparent' | 'white' = 'transparent';
 
     public mounted() {
@@ -53,7 +53,7 @@ export default class SpotSearch extends Vue {
      */
     @Watch('searchWord')
     public searchSpot(): void {
-        this.spotSearchResults = this.search.searchSpots(this.searchWord);
+        this.spotSearchResults = this.search.search(this.searchWord);
         if (this.spotSearchResults.length > 0) {
             this.setSpotListIsVisible(true);
             // SpotInfoを非表示にする
