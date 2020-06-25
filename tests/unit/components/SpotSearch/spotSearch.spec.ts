@@ -43,11 +43,11 @@ describe('SpotSearchコンポーネントのテスト', () => {
         wrapper.destroy();
     });
 
-    it('toggleSpotListイベントが発火するとsetSpotListIsVisibleが呼ばれる', () => {
+    it('toggleListイベントが発火するとsetSpotListIsVisibleが呼ばれる', () => {
         // 初期値はfalse
         expect(wrapper.vm.spotListIsVisible).toBe(false);
         // 子コンポーネント(SearchBox)からのemit
-        wrapper.find(SearchBox).vm.$emit('toggleSpotList', true);
+        wrapper.find(SearchBox).vm.$emit('toggleList', true);
         // trueに変わっていることを確認
         expect(wrapper.vm.spotListIsVisible).toBe(true);
         // 背景が白になっていることの確認
