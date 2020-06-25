@@ -98,6 +98,31 @@
           <v-icon>close</v-icon>
         </v-btn>
       </v-card-actions>
+      <v-divider></v-divider>
+      <v-list>
+        <v-list-item
+          v-for="(map, index) in spot.getDetailMaps()"
+          :key="index"
+        >
+          <v-list-item-content>
+            <v-list-item-title v-text="map.getId()"></v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-action>
+            <v-btn icon>
+              <v-icon color="grey lighten-1">mdi-information</v-icon>
+            </v-btn>
+          </v-list-item-action>
+        </v-list-item>
+      </v-list>
+      <v-card-actions>
+        <v-btn
+          text
+          @click="$emit('add')"
+        >
+        <v-icon>add</v-icon>
+          new map
+        </v-btn>
+      </v-card-actions>
     </v-card>
   </div>
 </template>

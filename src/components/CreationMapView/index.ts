@@ -29,6 +29,8 @@ export default class CreationMapView extends Vue {
     private focusedSpot: Spot = new Spot(0, '', { lat: 0, lng: 0});
     private spotMarkers: SpotMarker[] = [];
 
+    private mapId: number = 1;
+
     /**
      * とりあえず地図の表示を行なっています．
      */
@@ -145,4 +147,22 @@ export default class CreationMapView extends Vue {
      * @param e Leafletイベント(addSpotメソッドでe.latlngを取得するためにany型にしている)
      */
     private onMapClick: (e: any) => void = (e: any) => undefined;
+
+    /**
+     * EditorToolbarのNew MapボタンをクリックしたときにEmitで呼ばれる
+     * 指定されたスポットに詳細マップを追加
+     */
+    private addDetailMap() {
+        const newDetailMap: Map = new Map(
+            this.mapId,
+            'testDetailMap',
+            {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0} },
+            undefined,
+        );
+        this.focusedSpot.addDetailMaps([
+            newDetailMap,
+        ]);
+        this.mapId += 1;
+        newDetailMap.setParentSpot(this.focusedSpot);
+    }
 }

@@ -15,6 +15,7 @@
                 @close="spotEditorIsVisible = false"
                 :spot="focusedSpot"
                 @delete="deleteFocusedSpot"
+                @add="addDetailMap"
               />
             </v-col>
             <v-col>
