@@ -2,6 +2,7 @@ import Map from '@/Map/Map.ts';
 import { Coordinate } from '@/store/types';
 
 import { Bounds } from '@/store/types';
+import Spot from '@/Spot/Spot';
 
 describe('Mapクラスのgetterのテスト', () => {
     const testBounds = {
@@ -51,5 +52,15 @@ describe('Mapクラスのgetterのテスト', () => {
         const actualMapFloorName = map.getFloorName();
         const expectedMapFloorName = undefined;
         expect(actualMapFloorName).toEqual(expectedMapFloorName);
+    });
+
+    it('指定したidの子スポットを削除する', () => {
+        const map = new Map(1, 'testMap', testBounds);
+        const spot =  new Spot(0, 'testSpot', { lat: 0, lng: 0 });
+        map.addSpot(spot);
+        map.removeSpot(0);
+        const actualSpots = map.getSpots();
+        const expectedSpots: Spot[] = [];
+        expect(actualSpots).toEqual(expectedSpots);
     });
 });

@@ -80,15 +80,24 @@ export default class Map {
     /**
      * spotを追加し,追加したspotのparentMapとして自身をセットする.
      * すでに追加済みであれば追加しない.
+     * @param spots 追加するspot
+     */
+    public addSpot(spot: Spot): void {
+        if (this.hasSpot(spot)) {
+            return;
+        }
+        this.spots.push(spot);
+        spot.setParentMap(this);
+    }
+
+    /**
+     * 複数のspotを追加し,追加したspotのparentMapとして自身をセットする.
+     * すでに追加済みのスポットは追加しない.
      * @param spots 追加するspotの配列
      */
     public addSpots(spots: Spot[]): void {
         for (const spot of spots) {
-            if (this.hasSpot(spot)) {
-                continue;
-            }
-            this.spots.push(spot);
-            spot.setParentMap(this);
+            this.addSpot(spot);
         }
     }
 
@@ -149,6 +158,14 @@ export default class Map {
             }
         }
         return null;
+    }
+
+    /**
+     * 指定したidをもつスポットを削除
+     * @param id 指定するid
+     */
+    public removeSpot(id: number): void {
+        this.spots = this.spots.filter((spot) => spot.getId() !== id);
     }
 
 }

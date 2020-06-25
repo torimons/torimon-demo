@@ -1,4 +1,4 @@
-import { Coordinate, Shape } from '@/store/types.ts';
+import { Coordinate, Shape, SpotType } from '@/store/types.ts';
 import Map from '@/Map/Map.ts';
 
 export default class Spot {
@@ -6,13 +6,17 @@ export default class Spot {
     private detailMaps: Map[] = [];
     private lastViewedDetailMap: Map | undefined = undefined;
 
-    constructor(private id: number,
-                private name: string,
-                private coordinate: Coordinate,
-                private shape?: Shape,
-                private floorName?: string,
-                private description?: string,
-                private attachment?: [{name: string, url: string}]) {
+    constructor(
+            private id: number,
+            private name: string,
+            private coordinate: Coordinate,
+            private shape?: Shape,
+            private floorName?: string,
+            private description?: string,
+            private attachment?: [{name: string, url: string}],
+            private type?: SpotType,
+            private _shouldDisplayNameOnMap?: boolean) {
+        /* 何もしない */
     }
 
     /**
@@ -81,6 +85,45 @@ export default class Spot {
     }
 
     /**
+     * スポットのtypeを返す
+     * @return スポットのtype, undefinedの場合'default'を返す
+     */
+    public getType(): SpotType {
+        if (this.type === undefined) {
+            return 'default';
+        }
+        return this.type;
+    }
+
+    /**
+     * スポットの名前をマップ上のマーカー下に表示するかどうかを返す
+     * @return スポットの名前をマップ上のマーカー下に表示するかどうか
+     */
+    public shouldDisplayNameOnMap(): boolean {
+        if (this._shouldDisplayNameOnMap === undefined) {
+            return true;
+        }
+        return this._shouldDisplayNameOnMap;
+    }
+
+    /**
+     * スポットのアイコン名を返す
+     * @return アイコン名, 存在しない場合'place'アイコン
+     */
+    public getIconName(): string {
+        const iconNameMaps: Array<{ key: SpotType, iconName: string }> = [
+            { key: 'default',       iconName: 'place' },
+            { key: 'withDetailMap', iconName: 'add_location' },
+            { key: 'restroom',      iconName: 'wc' },
+        ];
+        const iconName = iconNameMaps.find((iconNameMap) => iconNameMap.key === this.getType())?.iconName;
+        if (iconName === undefined) {
+            throw new Error('Illegal implements of "iconNameMaps".');
+        }
+        return iconName;
+    }
+
+    /**
      * 親マップが存在すれば親マップを返す
      * @return 親マップ、存在しない場合undefined
      */
@@ -97,6 +140,30 @@ export default class Spot {
     }
 
     /**
+     * スポット名をセットする
+     * @param name スポット名
+     */
+    public setName(name: string): void {
+        this.name = name;
+    }
+
+    /**
+     * スポットの概要をセットする
+     * @param description 概要
+     */
+    public setDescription(description: string): void {
+        this.description = description;
+    }
+
+    /**
+     * スポットの名前をマップ上のマーカー下に表示するかどうかを設定する
+     * @param shouldDisplayNameOnMap スポットの名前をマップ上のマーカー下に表示するかどうか
+     */
+    public setShouldDisplayNameOnMap(shouldDisplayNameOnMap: boolean): void {
+        this._shouldDisplayNameOnMap = shouldDisplayNameOnMap;
+    }
+
+    /**
      * 親mapをセットし,セットしたmapの子spotに自身を追加する.
      * @param parentMap セットする親map
      */
@@ -106,7 +173,7 @@ export default class Spot {
         }
         this.parentMap = parentMap;
         this.floorName = parentMap.getFloorName();
-        parentMap.addSpots([this]);
+        parentMap.addSpot(this);
     }
 
     /**
