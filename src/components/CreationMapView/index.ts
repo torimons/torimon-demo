@@ -24,6 +24,7 @@ export default class CreationMapView extends Vue {
     private routeLine: L.Polyline | null = null;
     private circleMarkers: L.CircleMarker[] = [];
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
+    private controlLayer: L.Control.Layers = L.control.layers({}, {});
     private map: Map = new Map(0, 'New Map', {
         topL: {lat: 0, lng: 0},
         botR: {lat: 0, lng: 0},
@@ -50,6 +51,8 @@ export default class CreationMapView extends Vue {
             },
         ).addTo(this.lMap);
         this.lMap.on('click', (e) => this.onMapClick(e));
+        const pane = this.lMap.createPane("markerPane");
+        pane.style.zIndex = '620';
     }
 
     /**
@@ -136,7 +139,7 @@ export default class CreationMapView extends Vue {
         this.coordinates.push(e.latlng);
 
         const circleMarker: L.CircleMarker = L.circleMarker(e.latlng, {
-            radius: 14, weight: 1, color: 'black', fill: true, fillColor: 'white', fillOpacity: 1,
+            pane: 'markerPane', radius: 6, weight: 1, color: 'black', fill: true, fillColor: 'white', fillOpacity: 1,
         });
         if(this.circleMarkers.length === 0) {
             circleMarker.on('click', this.addEndPoint);
@@ -144,10 +147,11 @@ export default class CreationMapView extends Vue {
         circleMarker.addTo(this.lMap);
         this.circleMarkers.push(circleMarker)
 
-        if (this.coordinates.length > 0) {
+        if (this.coordinates.length > 1) {
             if (this.routeLine !== null) {
                 console.log(this.routeLine);
                 this.routeLine.remove();
+                this.controlLayer.removeLayer(this.routeLine);
             }
             this.routeLine = L.polyline(this.coordinates, {
                 color: '#555555',
@@ -162,14 +166,13 @@ export default class CreationMapView extends Vue {
         this.setEmptyMethodOnMapClick();
         this.coordinates.push(this.coordinates[0]);
         if (this.routeLine !== null) {
-            console.log("routeLine null")
             this.routeLine.remove();
             this.routeLine = null;
         }
         this.circleMarkers.forEach((marker) => marker.remove());
         this.circleMarkers = [];
         const coords: number[][][] = [this.coordinates.map((coordinate) => {
-            return [coordinate.lat, coordinate.lng];
+            return [coordinate.lng, coordinate.lat];
         })];
         const shape: Shape = {
             type: 'Polygon',
@@ -177,6 +180,7 @@ export default class CreationMapView extends Vue {
         };
         this.focusedSpot.setShape(shape);
         this.displayPolygons(this.map.getSpots());
+        this.coordinates = [];
     }
 
     /**
