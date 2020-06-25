@@ -147,6 +147,10 @@ export default class Spot {
         this.name = name;
     }
 
+    public setShape(shape: Shape): void {
+        this.shape = shape;
+    }
+
     /**
      * スポットの概要をセットする
      * @param description 概要

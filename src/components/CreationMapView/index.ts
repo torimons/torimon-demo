@@ -21,7 +21,9 @@ export default class CreationMapView extends Vue {
     private defaultZoomLevel: number = 17;
     private tileLayer!: L.TileLayer;
     private routeLayer?: L.Layer;
-    private routeLine!: L.Polyline;
+    private routeLine: L.Polyline | null = null;
+    private circleMarkers: L.CircleMarker[] = [];
+    private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
     private map: Map = new Map(0, 'New Map', {
         topL: {lat: 0, lng: 0},
         botR: {lat: 0, lng: 0},
@@ -132,11 +134,19 @@ export default class CreationMapView extends Vue {
 
     private addPoint(e: any): void {
         this.coordinates.push(e.latlng);
-        L.circleMarker(e.latlng, {
-            radius: 4, weight: 1, color: 'black', fill: true, fillColor: 'white', fillOpacity: 1,
-        }).addTo(this.lMap);
+
+        const circleMarker: L.CircleMarker = L.circleMarker(e.latlng, {
+            radius: 14, weight: 1, color: 'black', fill: true, fillColor: 'white', fillOpacity: 1,
+        });
+        if(this.circleMarkers.length === 0) {
+            circleMarker.on('click', this.addEndPoint);
+        }
+        circleMarker.addTo(this.lMap);
+        this.circleMarkers.push(circleMarker)
+
         if (this.coordinates.length > 0) {
-            if (this.routeLine !== undefined) {
+            if (this.routeLine !== null) {
+                console.log(this.routeLine);
                 this.routeLine.remove();
             }
             this.routeLine = L.polyline(this.coordinates, {
@@ -149,13 +159,71 @@ export default class CreationMapView extends Vue {
     }
 
     private addEndPoint(e: any): void {
-        this.coordinates.push(e.latlng);
-        if (this.routeLine !== undefined) {
+        this.setEmptyMethodOnMapClick();
+        this.coordinates.push(this.coordinates[0]);
+        if (this.routeLine !== null) {
+            console.log("routeLine null")
             this.routeLine.remove();
+            this.routeLine = null;
         }
+        this.circleMarkers.forEach((marker) => marker.remove());
+        this.circleMarkers = [];
         const coords: number[][][] = [this.coordinates.map((coordinate) => {
             return [coordinate.lat, coordinate.lng];
         })];
+        const shape: Shape = {
+            type: 'Polygon',
+            coordinates: coords,
+        };
+        this.focusedSpot.setShape(shape);
+        this.displayPolygons(this.map.getSpots());
+    }
+
+    /**
+     * spotの情報からshapeの情報を取り出してleafletで扱える形式に変換する．
+     * @param spots GeoJson形式に変換したいspotの配列 .
+     * @return GeoJson形式のshapeデータ
+     */
+    private spotShapeToGeoJson(spots: Spot[]): GeoJsonObject {
+        const shapes: Feature[] = [];
+        for (const spot of spots) {
+            const shape = spot.getShape() as GeometryObject;
+            const feature: Feature = {
+                properties: {},
+                type: 'Feature',
+                geometry: shape,
+            };
+            shapes.push(feature);
+        }
+        const features: FeatureCollection = {
+            type: 'FeatureCollection',
+            features: shapes,
+        };
+        return features as GeoJsonObject;
+    }
+
+    /**
+     * 指定されたスポットのポリゴンを表示する
+     * polygonLayerメンバを変更して表示内容を変える．
+     * @param spotsForDisplay 表示するスポットの配列
+     */
+    private displayPolygons(spotsForDisplay: Spot[]): void {
+        console.log(spotsForDisplay);
+        // すでに表示されているポリゴンがある場合は先に削除する
+        if (this.polygonLayer !== undefined) {
+            this.lMap.removeLayer(this.polygonLayer);
+        }
+        const shapeGeoJson: GeoJsonObject = this.spotShapeToGeoJson(spotsForDisplay);
+        this.polygonLayer = new L.GeoJSON(shapeGeoJson, {
+            style: {
+                color: '#555555',
+                weight: 2,
+                opacity: 0.1,
+                fillColor: '#555555',
+                fillOpacity: 0.3,
+            },
+        });
+        this.lMap.addLayer(this.polygonLayer);
     }
 
     /**
