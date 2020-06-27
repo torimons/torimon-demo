@@ -8,6 +8,7 @@ import EditorToolBar from '@/components/EditorToolBar/index.vue';
 import SpotEditor from '@/components/SpotEditor/index.vue';
 import Spot from '@/Spot/Spot';
 import SpotMarker from '@/components/MapView/Marker/SpotMarker';
+import { cloneDeep } from 'lodash';
 
 @Component({
     components: {
@@ -29,7 +30,8 @@ export default class CreationMapView extends Vue {
     private focusedSpot: Spot = new Spot(0, '', { lat: 0, lng: 0});
     private spotMarkers: SpotMarker[] = [];
 
-    private mapId: number = 1;
+    // 詳細マップ生成時に利用
+    private currentMapId: number = 0;
 
     /**
      * とりあえず地図の表示を行なっています．
@@ -149,20 +151,41 @@ export default class CreationMapView extends Vue {
     private onMapClick: (e: any) => void = (e: any) => undefined;
 
     /**
-     * EditorToolbarのNew MapボタンをクリックしたときにEmitで呼ばれる
-     * 指定されたスポットに詳細マップを追加
+     * SpotEditorのNew Mapボタンをクリックすると呼ばれ、
+     * スポットに詳細マップを追加する。
+     * 現状はマップ生成時にname, boundsを定数値にしている。
      */
     private addDetailMap() {
+        const nextMapId: number = ++this.currentMapId;
         const newDetailMap: Map = new Map(
-            this.mapId,
-            'testDetailMap',
+            nextMapId,
+            'testDetailMap' + String(nextMapId),
             {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0} },
             undefined,
         );
-        this.focusedSpot.addDetailMaps([
-            newDetailMap,
-        ]);
-        this.mapId += 1;
+        this.focusedSpot.addDetailMaps([newDetailMap]);
         newDetailMap.setParentSpot(this.focusedSpot);
+    }
+
+    /**
+     * SpotEditorから詳細マップ複製イベントが発火されると呼び出され、
+     * 引数のマップを複製してスポットに登録する。
+     * @param map 複製対象のマップ
+     */
+    private duplicateDetailMap(map: Map) {
+        const nextMapId = ++this.currentMapId;
+        const dupDetailMap = cloneDeep(map);
+        (dupDetailMap as any).id = nextMapId;
+        (dupDetailMap as any).name = dupDetailMap.getName() + '_copy';
+        this.focusedSpot.addDetailMaps([dupDetailMap]);
+    }
+
+    /**
+     * SpotEditorから詳細マップ削除イベントが発火されると呼び出され、
+     * 指定されたidを持つ詳細マップをスポットから削除する
+     * @param id 削除対象マップのid
+     */
+    private deleteDetailMap(id: number) {
+        this.focusedSpot.deleteDetailMap(id);
     }
 }

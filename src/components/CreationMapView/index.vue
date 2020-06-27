@@ -16,6 +16,8 @@
                 :spot="focusedSpot"
                 @delete="deleteFocusedSpot"
                 @add="addDetailMap"
+                @dup="duplicateDetailMap"
+                @del="deleteDetailMap"
               />
             </v-col>
             <v-col>
