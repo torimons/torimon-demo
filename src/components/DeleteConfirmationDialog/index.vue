@@ -10,6 +10,7 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn
+        class="delete"
         text
         color="primary"
         @click="confirmedDeletion"
@@ -17,6 +18,7 @@
         Delete
       </v-btn>
       <v-btn
+        class="cancel"
         color="secondary"
         text
         @click="cancelDeletion"
