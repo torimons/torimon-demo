@@ -7,7 +7,7 @@ import { GeoJsonObject, GeometryObject, Feature, FeatureCollection } from 'geojs
 import { findNearest, getDistance } from 'geolib';
 import { GeolibInputCoordinates } from 'geolib/es/types';
 import CurrentLocationMarker from '@/components/MapView/Marker/CurrentLocationMarker';
-import DefaultSpotMarker from '@/components/MapView/Marker/DefaultSpotMarker';
+import SpotMarker from '@/components/MapView/Marker/SpotMarker';
 import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
 import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot';
@@ -19,7 +19,7 @@ export default class MapView extends Vue {
     private defaultZoomLevel: number = 17;
     private tileLayer!: L.TileLayer;
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
-    private spotMarkers: DefaultSpotMarker[] = [];
+    private spotMarkers: SpotMarker[] = [];
     private currentLocationMarker: CurrentLocationMarker = new CurrentLocationMarker([0, 0]);
     private zoomLevelThreshold: number = 19; // とりあえず仮で閾値決めてます
     private mapToDisplay!: Map;
@@ -82,8 +82,8 @@ export default class MapView extends Vue {
      * @param spotId 検索したいマーカーのスポットID
      * @returns 見つかったマーカーのオブジェクト | null
      */
-    private findMarker(spotId: number): DefaultSpotMarker | null {
-        const foundMarker: DefaultSpotMarker | undefined = this.spotMarkers
+    private findMarker(spotId: number): SpotMarker | null {
+        const foundMarker: SpotMarker | undefined = this.spotMarkers
             .find((marker) => {
                 return marker.getSpot().getId() === spotId;
             });
@@ -128,7 +128,7 @@ export default class MapView extends Vue {
     private displaySpotMarkers(spotsToDisplay: Spot[]): void {
         this.spotMarkers.forEach((marker: Marker<any>) => marker.remove());
         this.spotMarkers = spotsToDisplay
-            .map((spot: Spot) => new DefaultSpotMarker(spot));
+            .map((spot: Spot) => new SpotMarker(spot));
         this.addMarkersToMap(this.spotMarkers);
     }
 
