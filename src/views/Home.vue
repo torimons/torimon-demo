@@ -22,9 +22,11 @@
                             </v-btn>
                         </div>
                         <div class="my-2">
-                            <v-btn color="#3F8373" large href="MainCreationView">
+                            <router-link to="/map-upload">
+                            <v-btn color="#3F8373" large>
                                 <span class="white--text">地図作成</span>
                             </v-btn>
+                            </router-link>
                         </div>
                     </v-col>
                 </v-row>

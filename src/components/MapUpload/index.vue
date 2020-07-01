@@ -28,23 +28,23 @@
                 </v-form>
             </div>
             <div class="text-center">
+                <router-link to="/">
                 <v-btn
                     class="ma-2"
-                    @click="onCancel()"
                 >
-                Cancel
+                    キャンセル
                 </v-btn>
+                </router-link>
 
+                <router-link to="/MainCreationView">
                 <v-btn
                     color="#3F8373"
                     class="ma-2 white--text"
-                    :loading="loading"
-                    :disabled="loading"
-                    @click="onClickUpload()"
                 >
-                    Upload
+                    作成開始
                     <v-icon right>mdi-cloud-upload</v-icon>
                 </v-btn>
+                </router-link>
             </div>
         </v-app>
     </div>
