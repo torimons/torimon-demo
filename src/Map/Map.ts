@@ -59,6 +59,14 @@ export default class Map {
     }
 
     /**
+     * マップのdescriptionを返す
+     * @return description，存在しなければundefined
+     */
+    public getDescription(): string | undefined {
+        return this.description;
+    }
+
+    /**
      * 親スポットが存在すれば親スポットを返す
      * @return 親スポット．存在しない場合undefined
      */
@@ -120,14 +128,6 @@ export default class Map {
     }
 
     /**
-     * descriptionを返す
-     * @return 説明
-     */
-    public getDescription(): string | undefined {
-        return this.description;
-    }
-
-    /**
      * 指定したidをもつ子孫スポットを探す
      * @param id 指定するid
      * @return 該当するスポット，またはnull
@@ -160,4 +160,28 @@ export default class Map {
         return null;
     }
 
+    /**
+     * 検索条件を満たすかを判定する
+     * @param regExp 正規表現オブジェクト
+     * @return bool値，検索対象文字列が正規表現にマッチするか否か
+     */
+    public isMatchToRegExp(regExp: RegExp): boolean {
+       // RegExp.test(target:str)は、targetにRegExpがマッチした場合にtrue, マッチしない場合falseを返す.
+        return regExp.test(this.generateSearchTargetString());
+    }
+
+    /**
+     * 検索対象を満たすかを判定する際の文字列を生成する
+     * マップクラスで検索対象になるのは
+     * - マップ自身の名前
+     * - desctiption
+     * の2つ
+     * @return 検索対象文字列
+     */
+    private generateSearchTargetString(): string {
+        if (this.description === undefined) {
+            return this.name;
+        }
+        return this.name + this.description;
+    }
 }

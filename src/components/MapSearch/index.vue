@@ -7,11 +7,9 @@
         >
             <SearchBox
                 @searchWordInput="setSearchWord"
-                @toggleMapList="setMapListIsVisible"
             />
             <MapList
                 :mapSearchResults="mapSearchResults"
-                @hideMapList="setMapListIsVisible"
                 v-show="mapListIsVisible"
                 class="px-2 pb-2"
             ></MapList>

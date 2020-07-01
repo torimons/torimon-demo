@@ -11,7 +11,6 @@ import MapDetailCardType from '@/components/MapDetailCard';
 })
 export default class MapItem extends Vue {
     @Ref() private mapDialog!: MapDetailCardType;
-
     @Prop() private map!: Map;
     private name: string = '';
     private description: string = '';

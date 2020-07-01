@@ -8,5 +8,6 @@ import Map from '@/Map/Map.ts';
     },
 })
 export default class MapList extends Vue {
-    @Prop() public mapSearchResults!: Map[];
+    @Prop()
+    public mapSearchResults!: Map[];
 }

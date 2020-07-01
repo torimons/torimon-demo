@@ -1,12 +1,16 @@
 import Spot from '@/Spot/Spot.ts';
 import Map from '@/Map/Map.ts';
 
-export default class Search {
+/**
+ * isMatchToRegExp(RegExp)メソッドをもつ型(現状ではMap, Spotクラス)でのみSearchクラスを作成できる
+ * そのオブジェクトが検索キーワードにマッチしているかはMap, Spotクラスに移行
+ */
+export default class Search<T extends { isMatchToRegExp(arg: RegExp): boolean }> {
 
-    private targetSpots: Spot[];
+    private targets: T[];
 
-    constructor(spots: Spot[]) {
-        this.targetSpots = spots;
+    constructor(targets: T[]) {
+        this.targets = targets;
     }
 
     /**
@@ -18,9 +22,9 @@ export default class Search {
      * 3. 'hoge'に一致したもの
      * を順番に返す。
      * @param keyword スポット検索ワード
-     * @return keywordにかかったスポットのリスト
+     * @return keywordにかかったオブジェクトのリスト
      */
-    public searchSpots(keyword: string | null): Spot[] {
+    public search(keyword: string | null): T[] {
         // 空文字チェックは、検索ボックスをバックスペース等で空にしたときに
         // 空文字による検索が走るのを防ぐために必要。
         // nullチェックは、検索ボックスの x ボタンをクリックしたときに、
@@ -29,12 +33,12 @@ export default class Search {
             return [];
         }
         const keywords: string[] = keyword.split(/\s+/).filter((word: string) => word !== '');
-        let searchResults: Spot[] = [];
+        let searchResults: T[] = [];
         for (let i = keywords.length; i > 0; i--) {
             const keywordsRegExp = this.compileIntoSearchCondition(keywords.slice(0, i));
             searchResults = searchResults.concat(
-                this.targetSpots
-                    .filter((s: Spot) => this.spotIsMatchToKeywords(s, keywordsRegExp)));
+                this.targets
+                    .filter((target: T) => target.isMatchToRegExp(keywordsRegExp)));
         }
         // 重複を削除したものを返す
         return searchResults.filter((x, i, self) => self.indexOf(x) === i);
@@ -55,24 +59,5 @@ export default class Search {
         };
         const rx: string = joinAnd(keywords.map(escape));
         return new RegExp(rx, 'i'); // iオプションで大文字小文字の区別をしない.
-    }
-
-    /**
-     * スポットが正規表現にマッチするかどうかを判定する
-     * @param spot filter対象のスポット
-     * @param keywordsRegExp 検索キーワードの正規表現オブジェクト
-     * @return isMatch スポットが検索ワードにマッチした場合true, マッチしなければfalse
-     */
-    private spotIsMatchToKeywords(spot: Spot, keywordsRegExp: RegExp): boolean {
-        let target: string = spot.getName();
-        const parentSpot: Spot | undefined = spot.getParentSpot();
-        if (parentSpot !== undefined) {
-            target = target + parentSpot.getName();
-        }
-        if (spot.getDescription() !== undefined) {
-            target += spot.getDescription();
-        }
-        // RegExp.test(target:str)は、targetにRegExpがマッチした場合にtrue, マッチしない場合falseを返す.
-        return keywordsRegExp.test(target);
     }
 }
