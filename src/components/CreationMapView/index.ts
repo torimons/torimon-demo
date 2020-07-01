@@ -66,7 +66,7 @@ export default class CreationMapView extends Vue {
      */
     private setAddSpotMethodOnMapClick(spotType: SpotType): void {
         if(this.leafletContainer !== null) {
-            this.leafletContainer.style.cursor = 'url(/src/assets/place-24px.cur), pointer';
+            this.leafletContainer.style.cursor = 'url(https://github.com/torimons/torimon/blob/95f7cf4c08609b3158296f06ab4339e28c2282be/src/assets/place-24px.cur?raw=true) 18 35, pointer';
         }
         this.onMapClick = this.addSpot;
         this.spotTypeToAddNext = spotType;
