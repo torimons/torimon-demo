@@ -7,13 +7,14 @@
         <v-row no-gutters>
           <v-col>
               <v-btn
-                color="primary"
                 icon
                 class="mb-2"
-                v-for="(icon, index) in icons"
+                v-for="(button, index) in buttons"
                 v-bind:key="index"
+                :color="button.color"
+                @click="onButtonClick(button.action)"
               >
-              <v-icon icon>{{ icon }}</v-icon>
+              <v-icon icon>{{ button.icon }}</v-icon>
             </v-btn>
             <v-speed-dial
               direction="left"
@@ -21,22 +22,24 @@
             >
               <template v-slot:activator>
                 <v-btn
-                  color="primary"
+                  :color="spotButtonColor"
                   v-model="fabVisible"
                   icon
                 >
                   <v-icon v-if="fabVisible">close</v-icon>
-                  <v-icon v-else>place</v-icon>
+                  <v-icon v-if="!fabVisible && selectedMode != 'spot'">place</v-icon>
+                  <v-icon v-if="!fabVisible && selectedMode == 'spot'">{{ selectedSpotIcon }}</v-icon>
                 </v-btn>
               </template>
               <v-btn 
                 color="primary"
-                v-for="(spotIcon, index) in spotIcons"
+                v-for="(spotIconMap, index) in spotIconMaps"
                 v-bind:key="index"
                 fab
                 small
+                @click="setSelectedSpotIcon(spotIconMap.iconName); onButtonClick('spot')"
               >
-                <v-icon>{{ spotIcon }}</v-icon>
+                <v-icon>{{ spotIconMap.iconName }}</v-icon>
               </v-btn>
             </v-speed-dial>
           </v-col> 
