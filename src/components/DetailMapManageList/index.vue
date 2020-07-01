@@ -36,6 +36,7 @@
       width="500"
     >
       <delete-confirmation-dialog
+        class="delete-confirmation"
         :name=selectedMapName
         @del="deleteMap"
         @cancel="cancelMapDeletion"
