@@ -1,4 +1,4 @@
-import { Component, Vue, Emit } from 'vue-property-decorator';
+import { Component, Vue, Emit, Prop, Watch } from 'vue-property-decorator';
 import { SpotType } from '@/store/types';
 
 @Component
@@ -10,7 +10,6 @@ export default class EditorToolBar extends Vue {
         {action: 'move',    icon: 'pan_tool', color: this.selectedColor},
         {action: 'zoomIn',  icon: 'zoom_in',  color: this.defaultColor},
         {action: 'zoomOut', icon: 'zoom_out', color: this.defaultColor},
-        {action: 'select',  icon: 'edit',     color: this.defaultColor},
     ];
     private spotButtonColor: string = this.defaultColor;
     private spotIconMaps: Array<{iconName: string, spotType: SpotType}> = [
@@ -18,6 +17,11 @@ export default class EditorToolBar extends Vue {
         { iconName: 'add_location', spotType: 'withDetailMap' },
         { iconName: 'wc',           spotType: 'restroom' },
     ];
+    private shapeEditButton: { action: Action, icon: string, color: string } = {
+        action: 'shape', icon: 'edit', color: this.selectedColor
+    }
+    @Prop()
+    private shapeEditButtonIsVisible: boolean = false;
     private selectedMode: Action = 'move';
     private selectedSpotIcon: string = '';
     private fabVisible: boolean = false;
@@ -58,9 +62,6 @@ export default class EditorToolBar extends Vue {
         if (action === 'move') {
             this.$emit('clickMove');
         }
-        if (action === 'select') {
-            this.$emit('clickSelect');
-        }
     }
 
     /**
@@ -77,6 +78,21 @@ export default class EditorToolBar extends Vue {
             const index = this.buttons.findIndex((b) => b.action === action);
             this.buttons[index].color = this.selectedColor;
         }
+        this.$emit('switchMode');
+    }
+
+    @Watch('shapeEditButtonIsVisible')
+    private switchShapeEditMode(): void {
+        if(this.shapeEditButtonIsVisible) {
+            this.selectedMode = 'shape';
+            this.spotButtonColor = this.defaultColor;
+            this.buttons.forEach((b) => b.color = this.defaultColor);
+        }
+        else {
+            if (this.selectedMode === 'shape') {
+                this.switchMode('move');
+            }
+        }
     }
 
     /**
@@ -88,4 +104,4 @@ export default class EditorToolBar extends Vue {
 
 }
 
-export type Action = 'move' | 'zoomIn' | 'zoomOut' | 'select' | 'spot';
+export type Action = 'move' | 'zoomIn' | 'zoomOut' | 'shape' | 'spot';

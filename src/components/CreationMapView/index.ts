@@ -9,6 +9,7 @@ import SpotEditor from '@/components/SpotEditor/index.vue';
 import Spot from '@/Spot/Spot';
 import SpotMarker from '@/components/MapView/Marker/SpotMarker';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection, Polygon } from 'geojson';
+import { Action } from '../EditorToolBar';
 
 @Component({
     components: {
@@ -33,6 +34,7 @@ export default class CreationMapView extends Vue {
     // 次にクリックしたときに設置されるスポットタイプ
     private spotTypeToAddNext: SpotType = 'default';
     private spotEditorIsVisible: boolean = false;
+    private shapeEditButtonIsVisible: boolean = false;
     private focusedSpot: Spot = new Spot(0, '', { lat: 0, lng: 0});
     private spotMarkers: SpotMarker[] = [];
     private coordinates: Coordinate[] = [];
@@ -66,7 +68,7 @@ export default class CreationMapView extends Vue {
      */
     private setAddSpotMethodOnMapClick(spotType: SpotType): void {
         if(this.leafletContainer !== null) {
-            this.leafletContainer.style.cursor = 'url(https://github.com/torimons/torimon/blob/95f7cf4c08609b3158296f06ab4339e28c2282be/src/assets/place-24px.cur?raw=true) 18 35, pointer';
+            this.leafletContainer.style.cursor = 'url(https://github.com/torimons/torimon/blob/create-shape-mode/src/assets/place-24px.cur?raw=true) 18 35, pointer '
         }
         this.onMapClick = this.addSpot;
         this.spotTypeToAddNext = spotType;
@@ -77,7 +79,10 @@ export default class CreationMapView extends Vue {
      * セットし，クリック時に何も行われないようにする
      * EditorToolBarコンポーネントでclickSpotイベント以外が発生した時に実行される
      */
-    private setEmptyMethodOnMapClick(): void {
+    private setDefaultMethodOnMapClick(): void {
+        if(this.leafletContainer !== null) {
+            this.leafletContainer.style.removeProperty('cursor');
+        }
         this.onMapClick = (e: any) => {
             this.spotEditorIsVisible = false;
         };
@@ -128,6 +133,7 @@ export default class CreationMapView extends Vue {
         this.spotMarkers = this.spotMarkers
             .filter((marker) => marker.getSpot().getId() !== this.focusedSpot.getId());
         this.focusedSpot.getParentMap()?.removeSpot(this.focusedSpot.getId());
+        this.displayPolygons(this.map.getSpots());
     }
 
     /**
@@ -142,6 +148,7 @@ export default class CreationMapView extends Vue {
         if(this.leafletContainer !== null) {
             this.leafletContainer.style.cursor = 'crosshair';
         }
+        this.shapeEditButtonIsVisible = true;
         this.onMapClick = this.addPoint;
     }
 
@@ -176,7 +183,7 @@ export default class CreationMapView extends Vue {
         if(this.leafletContainer !== null) {
             this.leafletContainer.style.removeProperty('cursor');
         }
-        this.setEmptyMethodOnMapClick();
+        this.shapeEditButtonIsVisible = false;
         this.coordinates.push(this.coordinates[0]);
         if (this.routeLine !== null) {
             this.routeLine.remove();
@@ -194,6 +201,17 @@ export default class CreationMapView extends Vue {
         this.focusedSpot.setShape(shape);
         this.displayPolygons(this.map.getSpots());
         this.coordinates = [];
+
+        /**
+         * 始点のCircleMarkerがクリックされた場合に本addEndPointメソッドは呼ばれるが,
+         * その直後に必ずmapのクリックイベントも発生するため，遅延を設けないと
+         * defaultMethodが勝手に呼ばれてしまう
+         * またこのメソッドが呼ばれる際のクリックをダブルクリックで行うと，
+         * 500ms以内にmapのクリックイベントが発生してしまいaddPointメソッドが呼ばれるので
+         * 500ms間の繋ぎとしてundefinedをセットしている
+         */ 
+        this.onMapClick = (e: any) => undefined;
+        setTimeout(this.setDefaultMethodOnMapClick, 500);
     }
 
     /**
@@ -241,6 +259,18 @@ export default class CreationMapView extends Vue {
             },
         });
         this.lMap.addLayer(this.polygonLayer);
+    }
+
+    private onSwitchEditorToolBarMode() {
+        console.log('onSwitchEditorToolBarMode');
+        this.shapeEditButtonIsVisible = false;
+        this.coordinates = [];
+        if (this.routeLine !== null) {
+            this.routeLine.remove();
+            this.routeLine = null;
+        }
+        this.circleMarkers.forEach((marker) => marker.remove());
+        this.circleMarkers = [];
     }
 
     /**
