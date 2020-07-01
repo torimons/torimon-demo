@@ -1,16 +1,22 @@
 <template>
-	<div id="map-list">
-        <v-list
-            class="overflow-y-auto"
+  <div id="map-list">
+    <v-container fluid>
+      <v-row>
+        <v-col
+          v-for="mapSearchResult in mapSearchResults"
+          :key="mapSearchResult.getId()"
+          cols="12"
+          sm="6"
+          md="4"
+          lg="3"
         >
-            <MapItem
-                v-for="mapSearchResult in mapSearchResults"
-                v-bind:key="mapSearchResult.getId()"
-                :map="mapSearchResult"
-            >
-            </MapItem>
-        </v-list>
-	</div>
+          <MapItem
+            :map="mapSearchResult"
+          ></MapItem>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
 <script lang="ts" src='./index.ts'>

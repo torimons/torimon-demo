@@ -6,13 +6,17 @@ import { mapViewMutations } from '@/store';
 export default class MapDetailCard extends Vue {
     public dialog: boolean = false;
 
-    @Prop() private map!: Map;
+    @Prop()
+    private map!: Map;
+
     private name: string = 'Name section';
     private description: string = 'Desctiption section';
+    private attachment: string = '';
 
     private mounted() {
         this.name = this.map.getName();
         this.description = this.map.getDescription() || '';
+        this.attachment = 'https://picsum.photos/id/' + String(this.map.getId() + 1000) + '/200/300';
     }
 
     /**
