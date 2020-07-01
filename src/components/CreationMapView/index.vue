@@ -43,6 +43,7 @@ html,
 body,
 #creation-map-view {
   height: 100%;
+  cursor: pointer
 }
 #map {
   position: relative;

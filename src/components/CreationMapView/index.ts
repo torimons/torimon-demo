@@ -25,6 +25,7 @@ export default class CreationMapView extends Vue {
     private circleMarkers: L.CircleMarker[] = [];
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
     private controlLayer: L.Control.Layers = L.control.layers({}, {});
+    private leafletContainer!: HTMLElement | null;
     private map: Map = new Map(0, 'New Map', {
         topL: {lat: 0, lng: 0},
         botR: {lat: 0, lng: 0},
@@ -53,6 +54,9 @@ export default class CreationMapView extends Vue {
         this.lMap.on('click', (e) => this.onMapClick(e));
         const pane = this.lMap.createPane("markerPane");
         pane.style.zIndex = '620';
+        if(document.querySelector('.leaflet-container') !== null) {
+            this.leafletContainer = document.querySelector('.leaflet-container') as HTMLElement;
+        }
     }
 
     /**
@@ -61,6 +65,9 @@ export default class CreationMapView extends Vue {
      * @param spotType クリックされたスポットの種類 (clickSpotイベントから送られてくる)
      */
     private setAddSpotMethodOnMapClick(spotType: SpotType): void {
+        if(this.leafletContainer !== null) {
+            this.leafletContainer.style.cursor = 'url(/src/assets/place-24px.cur), pointer';
+        }
         this.onMapClick = this.addSpot;
         this.spotTypeToAddNext = spotType;
     }
@@ -132,6 +139,9 @@ export default class CreationMapView extends Vue {
     }
 
     private setAddPointMethodOnMapClick(): void {
+        if(this.leafletContainer !== null) {
+            this.leafletContainer.style.cursor = 'crosshair';
+        }
         this.onMapClick = this.addPoint;
     }
 
@@ -163,6 +173,9 @@ export default class CreationMapView extends Vue {
     }
 
     private addEndPoint(e: any): void {
+        if(this.leafletContainer !== null) {
+            this.leafletContainer.style.removeProperty('cursor');
+        }
         this.setEmptyMethodOnMapClick();
         this.coordinates.push(this.coordinates[0]);
         if (this.routeLine !== null) {
