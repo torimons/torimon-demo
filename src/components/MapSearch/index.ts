@@ -16,7 +16,7 @@ export default class MapSearch extends Vue {
     private mapListIsVisible: boolean = false;
     private targetMaps: Map[] = [];
     private mapSearchResults: Map[] = [];
-    private search!: Search;
+    private search!: Search<Map>;
     private backgroundColor: 'transparent' | 'white' = 'transparent';
 
     public mounted() {
