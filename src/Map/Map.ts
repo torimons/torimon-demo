@@ -195,10 +195,9 @@ export default class Map {
      * @return 検索対象文字列
      */
     private generateSearchTargetString(): string {
-        let searchTargetString: string = this.name;
-        if (this.description !== undefined) {
-            searchTargetString += this.description;
+        if (this.description === undefined) {
+            return this.name;
         }
-        return searchTargetString;
+        return this.name + this.description;
     }
 }

@@ -1,4 +1,4 @@
-import { Coordinate, Shape } from '@/store/types.ts';
+import { Coordinate, Shape, SpotType } from '@/store/types.ts';
 import Map from '@/Map/Map.ts';
 
 export default class Spot {
@@ -7,14 +7,15 @@ export default class Spot {
     private lastViewedDetailMap: Map | undefined = undefined;
 
     constructor(
-        private id: number,
-        private name: string,
-        private coordinate: Coordinate,
-        private shape?: Shape,
-        private floorName?: string,
-        private description?: string,
-        private attachment?: [{name: string, url: string}],
-    ) {
+            private id: number,
+            private name: string,
+            private coordinate: Coordinate,
+            private shape?: Shape,
+            private floorName?: string,
+            private description?: string,
+            private attachment?: [{name: string, url: string}],
+            private type?: SpotType ) {
+        /* 何もしない */
     }
 
     /**
@@ -80,6 +81,34 @@ export default class Spot {
      */
     public getAttachment(): [{name: string, url: string}] | undefined {
         return this.attachment;
+    }
+
+    /**
+     * スポットのtypeを返す
+     * @return スポットのtype, undefinedの場合'default'を返す
+     */
+    public getType(): SpotType {
+        if (this.type === undefined) {
+            return 'default';
+        }
+        return this.type;
+    }
+
+    /**
+     * スポットのアイコン名を返す
+     * @return アイコン名, 存在しない場合'place'アイコン
+     */
+    public getIconName(): string {
+        const iconNameMaps: Array<{ key: SpotType, iconName: string }> = [
+            { key: 'default',       iconName: 'place' },
+            { key: 'withDetailMap', iconName: 'add_location' },
+            { key: 'restroom',      iconName: 'wc' },
+        ];
+        const iconName = iconNameMaps.find((iconNameMap) => iconNameMap.key === this.getType())?.iconName;
+        if (iconName === undefined) {
+            throw new Error('Illegal implements of "iconNameMaps".');
+        }
+        return iconName;
     }
 
     /**

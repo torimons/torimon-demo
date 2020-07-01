@@ -1,22 +1,25 @@
 import L, {LatLngExpression} from 'leaflet';
 import { mapViewMutations, mapViewGetters } from '@/store';
 import Spot from '@/Spot/Spot';
+import { SpotType } from '@/store/types';
 
-export default class DefaultSpotMarker extends L.Marker {
+export default class SpotMarker extends L.Marker {
     private spot: Spot;
     private spotName!: string;
     private normalColor: string = '#3F8373';
     private selectedColor: string = '#AE56B3';
     private nameLabelMarker!: L.Marker;
-    private icon: L.DivIcon = L.divIcon({
-        className: 'custom-div-icon',
-        html: `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${this.normalColor};">room</i>`,
-        iconAnchor: [24, 50],
-    });
+    private iconName: string = 'place';
 
     constructor(spot: Spot) {
         super(spot.getCoordinate());
-        this.setIcon(this.icon);
+        this.iconName = spot.getIconName();
+        const icon = L.divIcon({
+            className: 'custom-div-icon',
+            html: `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${this.normalColor};">${this.iconName}</i>`,
+            iconAnchor: [24, 50],
+        });
+        this.setIcon(icon);
         this.spotName = spot.getName();
         this.spot = spot;
         this.createNameLabelMarker(spot.getCoordinate());
@@ -51,7 +54,7 @@ export default class DefaultSpotMarker extends L.Marker {
     public setSelected(isSelected: boolean): void {
         const color = isSelected ? this.selectedColor : this.normalColor;
         const htmlTemplate =
-            `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${color};">room</i>`;
+            `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${color};">${this.iconName}</i>`;
         const icon = L.divIcon({
             className: 'custom-div-icon',
             html: htmlTemplate,
