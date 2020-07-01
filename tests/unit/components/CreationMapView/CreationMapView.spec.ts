@@ -8,6 +8,7 @@ import Map from '@/Map/Map';
 import Spot from '@/Spot/Spot';
 import SpotMarker from '@/components/MapView/Marker/SpotMarker';
 import L from 'leaflet';
+import SpotEditor from '@/components/SpotEditor';
 
 
 describe('components/CreationMapView', () => {
@@ -120,4 +121,37 @@ describe('components/CreationMapView', () => {
         const actualZoomLevel: number = wrapper.vm.lMap.getZoom();
         expect(actualZoomLevel).toBeLessThan(17);
     });
+
+    it('addイベントによってfocusedSpotに詳細マップが追加される', () => {
+        const spot: Spot = wrapper.vm.focusedSpot;
+        expect(spot.getDetailMaps().length).toBe(0);
+        wrapper.find(SpotEditor).vm.$emit('add');
+        expect(spot.getDetailMaps().length).toBe(1);
+    });
+
+    it('duplicateDetailMapで詳細マップを複製', () => {
+        const testBounds = {
+            topL: {lat: 0, lng: 0},
+            botR: {lat: 0, lng: 0},
+        };
+        const testDetailMap = new Map(0, 'testMap', testBounds);
+        const spot: Spot = wrapper.vm.focusedSpot;
+        expect(spot.getDetailMaps().length).toBe(0);
+        wrapper.find(SpotEditor).vm.$emit('dup', testDetailMap);
+        expect(spot.getDetailMaps().length).toBe(1);
+    });
+
+    it('deleteDetailMapで詳細マップを削除', () => {
+        const testBounds = {
+            topL: {lat: 0, lng: 0},
+            botR: {lat: 0, lng: 0},
+        };
+        const testDetailMap = new Map(0, 'testMap', testBounds);
+        const spot: Spot = wrapper.vm.focusedSpot;
+        spot.addDetailMaps([testDetailMap]);
+        expect(spot.getDetailMaps().length).toBe(1);
+        wrapper.find(SpotEditor).vm.$emit('del', testDetailMap.getId());
+        expect(spot.getDetailMaps().length).toBe(0);
+    });
+
 });
