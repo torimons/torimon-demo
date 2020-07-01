@@ -33,10 +33,10 @@ describe('MapItemコンポーネントのテスト', () => {
 
     it('MapItemをクリックするとopenMapDetailCardが呼び出されMapDetailCardが表示される', () => {
         // クリック前は非表示
-        expect(wrapper.find('.v-dialog').exists()).toBe(false);
+        expect(wrapper.vm.mapDialog.dialog).toBe(false);
         wrapper.find('.v-card').trigger('click');
         // クリック後は表示される
-        expect(wrapper.find('.v-dialog').exists()).toBe(true);
+        expect(wrapper.vm.mapDialog.dialog).toBe(true);
     });
 
     it('MapItemにMapのnameとdescriptionがセットされている', () => {
