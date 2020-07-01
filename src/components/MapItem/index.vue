@@ -11,10 +11,10 @@
                 </v-list-item-content>
             </v-list-item>
         </v-card>
-        <MapDetailCard
+        <map-detail-card
             ref="mapDialog"
             :map="map"
-        ></MapDetailCard>
+        ></map-detail-card>
     </div>
 </template>
 
