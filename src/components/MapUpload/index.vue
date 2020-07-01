@@ -61,6 +61,8 @@
                         color="#3F8373"
                         class="ma-2 white--text"
                         @click="upload()"
+                        :loading="loading"
+                        :disabled="loading"
                     >
                         アップロード
                         <v-icon right>mdi-cloud-upload</v-icon>

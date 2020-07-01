@@ -45,11 +45,10 @@ export default class MapUpload extends Vue {
     }
 
     /**
-     * Uploadボタンを押した時の処理
+     * アップロードボタンを押した時の処理
      * サーバーにデータをアップロードする
      */
-    public onClickUpload() {
-        // submit to server
+    public upload() {
         // とりあえずボタンクリック時に3秒待つ処理を与えている
         this.loading = !this.loading;
         setTimeout(() => (this.loading = false), 3000);
