@@ -16,11 +16,11 @@
                     <v-row justify="center">
                         <v-col cols="12" md="4">
                             <v-textarea
-                                v-model='detailOfMap'
+                                v-model='mapDescription'
                                 label='マップの詳細'
                                 rows="1"
                                 outlined
-                                :rules='detailOfMapRules'
+                                :rules='mapDescriptionRules'
                                 auto-grow
                             />
                         </v-col>
