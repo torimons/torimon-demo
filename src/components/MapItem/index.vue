@@ -15,10 +15,6 @@
         {{ description }}
       </v-card-subtitle>
     </v-card>
-    <map-detail-card
-        ref="mapDialog"
-        :map="map"
-    ></map-detail-card>
   </div>
 </template>
 

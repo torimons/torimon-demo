@@ -1,16 +1,8 @@
 import { Component, Prop, Vue, Emit, Watch, Ref } from 'vue-property-decorator';
-import { mapViewMutations } from '@/store';
 import Map from '@/Map/Map.ts';
-import MapDetailCard from '@/components/MapDetailCard/index.vue';
-import MapDetailCardType from '@/components/MapDetailCard';
 
-@Component({
-    components: {
-        MapDetailCard,
-    },
-})
+@Component
 export default class MapItem extends Vue {
-    @Ref() private mapDialog!: MapDetailCardType;
     @Prop() private map!: Map;
     private name: string = '';
     private description: string = '';
@@ -23,10 +15,11 @@ export default class MapItem extends Vue {
     }
 
     /**
-     * MapDetailCardを開く
+     * MapItemがクリックされると呼び出され、詳細マップダイアログを表示する
+     * イベントをemitする
      */
-    private openDialog() {
-        this.mapDialog.dialog = true;
+    private openDialog(): void {
+        this.$emit('openDialog', this.map);
     }
 
 }

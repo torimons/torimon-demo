@@ -31,12 +31,9 @@ describe('MapItemコンポーネントのテスト', () => {
         });
     });
 
-    it('MapItemをクリックするとopenMapDetailCardが呼び出されMapDetailCardが表示される', () => {
-        // クリック前は非表示
-        expect(wrapper.vm.mapDialog.dialog).toBe(false);
+    it('MapItemをクリックするとマップ詳細ダイアログを表示するイベントをemitする', () => {
         wrapper.find('.v-card').trigger('click');
-        // クリック後は表示される
-        expect(wrapper.vm.mapDialog.dialog).toBe(true);
+        expect(wrapper.emitted().openDialog).toBeTruthy();
     });
 
     it('MapItemにMapのnameとdescriptionがセットされている', () => {

@@ -1,47 +1,38 @@
 <template>
-  <div data-app>
-    <v-dialog
-      v-model="dialog"
-      persistent
-      no-click-animation
-      max-width="500"
-    >
-      <v-card
-        class="d-flex flex-column"
+  <v-card
+    class="d-flex flex-column"
+  >
+    <v-card-title>{{ name }}</v-card-title>
+    <v-card-text>{{ description }}</v-card-text>
+    <v-divider></v-divider>
+    <v-container>
+      <v-img
+        :src="attachment"
+        style="height: 40vh;"
+      ></v-img>
+    </v-container>
+    <v-divider></v-divider>
+    <v-spacer></v-spacer>
+    <v-card-actions>
+      <v-btn
+        id="close"
+        text
+        @click="close"
       >
-        <v-card-title>{{ name }}</v-card-title>
-        <v-card-text>{{ description }}</v-card-text>
-        <v-divider></v-divider>
-        <v-container>
-          <v-img
-            :src="attachment"
-            style="height: 40vh;"
-          ></v-img>
-        </v-container>
-        <v-divider></v-divider>
-        <v-spacer></v-spacer>
-        <v-card-actions>
-          <v-btn
-            id="close"
-            text
-            @click="close"
-          >
-            Close
-          </v-btn>
-          <v-spacer></v-spacer>
-          <router-link to="/MainView">
-            <v-btn
-              id="openMap"
-              text
-              @click="openMap"
-            >
-              Open Map
-            </v-btn>
-          </router-link>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
+        Close
+      </v-btn>
+      <v-spacer></v-spacer>
+      <router-link to="/MainView">
+        <v-btn
+          id="openMap"
+          text
+          @click="openMap"
+        >
+          Open Map
+        </v-btn>
+      </router-link>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script lang="ts" src="./index.ts"></script>

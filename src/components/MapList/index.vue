@@ -10,11 +10,21 @@
           md="4"
           lg="3"
         >
-          <MapItem
+          <map-item
             :map="mapSearchResult"
-          ></MapItem>
+            @openDialog="openMapDetailDialog"
+          ></map-item>
         </v-col>
       </v-row>
+      <v-dialog
+        v-model="dialog"
+        max-width="500"
+      >
+        <map-detail-card
+          :map=selectedMap
+          @closeDialog="closeMapDetailDialog"
+        ></map-detail-card>
+      </v-dialog>
     </v-container>
   </div>
 </template>
