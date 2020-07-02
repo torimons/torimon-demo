@@ -15,7 +15,7 @@
     <v-spacer></v-spacer>
     <v-card-actions>
       <v-btn
-        id="close"
+        class="close"
         text
         @click="close"
       >
@@ -24,7 +24,7 @@
       <v-spacer></v-spacer>
       <router-link to="/MainView">
         <v-btn
-          id="openMap"
+          class="openMap"
           text
           @click="openMap"
         >
