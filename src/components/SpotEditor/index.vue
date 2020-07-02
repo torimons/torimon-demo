@@ -1,5 +1,5 @@
 <template>
-  <div id="spot-editor" v-show="isVisible">
+  <div id="spot-editor" v-if="isVisible">
     <v-card
       outlined
     >
@@ -36,6 +36,7 @@
           class="ma-1"
           color="#3fa590"
           outlined
+          :disabled="disabledShapeEditButton"
           @click="$emit('clickAddShapeButton')"
         >
             <span>形状</span>

@@ -10,6 +10,7 @@ import Spot from '@/Spot/Spot';
 import SpotMarker from '@/components/MapView/Marker/SpotMarker';
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection, Polygon } from 'geojson';
 import { Action } from '../EditorToolBar';
+import ShapeEditor from './ShapeEditor';
 
 @Component({
     components: {
@@ -20,12 +21,10 @@ import { Action } from '../EditorToolBar';
 export default class CreationMapView extends Vue {
     private lMap!: L.Map;
     private defaultZoomLevel: number = 17;
-    private tileLayer!: L.TileLayer;
-    private routeLayer?: L.Layer;
-    private routeLine: L.Polyline | null = null;
-    private circleMarkers: L.CircleMarker[] = [];
-    private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
-    private controlLayer: L.Control.Layers = L.control.layers({}, {});
+    // private routeLine: L.Polyline | null = null;
+    // private circleMarkers: L.CircleMarker[] = [];
+    // private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
+    // private controlLayer: L.Control.Layers = L.control.layers({}, {});
     private leafletContainer!: HTMLElement | null;
     private map: Map = new Map(0, 'New Map', {
         topL: {lat: 0, lng: 0},
@@ -33,11 +32,12 @@ export default class CreationMapView extends Vue {
     });
     // 次にクリックしたときに設置されるスポットタイプ
     private spotTypeToAddNext: SpotType = 'default';
-    private spotEditorIsVisible: boolean = false;
     private shapeEditButtonIsVisible: boolean = false;
-    private focusedSpot: Spot = new Spot(0, '', { lat: 0, lng: 0});
+    private disabledShapeEditButtonInSpotEditor: boolean = false;
+    private focusedSpot: Spot | null = null;
     private spotMarkers: SpotMarker[] = [];
-    private coordinates: Coordinate[] = [];
+    // private coordinates: Coordinate[] = [];
+    private shapeEditor!: ShapeEditor;
 
     /**
      * とりあえず地図の表示を行なっています．
@@ -47,18 +47,17 @@ export default class CreationMapView extends Vue {
         const rootMapCenter: Coordinate = Map.calculateCenter(mapViewGetters.rootMap.getBounds());
         this.lMap = L.map('map', {zoomControl: false})
             .setView([rootMapCenter.lat, rootMapCenter.lng], this.defaultZoomLevel);
-        this.tileLayer = L.tileLayer(
+        L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 23,
                 maxNativeZoom: 19,
             },
         ).addTo(this.lMap);
         this.lMap.on('click', (e) => this.onMapClick(e));
-        const pane = this.lMap.createPane("markerPane");
-        pane.style.zIndex = '620';
-        if(document.querySelector('.leaflet-container') !== null) {
+        if (document.querySelector('.leaflet-container') !== null) {
             this.leafletContainer = document.querySelector('.leaflet-container') as HTMLElement;
         }
+        this.shapeEditor = new ShapeEditor(this.lMap);
     }
 
     /**
@@ -67,8 +66,8 @@ export default class CreationMapView extends Vue {
      * @param spotType クリックされたスポットの種類 (clickSpotイベントから送られてくる)
      */
     private setAddSpotMethodOnMapClick(spotType: SpotType): void {
-        if(this.leafletContainer !== null) {
-            this.leafletContainer.style.cursor = 'url(https://github.com/torimons/torimon/blob/create-shape-mode/src/assets/place-24px.cur?raw=true) 18 35, pointer '
+        if (this.leafletContainer !== null) {
+            this.leafletContainer.style.cursor = 'url(https://github.com/torimons/torimon/blob/create-shape-mode/src/assets/place-24px.cur?raw=true) 18 35, pointer ';
         }
         this.onMapClick = this.addSpot;
         this.spotTypeToAddNext = spotType;
@@ -80,11 +79,11 @@ export default class CreationMapView extends Vue {
      * EditorToolBarコンポーネントでclickSpotイベント以外が発生した時に実行される
      */
     private setDefaultMethodOnMapClick(): void {
-        if(this.leafletContainer !== null) {
+        if (this.leafletContainer !== null) {
             this.leafletContainer.style.removeProperty('cursor');
         }
         this.onMapClick = (e: any) => {
-            this.spotEditorIsVisible = false;
+            this.unfocusedMarker();
         };
     }
 
@@ -111,167 +110,204 @@ export default class CreationMapView extends Vue {
         this.switchFocusedMarker(newMarker);
     }
 
+    private unfocusedMarker(): void {
+        if (this.focusedSpot !== null) {
+            const focusedMarker = this.spotMarkers
+                .find(((marker) => marker.getSpot().getId() === (this.focusedSpot as Spot).getId()));
+            focusedMarker?.setSelected(false);
+        }
+        this.focusedSpot = null;
+    }
+
     /**
      * 地図上でフォーカスされるマーカーを切り替える
      * @param newMarker 新しくフォーカスされるマーカー
      */
     private switchFocusedMarker(newMarker: SpotMarker): void {
-        const focusedMarker = this.spotMarkers
-            .find(((marker) => marker.getSpot().getId() === this.focusedSpot.getId()));
-        focusedMarker?.setSelected(false);
+        this.unfocusedMarker();
         newMarker.setSelected(true);
         this.focusedSpot = newMarker.getSpot();
-        this.spotEditorIsVisible = true;
     }
 
     /**
      * フォーカスされているスポットをマップから消去する
      */
     private deleteFocusedSpot(): void {
-        this.spotEditorIsVisible = false;
-        this.spotMarkers.find((marker) => marker.getSpot().getId() === this.focusedSpot.getId())?.remove();
+        if (this.focusedSpot === null) {
+            return;
+        }
+        const focusedSpot: Spot = this.focusedSpot;
+        this.spotMarkers.find((marker) => marker.getSpot().getId() === focusedSpot.getId())?.remove();
         this.spotMarkers = this.spotMarkers
-            .filter((marker) => marker.getSpot().getId() !== this.focusedSpot.getId());
-        this.focusedSpot.getParentMap()?.removeSpot(this.focusedSpot.getId());
-        this.displayPolygons(this.map.getSpots());
+            .filter((marker) => marker.getSpot().getId() !== focusedSpot.getId());
+        focusedSpot.getParentMap()?.removeSpot(focusedSpot.getId());
+        this.shapeEditor.displayPolygons(this.map.getSpots());
+        this.shapeEditor.removeShapeEditLine();
+        this.shapeEditButtonIsVisible = false;
+        this.setDefaultMethodOnMapClick();
+        this.focusedSpot = null;
     }
 
     /**
      * フォーカスされている地図上のスポットマーカーの名前表示を更新する
      */
     private updateFocusedMarkerName(): void {
+        if (this.focusedSpot === null) {
+            return;
+        }
         this.spotMarkers
-            .find((marker) => marker.getSpot().getId() === this.focusedSpot.getId())?.addTo(this.lMap);
+            .find((marker) => marker.getSpot().getId() === (this.focusedSpot as Spot).getId())?.addTo(this.lMap);
     }
 
     private setAddPointMethodOnMapClick(): void {
-        if(this.leafletContainer !== null) {
+        this.disabledShapeEditButtonInSpotEditor = true;
+        if (this.leafletContainer !== null) {
             this.leafletContainer.style.cursor = 'crosshair';
         }
         this.shapeEditButtonIsVisible = true;
-        this.onMapClick = this.addPoint;
-    }
+        this.onMapClick = (e: { latlng: L.LatLngExpression, onAddEndPoint: (shape: Shape) => void }) => {
+            e.onAddEndPoint = (shape: Shape) => {
+                if (this.leafletContainer !== null) {
+                    this.leafletContainer.style.removeProperty('cursor');
+                }
+                this.shapeEditButtonIsVisible = false;
+                this.focusedSpot?.setShape(shape);
+                this.shapeEditor.displayPolygons(this.map.getSpots());
 
-    private addPoint(e: any): void {
-        this.coordinates.push(e.latlng);
+                /**
+                 * 始点のCircleMarkerがクリックされた場合に本addEndPointメソッドは呼ばれるが,
+                 * その直後に必ずmapのクリックイベントも発生するため，遅延を設けないと
+                 * defaultMethodが勝手に呼ばれてしまう
+                 * またこのメソッドが呼ばれる際のクリックをダブルクリックで行うと，
+                 * 500ms以内にmapのクリックイベントが発生してしまいaddPointメソッドが呼ばれるので
+                 * 500ms間の繋ぎとしてundefinedをセットしている
+                 */
+                this.onMapClick = (event: any) => undefined;
+                setTimeout(this.setDefaultMethodOnMapClick, 500);
+                this.disabledShapeEditButtonInSpotEditor = false;
 
-        const circleMarker: L.CircleMarker = L.circleMarker(e.latlng, {
-            pane: 'markerPane', radius: 6, weight: 1, color: 'black', fill: true, fillColor: 'white', fillOpacity: 1,
-        });
-        if(this.circleMarkers.length === 0) {
-            circleMarker.on('click', this.addEndPoint);
-        }
-        circleMarker.addTo(this.lMap);
-        this.circleMarkers.push(circleMarker)
-
-        if (this.coordinates.length > 1) {
-            if (this.routeLine !== null) {
-                console.log(this.routeLine);
-                this.routeLine.remove();
-                this.controlLayer.removeLayer(this.routeLine);
-            }
-            this.routeLine = L.polyline(this.coordinates, {
-                color: '#555555',
-                weight: 5,
-                opacity: 0.7,
-            });
-            this.routeLine.addTo(this.lMap);
-        }
-    }
-
-    private addEndPoint(e: any): void {
-        if(this.leafletContainer !== null) {
-            this.leafletContainer.style.removeProperty('cursor');
-        }
-        this.shapeEditButtonIsVisible = false;
-        this.coordinates.push(this.coordinates[0]);
-        if (this.routeLine !== null) {
-            this.routeLine.remove();
-            this.routeLine = null;
-        }
-        this.circleMarkers.forEach((marker) => marker.remove());
-        this.circleMarkers = [];
-        const coords: number[][][] = [this.coordinates.map((coordinate) => {
-            return [coordinate.lng, coordinate.lat];
-        })];
-        const shape: Shape = {
-            type: 'Polygon',
-            coordinates: coords,
-        };
-        this.focusedSpot.setShape(shape);
-        this.displayPolygons(this.map.getSpots());
-        this.coordinates = [];
-
-        /**
-         * 始点のCircleMarkerがクリックされた場合に本addEndPointメソッドは呼ばれるが,
-         * その直後に必ずmapのクリックイベントも発生するため，遅延を設けないと
-         * defaultMethodが勝手に呼ばれてしまう
-         * またこのメソッドが呼ばれる際のクリックをダブルクリックで行うと，
-         * 500ms以内にmapのクリックイベントが発生してしまいaddPointメソッドが呼ばれるので
-         * 500ms間の繋ぎとしてundefinedをセットしている
-         */ 
-        this.onMapClick = (e: any) => undefined;
-        setTimeout(this.setDefaultMethodOnMapClick, 500);
-    }
-
-    /**
-     * spotの情報からshapeの情報を取り出してleafletで扱える形式に変換する．
-     * @param spots GeoJson形式に変換したいspotの配列 .
-     * @return GeoJson形式のshapeデータ
-     */
-    private spotShapeToGeoJson(spots: Spot[]): GeoJsonObject {
-        const shapes: Feature[] = [];
-        for (const spot of spots) {
-            const shape = spot.getShape() as GeometryObject;
-            const feature: Feature = {
-                properties: {},
-                type: 'Feature',
-                geometry: shape,
             };
-            shapes.push(feature);
-        }
-        const features: FeatureCollection = {
-            type: 'FeatureCollection',
-            features: shapes,
+            this.shapeEditor.addPoint(e);
         };
-        return features as GeoJsonObject;
     }
 
-    /**
-     * 指定されたスポットのポリゴンを表示する
-     * polygonLayerメンバを変更して表示内容を変える．
-     * @param spotsForDisplay 表示するスポットの配列
-     */
-    private displayPolygons(spotsForDisplay: Spot[]): void {
-        console.log(spotsForDisplay);
-        // すでに表示されているポリゴンがある場合は先に削除する
-        if (this.polygonLayer !== undefined) {
-            this.lMap.removeLayer(this.polygonLayer);
-        }
-        const shapeGeoJson: GeoJsonObject = this.spotShapeToGeoJson(spotsForDisplay);
-        this.polygonLayer = new L.GeoJSON(shapeGeoJson, {
-            style: {
-                color: '#555555',
-                weight: 2,
-                opacity: 0.1,
-                fillColor: '#555555',
-                fillOpacity: 0.3,
-            },
-        });
-        this.lMap.addLayer(this.polygonLayer);
-    }
+    // private addPoint(e: any): void {
+    //     this.coordinates.push(e.latlng);
+
+    //     const circleMarker: L.CircleMarker = L.circleMarker(e.latlng, {
+    //         pane: 'markerPane', radius: 6, weight: 1, color: 'black', fill: true, fillColor: 'white', fillOpacity: 1,
+    //     });
+    //     if (this.circleMarkers.length === 0) {
+    //         circleMarker.on('click', this.addEndPoint);
+    //     }
+    //     circleMarker.addTo(this.lMap);
+    //     this.circleMarkers.push(circleMarker);
+
+    //     if (this.coordinates.length > 1) {
+    //         if (this.routeLine !== null) {
+    //             this.routeLine.remove();
+    //             this.controlLayer.removeLayer(this.routeLine);
+    //         }
+    //         this.routeLine = L.polyline(this.coordinates, {
+    //             color: '#555555',
+    //             weight: 5,
+    //             opacity: 0.7,
+    //         });
+    //         this.routeLine.addTo(this.lMap);
+    //     }
+    // }
+
+    // private addEndPoint(e: any): void {
+    //     if (this.leafletContainer !== null) {
+    //         this.leafletContainer.style.removeProperty('cursor');
+    //     }
+    //     this.shapeEditButtonIsVisible = false;
+    //     this.coordinates.push(this.coordinates[0]);
+    //     const coords: number[][][] = [this.coordinates.map((coordinate) => {
+    //         return [coordinate.lng, coordinate.lat];
+    //     })];
+    //     const shape: Shape = {
+    //         type: 'Polygon',
+    //         coordinates: coords,
+    //     };
+    //     this.focusedSpot?.setShape(shape);
+    //     this.displayPolygons(this.map.getSpots());
+    //     this.removeShapeEditLine();
+
+    //     /**
+    //      * 始点のCircleMarkerがクリックされた場合に本addEndPointメソッドは呼ばれるが,
+    //      * その直後に必ずmapのクリックイベントも発生するため，遅延を設けないと
+    //      * defaultMethodが勝手に呼ばれてしまう
+    //      * またこのメソッドが呼ばれる際のクリックをダブルクリックで行うと，
+    //      * 500ms以内にmapのクリックイベントが発生してしまいaddPointメソッドが呼ばれるので
+    //      * 500ms間の繋ぎとしてundefinedをセットしている
+    //      */
+    //     this.onMapClick = (event: any) => undefined;
+    //     setTimeout(this.setDefaultMethodOnMapClick, 500);
+    //     this.disabledShapeEditButtonInSpotEditor = false;
+    // }
+
+    // /**
+    //  * spotの情報からshapeの情報を取り出してleafletで扱える形式に変換する．
+    //  * @param spots GeoJson形式に変換したいspotの配列 .
+    //  * @return GeoJson形式のshapeデータ
+    //  */
+    // private spotShapeToGeoJson(spots: Spot[]): GeoJsonObject {
+    //     const shapes: Feature[] = [];
+    //     for (const spot of spots) {
+    //         const shape = spot.getShape() as GeometryObject;
+    //         const feature: Feature = {
+    //             properties: {},
+    //             type: 'Feature',
+    //             geometry: shape,
+    //         };
+    //         shapes.push(feature);
+    //     }
+    //     const features: FeatureCollection = {
+    //         type: 'FeatureCollection',
+    //         features: shapes,
+    //     };
+    //     return features as GeoJsonObject;
+    // }
+
+    // /**
+    //  * 指定されたスポットのポリゴンを表示する
+    //  * polygonLayerメンバを変更して表示内容を変える．
+    //  * @param spotsForDisplay 表示するスポットの配列
+    //  */
+    // private displayPolygons(spotsForDisplay: Spot[]): void {
+    //     // すでに表示されているポリゴンがある場合は先に削除する
+    //     if (this.polygonLayer !== undefined) {
+    //         this.lMap.removeLayer(this.polygonLayer);
+    //     }
+    //     const shapeGeoJson: GeoJsonObject = this.spotShapeToGeoJson(spotsForDisplay);
+    //     this.polygonLayer = new L.GeoJSON(shapeGeoJson, {
+    //         style: {
+    //             color: '#555555',
+    //             weight: 2,
+    //             opacity: 0.1,
+    //             fillColor: '#555555',
+    //             fillOpacity: 0.3,
+    //         },
+    //     });
+    //     this.lMap.addLayer(this.polygonLayer);
+    // }
 
     private onSwitchEditorToolBarMode() {
-        console.log('onSwitchEditorToolBarMode');
         this.shapeEditButtonIsVisible = false;
-        this.coordinates = [];
-        if (this.routeLine !== null) {
-            this.routeLine.remove();
-            this.routeLine = null;
-        }
-        this.circleMarkers.forEach((marker) => marker.remove());
-        this.circleMarkers = [];
+        this.shapeEditor.removeShapeEditLine();
+        this.disabledShapeEditButtonInSpotEditor = false;
     }
+
+    // private removeShapeEditLine() {
+    //     if (this.routeLine !== null) {
+    //         this.routeLine.remove();
+    //         this.routeLine = null;
+    //     }
+    //     this.circleMarkers.forEach((marker) => marker.remove());
+    //     this.circleMarkers = [];
+    //     this.coordinates = [];
+    // }
 
     /**
      * マップを拡大する

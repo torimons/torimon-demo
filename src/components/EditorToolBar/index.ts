@@ -18,8 +18,8 @@ export default class EditorToolBar extends Vue {
         { iconName: 'wc',           spotType: 'restroom' },
     ];
     private shapeEditButton: { action: Action, icon: string, color: string } = {
-        action: 'shape', icon: 'edit', color: this.selectedColor
-    }
+        action: 'shape', icon: 'edit', color: this.selectedColor,
+    };
     @Prop()
     private shapeEditButtonIsVisible: boolean = false;
     private selectedMode: Action = 'move';
@@ -83,12 +83,11 @@ export default class EditorToolBar extends Vue {
 
     @Watch('shapeEditButtonIsVisible')
     private switchShapeEditMode(): void {
-        if(this.shapeEditButtonIsVisible) {
+        if (this.shapeEditButtonIsVisible) {
             this.selectedMode = 'shape';
             this.spotButtonColor = this.defaultColor;
             this.buttons.forEach((b) => b.color = this.defaultColor);
-        }
-        else {
+        } else {
             if (this.selectedMode === 'shape') {
                 this.switchMode('move');
             }

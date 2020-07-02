@@ -7,6 +7,8 @@ export default class SpotEditor extends Vue {
     public spot!: Spot;
     @Prop()
     public isVisible!: boolean;
+    @Prop()
+    public disabledShapeEditButton!: boolean;
     public attachment: [{name: string, url: string}] = [{name: '', url: ''}];
     public dialog: boolean = false;
 }

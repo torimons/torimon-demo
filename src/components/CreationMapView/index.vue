@@ -11,8 +11,9 @@
             >
               <SpotEditor
                 @spotInput="updateFocusedMarkerName"
-                :isVisible="spotEditorIsVisible"
-                @close="spotEditorIsVisible = false"
+                :isVisible="focusedSpot !== null"
+                :disabledShapeEditButton="disabledShapeEditButtonInSpotEditor"
+                @close="unfocusedMarker"
                 :spot="focusedSpot"
                 @clickAddShapeButton="setAddPointMethodOnMapClick"
                 @delete="deleteFocusedSpot"
