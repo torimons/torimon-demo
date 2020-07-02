@@ -33,7 +33,7 @@
                                 v-model="dialog"
                                 width="1000"
                             >
-                                <MapUpload
+                                <MapInformationDialog
                                     @closeDialog="dialog = false"
                                 />
                             </v-dialog>
@@ -48,12 +48,12 @@
 <script lang='ts'>
 import { Vue, Component } from 'vue-property-decorator';
 import Menu from '@/components/Menu/index.vue';
-import MapUpload from '@/components/MapUpload/index.vue';
+import MapInformationDialog from '@/components/MapInformationDialog/index.vue';
 
 @Component({
     components: {
         Menu,
-        MapUpload,
+        MapInformationDialog,
     },
 })
 export default class Home extends Vue {

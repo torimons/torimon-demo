@@ -8,7 +8,7 @@ import MapView from '@/components/MapView/index.vue';
         MapView,
     },
 })
-export default class MapUpload extends Vue {
+export default class MapInformationDialog extends Vue {
     private isValidInput: boolean = false;
     private loading: boolean = false;
     private mapName: string = '';
