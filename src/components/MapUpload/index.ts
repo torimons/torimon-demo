@@ -1,4 +1,4 @@
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Emit } from 'vue-property-decorator';
 import { store, mapViewGetters, mapViewMutations } from '@/store';
 import Map from '@/Map/Map.ts';
 import MapView from '@/components/MapView/index.vue';
@@ -13,11 +13,12 @@ export default class MapUpload extends Vue {
     private loading: boolean = false;
     private mapName: string = '';
     private mapDescription: string = '';
+    private dialog: boolean = false;
     private mapNameRules = [
-        (v: string) => !!v || 'マップの名前が必要です',
+        (v: string) => !!v || '地図の名前が必要です',
     ];
     private mapDescriptionRules = [
-        (v: string) => !!v || 'マップの詳細が必要です',
+        (v: string) => !!v || '地図の説明が必要です',
     ];
 
     public mounted() {
@@ -35,20 +36,30 @@ export default class MapUpload extends Vue {
     }
 
     /**
+     * 親コンポーネントにdialogを閉じるイベントを送出する
+     */
+    @Emit('closeDialog')
+    private closeDialog() {
+        // 現状特に実装なし
+        // 地図作成中の場合rootMapの情報を更新するなど？
+    }
+
+    /**
      * 地図が作成されているかのboolを返す
      * @return 地図が作成されていればtrue, まだならfalse
      */
-    public isMapCreated(): boolean {
+    private isMapCreated(): boolean {
         // おそらくrootMapがセットされているかで判定？
         const rootMap = mapViewGetters.rootMap;
-        return rootMap !== undefined;
+        // return rootMap !== undefined;
+        return false;
     }
 
     /**
      * アップロードボタンを押した時の処理
      * サーバーにデータをアップロードする
      */
-    public upload() {
+    private upload() {
         // とりあえずボタンクリック時に3秒待つ処理を与えている
         this.loading = !this.loading;
         setTimeout(() => (this.loading = false), 3000);
