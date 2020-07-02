@@ -1,4 +1,4 @@
-import { Coordinate, Shape, SpotJson } from '@/store/types.ts';
+import { Coordinate, Shape, SpotJson, SpotType } from '@/store/types.ts';
 import Map from '@/Map/Map.ts';
 
 export default class Spot {
@@ -6,13 +6,16 @@ export default class Spot {
     private detailMaps: Map[] = [];
     private lastViewedDetailMap: Map | undefined = undefined;
 
-    constructor(private id: number,
-                private name: string,
-                private coordinate: Coordinate,
-                private shape?: Shape,
-                private floorName?: string,
-                private description?: string,
-                private attachment?: [{name: string, url: string}]) {
+    constructor(
+            private id: number,
+            private name: string,
+            private coordinate: Coordinate,
+            private shape?: Shape,
+            private floorName?: string,
+            private description?: string,
+            private attachment?: [{name: string, url: string}],
+            private type?: SpotType ) {
+        /* 何もしない */
     }
 
     /**
@@ -78,6 +81,34 @@ export default class Spot {
      */
     public getAttachment(): [{name: string, url: string}] | undefined {
         return this.attachment;
+    }
+
+    /**
+     * スポットのtypeを返す
+     * @return スポットのtype, undefinedの場合'default'を返す
+     */
+    public getType(): SpotType {
+        if (this.type === undefined) {
+            return 'default';
+        }
+        return this.type;
+    }
+
+    /**
+     * スポットのアイコン名を返す
+     * @return アイコン名, 存在しない場合'place'アイコン
+     */
+    public getIconName(): string {
+        const iconNameMaps: Array<{ key: SpotType, iconName: string }> = [
+            { key: 'default',       iconName: 'place' },
+            { key: 'withDetailMap', iconName: 'add_location' },
+            { key: 'restroom',      iconName: 'wc' },
+        ];
+        const iconName = iconNameMaps.find((iconNameMap) => iconNameMap.key === this.getType())?.iconName;
+        if (iconName === undefined) {
+            throw new Error('Illegal implements of "iconNameMaps".');
+        }
+        return iconName;
     }
 
     /**
@@ -212,5 +243,40 @@ export default class Spot {
             attachment: this.attachment,
             detailMaps: this.detailMaps.map((m: Map) => m.toJSON()),
         };
+    }
+
+    /*
+     * 検索条件を満たすかを判定する
+     * @param regExp 正規表現オブジェクト
+     * @return bool値，検索対象文字列が正規表現にマッチするか否か
+     */
+
+    public isMatchToRegExp(regExp: RegExp): boolean {
+        // RegExp.test(target:str)は、targetにRegExpがマッチした場合にtrue, マッチしない場合falseを返す.
+        return regExp.test(this.generateSearchTargetString());
+    }
+
+    /**
+     * 検索条件を満たすかを判定する際の文字列を作成する
+     * スポットで検索対象になるのは
+     * - スポット自身の名前
+     * - 親マップの名前
+     * - 親マップの親スポットの名前
+     * - desctiption
+     * の4つ
+     */
+    private generateSearchTargetString(): string {
+        let searchTargetString: string = this.name;
+        const parentMap: Map | undefined = this.parentMap;
+        if (parentMap !== undefined) {
+            const parentSpot = parentMap.getParentSpot();
+            if (parentSpot !== undefined) {
+                searchTargetString += parentSpot.getName();
+            }
+        }
+        if (this.description !== undefined) {
+            searchTargetString += this.description;
+        }
+        return searchTargetString;
     }
 }

@@ -23,9 +23,9 @@ export default class SearchBox extends Vue {
      * 戻るボタンをクリックした時にspotSearchコンポーネントに
      * spotListを閉じるように伝える
      */
-    private exitSpotSearch(): void {
+    private exitSearch(): void {
         // SpotListを非表示するように伝える
-        this.$emit('toggleSpotList', false);
+        this.$emit('toggleList', false);
         this.onFocus = false;
         this.searchWord = '';
         // text-fieldからフォーカスを外す
