@@ -1,13 +1,8 @@
 import { Component, Vue, Emit } from 'vue-property-decorator';
-import { store, mapViewGetters, mapViewMutations } from '@/store';
+import { store, mapViewGetters } from '@/store';
 import Map from '@/Map/Map.ts';
-import MapView from '@/components/MapView/index.vue';
 
-@Component({
-    components: {
-        MapView,
-    },
-})
+@Component
 export default class MapInformationDialog extends Vue {
     private isValidInput: boolean = false;
     private loading: boolean = false;
@@ -22,7 +17,7 @@ export default class MapInformationDialog extends Vue {
     ];
 
     public mounted() {
-        // 地図作成から戻ってきた時フォームに情報を入力しておく
+        // 地図作成から開いた時，フォームに情報を入力しておく
         if (this.isMapCreated()) {
             const rootMap: Map = mapViewGetters.rootMap;
             this.mapName = rootMap.getName();
@@ -50,6 +45,7 @@ export default class MapInformationDialog extends Vue {
      */
     private isMapCreated(): boolean {
         // おそらくrootMapがセットされているかで判定？
+        // 他のコンポーネントとの結合時に修正
         const rootMap = mapViewGetters.rootMap;
         return rootMap !== undefined;
     }
@@ -59,9 +55,9 @@ export default class MapInformationDialog extends Vue {
      * サーバーにデータをアップロードする
      */
     private upload() {
+        // 今後作成予定のアップロード関数を使う
         // とりあえずボタンクリック時に3秒待つ処理を与えている
         this.loading = !this.loading;
         setTimeout(() => (this.loading = false), 3000);
-        // アップロード関数を使う
     }
 }

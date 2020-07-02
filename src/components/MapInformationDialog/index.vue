@@ -68,10 +68,6 @@
                             <v-icon right>mdi-cloud-upload</v-icon>
                         </v-btn>
                     </div>
-
-                    <!-- <div class="mapsample">
-                        <MapView style="height: 500px"/>
-                    </div> -->
                 </div>
                 </v-container>
             </v-card-text>
