@@ -71,6 +71,8 @@ export class MapViewState {
      *   外部モジュールのsampleMapsで初期化
      */
     public rootMap: Map = initMap(sampleMaps);
+    // MapDataConverterの動作確認用
+    // initMapsからの木構造をjsonに変換->木に再変換
     // public rootMap: Map =
     //     MapDataConverter.json2tree(MapDataConverter.tree2json(initMap(sampleMaps)));
 

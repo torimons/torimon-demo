@@ -162,7 +162,7 @@ export default class Map {
             name: this.name,
             bounds: this.bounds,
             floorName: this.floorName,
-            spots: this.spots.map((s: Spot) => s.toJson()),
+            spots: this.spots.map((s: Spot) => s.toJSON()),
         };
     }
 }

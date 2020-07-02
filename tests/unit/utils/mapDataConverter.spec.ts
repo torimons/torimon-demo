@@ -7,6 +7,7 @@ import { before } from 'lodash';
 
 describe('MapDataConverterのテスト', () => {
 
+    // json-serverとの連携を試す時に使ってください
     // it('apiから取得して変換するテスト(確認用)', (done) => {
     //     let res;
     //     axios.get('http://localhost:3000/maps/0').then((response) => {
@@ -19,7 +20,7 @@ describe('MapDataConverterのテスト', () => {
     //     });
     // });
 
-    it('recCreateMapでJsonのプロパティとMapインスタンスのプロパティが一致する', () => {
+    it('createMapでJsonのプロパティとMapインスタンスのプロパティが一致する', () => {
         const testBounds = {
             topL: {lat: 123, lng: 10},
             botR: {lat: 132, lng: 5},
@@ -32,7 +33,7 @@ describe('MapDataConverterのテスト', () => {
             floorName: '1F',
         };
         // 変換
-        const actualInstance = (MapDataConverter as any).recCreateMap(testJson);
+        const actualInstance = (MapDataConverter as any).createMap(testJson);
         const actualProperties = {
             id: (actualInstance as any).id,
             name: (actualInstance as any).name,
@@ -42,7 +43,7 @@ describe('MapDataConverterのテスト', () => {
         expect(actualProperties).toStrictEqual(testJson);
     });
 
-    it('recCreateSpotでJsonのプロパティとSpotインスタンスのプロパティが一致する', () => {
+    it('createSpotでJsonのプロパティとSpotインスタンスのプロパティが一致する', () => {
         const testCoord = { lat: 123, lng: 10 };
         // 変換するjsonオブジェクト
         const testJson = {
@@ -61,7 +62,7 @@ describe('MapDataConverterのテスト', () => {
             attachment: [],
         };
         // 変換
-        const actualInstance = (MapDataConverter as any).recCreateSpot(testJson);
+        const actualInstance = (MapDataConverter as any).createSpot(testJson);
         const actualProperties = {
             id: (actualInstance as any).id,
             name: (actualInstance as any).name,
@@ -76,7 +77,7 @@ describe('MapDataConverterのテスト', () => {
 
     it('json2treeがMapのインスタンスを返す', () => {
         // mock
-        (MapDataConverter as any).recCreateSpot = jest.fn(
+        (MapDataConverter as any).createSpot = jest.fn(
             (json) => new Map(0, 'testMap', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}),
         );
         const testJson: any = {test: 0};

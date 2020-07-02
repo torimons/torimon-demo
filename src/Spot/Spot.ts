@@ -201,7 +201,7 @@ export default class Spot {
      * detailMapsプロパティは再起的にtoJSONを呼び出す
      * @return プロパティを入れたオブジェクト
      */
-    public toJson(): object {
+    public toJSON(): object {
         return {
             id: this.id,
             name: this.name,
