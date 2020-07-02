@@ -3,7 +3,6 @@ import { sampleMaps } from '@/store/modules/sampleMaps';
 import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot.ts';
 import MapDataConverter from '@/utils/MapDataConverter';
-import axios from 'axios';
 
 /**
  * RawMap型をMap型に変換する
