@@ -11,7 +11,6 @@ export default class MapDataConverter {
      * @retutn 木構造の根のMapインスタンス
      */
     public static json2tree(mapJson: MapJson): Map {
-        // JSON型にしたいがjson.idとかでアクセスできなくなるのでany型に
         return this.createMap(mapJson);
     }
 
@@ -26,13 +25,13 @@ export default class MapDataConverter {
 
     /**
      * 再帰的にjsonからインスタンスを復元する
-     * 引数のjsonからMapを作成し，spotsをrecCreateSpotに投げる
+     * 引数のjsonからMapを作成し，spotsをcreateSpotに投げる
      * @param json jsonのstring
      * @return Mapインスタンス
      */
     private static createMap(mapJson: MapJson): Map {
         // jsonの根っこからマップインスタンスを作成，
-        // spotsはrecCreateSpotに投げる
+        // spotsはcreateSpotに投げる
         const map = new Map(
             mapJson.id,
             mapJson.name,
@@ -41,7 +40,7 @@ export default class MapDataConverter {
             mapJson.description,
         );
         if (mapJson.spots !== undefined) {
-            // spotsはこの時点ではまだmapJson
+            // spotsはこの時点ではまだJson
             const spots: SpotJson[] = mapJson.spots;
             const spotInstances: Spot[] = spots.map(
                 (spot: any) => this.createSpot(spot),
@@ -56,13 +55,13 @@ export default class MapDataConverter {
 
     /**
      * 再帰的にjsonからインスタンスを復元する
-     * 引数のjsonからSpotを作成し，detailMapsをrecCreateMapに投げる
+     * 引数のjsonからSpotを作成し，detailMapsをcreateMapに投げる
      * @param json jsonのstring
      * @return Spotインスタンス
      */
     private static createSpot(spotJson: SpotJson): Spot {
         // jsonの根っこからマップインスタンスを作成，
-        // detailMapsはrecCreateMapに投げる
+        // detailMapsはcreateMapに投げる
         const spot = new Spot(
             spotJson.id,
             spotJson.name,
@@ -74,7 +73,7 @@ export default class MapDataConverter {
             spotJson.type,
         );
         if (spotJson.detailMaps !== undefined) {
-            // detailMapsはこの時点ではspotJson
+            // detailMapsはこの時点ではJson
             const detailMaps: MapJson[] = spotJson.detailMaps;
             const mapInstances: Map[] = detailMaps.map(
                 (m: any) => this.createMap(m),
