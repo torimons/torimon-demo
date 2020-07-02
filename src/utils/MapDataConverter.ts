@@ -2,6 +2,7 @@ import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot.ts';
 import { initMap } from '@/store/modules/MapViewModule/MapViewState.ts';
 import { Coordinate, Shape, Bounds } from '@/store/types';
+import { MapJson, SpotJson } from '@/store/types';
 
 export default class MapDataConverter {
     /**
@@ -9,9 +10,9 @@ export default class MapDataConverter {
      * @param json
      * @retutn 木構造の根のMapインスタンス
      */
-    public static json2tree(json: any): Map {
+    public static json2tree(mapJson: MapJson): Map {
         // JSON型にしたいがjson.idとかでアクセスできなくなるのでany型に
-        return this.createMap(json);
+        return this.createMap(mapJson);
     }
 
     /**
@@ -29,18 +30,18 @@ export default class MapDataConverter {
      * @param json jsonのstring
      * @return Mapインスタンス
      */
-    private static createMap(json: any): Map {
+    private static createMap(mapJson: MapJson): Map {
         // jsonの根っこからマップインスタンスを作成，
         // spotsはrecCreateSpotに投げる
         const map = new Map(
-            json.id as number,
-            json.name as string,
-            json.bounds as Bounds,
-            json.floorName as string,
+            mapJson.id,
+            mapJson.name,
+            mapJson.bounds,
+            mapJson.floorName,
         );
-        if (json.spots !== undefined) {
-            // spotsはこの時点ではまだjson
-            const spots: any = json.spots;
+        if (mapJson.spots !== undefined) {
+            // spotsはこの時点ではまだmapJson
+            const spots: SpotJson[] = mapJson.spots;
             const spotInstances: Spot[] = spots.map(
                 (spot: any) => this.createSpot(spot),
             );
@@ -58,21 +59,21 @@ export default class MapDataConverter {
      * @param json jsonのstring
      * @return Spotインスタンス
      */
-    private static createSpot(json: any): Spot {
+    private static createSpot(spotJson: SpotJson): Spot {
         // jsonの根っこからマップインスタンスを作成，
         // detailMapsはrecCreateMapに投げる
         const spot = new Spot(
-            json.id as number,
-            json.name as string,
-            json.coordinate as Coordinate,
-            json.shape as Shape,
-            json.floorName as string,
-            json.description as string,
-            json.attachment as [{name: string, url: string}],
+            spotJson.id,
+            spotJson.name,
+            spotJson.coordinate,
+            spotJson.shape,
+            spotJson.floorName,
+            spotJson.description,
+            spotJson.attachment,
         );
-        if (json.detailMaps !== undefined) {
-            // detailMapsはこの時点ではjson
-            const detailMaps: any = json.detailMaps;
+        if (spotJson.detailMaps !== undefined) {
+            // detailMapsはこの時点ではspotJson
+            const detailMaps: MapJson[] = spotJson.detailMaps;
             const mapInstances: Map[] = detailMaps.map(
                 (m: any) => this.createMap(m),
             );

@@ -1,4 +1,4 @@
-import { Coordinate, Shape } from '@/store/types.ts';
+import { Coordinate, Shape, SpotJson } from '@/store/types.ts';
 import Map from '@/Map/Map.ts';
 
 export default class Spot {
@@ -201,7 +201,7 @@ export default class Spot {
      * detailMapsプロパティは再起的にtoJSONを呼び出す
      * @return プロパティを入れたオブジェクト
      */
-    public toJSON(): object {
+    public toJSON(): SpotJson {
         return {
             id: this.id,
             name: this.name,

@@ -127,3 +127,33 @@ export interface Edge {
  * ズームレベルで切り替わる表示レベルの種類
  */
 export type DisplayLevelType = 'default' | 'detail';
+
+/**
+ * Map型のデータをJSONで扱う時の型
+ */
+export interface MapJson {
+    id: number;
+    name: string;
+    bounds: Bounds;
+    floorName?: string;
+    spots: SpotJson[];
+}
+
+/**
+ * Spot型のデータをJsonで扱う時の型
+ */
+export interface SpotJson {
+    id: number;
+    name: string;
+    coordinate: Coordinate;
+    shape?: Shape;
+    floorName?: string;
+    description?: string;
+    attachment?: [
+        {
+            name: string;
+            url: string;
+        }
+    ];
+    detailMaps: MapJson[];
+}
