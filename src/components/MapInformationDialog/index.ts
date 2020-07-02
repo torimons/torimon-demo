@@ -46,8 +46,9 @@ export default class MapInformationDialog extends Vue {
     private isMapCreated(): boolean {
         // おそらくrootMapがセットされているかで判定？
         // 他のコンポーネントとの結合時に修正
-        const rootMap = mapViewGetters.rootMap;
-        return rootMap !== undefined;
+        // const rootMap = mapViewGetters.rootMap;
+        // return rootMap !== undefined;
+        return false;
     }
 
     /**
