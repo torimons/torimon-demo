@@ -51,8 +51,7 @@ export default class MapInformationDialog extends Vue {
     private isMapCreated(): boolean {
         // おそらくrootMapがセットされているかで判定？
         const rootMap = mapViewGetters.rootMap;
-        // return rootMap !== undefined;
-        return false;
+        return rootMap !== undefined;
     }
 
     /**
@@ -63,5 +62,6 @@ export default class MapInformationDialog extends Vue {
         // とりあえずボタンクリック時に3秒待つ処理を与えている
         this.loading = !this.loading;
         setTimeout(() => (this.loading = false), 3000);
+        // アップロード関数を使う
     }
 }

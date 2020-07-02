@@ -1,5 +1,5 @@
 <template>
-    <div id="map-upload">
+    <div id="map-information-dialog">
         <v-card>
             <v-card-title style="text-align: center">
                 <div v-if="!isMapCreated()">
@@ -69,9 +69,9 @@
                         </v-btn>
                     </div>
 
-                    <div class="mapsample">
+                    <!-- <div class="mapsample">
                         <MapView style="height: 500px"/>
-                    </div>
+                    </div> -->
                 </div>
                 </v-container>
             </v-card-text>
