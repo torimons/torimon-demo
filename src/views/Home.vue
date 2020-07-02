@@ -24,7 +24,7 @@
                             </router-link>
                         </div>
                         <div class="my-2">
-                            <v-btn color="#3F8373" large href="MainCreationView">
+                            <v-btn color="#3F8373" large href="CreationMapView">
                                 <span class="white--text">地図作成</span>
                             </v-btn>
                         </div>

@@ -1,13 +1,13 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import Map from '@/Map/Map.ts';
-import { mapViewGetters, mapViewMutations } from '@/store';
+import { mapViewGetters } from '@/store';
 import SearchBox from '@/components/SearchBox/index.vue';
 import Search from '@/utils/Search';
 import MapList from '@/components/MapList/index.vue';
-import MapDetailCard from '@/components/MapDetailCard/index.vue';
 
+// 地図データが用意されるまで、モックデータを検索結果として利用
 const mockMaps: Map[] = [
-    new Map(0, 'mock0', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined, 'desctiption of mock 0'),
+    mapViewGetters.rootMap,
     new Map(1, 'mock1', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined, 'desctiption of mock 1'),
     new Map(2, 'mock2', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined, 'desctiption of mock 2'),
     new Map(3, 'mock3', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined, 'desctiption of mock 3'),
@@ -25,7 +25,9 @@ export default class MapSearch extends Vue {
     private searchWord: string = '';
     private mapListIsVisible: boolean = false;
     private targetMaps: Map[] = [];
+    // 地図データが用意されるまで、モックデータを検索結果として利用
     private mapSearchResults: Map[] = mockMaps;
+    // private mapSearchResults: Map[] = [];
     private search!: Search<Map>;
     private backgroundColor: 'transparent' | 'white' = 'transparent';
 
