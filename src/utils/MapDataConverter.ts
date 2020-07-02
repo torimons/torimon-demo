@@ -38,6 +38,7 @@ export default class MapDataConverter {
             mapJson.name,
             mapJson.bounds,
             mapJson.floorName,
+            mapJson.description,
         );
         if (mapJson.spots !== undefined) {
             // spotsはこの時点ではまだmapJson
@@ -70,6 +71,7 @@ export default class MapDataConverter {
             spotJson.floorName,
             spotJson.description,
             spotJson.attachment,
+            spotJson.type,
         );
         if (spotJson.detailMaps !== undefined) {
             // detailMapsはこの時点ではspotJson

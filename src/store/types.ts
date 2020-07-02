@@ -143,6 +143,7 @@ export interface MapJson {
     name: string;
     bounds: Bounds;
     floorName?: string;
+    description?: string;
     spots: SpotJson[];
 }
 
@@ -162,5 +163,6 @@ export interface SpotJson {
             url: string;
         }
     ];
+    type?: SpotType;
     detailMaps: MapJson[];
 }

@@ -3,6 +3,7 @@ import { sampleMaps } from '@/store/modules/sampleMaps';
 import { initMap } from '@/store/modules/MapViewModule/MapViewState';
 import Map from '@/Map/Map.ts';
 import { before } from 'lodash';
+import { MapJson, SpotJson } from '@/store/types';
 // import axios from 'axios';
 
 describe('MapDataConverterのテスト', () => {
@@ -31,14 +32,16 @@ describe('MapDataConverterのテスト', () => {
             name: 'testMap',
             bounds: testBounds,
             floorName: '1F',
+            description: 'test description',
         };
         // 変換
-        const actualInstance = (MapDataConverter as any).createMap(testJson);
+        const actualInstance: MapJson = (MapDataConverter as any).createMap(testJson);
         const actualProperties = {
-            id: (actualInstance as any).id,
-            name: (actualInstance as any).name,
-            bounds: (actualInstance as any).bounds,
-            floorName: (actualInstance as any).floorName,
+            id: actualInstance.id,
+            name: actualInstance.name,
+            bounds: actualInstance.bounds,
+            floorName: actualInstance.floorName,
+            description: actualInstance.description,
         };
         expect(actualProperties).toStrictEqual(testJson);
     });
@@ -60,17 +63,19 @@ describe('MapDataConverterのテスト', () => {
             floorName: '1F',
             description: 'this is test spot',
             attachment: [],
+            type: 'default',
         };
         // 変換
-        const actualInstance = (MapDataConverter as any).createSpot(testJson);
+        const actualInstance: SpotJson = (MapDataConverter as any).createSpot(testJson);
         const actualProperties = {
-            id: (actualInstance as any).id,
-            name: (actualInstance as any).name,
-            coordinate: (actualInstance as any).coordinate,
-            shape: (actualInstance as any).shape,
-            floorName: (actualInstance as any).floorName,
-            description: (actualInstance as any).description,
-            attachment: (actualInstance as any).attachment,
+            id: actualInstance.id,
+            name: actualInstance.name,
+            coordinate: actualInstance.coordinate,
+            shape: actualInstance.shape,
+            floorName: actualInstance.floorName,
+            description: actualInstance.description,
+            attachment: actualInstance.attachment,
+            type: actualInstance.type,
         };
         expect(actualProperties).toStrictEqual(testJson);
     });

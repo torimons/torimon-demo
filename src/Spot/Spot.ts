@@ -241,6 +241,7 @@ export default class Spot {
             floorName: this.floorName,
             description: this.description,
             attachment: this.attachment,
+            type: this.type,
             detailMaps: this.detailMaps.map((m: Map) => m.toJSON()),
         };
     }
