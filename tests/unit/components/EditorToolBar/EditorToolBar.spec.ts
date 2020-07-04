@@ -54,9 +54,9 @@ describe('components/EditorToolVar', () => {
 
         wrapper.vm.switchMode('move');
         expect(wrapper.vm.spotButtonColor).toBe(defaultColor);
-        const acutualMoveButtonColor = wrapper.vm.buttons[0].color;
-        const acutualZoomInButtonColor = wrapper.vm.buttons[1].color;
-        const acutualZoomOutButtonColor = wrapper.vm.buttons[2].color;
+        const acutualZoomInButtonColor = wrapper.vm.buttons[0].color;
+        const acutualZoomOutButtonColor = wrapper.vm.buttons[1].color;
+        const acutualMoveButtonColor = wrapper.vm.buttons[2].color;
         expect(acutualMoveButtonColor).toBe(selectedColor);
         expect(acutualZoomInButtonColor).toBe(defaultColor);
         expect(acutualZoomOutButtonColor).toBe(defaultColor);
