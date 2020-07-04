@@ -7,9 +7,9 @@ export default class EditorToolBar extends Vue {
     private selectedColor: string = 'indigo darken-4';
     private defaultColor: string = 'light-blue lighten-1';
     private buttons: Array<{ action: Action, icon: string, color: string }> = [
-        {action: 'move',    icon: 'pan_tool', color: this.selectedColor},
         {action: 'zoomIn',  icon: 'zoom_in',  color: this.defaultColor},
         {action: 'zoomOut', icon: 'zoom_out', color: this.defaultColor},
+        {action: 'move',    icon: 'pan_tool', color: this.selectedColor},
     ];
     private spotButtonColor: string = this.defaultColor;
     private spotIconMaps: Array<{iconName: string, spotType: SpotType}> = [
