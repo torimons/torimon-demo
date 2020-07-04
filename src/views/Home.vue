@@ -22,9 +22,21 @@
                             </v-btn>
                         </div>
                         <div class="my-2">
-                            <v-btn color="#3F8373" large href="CreationMapView">
+                            <v-btn
+                                color="#3F8373"
+                                large
+                                @click="dialog = true"
+                            >
                                 <span class="white--text">地図作成</span>
                             </v-btn>
+                            <v-dialog
+                                v-model="dialog"
+                                width="1000"
+                            >
+                                <MapInformationDialog
+                                    @closeDialog="dialog = false"
+                                />
+                            </v-dialog>
                         </div>
                     </v-col>
                 </v-row>
@@ -36,12 +48,15 @@
 <script lang='ts'>
 import { Vue, Component } from 'vue-property-decorator';
 import Menu from '@/components/Menu/index.vue';
+import MapInformationDialog from '@/components/MapInformationDialog/index.vue';
 
 @Component({
     components: {
         Menu,
+        MapInformationDialog,
     },
 })
 export default class Home extends Vue {
+    private dialog: boolean = false;
 }
 </script>

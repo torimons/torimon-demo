@@ -7,10 +7,12 @@ import Map from '@/Map/Map.ts';
 import EditorToolBar from '@/components/EditorToolBar/index.vue';
 import Spot from '@/Spot/Spot';
 import SpotMarker from '@/components/MapView/Marker/SpotMarker';
+import MapInformationDialog from '@/components/MapInformationDialog/index.vue';
 
 @Component({
     components: {
         EditorToolBar,
+        MapInformationDialog,
     },
 })
 export default class CreationMapView extends Vue {
@@ -23,6 +25,7 @@ export default class CreationMapView extends Vue {
     });
     // 次にクリックしたときに設置されるスポットタイプ
     private spotTypeToAddNext: SpotType = 'default';
+    private dialog: boolean = false;
 
     /**
      * とりあえず地図の表示を行なっています．
