@@ -27,7 +27,7 @@
                   @clickZoomOut="zoomOut"
                   @clickSelect="setDefaultMethodOnMapClick"
                   @clickSpot="setAddSpotMethodOnMapClick"
-                  @switchMode="onSwitchEditorToolBarMode"
+                  @switchMode="onSwitchModeOfToolBar"
                   :shapeEditButtonIsVisible="shapeEditButtonIsVisible"
                 />
               </v-row>

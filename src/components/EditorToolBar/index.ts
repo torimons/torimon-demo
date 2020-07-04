@@ -21,7 +21,7 @@ export default class EditorToolBar extends Vue {
         action: 'shape', icon: 'edit', color: this.selectedColor,
     };
     @Prop()
-    private shapeEditButtonIsVisible: boolean = false;
+    private shapeEditButtonIsVisible!: boolean;
     private selectedMode: Action = 'move';
     private selectedSpotIcon: string = '';
     private fabVisible: boolean = false;

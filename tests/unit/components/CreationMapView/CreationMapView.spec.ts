@@ -46,7 +46,7 @@ describe('components/CreationMapView', () => {
         expect(map.getSpots().length).toBe(1);
     });
 
-    it('switchFocusedMarkerによりフォーカスされるスポットとマーカーが切り替わり，スポットエディターが現れる', () => {
+    it('switchFocusedMarkerによりフォーカスされるスポットとマーカーが切り替わる', () => {
         const map: Map = wrapper.vm.map;
         // 切り替え前のスポット用意
         const oldFocusedSpot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
@@ -54,7 +54,6 @@ describe('components/CreationMapView', () => {
         const oldFocusedMarker = new SpotMarker(oldFocusedSpot);
         wrapper.vm.spotMarkers.push(oldFocusedMarker);
         wrapper.vm.focusedSpot = oldFocusedSpot;
-        wrapper.vm.spotEditorIsVisible = false;
 
         // 切り替え後のスポット用意
         const newFocusedSpot = new Spot(1, 'testSpot', { lat: 0, lng: 0 });
@@ -66,8 +65,6 @@ describe('components/CreationMapView', () => {
         const actualFocusedSpot: Spot = wrapper.vm.focusedSpot;
         expect(actualFocusedSpot).toBe(newFocusedSpot);
 
-        const actualSpotEditorIsVisibile: boolean = wrapper.vm.spotEditorIsVisible;
-        expect(actualSpotEditorIsVisibile).toBe(true);
 
         // 以下アイコンの色切り替わりテスト
         const actualOldSpotMarkerIcon: L.DivIcon = (oldFocusedMarker as any).getIcon();

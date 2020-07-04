@@ -17,7 +17,11 @@ export default class ShapeEditor {
         pane.style.zIndex = '620';
     }
 
-    public addPoint(e: { latlng: L.LatLngExpression, onAddEndPoint: (shape: Shape) => void }): void {
+    /**
+     * マップ上にCircleMarkerを用いた点と，前の点から続くPolyLineを用いた線を描画する
+     * @param e 終点追加後に完成したShapeを引数に取るコールバック関数をメンバにもつ
+     */
+    public addPoint(e: { latlng: L.LatLngExpression, afterAddEndPoint: (shape: Shape) => void }): void {
         this.coordinates.push(e.latlng as Coordinate);
 
         const circleMarker: L.CircleMarker = L.circleMarker(e.latlng, {
@@ -25,8 +29,8 @@ export default class ShapeEditor {
         });
         if (this.circleMarkers.length === 0) {
             circleMarker.on('click', (event) => {
-                const shape: Shape = this.addEndPoint(event);
-                e.onAddEndPoint(shape);
+                const shape: Shape = this.createShape();
+                e.afterAddEndPoint(shape);
             });
         }
         circleMarker.addTo(this.lMap);
@@ -44,60 +48,6 @@ export default class ShapeEditor {
             });
             this.routeLine.addTo(this.lMap);
         }
-    }
-
-    private addEndPoint(e: any): Shape {
-        // if (this.leafletContainer !== null) {
-        //     this.leafletContainer.style.removeProperty('cursor');
-        // }
-        // this.shapeEditButtonIsVisible = false;
-        this.coordinates.push(this.coordinates[0]);
-        const coords: number[][][] = [this.coordinates.map((coordinate) => {
-            return [coordinate.lng, coordinate.lat];
-        })];
-        const shape: Shape = {
-            type: 'Polygon',
-            coordinates: coords,
-        };
-        this.removeShapeEditLine();
-        return shape;
-        // this.focusedSpot?.setShape(shape);
-        // this.displayPolygons(this.map.getSpots());
-
-        /**
-         * 始点のCircleMarkerがクリックされた場合に本addEndPointメソッドは呼ばれるが,
-         * その直後に必ずmapのクリックイベントも発生するため，遅延を設けないと
-         * defaultMethodが勝手に呼ばれてしまう
-         * またこのメソッドが呼ばれる際のクリックをダブルクリックで行うと，
-         * 500ms以内にmapのクリックイベントが発生してしまいaddPointメソッドが呼ばれるので
-         * 500ms間の繋ぎとしてundefinedをセットしている
-         */
-        // this.onMapClick = (event: any) => undefined;
-        // setTimeout(this.setDefaultMethodOnMapClick, 500);
-        // this.disabledShapeEditButtonInSpotEditor = false;
-    }
-
-    /**
-     * spotの情報からshapeの情報を取り出してleafletで扱える形式に変換する．
-     * @param spots GeoJson形式に変換したいspotの配列 .
-     * @return GeoJson形式のshapeデータ
-     */
-    private spotShapeToGeoJson(spots: Spot[]): GeoJsonObject {
-        const shapes: Feature[] = [];
-        for (const spot of spots) {
-            const shape = spot.getShape() as GeometryObject;
-            const feature: Feature = {
-                properties: {},
-                type: 'Feature',
-                geometry: shape,
-            };
-            shapes.push(feature);
-        }
-        const features: FeatureCollection = {
-            type: 'FeatureCollection',
-            features: shapes,
-        };
-        return features as GeoJsonObject;
     }
 
     /**
@@ -131,5 +81,45 @@ export default class ShapeEditor {
         this.circleMarkers.forEach((marker) => marker.remove());
         this.circleMarkers = [];
         this.coordinates = [];
+    }
+
+    /**
+     * ユーザーに描画された点情報を基にShapeを構成する
+     * @return 完成したShape情報
+     */
+    private createShape(): Shape {
+        this.coordinates.push(this.coordinates[0]);
+        const coords: number[][][] = [this.coordinates.map((coordinate) => {
+            return [coordinate.lng, coordinate.lat];
+        })];
+        const shape: Shape = {
+            type: 'Polygon',
+            coordinates: coords,
+        };
+        this.removeShapeEditLine();
+        return shape;
+    }
+
+    /**
+     * spotの情報からshapeの情報を取り出してleafletで扱える形式に変換する．
+     * @param spots GeoJson形式に変換したいspotの配列 .
+     * @return GeoJson形式のshapeデータ
+     */
+    private spotShapeToGeoJson(spots: Spot[]): GeoJsonObject {
+        const shapes: Feature[] = [];
+        for (const spot of spots) {
+            const shape = spot.getShape() as GeometryObject;
+            const feature: Feature = {
+                properties: {},
+                type: 'Feature',
+                geometry: shape,
+            };
+            shapes.push(feature);
+        }
+        const features: FeatureCollection = {
+            type: 'FeatureCollection',
+            features: shapes,
+        };
+        return features as GeoJsonObject;
     }
 }
