@@ -15,7 +15,7 @@ const routes = [
     },
     {
         path: '/map-select',
-        name: 'MapSelect',
+        name: 'map-select',
         component: MapSelection,
     },
     {
