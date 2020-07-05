@@ -1,25 +1,25 @@
 <template>
-    <div class="map-selection">
-        <v-app>
-            <v-card>
-                <v-card-title>
-                    <h1 class="title">Map Selection Page</h1>
-                </v-card-title>
-            </v-card>
-            <v-container id="search-bar" class="pt-0" >
-                <v-row>
-                    <v-col
-                        cols="12"
-                        sm="4"
-                        md="3"
-                        class="pa-0"
-                    >
-                        <MapSearch/>
-                    </v-col>
-                </v-row>
-            </v-container>
-        </v-app>
-    </div>
+  <div class="map-selection">
+    <v-app>
+      <v-card
+          flat
+          tile
+      >
+        <v-toolbar>
+          <v-toolbar-title>Selection Page</v-toolbar-title>
+        </v-toolbar>
+        <v-container id="search-bar" class="pt-0" fluid>
+          <v-row>
+            <v-col
+              cols="12"
+            >
+              <MapSearch/>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
+    </v-app>
+  </div>
 </template>
 
 <script lang="ts">
@@ -37,10 +37,6 @@ export default class MapSelection extends Vue {
 
 <style scoped>
 #search-bar {
-  position: absolute;
-  left: 0px;
-  top: 65px;
-  z-index: 1000;
   pointer-events: none;
 }
 </style>
