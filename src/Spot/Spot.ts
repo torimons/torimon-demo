@@ -14,7 +14,8 @@ export default class Spot {
             private floorName?: string,
             private description?: string,
             private attachment?: [{name: string, url: string}],
-            private type?: SpotType ) {
+            private type?: SpotType,
+            private _shouldDisplayNameOnMap?: boolean) {
         /* 何もしない */
     }
 
@@ -95,6 +96,17 @@ export default class Spot {
     }
 
     /**
+     * スポットの名前をマップ上のマーカー下に表示するかどうかを返す
+     * @return スポットの名前をマップ上のマーカー下に表示するかどうか
+     */
+    public shouldDisplayNameOnMap(): boolean {
+        if (this._shouldDisplayNameOnMap === undefined) {
+            return true;
+        }
+        return this._shouldDisplayNameOnMap;
+    }
+
+    /**
      * スポットのアイコン名を返す
      * @return アイコン名, 存在しない場合'place'アイコン
      */
@@ -128,6 +140,34 @@ export default class Spot {
     }
 
     /**
+     * スポット名をセットする
+     * @param name スポット名
+     */
+    public setName(name: string): void {
+        this.name = name;
+    }
+
+    public setShape(shape: Shape): void {
+        this.shape = shape;
+    }
+
+    /**
+     * スポットの概要をセットする
+     * @param description 概要
+     */
+    public setDescription(description: string): void {
+        this.description = description;
+    }
+
+    /**
+     * スポットの名前をマップ上のマーカー下に表示するかどうかを設定する
+     * @param shouldDisplayNameOnMap スポットの名前をマップ上のマーカー下に表示するかどうか
+     */
+    public setShouldDisplayNameOnMap(shouldDisplayNameOnMap: boolean): void {
+        this._shouldDisplayNameOnMap = shouldDisplayNameOnMap;
+    }
+
+    /**
      * 親mapをセットし,セットしたmapの子spotに自身を追加する.
      * @param parentMap セットする親map
      */
@@ -137,7 +177,7 @@ export default class Spot {
         }
         this.parentMap = parentMap;
         this.floorName = parentMap.getFloorName();
-        parentMap.addSpots([this]);
+        parentMap.addSpot(this);
     }
 
     /**

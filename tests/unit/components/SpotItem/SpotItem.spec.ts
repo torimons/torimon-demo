@@ -12,7 +12,7 @@ describe('components/SpotItem.vue', () => {
     let vuetify: any;
     const testSpot: Spot = new Spot(0, 'testSpot', {lat: 0, lng: 0});
     const parentMap: Map = new Map(1, 'parentMap', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}});
-    parentMap.addSpots([testSpot]);
+    parentMap.addSpot(testSpot);
 
     beforeEach(() => {
         vuetify = new Vuetify();
@@ -46,7 +46,7 @@ describe('components/SpotItem.vue', () => {
         // Map,Spotを相互登録する際に親マップのfloorNameがspotにセットされる
         const testParentMapWithFloorName: Map =
             new Map(3, 'testParentMapWithFloorName', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, 'testFloor');
-        testParentMapWithFloorName.addSpots([testSpotWithFloorName]);
+        testParentMapWithFloorName.addSpot(testSpotWithFloorName);
         const parentSpot: Spot = new Spot(4, 'parentSpot', {lat: 0, lng: 0});
         parentSpot.addDetailMaps([testParentMapWithFloorName]);
         // floorNameをもつspotに更新

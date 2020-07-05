@@ -1,6 +1,4 @@
 import Search from '@/utils/Search';
-import Spot from '@/Spot/Spot.ts';
-import Map from '@/Map/Map.ts';
 
 /**
  * Searchクラスで扱うisMatchToRegExpをもつクラス

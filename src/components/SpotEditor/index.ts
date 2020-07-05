@@ -1,0 +1,22 @@
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import Spot from '@/Spot/Spot';
+
+@Component
+export default class SpotEditor extends Vue {
+    @Prop()
+    public spot!: Spot;
+    @Prop()
+    public isVisible!: boolean;
+    @Prop()
+    public disabledShapeEditButton!: boolean;
+    public attachment: [{name: string, url: string}] = [{name: '', url: ''}];
+    public dialog: boolean = false;
+
+    private shapeAddButtonIcon(): 'add_circle' | 'edit' {
+        if (this.spot.getShape() === undefined) {
+            return 'add_circle';
+        } else {
+            return 'edit';
+        }
+    }
+}

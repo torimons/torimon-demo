@@ -31,6 +31,8 @@ export const sampleMaps: RawMap[] =  [
                 detailMapLevelNames: ['1F', '2F'],
                 lastViewedDetailMapId: null,
                 description: '全学・工学系の共通講義と大学院統合新領域学府オートモーティブサイエンス専攻の教育研究等を行う施設',
+                type: 'withDetailMap',
+                shouldDisplayNameOnMap: false,
             },
             {
                 id: 1,
@@ -64,6 +66,8 @@ export const sampleMaps: RawMap[] =  [
                 detailMapLevelNames: ['2F', '3F', '5F'],
                 lastViewedDetailMapId: null,
                 description: '見どころスポット：フーコーの振り子',
+                type: 'withDetailMap',
+                shouldDisplayNameOnMap: false,
             },
             {
                 id: 2,
@@ -93,6 +97,7 @@ export const sampleMaps: RawMap[] =  [
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
                 description: '機械航空工学部門群と物質科学工学部門群が入居する施設であり、ウエスト2号館とウエスト4号館とつながっている',
+                shouldDisplayNameOnMap: false,
             },
             {
                 id: 3,
@@ -131,6 +136,7 @@ export const sampleMaps: RawMap[] =  [
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
                 description: '理学部、理学府、数理学府が入居する施設',
+                shouldDisplayNameOnMap: false,
             },
             {
                 id: 4,
@@ -165,6 +171,7 @@ export const sampleMaps: RawMap[] =  [
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
                 description: '2階203号室には工学部教務課が入居している',
+                shouldDisplayNameOnMap: false,
             },
             {
                 id: 5,
@@ -190,6 +197,7 @@ export const sampleMaps: RawMap[] =  [
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
                 description: '現在マス・フォアインダストリー研究所はウエスト1号館に移動し、今は情報基盤研究開発センター棟となっている',
+                shouldDisplayNameOnMap: false,
             },
             {
                 id: 6,
@@ -217,6 +225,7 @@ export const sampleMaps: RawMap[] =  [
                 detailMapLevelNames: [],
                 lastViewedDetailMapId: null,
                 description: '多様な学習スペースが設けられており，軽食を提供するカフェ(Libca)が併設されています',
+                shouldDisplayNameOnMap: false,
             },
         ],
         nodes: [],

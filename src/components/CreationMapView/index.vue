@@ -20,14 +20,30 @@
         </v-container>
         <v-container fluid id="toolbar-container">
           <v-row no-gutters>
+            <v-col
+              cols="5"
+              md="3"
+            >
+              <SpotEditor
+                @spotInput="updateFocusedMarkerName"
+                :isVisible="focusedSpot !== null"
+                :disabledShapeEditButton="disabledShapeEditButtonInSpotEditor"
+                @close="unfocusedMarker"
+                :spot="focusedSpot"
+                @clickAddShapeButton="setAddPointMethodOnMapClick"
+                @delete="deleteFocusedSpot"
+              />
+            </v-col>
             <v-col>
               <v-row justify="end" no-gutters>
                 <EditorToolBar
-                  @clickMove="setEmptyMethodOnMapClick"
+                  @clickMove="setDefaultMethodOnMapClick"
                   @clickZoomIn="zoomIn"
                   @clickZoomOut="zoomOut"
-                  @clickSelect="setEmptyMethodOnMapClick"
+                  @clickSelect="setDefaultMethodOnMapClick"
                   @clickSpot="setAddSpotMethodOnMapClick"
+                  @switchMode="onSwitchModeOfToolBar"
+                  :shapeEditButtonIsVisible="shapeEditButtonIsVisible"
                 />
               </v-row>
             </v-col>
@@ -45,6 +61,7 @@ html,
 body,
 #creation-map-view {
   height: 100%;
+  cursor: pointer
 }
 #map {
   position: relative;

@@ -55,6 +55,8 @@ export interface RawSpot {
             url: string,
         }
     ];
+    type?: SpotType;
+    shouldDisplayNameOnMap?: boolean;
 }
 
 
