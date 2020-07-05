@@ -2,6 +2,7 @@ import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot.ts';
 import { initMap } from '@/store/modules/MapViewModule/MapViewState.ts';
 import { Coordinate, Shape, Bounds } from '@/store/types';
+import { MapJson, SpotJson } from '@/store/types';
 
 export default class MapDataConverter {
     /**
@@ -9,9 +10,8 @@ export default class MapDataConverter {
      * @param json
      * @retutn 木構造の根のMapインスタンス
      */
-    public static json2tree(json: any): Map {
-        // JSON型にしたいがjson.idとかでアクセスできなくなるのでany型に
-        return this.recCreateMap(json);
+    public static json2tree(mapJson: MapJson): Map {
+        return this.createMap(mapJson);
     }
 
     /**
@@ -24,25 +24,26 @@ export default class MapDataConverter {
     }
 
     /**
-     * 再起的にjsonからインスタンスを復元する
-     * 引数のjsonからMapを作成し，spotsをrecCreateSpotに投げる
+     * 再帰的にjsonからインスタンスを復元する
+     * 引数のjsonからMapを作成し，spotsをcreateSpotに投げる
      * @param json jsonのstring
      * @return Mapインスタンス
      */
-    private static recCreateMap(json: any): Map {
+    private static createMap(mapJson: MapJson): Map {
         // jsonの根っこからマップインスタンスを作成，
-        // spotsはrecCreateSpotに投げる
+        // spotsはcreateSpotに投げる
         const map = new Map(
-            json.id as number,
-            json.name as string,
-            json.bounds as Bounds,
-            json.floorName as string,
+            mapJson.id,
+            mapJson.name,
+            mapJson.bounds,
+            mapJson.floorName,
+            mapJson.description,
         );
-        if (json.spots !== undefined) {
-            // spotsはこの時点ではまだjson
-            const spots: any = json.spots;
+        if (mapJson.spots !== undefined) {
+            // spotsはこの時点ではまだJson
+            const spots: SpotJson[] = mapJson.spots;
             const spotInstances: Spot[] = spots.map(
-                (spot: any) => this.recCreateSpot(spot),
+                (spot: any) => this.createSpot(spot),
             );
             // spotが存在する場合のみ登録処理
             if (spotInstances.length > 0) {
@@ -53,28 +54,29 @@ export default class MapDataConverter {
     }
 
     /**
-     * 再起的にjsonからインスタンスを復元する
-     * 引数のjsonからSpotを作成し，detailMapsをrecCreateMapに投げる
+     * 再帰的にjsonからインスタンスを復元する
+     * 引数のjsonからSpotを作成し，detailMapsをcreateMapに投げる
      * @param json jsonのstring
      * @return Spotインスタンス
      */
-    private static recCreateSpot(json: any): Spot {
+    private static createSpot(spotJson: SpotJson): Spot {
         // jsonの根っこからマップインスタンスを作成，
-        // detailMapsはrecCreateMapに投げる
+        // detailMapsはcreateMapに投げる
         const spot = new Spot(
-            json.id as number,
-            json.name as string,
-            json.coordinate as Coordinate,
-            json.shape as Shape,
-            json.floorName as string,
-            json.description as string,
-            json.attachment as [{name: string, url: string}],
+            spotJson.id,
+            spotJson.name,
+            spotJson.coordinate,
+            spotJson.shape,
+            spotJson.floorName,
+            spotJson.description,
+            spotJson.attachment,
+            spotJson.type,
         );
-        if (json.detailMaps !== undefined) {
-            // detailMapsはこの時点ではjson
-            const detailMaps: any = json.detailMaps;
+        if (spotJson.detailMaps !== undefined) {
+            // detailMapsはこの時点ではJson
+            const detailMaps: MapJson[] = spotJson.detailMaps;
             const mapInstances: Map[] = detailMaps.map(
-                (m: any) => this.recCreateMap(m),
+                (m: any) => this.createMap(m),
             );
             // detailMapsがある場合のみ登録処理を行う
             if (mapInstances.length > 0) {

@@ -3,7 +3,6 @@ import { sampleMaps } from '@/store/modules/sampleMaps';
 import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot.ts';
 import MapDataConverter from '@/utils/MapDataConverter';
-import axios from 'axios';
 
 /**
  * RawMap型をMap型に変換する
@@ -71,6 +70,8 @@ export class MapViewState {
      *   外部モジュールのsampleMapsで初期化
      */
     public rootMap: Map = initMap(sampleMaps);
+    // MapDataConverterの動作確認用
+    // initMapsからの木構造をjsonに変換->木に再変換
     // public rootMap: Map =
     //     MapDataConverter.json2tree(MapDataConverter.tree2json(initMap(sampleMaps)));
 

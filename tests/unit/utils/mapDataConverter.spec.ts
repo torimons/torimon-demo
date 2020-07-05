@@ -3,10 +3,12 @@ import { sampleMaps } from '@/store/modules/sampleMaps';
 import { initMap } from '@/store/modules/MapViewModule/MapViewState';
 import Map from '@/Map/Map.ts';
 import { before } from 'lodash';
+import { MapJson, SpotJson } from '@/store/types';
 // import axios from 'axios';
 
 describe('MapDataConverterのテスト', () => {
 
+    // json-serverとの連携を試す時に使ってください
     // it('apiから取得して変換するテスト(確認用)', (done) => {
     //     let res;
     //     axios.get('http://localhost:3000/maps/0').then((response) => {
@@ -19,7 +21,7 @@ describe('MapDataConverterのテスト', () => {
     //     });
     // });
 
-    it('recCreateMapでJsonのプロパティとMapインスタンスのプロパティが一致する', () => {
+    it('createMapでJsonのプロパティとMapインスタンスのプロパティが一致する', () => {
         const testBounds = {
             topL: {lat: 123, lng: 10},
             botR: {lat: 132, lng: 5},
@@ -30,19 +32,21 @@ describe('MapDataConverterのテスト', () => {
             name: 'testMap',
             bounds: testBounds,
             floorName: '1F',
+            description: 'test description',
         };
         // 変換
-        const actualInstance = (MapDataConverter as any).recCreateMap(testJson);
+        const actualInstance: MapJson = (MapDataConverter as any).createMap(testJson);
         const actualProperties = {
-            id: (actualInstance as any).id,
-            name: (actualInstance as any).name,
-            bounds: (actualInstance as any).bounds,
-            floorName: (actualInstance as any).floorName,
+            id: actualInstance.id,
+            name: actualInstance.name,
+            bounds: actualInstance.bounds,
+            floorName: actualInstance.floorName,
+            description: actualInstance.description,
         };
         expect(actualProperties).toStrictEqual(testJson);
     });
 
-    it('recCreateSpotでJsonのプロパティとSpotインスタンスのプロパティが一致する', () => {
+    it('createSpotでJsonのプロパティとSpotインスタンスのプロパティが一致する', () => {
         const testCoord = { lat: 123, lng: 10 };
         // 変換するjsonオブジェクト
         const testJson = {
@@ -59,24 +63,26 @@ describe('MapDataConverterのテスト', () => {
             floorName: '1F',
             description: 'this is test spot',
             attachment: [],
+            type: 'default',
         };
         // 変換
-        const actualInstance = (MapDataConverter as any).recCreateSpot(testJson);
+        const actualInstance: SpotJson = (MapDataConverter as any).createSpot(testJson);
         const actualProperties = {
-            id: (actualInstance as any).id,
-            name: (actualInstance as any).name,
-            coordinate: (actualInstance as any).coordinate,
-            shape: (actualInstance as any).shape,
-            floorName: (actualInstance as any).floorName,
-            description: (actualInstance as any).description,
-            attachment: (actualInstance as any).attachment,
+            id: actualInstance.id,
+            name: actualInstance.name,
+            coordinate: actualInstance.coordinate,
+            shape: actualInstance.shape,
+            floorName: actualInstance.floorName,
+            description: actualInstance.description,
+            attachment: actualInstance.attachment,
+            type: actualInstance.type,
         };
         expect(actualProperties).toStrictEqual(testJson);
     });
 
     it('json2treeがMapのインスタンスを返す', () => {
         // mock
-        (MapDataConverter as any).recCreateSpot = jest.fn(
+        (MapDataConverter as any).createSpot = jest.fn(
             (json) => new Map(0, 'testMap', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}),
         );
         const testJson: any = {test: 0};

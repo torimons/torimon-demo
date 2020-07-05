@@ -1,5 +1,5 @@
 import Spot from '@/Spot/Spot.ts';
-import { Bounds, Coordinate } from '@/store/types';
+import { Bounds, Coordinate, MapJson } from '@/store/types';
 
 export default class Map {
     /**
@@ -160,19 +160,20 @@ export default class Map {
         return null;
     }
 
-    /*
+    /**
      * JSON.stringifyの引数に渡された時に呼ばれる
      * プロパティをオブジェクトに入れて返す
      * spotsプロパティは再起的にtoJSONを呼び出す
      * @return プロパティを入れたオブジェクト
      */
-    public toJSON(): object {
+    public toJSON(): MapJson {
         return {
             id: this.id,
             name: this.name,
             bounds: this.bounds,
             floorName: this.floorName,
-            spots: this.spots.map((s: Spot) => s.toJson()),
+            description: this.description,
+            spots: this.spots.map((s: Spot) => s.toJSON()),
         };
     }
 
