@@ -128,9 +128,41 @@ export interface Edge {
  */
 export type DisplayLevelType = 'default' | 'detail';
 
-/**
+/*
  * スポットの種別
  * withDetailMap: 詳細マップ持ちスポット
  * restroom: トイレ
  */
 export type SpotType = 'default' | 'withDetailMap' | 'restroom';
+
+/**
+ * Map型のデータをJSONで扱う時の型
+ */
+export interface MapJson {
+    id: number;
+    name: string;
+    bounds: Bounds;
+    floorName?: string;
+    description?: string;
+    spots: SpotJson[];
+}
+
+/**
+ * Spot型のデータをJsonで扱う時の型
+ */
+export interface SpotJson {
+    id: number;
+    name: string;
+    coordinate: Coordinate;
+    shape?: Shape;
+    floorName?: string;
+    description?: string;
+    attachment?: [
+        {
+            name: string;
+            url: string;
+        }
+    ];
+    type?: SpotType;
+    detailMaps: MapJson[];
+}

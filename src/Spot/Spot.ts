@@ -1,4 +1,4 @@
-import { Coordinate, Shape, SpotType } from '@/store/types.ts';
+import { Coordinate, Shape, SpotJson, SpotType } from '@/store/types.ts';
 import Map from '@/Map/Map.ts';
 
 export default class Spot {
@@ -227,10 +227,31 @@ export default class Spot {
     }
 
     /**
+     * JSON.stringifyの引数に渡された時に呼ばれる
+     * プロパティをオブジェクトに入れて返す
+     * detailMapsプロパティは再起的にtoJSONを呼び出す
+     * @return プロパティを入れたオブジェクト
+     */
+    public toJSON(): SpotJson {
+        return {
+            id: this.id,
+            name: this.name,
+            coordinate: this.coordinate,
+            shape: this.shape,
+            floorName: this.floorName,
+            description: this.description,
+            attachment: this.attachment,
+            type: this.type,
+            detailMaps: this.detailMaps.map((m: Map) => m.toJSON()),
+        };
+    }
+
+    /*
      * 検索条件を満たすかを判定する
      * @param regExp 正規表現オブジェクト
      * @return bool値，検索対象文字列が正規表現にマッチするか否か
      */
+
     public isMatchToRegExp(regExp: RegExp): boolean {
         // RegExp.test(target:str)は、targetにRegExpがマッチした場合にtrue, マッチしない場合falseを返す.
         return regExp.test(this.generateSearchTargetString());
