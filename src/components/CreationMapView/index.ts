@@ -8,14 +8,14 @@ import EditorToolBar from '@/components/EditorToolBar/index.vue';
 import SpotEditor from '@/components/SpotEditor/index.vue';
 import Spot from '@/Spot/Spot';
 import SpotMarker from '@/components/MapView/Marker/SpotMarker';
-import { GeoJsonObject, GeometryObject, Feature, FeatureCollection, Polygon } from 'geojson';
-import { Action } from '../EditorToolBar';
 import ShapeEditor from './ShapeEditor';
+import MapInformationDialog from '@/components/MapInformationDialog/index.vue';
 
 @Component({
     components: {
         EditorToolBar,
         SpotEditor,
+        MapInformationDialog,
     },
 })
 export default class CreationMapView extends Vue {
@@ -33,6 +33,7 @@ export default class CreationMapView extends Vue {
     private focusedSpot: Spot | null = null;
     private spotMarkers: SpotMarker[] = [];
     private shapeEditor!: ShapeEditor;
+    private dialog: boolean = false;
 
     /**
      * とりあえず地図の表示を行なっています．

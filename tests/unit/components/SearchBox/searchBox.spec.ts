@@ -34,12 +34,12 @@ describe('SearchBoxコンポーネントのテスト', () => {
         // 戻るボタンのclickイベント発火
         const btn = wrapper.find('.v-btn#arrow');
         btn.trigger('click');
-        // emitした時，イベントはtoggleSpotList
-        expect(wrapper.emitted().toggleSpotList).toBeTruthy();
+        // emitした時，イベントはtoggleList
+        expect(wrapper.emitted().toggleList).toBeTruthy();
         // イベントの数は一回
-        expect(wrapper.emitted().toggleSpotList.length).toBe(1);
+        expect(wrapper.emitted().toggleList.length).toBe(1);
         // emitのpayloadはfalse
-        expect(wrapper.emitted().toggleSpotList[0]).toStrictEqual([false]);
+        expect(wrapper.emitted().toggleList[0]).toStrictEqual([false]);
     });
 
     it('searchWordの変更を監視してonChangeSearchWordを呼び出す', () => {

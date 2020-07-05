@@ -35,7 +35,7 @@
                             text
                             icon
                             v-show="onFocus"
-                            @click="exitSpotSearch"
+                            @click="exitSearch"
                         >
                             <v-icon>keyboard_arrow_left</v-icon>
                         </v-btn>
