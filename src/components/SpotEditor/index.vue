@@ -33,7 +33,6 @@
           color="#3fa590"
           outlined
           :disabled="disabledShapeEditButton"
-          v-show="spot.getType() === 'withDetailMap'"
           @click="$emit('clickAddShapeButton')"
         >
             <span>形状</span>
