@@ -2,8 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
 import MainView from '../components/MainView/index.vue';
-import MapSelection from '../views/MapSelection.vue';
 import CreationMapView from '../components/CreationMapView/index.vue';
+import MapSelection from '../views/MapSelection.vue';
 
 Vue.use(VueRouter);
 
@@ -15,7 +15,7 @@ const routes = [
     },
     {
         path: '/map-select',
-        name: 'MapSelect',
+        name: 'map-select',
         component: MapSelection,
     },
     {

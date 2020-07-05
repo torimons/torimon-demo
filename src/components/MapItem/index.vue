@@ -1,16 +1,21 @@
 <template>
-	<div id="spot-item">
-        <v-card
-            tile
-        >
-            <v-list-item two-line>
-                <v-list-item-content>
-                    <v-list-item-title class="headline">{{ mapName }}</v-list-item-title>
-                    <v-list-item-subtitle>{{ userName }}</v-list-item-subtitle>
-                </v-list-item-content>
-            </v-list-item>
-        </v-card>
-	</div>
+  <div id="map-item">
+    <v-card
+        tile
+        @click.stop="openDialog()"
+    >
+      <v-img
+        :src="attachment"
+        height="200px"
+      ></v-img>
+      <v-card-title>
+        {{ name }}
+      </v-card-title>
+      <v-card-subtitle>
+        {{ description }}
+      </v-card-subtitle>
+    </v-card>
+  </div>
 </template>
 
 <script lang="ts" src='./index.ts'>
@@ -18,4 +23,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#map-item {
+    pointer-events: auto;
+}
 </style>

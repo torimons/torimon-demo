@@ -8,6 +8,14 @@ import Spot from '@/Spot/Spot.ts';
 
 export class MapViewMutations extends Mutations<MapViewState> {
     /**
+     * 新たにrootMapをsetする
+     * @param newRootMap
+     */
+    public setRootMap(newRootMap: Map) {
+        this.state.rootMap = newRootMap;
+    }
+
+    /**
      * Mapコンポーネント上でフォーカスされているスポットを更新する
      * @param newFocusedSpot 新しくフォーカスされるスポット
      */

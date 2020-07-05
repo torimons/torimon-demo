@@ -17,9 +17,11 @@
                             Map for everyone.
                         </div>
                         <div class="my-2">
-                            <v-btn color="#3F8373" large>
-                                <span class="white--text">地図利用</span>
-                            </v-btn>
+                            <router-link to="map-select">
+                                <v-btn color="#3F8373" large>
+                                    <span class="white--text">地図利用</span>
+                                </v-btn>
+                            </router-link>
                         </div>
                         <div class="my-2">
                             <v-btn color="#3F8373" large href="CreationMapView">

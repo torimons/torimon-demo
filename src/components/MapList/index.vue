@@ -1,17 +1,32 @@
 <template>
-	<div id="map-list">
-        <v-list
-            class="overflow-y-auto"
+  <div id="map-list">
+    <v-container fluid>
+      <v-row>
+        <v-col
+          v-for="mapSearchResult in mapSearchResults"
+          :key="mapSearchResult.getId()"
+          cols="12"
+          sm="6"
+          md="4"
+          lg="3"
         >
-            <MapItem
-                v-for="mapSearchResult in mapSearchResults"
-                v-bind:key="mapSearchResult.id + mapSearchResult.name"
-                :mapName="mapSearchResult.mapName"
-                :userName="mapSearchResult.userName"
-            >
-            </MapItem>
-        </v-list>
-	</div>
+          <map-item
+            :map="mapSearchResult"
+            @openDialog="openMapDetailDialog"
+          ></map-item>
+        </v-col>
+      </v-row>
+      <v-dialog
+        v-model="dialog"
+        max-width="500"
+      >
+        <map-detail-card
+          :map=selectedMap
+          @closeDialog="closeMapDetailDialog"
+        ></map-detail-card>
+      </v-dialog>
+    </v-container>
+  </div>
 </template>
 
 <script lang="ts" src='./index.ts'>
