@@ -9,11 +9,13 @@ import SpotEditor from '@/components/SpotEditor/index.vue';
 import Spot from '@/Spot/Spot';
 import SpotMarker from '@/components/MapView/Marker/SpotMarker';
 import { cloneDeep } from 'lodash';
+import MapInformationDialog from '@/components/MapInformationDialog/index.vue';
 
 @Component({
     components: {
         EditorToolBar,
         SpotEditor,
+        MapInformationDialog,
     },
 })
 export default class CreationMapView extends Vue {
@@ -32,6 +34,7 @@ export default class CreationMapView extends Vue {
 
     // 詳細マップ生成時に利用
     private currentMapId: number = 0;
+    private dialog: boolean = false;
 
     /**
      * とりあえず地図の表示を行なっています．

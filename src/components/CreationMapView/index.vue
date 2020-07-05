@@ -3,6 +3,21 @@
       <v-app>
         <div id="map">
         </div>
+        <v-container fluid id="map-information-dialog-container">
+          <v-btn
+            @click="dialog = true"
+          >
+            保存(仮)
+          </v-btn>
+          <v-dialog
+            v-model="dialog"
+            width="1000"
+          >
+            <MapInformationDialog
+              @closeDialog="dialog = false"
+            />
+          </v-dialog>
+        </v-container>
         <v-container fluid id="toolbar-container">
           <v-row no-gutters>
             <v-col
@@ -56,6 +71,10 @@ body,
   top: 0px;
   z-index: 1000;
   pointer-events: none;
+}
+#map-information-dialog-container {
+  position: absolute;
+  z-index: 1000;
 }
 
 body {
