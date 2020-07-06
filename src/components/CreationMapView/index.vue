@@ -3,12 +3,35 @@
       <v-app>
         <div id="map">
         </div>
+        <v-container fluid id="app-bar" class="ma-0 pa-0">
+          <v-row no-gutters>
+            <v-col>
+              <v-card>
+                <v-app-bar
+                  flat
+                  tile
+                  app
+                >
+                  <v-app-bar-nav-icon @click="drawer=!drawer"></v-app-bar-nav-icon>
+                  <v-toolbar-title>{{ map.getName() }}</v-toolbar-title>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    @click="dialog = true"
+                    icon
+                  >
+                    <v-icon>save</v-icon>
+                  </v-btn>
+                </v-app-bar>
+                <v-navigation-drawer
+                  app
+                  v-model="drawer"
+                >
+                </v-navigation-drawer>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
         <v-container fluid id="map-information-dialog-container">
-          <v-btn
-            @click="dialog = true"
-          >
-            保存(仮)
-          </v-btn>
           <v-dialog
             v-model="dialog"
             width="1000"
@@ -61,17 +84,26 @@ body,
 #creation-map-view {
   height: 100%;
 }
+
 #map {
   position: relative;
   height: 100%;
 }
+
+#app-bar {
+  position: absolute;
+  z-index: 1100;
+  left: 0px;
+  top: 0px;
+}
+
 #toolbar-container {
   position: absolute;
-  right: 0px;
-  top: 0px;
   z-index: 1000;
   pointer-events: none;
+  top: 64px;
 }
+
 #map-information-dialog-container {
   position: absolute;
   z-index: 1000;
