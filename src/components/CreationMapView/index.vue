@@ -5,7 +5,7 @@
         </div>
         <v-container fluid id="map-information-dialog-container">
           <v-btn
-            @click="dialog = true"
+            @click="dialog = true; setMapToStore()"
           >
             保存(仮)
           </v-btn>

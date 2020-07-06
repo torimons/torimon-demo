@@ -1,6 +1,7 @@
 import { Component, Vue, Emit } from 'vue-property-decorator';
-import { store, mapViewGetters } from '@/store';
+import { store, mapViewGetters, mapViewMutations } from '@/store';
 import Map from '@/Map/Map.ts';
+import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
 
 @Component
 export default class MapInformationDialog extends Vue {
@@ -46,9 +47,7 @@ export default class MapInformationDialog extends Vue {
     private isMapCreated(): boolean {
         // おそらくrootMapがセットされているかで判定？
         // 他のコンポーネントとの結合時に修正
-        // const rootMap = mapViewGetters.rootMap;
-        // return rootMap !== undefined;
-        return false;
+        return mapViewGetters.isMapCreated;
     }
 
     /**
@@ -59,6 +58,21 @@ export default class MapInformationDialog extends Vue {
         // 今後作成予定のアップロード関数を使う
         // とりあえずボタンクリック時に3秒待つ処理を与えている
         this.loading = !this.loading;
+        const largestMapId: number = mapViewGetters.demoMaps
+            .map((map: Map) => map.getId())
+            .reduce((accum, newVal) => Math.max(accum, newVal));
+        const mapToUpload: Map = mapViewGetters.rootMap;
+        const newMapId: number = (mapToUpload.getId() === -1) ? largestMapId + 1 : mapToUpload.getId();
+        mapToUpload.setId(newMapId);
+        mapToUpload.setName(this.mapName);
+        mapToUpload.setDescription(this.mapDescription);
+        mapViewMutations.addDemoMap(mapToUpload);
         setTimeout(() => (this.loading = false), 3000);
+        // map-selectに遷移
+        this.$router.push('/map-select');
+    }
+
+    private startNewMap() {
+        mapViewMutations.setIsMapCreated(true);
     }
 }

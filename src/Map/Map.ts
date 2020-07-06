@@ -178,6 +178,30 @@ export default class Map {
     }
 
     /**
+     * 新しいidを登録する
+     * @param newMapId 登録する新しいid
+     */
+    public setId(newMapId: number) {
+        this.id = newMapId;
+    }
+
+    /**
+     * 新しい名前を登録
+     * @param newName 新しい名前
+     */
+    public setName(newName: string) {
+        this.name = newName;
+    }
+
+    /**
+     * 新しいdescriptionを登録
+     * @param newDescription 新しいdescription
+     */
+    public setDescription(newDescription: string) {
+        this.description = newDescription;
+    }
+
+    /**
      * JSON.stringifyの引数に渡された時に呼ばれる
      * プロパティをオブジェクトに入れて返す
      * spotsプロパティは再起的にtoJSONを呼び出す

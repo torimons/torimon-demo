@@ -1,6 +1,6 @@
 import { Component, Vue } from 'vue-property-decorator';
 import 'leaflet/dist/leaflet.css';
-import { mapViewGetters } from '@/store';
+import { mapViewGetters, mapViewMutations } from '@/store';
 import L, { LeafletEvent, Marker } from 'leaflet';
 import { Coordinate, SpotType, Shape } from '@/store/types';
 import Map from '@/Map/Map.ts';
@@ -22,7 +22,7 @@ export default class CreationMapView extends Vue {
     private lMap!: L.Map;
     private defaultZoomLevel: number = 17;
     private leafletContainer!: HTMLElement | null;
-    private map: Map = new Map(0, 'New Map', {
+    private map: Map = new Map(-1, 'New Map', {
         topL: {lat: 0, lng: 0},
         botR: {lat: 0, lng: 0},
     });
@@ -54,6 +54,7 @@ export default class CreationMapView extends Vue {
             this.leafletContainer = document.querySelector('.leaflet-container') as HTMLElement;
         }
         this.shapeEditor = new ShapeEditor(this.lMap);
+        mapViewMutations.setIsMapCreated(true);
     }
 
     /**
@@ -226,4 +227,11 @@ export default class CreationMapView extends Vue {
      * @param e Leafletイベント(addSpotメソッドでe.latlngを取得するためにany型にしている)
      */
     private onMapClick: (e: any) => void = (e: any) => undefined;
+
+    /**
+     * アップロードボタンクリック時にセットする
+     */
+    private setMapToStore() {
+        mapViewMutations.setRootMap(this.map);
+    }
 }

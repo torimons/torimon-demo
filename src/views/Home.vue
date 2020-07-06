@@ -24,21 +24,14 @@
                             </router-link>
                         </div>
                         <div class="my-2">
-                            <v-btn
-                                color="#3F8373"
-                                large
-                                @click="dialog = true"
-                            >
-                                <span class="white--text">地図作成</span>
-                            </v-btn>
-                            <v-dialog
-                                v-model="dialog"
-                                width="1000"
-                            >
-                                <MapInformationDialog
-                                    @closeDialog="dialog = false"
-                                />
-                            </v-dialog>
+                            <router-link to="CreationMapView">
+                                <v-btn
+                                    color="#3F8373"
+                                    large
+                                >
+                                    <span class="white--text">地図作成</span>
+                                </v-btn>
+                            </router-link>
                         </div>
                     </v-col>
                 </v-row>
