@@ -4,6 +4,7 @@
       tile
       dense
       style="max-height:200px; overflow-y:auto;"
+      v-show="detailMaps.length > 0"
     >
       <v-list-item
         v-for="(detailMap, index) in detailMaps"
@@ -42,17 +43,6 @@
         @cancel="cancelMapDeletion"
       ></delete-confirmation-dialog>
     </v-dialog>
-    <v-card-actions>
-      <v-btn
-        block
-        color="#3fa590"
-        outlined
-        @click="$emit('add')"
-      >
-        <v-icon>add</v-icon>
-        add detail map
-      </v-btn>
-    </v-card-actions>
   </v-card>
 </template>
 
