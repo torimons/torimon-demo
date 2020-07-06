@@ -20,11 +20,11 @@ import MapInformationDialog from '@/components/MapInformationDialog/index.vue';
 })
 export default class CreationMapView extends Vue {
     private lMap!: L.Map;
-    private defaultZoomLevel: number = 17;
+    private defaultZoomLevel: number = 14;
     private leafletContainer!: HTMLElement | null;
     private map: Map = new Map(0, 'New Map', {
-        topL: {lat: 0, lng: 0},
-        botR: {lat: 0, lng: 0},
+        topL: { lat: 33.596643, lng: 130.215516 },
+        botR: { lat: 33.594083, lng: 130.220609 },
     });
     // 次にクリックしたときに設置されるスポットタイプ
     private spotTypeToAddNext: SpotType = 'default';
@@ -39,8 +39,7 @@ export default class CreationMapView extends Vue {
      * とりあえず地図の表示を行なっています．
      */
     public mounted() {
-        // マップの範囲選択機能を実装していないので仮の範囲
-        const rootMapCenter: Coordinate = Map.calculateCenter(mapViewGetters.rootMap.getBounds());
+        const rootMapCenter: Coordinate = this.map.getCenter();
         this.lMap = L.map('map', {zoomControl: false})
             .setView([rootMapCenter.lat, rootMapCenter.lng], this.defaultZoomLevel);
         L.tileLayer(
@@ -54,6 +53,16 @@ export default class CreationMapView extends Vue {
             this.leafletContainer = document.querySelector('.leaflet-container') as HTMLElement;
         }
         this.shapeEditor = new ShapeEditor(this.lMap);
+        this.onMapClick = (e) => {
+            e.onEndSelection = (bounds: L.LatLngBounds) => {
+                this.map.setBounds({
+                    topL: bounds.getNorthWest(),
+                    botR: bounds.getSouthEast(),
+                });
+                this.lMap.flyTo(this.map.getCenter());
+            };
+            this.shapeEditor.startRectangleSelection(e);
+        };
     }
 
     /**
@@ -164,7 +173,7 @@ export default class CreationMapView extends Vue {
             this.leafletContainer.style.cursor = 'crosshair';
         }
         this.shapeEditButtonIsVisible = true;
-        this.onMapClick = (e: { latlng: L.LatLngExpression, afterAddEndPoint: (shape: Shape) => void }) => {
+        this.onMapClick = (e: { latlng: L.LatLng, afterAddEndPoint: (shape: Shape) => void }) => {
             /**
              * ラインの終点が描画された後に呼び出される関数
              * ポリゴンの描画や後処理を行う

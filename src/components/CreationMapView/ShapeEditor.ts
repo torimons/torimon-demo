@@ -10,6 +10,8 @@ export default class ShapeEditor {
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
     private controlLayer: L.Control.Layers = L.control.layers({}, {});
     private coordinates: Coordinate[] = [];
+    private rectangleStartPoint: L.LatLng | null = null;
+    private rectangle: L.Rectangle | null = null;
 
     constructor(lMap: L.Map) {
         this.lMap = lMap;
@@ -17,11 +19,44 @@ export default class ShapeEditor {
         pane.style.zIndex = '620';
     }
 
+    public startRectangleSelection(e: { latlng: L.LatLng, onEndSelection: (bounds: L.LatLngBounds) => void }): void {
+        this.rectangleStartPoint = e.latlng;
+        this.lMap.off();
+        this.lMap.on('mousemove', (event: any) => {
+            this.drawingRectangle(event);
+        });
+        this.lMap.on('click', (event: any) => {
+            event.onEndSelection = e.onEndSelection;
+            this.endRectangleSelection(event);
+        });
+    }
+
+    public drawingRectangle(e: { latlng: L.LatLng, onEndSelection: (bounds: L.LatLngBounds) => void }): void {
+        if (this.rectangleStartPoint === null) {
+            this.rectangleStartPoint = e.latlng;
+        }
+        const bounds = new L.LatLngBounds(this.rectangleStartPoint, e.latlng);
+        if (this.rectangle !== null) {
+            this.rectangle.remove();
+        }
+        this.rectangle = L.rectangle(bounds, {color: '#555555', weight: 1}).addTo(this.lMap);
+    }
+
+    public endRectangleSelection(e: { latlng: L.LatLng, onEndSelection: (bounds: L.LatLngBounds) => void }): void {
+        if (this.rectangleStartPoint === null) {
+            throw Error('There is no value ast the start of the rectangle.');
+        }
+        this.lMap.off();
+        const bounds: L.LatLngBounds = new L.LatLngBounds(this.rectangleStartPoint, e.latlng);
+        e.onEndSelection(bounds);
+        this.lMap.fitBounds(bounds);
+    }
+
     /**
      * マップ上にCircleMarkerを用いた点と，前の点から続くPolyLineを用いた線を描画する
      * @param e 終点追加後に完成したShapeを引数に取るコールバック関数をメンバにもつ
      */
-    public addPoint(e: { latlng: L.LatLngExpression, afterAddEndPoint: (shape: Shape) => void }): void {
+    public addPoint(e: { latlng: L.LatLng, afterAddEndPoint: (shape: Shape) => void }): void {
         this.coordinates.push(e.latlng as Coordinate);
 
         const circleMarker: L.CircleMarker = L.circleMarker(e.latlng, {

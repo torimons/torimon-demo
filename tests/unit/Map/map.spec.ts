@@ -15,7 +15,8 @@ describe('Mapクラスのgetterのテスト', () => {
             topL: {lat: 60, lng: 60},
             botR: {lat: 30, lng: 90},
         };
-        const acutualCenter: Coordinate = Map.calculateCenter(testBoundsForCalculateCenter);
+        const map = new Map(0, 'testMap', testBounds);
+        const acutualCenter: Coordinate = map.getCenter();
         const expectCenter: Coordinate = { lat: 45, lng: 75 };
         expect(acutualCenter).toEqual(expectCenter);
     });
