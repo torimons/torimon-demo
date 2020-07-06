@@ -194,7 +194,7 @@ export default class Map {
         };
     }
 
-    /*
+    /**
      * 検索条件を満たすかを判定する
      * @param regExp 正規表現オブジェクト
      * @return bool値，検索対象文字列が正規表現にマッチするか否か
