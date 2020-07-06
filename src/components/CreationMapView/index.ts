@@ -30,7 +30,7 @@ export default class CreationMapView extends Vue {
     // 次にクリックしたときに設置されるスポットタイプ
     private spotTypeToAddNext: SpotType = 'default';
     private spotEditorIsVisible: boolean = false;
-    private focusedSpot: Spot | null = new Spot(0, '', { lat: 0, lng: 0});
+    private focusedSpot: Spot | null = null;
     private spotMarkers: SpotMarker[] = [];
 
     // 詳細マップ生成時に利用
@@ -38,6 +38,7 @@ export default class CreationMapView extends Vue {
     private shapeEditButtonIsVisible: boolean = false;
     private disabledShapeEditButtonInSpotEditor: boolean = false;
     private shapeEditor!: ShapeEditor;
+
     private dialog: boolean = false;
 
     /**
