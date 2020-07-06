@@ -128,6 +128,14 @@ describe('components/CreationMapView', () => {
     });
 
     it('addイベントによってfocusedSpotに詳細マップが追加される', () => {
+        const testBounds = {
+            topL: {lat: 0, lng: 0},
+            botR: {lat: 0, lng: 0},
+        };
+        const testDetailMap = new Map(0, 'testMap', testBounds);
+        const testSpot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
+        wrapper.setData({focusedSpot: testSpot});
+
         const spot: Spot = wrapper.vm.focusedSpot;
         expect(spot.getDetailMaps().length).toBe(0);
         wrapper.find(SpotEditor).vm.$emit('add');
@@ -140,6 +148,9 @@ describe('components/CreationMapView', () => {
             botR: {lat: 0, lng: 0},
         };
         const testDetailMap = new Map(0, 'testMap', testBounds);
+        const testSpot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
+        wrapper.setData({focusedSpot: testSpot});
+
         const spot: Spot = wrapper.vm.focusedSpot;
         expect(spot.getDetailMaps().length).toBe(0);
         wrapper.find(SpotEditor).vm.$emit('dup', testDetailMap);
@@ -152,6 +163,9 @@ describe('components/CreationMapView', () => {
             botR: {lat: 0, lng: 0},
         };
         const testDetailMap = new Map(0, 'testMap', testBounds);
+        const testSpot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
+        wrapper.setData({focusedSpot: testSpot});
+
         const spot: Spot = wrapper.vm.focusedSpot;
         spot.addDetailMaps([testDetailMap]);
         expect(spot.getDetailMaps().length).toBe(1);
