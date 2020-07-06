@@ -114,6 +114,18 @@
             />
           </v-dialog>
         </v-container>
+          <v-btn 
+            color="#AE56B3"
+            fab
+            small
+            dark
+            id="reset-location"
+            v-show="flyToMapBoundsButtonIsVisible"
+            @click="flyToMapBounds"
+          >
+            <v-icon>my_location</v-icon>
+          </v-btn>
+
       </v-app>
     </div>
 </template>
@@ -144,6 +156,13 @@ body,
   position: absolute;
   z-index: 1100;
   pointer-events: none;
+}
+#reset-location {
+  position: absolute;
+  z-index: 1100;
+  pointer-events: auto;
+  bottom: 3%;
+  right: 2%;
 }
 
 body {

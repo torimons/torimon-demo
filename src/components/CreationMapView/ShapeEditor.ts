@@ -50,8 +50,6 @@ export default class ShapeEditor {
         this.lMap.off('click');
         const bounds: L.LatLngBounds = new L.LatLngBounds(this.rectangleStartPoint, e.latlng);
         const zoomLevel = this.lMap.getBoundsZoom(bounds, false);
-        // this.lMap.setMaxBounds(bounds);
-        // this.lMap.setMinZoom(zoomLevel);
         this.lMap.flyToBounds(bounds);
         e.onEndSelection(bounds);
     }

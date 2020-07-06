@@ -2,7 +2,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import 'leaflet/dist/leaflet.css';
 import { mapViewGetters } from '@/store';
 import L, { LeafletEvent, Marker } from 'leaflet';
-import { Coordinate, SpotType, Shape } from '@/store/types';
+import { Coordinate, SpotType, Shape, Bounds } from '@/store/types';
 import Map from '@/Map/Map.ts';
 import EditorToolBar from '@/components/EditorToolBar/index.vue';
 import SpotEditor from '@/components/SpotEditor/index.vue';
@@ -32,6 +32,7 @@ export default class CreationMapView extends Vue {
     private outOfMapRangeWarningIsVisible: boolean = false;
     private shapeEditButtonIsVisible: boolean = false;
     private spotButtonInEditorToolBarIsVisible: boolean = false;
+    private flyToMapBoundsButtonIsVisible: boolean = false;
     private disabledShapeEditButtonInSpotEditor: boolean = false;
     private focusedSpot: Spot | null = null;
     private spotMarkers: SpotMarker[] = [];
@@ -73,6 +74,7 @@ export default class CreationMapView extends Vue {
                 this.onMapClick = () => undefined;
                 this.spotButtonInEditorToolBarIsVisible = true;
                 this.mapAreaSelectionInfoIsVisible = false;
+                this.flyToMapBoundsButtonIsVisible = true;
                 if (this.leafletContainer !== null) {
                     this.leafletContainer.style.removeProperty('cursor');
                 }
@@ -81,6 +83,12 @@ export default class CreationMapView extends Vue {
             this.shapeEditor.startRectangleSelection(e);
         };
         this.lMap.on('click', (e) => selectMapArea(e));
+    }
+
+    private flyToMapBounds(): void {
+        const bounds: Bounds = this.map.getBounds();
+        const lBounds: L.LatLngBounds = new L.LatLngBounds(bounds.topL, bounds.botR);
+        this.lMap.flyToBounds(lBounds);
     }
 
     private focusMapNameInputForm(): void {
