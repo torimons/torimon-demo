@@ -54,8 +54,7 @@ export default class MapSearch extends Vue {
 
     public mounted() {
         this.targetMaps = mapViewGetters.demoMaps;
-        console.log(mapViewGetters.demoMaps);
-        // this.targetMaps = this.targetMaps.concat(mockMaps);
+        this.targetMaps = this.targetMaps.concat(mockMaps);
         this.search = new Search<Map>(this.targetMaps);
         // 最初は全結果を表示
         this.mapSearchResults = this.targetMaps;
