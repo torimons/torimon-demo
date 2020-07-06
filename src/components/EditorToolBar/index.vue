@@ -6,14 +6,14 @@
       <v-container fluid>
         <v-row no-gutters>
           <v-col>
-              <v-btn
-                icon
-                class="mb-2"
-                v-for="(button, index) in buttons"
-                v-bind:key="index"
-                :color="button.color"
-                @click="onButtonClick(button.action)"
-              >
+            <v-btn
+              icon
+              class="mb-2"
+              v-for="(button, index) in buttons"
+              v-bind:key="index"
+              :color="button.color"
+              @click="onButtonClick(button.action)"
+            >
               <v-icon icon>{{ button.icon }}</v-icon>
             </v-btn>
             <v-speed-dial
@@ -42,6 +42,15 @@
                 <v-icon>{{ spotIconMap.iconName }}</v-icon>
               </v-btn>
             </v-speed-dial>
+            <v-btn
+              icon
+              class="mt-1"
+              v-show="shapeEditButtonIsVisible"
+              :color="shapeEditButton.color"
+              @click="onButtonClick(shapeEditButton.action)"
+            >
+              <v-icon icon>{{ shapeEditButton.icon }}</v-icon>
+            </v-btn>
           </v-col> 
         </v-row> 
       </v-container>

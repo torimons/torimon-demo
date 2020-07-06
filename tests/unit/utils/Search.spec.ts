@@ -1,6 +1,6 @@
 import Search from '@/utils/Search';
-import Spot from '@/Spot/Spot.ts';
-import Map from '@/Map/Map.ts';
+import Map from '@/Map/Map';
+import Spot from '@/Spot/Spot';
 
 const rootMap: Map = new Map(0, 'rootMap', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined);
 const spotsForTest: Spot[] = [

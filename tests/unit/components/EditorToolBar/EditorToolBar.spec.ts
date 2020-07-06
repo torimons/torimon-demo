@@ -3,7 +3,6 @@ import { shallowMount } from '@vue/test-utils';
 import 'leaflet/dist/leaflet.css';
 import { testRawMapData } from '../../../resources/testRawMapData';
 import EditorToolBar from '@/components/EditorToolBar';
-import Map from '@/Map/Map';
 import { Action } from '@/components/EditorToolBar';
 
 
@@ -55,14 +54,12 @@ describe('components/EditorToolVar', () => {
 
         wrapper.vm.switchMode('move');
         expect(wrapper.vm.spotButtonColor).toBe(defaultColor);
-        const acutualMoveButtonColor = wrapper.vm.buttons[0].color;
-        const acutualZoomInButtonColor = wrapper.vm.buttons[1].color;
-        const acutualZoomOutButtonColor = wrapper.vm.buttons[2].color;
-        const acutualSelectButtonColor = wrapper.vm.buttons[3].color;
+        const acutualZoomInButtonColor = wrapper.vm.buttons[0].color;
+        const acutualZoomOutButtonColor = wrapper.vm.buttons[1].color;
+        const acutualMoveButtonColor = wrapper.vm.buttons[2].color;
         expect(acutualMoveButtonColor).toBe(selectedColor);
         expect(acutualZoomInButtonColor).toBe(defaultColor);
         expect(acutualZoomOutButtonColor).toBe(defaultColor);
-        expect(acutualSelectButtonColor).toBe(defaultColor);
         expect(wrapper.vm.spotButtonColor).toBe(defaultColor);
     });
 

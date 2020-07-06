@@ -49,9 +49,11 @@
             >
               <SpotEditor
                 @spotInput="updateFocusedMarkerName"
-                :isVisible="spotEditorIsVisible"
-                @close="spotEditorIsVisible = false"
+                :isVisible="focusedSpot !== null"
+                :disabledShapeEditButton="disabledShapeEditButtonInSpotEditor"
+                @close="unfocusedMarker"
                 :spot="focusedSpot"
+                @clickAddShapeButton="setAddPointMethodOnMapClick"
                 @delete="deleteFocusedSpot"
                 @add="addDetailMap"
                 @dup="duplicateDetailMap"
@@ -61,11 +63,13 @@
             <v-col>
               <v-row justify="end" no-gutters>
                 <EditorToolBar
-                  @clickMove="setEmptyMethodOnMapClick"
+                  @clickMove="setDefaultMethodOnMapClick"
                   @clickZoomIn="zoomIn"
                   @clickZoomOut="zoomOut"
-                  @clickSelect="setEmptyMethodOnMapClick"
+                  @clickSelect="setDefaultMethodOnMapClick"
                   @clickSpot="setAddSpotMethodOnMapClick"
+                  @switchMode="onSwitchModeOfToolBar"
+                  :shapeEditButtonIsVisible="shapeEditButtonIsVisible"
                 />
               </v-row>
             </v-col>
@@ -83,6 +87,7 @@ html,
 body,
 #creation-map-view {
   height: 100%;
+  cursor: pointer
 }
 
 #map {

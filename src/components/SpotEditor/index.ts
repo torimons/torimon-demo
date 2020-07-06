@@ -13,6 +13,8 @@ export default class SpotEditor extends Vue {
     public spot!: Spot;
     @Prop()
     public isVisible!: boolean;
+    @Prop()
+    public disabledShapeEditButton!: boolean;
     public attachment: [{name: string, url: string}] = [{name: '', url: ''}];
     public dialog: boolean = false;
 
@@ -40,5 +42,13 @@ export default class SpotEditor extends Vue {
      */
     private deleteDetailMap(id: number): void {
         this.$emit('del', id);
+    }
+
+    private shapeAddButtonIcon(): 'add_circle' | 'edit' {
+        if (this.spot.getShape() === undefined) {
+            return 'add_circle';
+        } else {
+            return 'edit';
+        }
     }
 }
