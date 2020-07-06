@@ -4,8 +4,8 @@ import { SpotType } from '@/store/types';
 @Component
 export default class EditorToolBar extends Vue {
     // 色は仮
-    private selectedColor: string = 'indigo darken-4';
-    private defaultColor: string = 'light-blue lighten-1';
+    private selectedColor: string = '#14362E';
+    private defaultColor: string = '#63CFB5';
     private buttons: Array<{ action: Action, icon: string, color: string }> = [
         {action: 'zoomIn',  icon: 'zoom_in',  color: this.defaultColor},
         {action: 'zoomOut', icon: 'zoom_out', color: this.defaultColor},
@@ -22,6 +22,8 @@ export default class EditorToolBar extends Vue {
     };
     @Prop()
     private shapeEditButtonIsVisible!: boolean;
+    @Prop()
+    private spotButtonIsVisible!: boolean;
     private selectedMode: Action = 'move';
     private selectedSpotIcon: string = '';
     private fabVisible: boolean = false;

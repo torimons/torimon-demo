@@ -10,12 +10,12 @@ describe('Mapクラスのgetterのテスト', () => {
         botR: {lat: 0, lng: 0},
     };
 
-    it('calculateCenterがBoundsの中心座標を計算する', () => {
+    it('getCenterがBoundsの中心座標を計算する', () => {
         const testBoundsForCalculateCenter = {
             topL: {lat: 60, lng: 60},
             botR: {lat: 30, lng: 90},
         };
-        const map = new Map(0, 'testMap', testBounds);
+        const map = new Map(0, 'testMap', testBoundsForCalculateCenter);
         const acutualCenter: Coordinate = map.getCenter();
         const expectCenter: Coordinate = { lat: 45, lng: 75 };
         expect(acutualCenter).toEqual(expectCenter);

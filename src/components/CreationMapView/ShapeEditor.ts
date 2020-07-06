@@ -20,36 +20,40 @@ export default class ShapeEditor {
     }
 
     public startRectangleSelection(e: { latlng: L.LatLng, onEndSelection: (bounds: L.LatLngBounds) => void }): void {
-        this.rectangleStartPoint = e.latlng;
-        this.lMap.off();
-        this.lMap.on('mousemove', (event: any) => {
-            this.drawingRectangle(event);
-        });
+        if (this.rectangleStartPoint !== null) {
+            return;
+        }
+        this.rectangleStartPoint = e.latlng as L.LatLng;
+        this.lMap.on('mousemove', this.onDrawingRectangle);
         this.lMap.on('click', (event: any) => {
             event.onEndSelection = e.onEndSelection;
             this.endRectangleSelection(event);
         });
     }
 
-    public drawingRectangle(e: { latlng: L.LatLng, onEndSelection: (bounds: L.LatLngBounds) => void }): void {
+    public onDrawingRectangle = (e: any): void => {
         if (this.rectangleStartPoint === null) {
-            this.rectangleStartPoint = e.latlng;
+            this.rectangleStartPoint = e.latlng as L.LatLng;
         }
         const bounds = new L.LatLngBounds(this.rectangleStartPoint, e.latlng);
         if (this.rectangle !== null) {
             this.rectangle.remove();
         }
-        this.rectangle = L.rectangle(bounds, {color: '#555555', weight: 1}).addTo(this.lMap);
+        this.rectangle = L.rectangle(bounds, {color: '#3F8373', weight: 3, fill: false}).addTo(this.lMap);
     }
 
     public endRectangleSelection(e: { latlng: L.LatLng, onEndSelection: (bounds: L.LatLngBounds) => void }): void {
         if (this.rectangleStartPoint === null) {
             throw Error('There is no value ast the start of the rectangle.');
         }
-        this.lMap.off();
+        this.lMap.off('mousemove');
+        this.lMap.off('click');
         const bounds: L.LatLngBounds = new L.LatLngBounds(this.rectangleStartPoint, e.latlng);
+        const zoomLevel = this.lMap.getBoundsZoom(bounds, false);
+        this.lMap.setMaxBounds(bounds);
+        this.lMap.setMinZoom(zoomLevel);
+        this.lMap.flyToBounds(bounds);
         e.onEndSelection(bounds);
-        this.lMap.fitBounds(bounds);
     }
 
     /**

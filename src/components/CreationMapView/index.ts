@@ -28,19 +28,22 @@ export default class CreationMapView extends Vue {
     });
     // 次にクリックしたときに設置されるスポットタイプ
     private spotTypeToAddNext: SpotType = 'default';
+    private mapAreaSelectionInfoIsVisible: boolean = true;
     private shapeEditButtonIsVisible: boolean = false;
+    private spotButtonInEditorToolBarIsVisible: boolean = false;
     private disabledShapeEditButtonInSpotEditor: boolean = false;
     private focusedSpot: Spot | null = null;
     private spotMarkers: SpotMarker[] = [];
     private shapeEditor!: ShapeEditor;
     private dialog: boolean = false;
+    private drawer: boolean = true;
 
     /**
      * とりあえず地図の表示を行なっています．
      */
     public mounted() {
         const rootMapCenter: Coordinate = this.map.getCenter();
-        this.lMap = L.map('map', {zoomControl: false})
+        this.lMap = L.map('map', { zoomControl: false })
             .setView([rootMapCenter.lat, rootMapCenter.lng], this.defaultZoomLevel);
         L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -59,7 +62,10 @@ export default class CreationMapView extends Vue {
                     topL: bounds.getNorthWest(),
                     botR: bounds.getSouthEast(),
                 });
-                this.lMap.flyTo(this.map.getCenter());
+                this.onMapClick = () => undefined;
+                this.lMap.on('click', (event) => this.onMapClick(event));
+                this.spotButtonInEditorToolBarIsVisible = true;
+                this.mapAreaSelectionInfoIsVisible = false;
             };
             this.shapeEditor.startRectangleSelection(e);
         };

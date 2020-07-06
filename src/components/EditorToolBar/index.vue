@@ -24,6 +24,7 @@
                 <v-btn
                   :color="spotButtonColor"
                   v-model="fabVisible"
+                  v-show="spotButtonIsVisible"
                   icon
                 >
                   <v-icon v-if="fabVisible">close</v-icon>
