@@ -1,5 +1,5 @@
 import { mapViewMutations } from '@/store';
-import { shallowMount } from '@vue/test-utils';
+import { shallowMount, mount, createLocalVue } from '@vue/test-utils';
 import 'leaflet/dist/leaflet.css';
 import { testRawMapData } from '../../../resources/testRawMapData';
 import EditorToolBar from '@/components/EditorToolBar';
@@ -9,14 +9,22 @@ import Spot from '@/Spot/Spot';
 import SpotMarker from '@/components/MapView/Marker/SpotMarker';
 import L from 'leaflet';
 import SpotEditor from '@/components/SpotEditor';
+import Vuetify from 'vuetify';
 
 
 describe('components/CreationMapView', () => {
+    let localVue: any;
     let wrapper: any;
+    let vuetify: any;
 
     beforeEach(() => {
         mapViewMutations.setRootMapForTest(testRawMapData);
-        wrapper = shallowMount(CreationMapView, {
+        localVue = createLocalVue();
+        vuetify = new Vuetify();
+        localVue.use(Vuetify);
+        wrapper = mount(CreationMapView, {
+            localVue,
+            vuetify,
             attachToDocument: true,
         });
     });
