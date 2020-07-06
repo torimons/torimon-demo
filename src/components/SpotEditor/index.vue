@@ -99,6 +99,7 @@
       <detail-map-manage-list
         :detailMaps="spot.getDetailMaps()"
         @add="addDetailMap"
+        @edit="editDetailMap"
         @dup="duplicateDetailMap"
         @del="deleteDetailMap"
       >

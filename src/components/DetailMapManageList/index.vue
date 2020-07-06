@@ -14,7 +14,10 @@
             {{ detailMap.getName() }}
           </v-list-item-title>
         </v-list-item-content>
-        <v-btn icon>
+        <v-btn
+          icon
+          @click="editDetailMap(detailMap)"
+        >
           <v-icon>edit</v-icon>
         </v-btn>
         <v-btn

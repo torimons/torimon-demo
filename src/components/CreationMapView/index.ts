@@ -1,4 +1,4 @@
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import 'leaflet/dist/leaflet.css';
 import { mapViewGetters } from '@/store';
 import L, { LeafletEvent, Marker } from 'leaflet';
@@ -27,19 +27,25 @@ export default class CreationMapView extends Vue {
         topL: {lat: 0, lng: 0},
         botR: {lat: 0, lng: 0},
     });
+    private mapToEdit: Map = this.map;
     // 次にクリックしたときに設置されるスポットタイプ
     private spotTypeToAddNext: SpotType = 'default';
     private spotEditorIsVisible: boolean = false;
-    private focusedSpot: Spot | null = new Spot(0, '', { lat: 0, lng: 0});
+    private focusedSpot: Spot | null = null;
     private spotMarkers: SpotMarker[] = [];
 
     // 詳細マップ生成時に利用
-    private currentMapId: number = 0;
+    private currentId: number = 0;
     private dialog: boolean = false;
     private drawer: boolean = false;
     private shapeEditButtonIsVisible: boolean = false;
     private disabledShapeEditButtonInSpotEditor: boolean = false;
     private shapeEditor!: ShapeEditor;
+    private tree = [];
+
+    // treeviewで表示するアイテム
+    private items: any = [];
+
 
     /**
      * とりあえず地図の表示を行なっています．
@@ -60,6 +66,40 @@ export default class CreationMapView extends Vue {
             this.leafletContainer = document.querySelector('.leaflet-container') as HTMLElement;
         }
         this.shapeEditor = new ShapeEditor(this.lMap);
+    }
+
+    /**
+     * スポット、詳細マップの追加が行われるとtreeviewを更新する
+     */
+    @Watch('map', {deep: true})
+    private updateMapTreeView() {
+        this.items = [this.mapToJson(this.map)];
+    }
+
+    /**
+     * treeviewで扱う形式に変換する
+     * @param map 変換対象のマップ
+     */
+    private mapToJson(map: Map): any {
+        return {
+            id: map.getId(),
+            name: map.getName(),
+            type: 'Map',
+            children: map.getSpots().map((s: Spot) => this.spotToJson(s)),
+        };
+    }
+
+    /**
+     * treeviewで扱う形式に変換する。
+     * @param spot 変換対象のスポット
+     */
+    private spotToJson(spot: Spot): any {
+        return {
+            id: spot.getId(),
+            name: spot.getName(),
+            type: 'Spot',
+            children: spot.getDetailMaps().map((m: Map) => this.mapToJson(m)),
+        };
     }
 
     /**
@@ -95,14 +135,11 @@ export default class CreationMapView extends Vue {
      * @param e Leafletイベント(e.latlngを取得するためにany型にしている)
      */
     private addSpot(e: any): void {
-        const maxNumOfId = this.map.getSpots()
-            .map((spot) => spot.getId())
-            .reduce((accum, newValue) => Math.max(accum, newValue), -1);
-        const newId = maxNumOfId + 1;
+        const newId = ++this.currentId;
         const newSpot: Spot = new Spot(
             newId, 'スポット ' + newId, e.latlng, undefined, undefined, undefined, undefined, this.spotTypeToAddNext,
         );
-        this.map.addSpot(newSpot);
+        this.mapToEdit.addSpot(newSpot);
 
         const newMarker: SpotMarker = new SpotMarker(newSpot);
         newMarker.addTo(this.lMap);
@@ -143,7 +180,7 @@ export default class CreationMapView extends Vue {
         this.spotMarkers = this.spotMarkers
             .filter((marker) => marker.getSpot().getId() !== focusedSpot.getId());
         focusedSpot.getParentMap()?.removeSpot(focusedSpot.getId());
-        this.shapeEditor.displayPolygons(this.map.getSpots());
+        this.shapeEditor.displayPolygons(this.mapToEdit.getSpots());
         this.shapeEditor.removeShapeEditLine();
         this.shapeEditButtonIsVisible = false;
         this.setDefaultMethodOnMapClick();
@@ -182,7 +219,7 @@ export default class CreationMapView extends Vue {
                 }
                 this.shapeEditButtonIsVisible = false;
                 this.focusedSpot?.setShape(shape);
-                this.shapeEditor.displayPolygons(this.map.getSpots());
+                this.shapeEditor.displayPolygons(this.mapToEdit.getSpots());
 
                 /**
                  * 始点のCircleMarkerがクリックされた場合に本コールバックメソッドは呼ばれるが,
@@ -239,7 +276,7 @@ export default class CreationMapView extends Vue {
      * 現状はマップ生成時にname, boundsを定数値にしている。
      */
     private addDetailMap() {
-        const nextMapId: number = ++this.currentMapId;
+        const nextMapId: number = ++this.currentId;
         const newDetailMap: Map = new Map(
             nextMapId,
             'testDetailMap' + String(nextMapId),
@@ -252,11 +289,46 @@ export default class CreationMapView extends Vue {
 
     /**
      * SpotEditorから詳細マップ複製イベントが発火されると呼び出され、
+     * 引数のマップを編集する状態に移行する。
+     * @param map 編集対象のマップ
+     */
+    private editDetailMap(map: Map): void {
+        this.spotMarkers.forEach((sm: SpotMarker) => sm.remove());
+        this.mapToEdit = map;
+        this.mapToEdit.getSpots().forEach((s: Spot) => this.addMarkerToMap(s));
+        this.focusedSpot = null;
+    }
+
+    /**
+     * treeviewでマップを選択すると選択したマップを編集対象にする
+     * @param id 詳細マップのid
+     */
+    private setMapToEdit(id: number) {
+        const mapToEdit: Map | null = this.map.findMap(id);
+        if (mapToEdit === null) {
+            throw new Error('This selected Map does not exist.');
+        }
+        this.editDetailMap(mapToEdit);
+    }
+
+    /**
+     * スポットを画面上のマーカーとして登録する
+     * @param spot: 画面にマーカーとして登録したいスポット
+     */
+    private addMarkerToMap(spot: Spot) {
+        const newMarker: SpotMarker = new SpotMarker(spot);
+        newMarker.addTo(this.lMap);
+        newMarker.on('click', (event) => this.switchFocusedMarker(event.target));
+        this.spotMarkers.push(newMarker);
+    }
+
+    /**
+     * SpotEditorから詳細マップ複製イベントが発火されると呼び出され、
      * 引数のマップを複製してスポットに登録する。
      * @param map 複製対象のマップ
      */
     private duplicateDetailMap(map: Map) {
-        const nextMapId = ++this.currentMapId;
+        const nextMapId = ++this.currentId;
         const dupDetailMap = cloneDeep(map);
         (dupDetailMap as any).id = nextMapId;
         (dupDetailMap as any).name = dupDetailMap.getName() + '_copy';

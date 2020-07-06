@@ -13,7 +13,7 @@
                   app
                 >
                   <v-app-bar-nav-icon @click="drawer=!drawer"></v-app-bar-nav-icon>
-                  <v-toolbar-title>{{ map.getName() }}</v-toolbar-title>
+                  <v-toolbar-title>{{ this.mapToEdit.getName() }}</v-toolbar-title>
                   <v-spacer></v-spacer>
                   <v-btn
                     @click="dialog = true"
@@ -24,8 +24,40 @@
                 </v-app-bar>
                 <v-navigation-drawer
                   app
+                  width="500"
                   v-model="drawer"
                 >
+                  <v-treeview
+                    dense
+                    activatable
+                    hoverable
+                    open-all
+                    color="warning"
+                    v-model="tree"
+                    :items="items"
+                    item-key="id"
+                  >
+                  <template slot="label" slot-scope="{ item }">
+                    <v-btn
+                      icon
+                      v-if="item.type==='Map'"
+                      @click="setMapToEdit(item.id); drawer=false"
+                    >
+                      <v-icon>
+                        map
+                      </v-icon>
+                    </v-btn>
+                    <v-btn
+                      icon
+                      v-if="item.type==='Spot'"
+                    >
+                      <v-icon>
+                        place
+                      </v-icon>
+                    </v-btn>
+                    {{ item.name }}
+                  </template>
+                  </v-treeview>
                 </v-navigation-drawer>
               </v-card>
             </v-col>
@@ -56,6 +88,7 @@
                 @clickAddShapeButton="setAddPointMethodOnMapClick"
                 @delete="deleteFocusedSpot"
                 @add="addDetailMap"
+                @edit="editDetailMap"
                 @dup="duplicateDetailMap"
                 @del="deleteDetailMap"
               />

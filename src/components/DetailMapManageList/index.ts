@@ -14,6 +14,14 @@ export default class DetailMapManageList extends Vue {
     public selectedMapName: string = '';
 
     /**
+     * 編集ボタンが押されると呼び出され、
+     * 選択した詳細マップを編集するイベントを発火する。
+     */
+    private editDetailMap(detailMap: Map): void {
+        this.$emit('edit', detailMap);
+    }
+
+    /**
      * 複製ボタンが押されると呼び出され、
      * 指定した詳細マップを複製するイベントを発火する。
      * @param detailMap 複製対象の詳細マップ

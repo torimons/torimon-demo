@@ -27,6 +27,15 @@ export default class SpotEditor extends Vue {
     }
 
     /**
+     * DetailMapManageListから詳細マップ編集のイベントが発火されると呼び出され、
+     * 選択された詳細マップを編集するイベントを発火する。
+     * @param map 編集対象のマップ
+     */
+    private editDetailMap(map: Map): void {
+        this.$emit('edit', map);
+    }
+
+    /**
      * DetailMapManageListから詳細マップ複製のイベントが発火されると呼び出され、
      * 選択された詳細マップを複製するイベントを発火する。
      * @param map 複製対象のマップ
