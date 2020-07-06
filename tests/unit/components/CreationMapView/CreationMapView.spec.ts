@@ -38,11 +38,16 @@ describe('components/CreationMapView', () => {
         expect(wrapper.vm.spotTypeToAddNext).toBe('restroom');
     });
 
-    it('addSpotにより新しいスポットがmapに追加される', () => {
+    it('addSpotにより新しいスポットがmapに追加される.マップの範囲外の場合追加されない', () => {
         const map: Map = wrapper.vm.map;
+        map.setBounds({ topL: {lat: 20, lng: 0}, botR: {lat: 0, lng: 20} });
         expect(map.getSpots().length).toBe(0);
-        const e = { latlng: { lat: 0, lng: 0 } };
-        wrapper.vm.addSpot(e);
+        const eventOnOutOfBounds = { latlng: { lat: 50, lng: 50 } };
+        wrapper.vm.addSpot(eventOnOutOfBounds);
+        expect(map.getSpots().length).toBe(0);
+
+        const event = { latlng: { lat: 10, lng: 10 } };
+        wrapper.vm.addSpot(event);
         expect(map.getSpots().length).toBe(1);
     });
 
