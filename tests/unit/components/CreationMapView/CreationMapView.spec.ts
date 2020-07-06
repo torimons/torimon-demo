@@ -120,10 +120,13 @@ describe('components/CreationMapView', () => {
     });
 
     it('addイベントによってfocusedSpotに詳細マップが追加される', () => {
-        const spot: Spot = wrapper.vm.focusedSpot;
-        expect(spot.getDetailMaps().length).toBe(0);
+        const testSpot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
+        wrapper.setData({focusedSpot: testSpot});
+
+        const focusedSpot: Spot = wrapper.vm.focusedSpot;
+        expect(focusedSpot.getDetailMaps().length).toBe(0);
         wrapper.find(SpotEditor).vm.$emit('add');
-        expect(spot.getDetailMaps().length).toBe(1);
+        expect(focusedSpot.getDetailMaps().length).toBe(1);
     });
 
     it('duplicateDetailMapで詳細マップを複製', () => {
@@ -132,10 +135,13 @@ describe('components/CreationMapView', () => {
             botR: {lat: 0, lng: 0},
         };
         const testDetailMap = new Map(0, 'testMap', testBounds);
-        const spot: Spot = wrapper.vm.focusedSpot;
-        expect(spot.getDetailMaps().length).toBe(0);
+        const testSpot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
+
+        wrapper.setData({focusedSpot: testSpot});
+        const focusedSpot: Spot = wrapper.vm.focusedSpot;
+        expect(focusedSpot.getDetailMaps().length).toBe(0);
         wrapper.find(SpotEditor).vm.$emit('dup', testDetailMap);
-        expect(spot.getDetailMaps().length).toBe(1);
+        expect(focusedSpot.getDetailMaps().length).toBe(1);
     });
 
     it('deleteDetailMapで詳細マップを削除', () => {
@@ -144,11 +150,14 @@ describe('components/CreationMapView', () => {
             botR: {lat: 0, lng: 0},
         };
         const testDetailMap = new Map(0, 'testMap', testBounds);
-        const spot: Spot = wrapper.vm.focusedSpot;
-        spot.addDetailMaps([testDetailMap]);
-        expect(spot.getDetailMaps().length).toBe(1);
+        const testSpot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
+        wrapper.setData({focusedSpot: testSpot});
+
+        const focusedSpot: Spot = wrapper.vm.focusedSpot;
+        focusedSpot.addDetailMaps([testDetailMap]);
+        expect(focusedSpot.getDetailMaps().length).toBe(1);
         wrapper.find(SpotEditor).vm.$emit('del', testDetailMap.getId());
-        expect(spot.getDetailMaps().length).toBe(0);
+        expect(focusedSpot.getDetailMaps().length).toBe(0);
     });
 
 });
