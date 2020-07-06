@@ -1,39 +1,5 @@
 import Search from '@/utils/Search';
-import Spot from '@/Spot/Spot.ts';
-import Map from '@/Map/Map.ts';
 
-const rootMap: Map = new Map(0, 'rootMap', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined);
-const spotsForTest: Spot[] = [
-    new Spot(
-        1,
-        'SougouGakusyuPlaza',
-        {
-            lat: 33.595502,
-            lng: 130.218238,
-        },
-        undefined,
-        undefined,
-        'this is a comment for test',
-    ),
-    new Spot(
-        2,
-        'SpotForTest',
-        {
-            lat: 33.595502,
-            lng: 130.218238,
-        },
-        undefined,
-        undefined,
-    ),
-];
-// rootMap -> 総合学習プラザ
-rootMap.addSpot(spotsForTest[0]);
-// 総合学習プラザ -> testMap
-const testMap: Map = new Map(3, 'testMap', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined);
-// testMap -> SpotForTest
-spotsForTest[0].addDetailMaps([testMap]);
-testMap.addSpot(spotsForTest[1]);
-// SpotForTest.getParentMap().getParentSpot()が総合学習プラザになるようにセット
 /**
  * Searchクラスで扱うisMatchToRegExpをもつクラス
  */

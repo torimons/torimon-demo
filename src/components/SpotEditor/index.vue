@@ -1,5 +1,5 @@
 <template>
-  <div id="spot-editor" v-show="isVisible">
+  <div id="spot-editor" v-if="isVisible">
     <v-card
       outlined
     >
@@ -12,10 +12,6 @@
           clearable
           counter="15"
         ></v-text-field>
-        <v-checkbox
-          label="マップ上に表示"
-          color="#3fa590"
-        ></v-checkbox>
       </v-card-title>
       <v-card-subtitle>
         <v-textarea
@@ -33,13 +29,14 @@
       </v-card-subtitle>
       <v-card-actions>
         <v-btn
-            class="ma-1"
-            color="#3fa590"
-            outlined
-            disabled
+          class="ma-1"
+          color="#3fa590"
+          outlined
+          :disabled="disabledShapeEditButton"
+          @click="$emit('clickAddShapeButton')"
         >
             <span>形状</span>
-            <v-icon right>add_circle</v-icon>
+            <v-icon right>{{ shapeAddButtonIcon() }}</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
         <v-btn
