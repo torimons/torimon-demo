@@ -39,7 +39,9 @@ export default class ShapeEditor {
         if (this.rectangle !== null) {
             this.rectangle.remove();
         }
-        this.rectangle = L.rectangle(bounds, {color: '#AE56B3', weight: 3, fill: false}).addTo(this.lMap);
+        this.rectangle = L.rectangle(bounds, {
+            lineJoin: 'inherit', color: '#AE56B3', weight: 3, fill: false,
+        }).addTo(this.lMap);
     }
 
     public endRectangleSelection(e: { latlng: L.LatLng, onEndSelection: (bounds: L.LatLngBounds) => void }): void {
