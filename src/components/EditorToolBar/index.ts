@@ -4,8 +4,8 @@ import { SpotType } from '@/store/types';
 @Component
 export default class EditorToolBar extends Vue {
     // 色は仮
-    private selectedColor: string = '#14362E';
-    private defaultColor: string = '#63CFB5';
+    private selectedColor: string = '#264F45';
+    private defaultColor: string = '#76978F';
     private buttons: Array<{ action: Action, icon: string, color: string }> = [
         {action: 'zoomIn',  icon: 'zoom_in',  color: this.defaultColor},
         {action: 'zoomOut', icon: 'zoom_out', color: this.defaultColor},

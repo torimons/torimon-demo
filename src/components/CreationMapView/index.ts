@@ -29,6 +29,7 @@ export default class CreationMapView extends Vue {
     // 次にクリックしたときに設置されるスポットタイプ
     private spotTypeToAddNext: SpotType = 'default';
     private mapAreaSelectionInfoIsVisible: boolean = true;
+    private outOfMapRangeWarningIsVisible: boolean = false;
     private shapeEditButtonIsVisible: boolean = false;
     private spotButtonInEditorToolBarIsVisible: boolean = false;
     private disabledShapeEditButtonInSpotEditor: boolean = false;
@@ -37,6 +38,8 @@ export default class CreationMapView extends Vue {
     private shapeEditor!: ShapeEditor;
     private dialog: boolean = false;
     private drawer: boolean = true;
+    private whileMapNameEditing: boolean = false;
+    private mapNameColor: string = 'background-color:#3F8373';
 
     /**
      * とりあえず地図の表示を行なっています．
@@ -51,24 +54,39 @@ export default class CreationMapView extends Vue {
                 maxNativeZoom: 19,
             },
         ).addTo(this.lMap);
-        this.lMap.on('click', (e) => this.onMapClick(e));
         if (document.querySelector('.leaflet-container') !== null) {
             this.leafletContainer = document.querySelector('.leaflet-container') as HTMLElement;
         }
+        if (this.leafletContainer !== null) {
+            this.leafletContainer.style.cursor = 'crosshair';
+        }
         this.shapeEditor = new ShapeEditor(this.lMap);
-        this.onMapClick = (e) => {
+        const selectMapArea = (e: any) => {
+            if (!('latlng' in e)) {
+                return;
+            }
             e.onEndSelection = (bounds: L.LatLngBounds) => {
                 this.map.setBounds({
                     topL: bounds.getNorthWest(),
                     botR: bounds.getSouthEast(),
                 });
                 this.onMapClick = () => undefined;
-                this.lMap.on('click', (event) => this.onMapClick(event));
                 this.spotButtonInEditorToolBarIsVisible = true;
                 this.mapAreaSelectionInfoIsVisible = false;
+                if (this.leafletContainer !== null) {
+                    this.leafletContainer.style.removeProperty('cursor');
+                }
+                this.lMap.on('click', (e) => this.onMapClick(e));
             };
             this.shapeEditor.startRectangleSelection(e);
         };
+        this.lMap.on('click', (e) => selectMapArea(e));
+    }
+
+    private focusMapNameInputForm(): void {
+        if ('focus' in this.$refs.mapNameForm) {
+            (this.$refs.mapNameForm as any).focus();
+        }
     }
 
     /**
@@ -90,7 +108,9 @@ export default class CreationMapView extends Vue {
      * EditorToolBarコンポーネントでclickSpotイベント以外が発生した時に実行される
      */
     private setDefaultMethodOnMapClick(): void {
-        if (this.leafletContainer !== null) {
+        // マップの範囲選択時にツールバーのmoveを押してもカーソルが戻らないように.
+        // これはかなり苦しい
+        if (this.leafletContainer !== null && !this.mapAreaSelectionInfoIsVisible) {
             this.leafletContainer.style.removeProperty('cursor');
         }
         this.onMapClick = (e: any) => {
@@ -103,7 +123,15 @@ export default class CreationMapView extends Vue {
      * 作成するスポットのIDは既存のスポットのIDの中から最も大きい数値+1の値
      * @param e Leafletイベント(e.latlngを取得するためにany型にしている)
      */
-    private addSpot(e: any): void {
+    private addSpot(e: L.LeafletMouseEvent): void {
+        const lBouds = new L.LatLngBounds(this.map.getBounds().topL as L.LatLng, this.map.getBounds().botR as L.LatLng);
+        if(!lBouds.contains(e.latlng)) {
+            this.outOfMapRangeWarningIsVisible = true;
+            setTimeout(() => {
+                this.outOfMapRangeWarningIsVisible = false;
+            }, 3000);
+            return;
+        }
         const maxNumOfId = this.map.getSpots()
             .map((spot) => spot.getId())
             .reduce((accum, newValue) => Math.max(accum, newValue), -1);

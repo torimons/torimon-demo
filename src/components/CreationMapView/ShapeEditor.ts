@@ -39,7 +39,7 @@ export default class ShapeEditor {
         if (this.rectangle !== null) {
             this.rectangle.remove();
         }
-        this.rectangle = L.rectangle(bounds, {color: '#3F8373', weight: 3, fill: false}).addTo(this.lMap);
+        this.rectangle = L.rectangle(bounds, {color: '#AE56B3', weight: 3, fill: false}).addTo(this.lMap);
     }
 
     public endRectangleSelection(e: { latlng: L.LatLng, onEndSelection: (bounds: L.LatLngBounds) => void }): void {
@@ -50,8 +50,8 @@ export default class ShapeEditor {
         this.lMap.off('click');
         const bounds: L.LatLngBounds = new L.LatLngBounds(this.rectangleStartPoint, e.latlng);
         const zoomLevel = this.lMap.getBoundsZoom(bounds, false);
-        this.lMap.setMaxBounds(bounds);
-        this.lMap.setMinZoom(zoomLevel);
+        // this.lMap.setMaxBounds(bounds);
+        // this.lMap.setMinZoom(zoomLevel);
         this.lMap.flyToBounds(bounds);
         e.onEndSelection(bounds);
     }

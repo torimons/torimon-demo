@@ -74,6 +74,10 @@ export default class Map {
         return this.parentSpot;
     }
 
+    public setName(name: string): void {
+        this.name = name;
+    }
+
     /**
      * 親spotをセットし,セットしたspotのdetailMapに自身を追加する.
      * @param parentSpot セットする親スポット
