@@ -76,7 +76,7 @@ export default class CreationMapView extends Vue {
                 if (this.leafletContainer !== null) {
                     this.leafletContainer.style.removeProperty('cursor');
                 }
-                this.lMap.on('click', (e) => this.onMapClick(e));
+                this.lMap.on('click', (event) => this.onMapClick(event));
             };
             this.shapeEditor.startRectangleSelection(e);
         };
@@ -125,7 +125,7 @@ export default class CreationMapView extends Vue {
      */
     private addSpot(e: L.LeafletMouseEvent): void {
         const lBouds = new L.LatLngBounds(this.map.getBounds().topL as L.LatLng, this.map.getBounds().botR as L.LatLng);
-        if(!lBouds.contains(e.latlng)) {
+        if (!lBouds.contains(e.latlng)) {
             this.outOfMapRangeWarningIsVisible = true;
             setTimeout(() => {
                 this.outOfMapRangeWarningIsVisible = false;
