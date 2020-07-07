@@ -2,20 +2,19 @@
     <div id='map'>
         <v-btn id="osm"
             absolute
-            top
+            bottom
             right
             fab
             small
+            @click="displayOSM = !displayOSM"
         >
             <v-icon
                 v-if="displayOSM"
-                @click="displayOSM = false"
             >
                 visibility_off
             </v-icon>
             <v-icon
                 v-else
-                @click="displayOSM = true"
             >
                 visibility
             </v-icon>
@@ -55,7 +54,7 @@ body,
     height: 100%;
 }
 #osm {
-    top: 80px;
+    bottom: 120px;
     z-index: 1000;
 }
 #zoom-in {
