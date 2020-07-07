@@ -6,7 +6,7 @@
             :color="backgroundColor"
         >
             <div
-                v-if="successfullyGetData"
+                v-if="getDataSucceeded"
             >
                 <SearchBox
                     @searchWordInput="setSearchWord"

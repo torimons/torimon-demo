@@ -24,7 +24,7 @@ const mockMaps: Map[] = [
 })
 export default class MapSearch extends Vue {
     private searchWord: string = '';
-    private successfullyGetData: boolean = true;
+    private getDataSucceeded: boolean = true;
     private targetMaps: Map[] = [];
     private mapSearchResults: Map[] = [];
     private search!: Search<Map>;
@@ -42,7 +42,7 @@ export default class MapSearch extends Vue {
                 this.targetMaps.push(MapDataConverter.json2tree(jsonMap));
             });
         } catch (err) {
-            this.successfullyGetData = false;
+            this.getDataSucceeded = false;
         }
         // 表示が寂しいのでとりあえずmockデータもtargetMapsに追加
         this.targetMaps = this.targetMaps.concat(mockMaps);
