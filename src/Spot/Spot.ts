@@ -101,6 +101,9 @@ export default class Spot {
      */
     public shouldDisplayNameOnMap(): boolean {
         if (this._shouldDisplayNameOnMap === undefined) {
+            if (this.getType() !== 'default') {
+                return false;
+            }
             return true;
         }
         return this._shouldDisplayNameOnMap;
@@ -112,9 +115,11 @@ export default class Spot {
      */
     public getIconName(): string {
         const iconNameMaps: Array<{ key: SpotType, iconName: string }> = [
-            { key: 'default',       iconName: 'place' },
-            { key: 'withDetailMap', iconName: 'add_location' },
-            { key: 'restroom',      iconName: 'wc' },
+            { key: 'default',  iconName: 'place' },
+            { key: 'restroom', iconName: 'wc' },
+            { key: 'bus-stop', iconName: 'directions_bus' },
+            { key: 'parking', iconName: 'local_parking' },
+            { key: 'restaurant', iconName: 'restaurant' },
         ];
         const iconName = iconNameMaps.find((iconNameMap) => iconNameMap.key === this.getType())?.iconName;
         if (iconName === undefined) {

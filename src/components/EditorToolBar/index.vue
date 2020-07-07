@@ -28,7 +28,7 @@
                   icon
                 >
                   <v-icon v-if="fabVisible">close</v-icon>
-                  <v-icon v-if="!fabVisible && selectedMode != 'spot'">place</v-icon>
+                  <v-icon v-if="!fabVisible && selectedMode != 'spot'">add_location</v-icon>
                   <v-icon v-if="!fabVisible && selectedMode == 'spot'">{{ selectedSpotIcon }}</v-icon>
                 </v-btn>
               </template>

@@ -32,6 +32,22 @@ export default class MapView extends Vue {
     public mounted() {
         const rootMapCenter: Coordinate = mapViewGetters.rootMap.getCenter();
         this.map = L.map('map').setView([rootMapCenter.lat, rootMapCenter.lng], this.defaultZoomLevel);
+        const bounds = mapViewGetters.rootMap.getBounds();
+        const lBounds = new L.LatLngBounds(bounds.topL, bounds.botR);
+        this.defaultZoomLevel = this.map.getBoundsZoom(lBounds, false);
+        this.zoomLevelThreshold = this.defaultZoomLevel + 2;
+        this.map.setMaxBounds(new L.LatLngBounds(
+            {
+                lat: lBounds.getNorthWest().lat + 1,
+                lng: lBounds.getNorthWest().lng - 1,
+            },
+            {
+                lat: lBounds.getSouthEast().lat - 1,
+                lng: lBounds.getSouthEast().lng + 1,
+            },
+        ));
+        this.map.setMinZoom(this.defaultZoomLevel - 1);
+        this.map.setZoom(this.defaultZoomLevel);
         this.tileLayer = L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 23,
@@ -61,21 +77,6 @@ export default class MapView extends Vue {
         this.map.on('click', this.onMapClick);
         this.shapeEditor = new ShapeEditor(this.map);
         this.shapeEditor.drawRectangle(mapViewGetters.rootMap.getBounds());
-        const bounds = mapViewGetters.rootMap.getBounds();
-        const lBounds = new L.LatLngBounds(bounds.topL, bounds.botR);
-        const zoomLevel = this.map.getBoundsZoom(lBounds, false);
-        this.map.setMaxBounds(new L.LatLngBounds(
-            {
-                lat: lBounds.getNorthWest().lat + 1,
-                lng: lBounds.getNorthWest().lng - 1,
-            },
-            {
-                lat: lBounds.getSouthEast().lat - 1,
-                lng: lBounds.getSouthEast().lng + 1,
-            },
-        ));
-        this.map.setMinZoom(zoomLevel - 1);
-        this.map.setZoom(zoomLevel);
     }
 
     /**
