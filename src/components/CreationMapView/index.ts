@@ -11,6 +11,7 @@ import SpotMarker from '@/components/MapView/Marker/SpotMarker';
 import ShapeEditor from './ShapeEditor';
 import { cloneDeep } from 'lodash';
 import MapInformationDialog from '@/components/MapInformationDialog/index.vue';
+import { getBounds } from 'geolib';
 
 @Component({
     components: {
@@ -101,7 +102,7 @@ export default class CreationMapView extends Vue {
     }
 
     private flyToMapBounds(): void {
-        const bounds: Bounds = this.map.getBounds();
+        const bounds: Bounds = this.mapToEdit.getBounds();
         const lBounds: L.LatLngBounds = new L.LatLngBounds(bounds.topL, bounds.botR);
         this.lMap.flyToBounds(lBounds);
     }
@@ -332,18 +333,34 @@ export default class CreationMapView extends Vue {
     }
 
     /**
-     * SpotEditorのNew Mapボタンをクリックすると呼ばれ、
-     * スポットに詳細マップを追加する。
-     * 現状はマップ生成時にname, boundsを定数値にしている。
+     * SpotEditorの詳細マップ追加ボタンをクリックすると呼ばれ、スポットに詳細マップを追加する。
+     * 現状はマップ生成時にnameを定数値にしている。
+     * boundsは親スポットのshapeから算出する。
      */
     private addDetailMap() {
         const nextMapId: number = ++this.currentId;
+        // 形状追加したスポットについてのみ詳細マップを追加できるため、getShapeはundefinedになりえない
+        const shape: Shape = this.focusedSpot!.getShape()!;
+        const coods: number[][][] = shape.coordinates as number[][][];
+        const coordlatlng: Array<{latitude: number, longitude: number}> = coods[0].map((c: number[]) => {
+            return {
+                latitude: c[1],
+                longitude: c[0],
+            };
+        });
+        const spotBounds = getBounds(coordlatlng);
+        const mapBounds: Bounds = {
+            topL: { lat: spotBounds.minLat, lng: spotBounds.minLng },
+            botR: { lat: spotBounds.maxLat, lng: spotBounds.maxLng },
+        };
+
         const newDetailMap: Map = new Map(
             nextMapId,
             'testDetailMap' + String(nextMapId),
-            {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0} },
+            mapBounds,
             undefined,
         );
+
         this.focusedSpot!.addDetailMaps([newDetailMap]);
         newDetailMap.setParentSpot(this.focusedSpot!);
     }
@@ -359,7 +376,8 @@ export default class CreationMapView extends Vue {
         this.spotMarkers = [];
         // 編集するマップをセット
         this.mapToEdit = map;
-
+        // 編集するマップにフォーカス
+        this.flyToMapBounds();
         // マーカー、ポリゴンを表示を表示
         this.mapToEdit.getSpots().forEach((s: Spot) => this.addMarkerToMap(s));
         this.displayPolygonsOfSpotsToEdit();
