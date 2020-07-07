@@ -11,7 +11,7 @@ export default class ShapeEditor {
     private controlLayer: L.Control.Layers = L.control.layers({}, {});
     private coordinates: Coordinate[] = [];
     private rectangleStartPoint: L.LatLng | null = null;
-    private rectangle: L.Rectangle | null = null;
+    private rectangles: L.Rectangle[] = [];
 
     constructor(lMap: L.Map) {
         this.lMap = lMap;
@@ -35,24 +35,77 @@ export default class ShapeEditor {
         if (this.rectangleStartPoint === null) {
             this.rectangleStartPoint = e.latlng as L.LatLng;
         }
-        const bounds = new L.LatLngBounds(this.rectangleStartPoint, e.latlng);
-        if (this.rectangle !== null) {
-            this.rectangle.remove();
-        }
-        this.rectangle = L.rectangle(bounds, {
-            lineJoin: 'inherit', color: '#AE56B3', weight: 3, fill: false,
-        }).addTo(this.lMap);
+        const boundsList: L.LatLngBounds[] = [];
+        const topBounds = new L.LatLngBounds(
+            {
+                lat: this.rectangleStartPoint.lat + 130,
+                lng: this.rectangleStartPoint.lng - 130,
+            },
+            {
+                lat: this.rectangleStartPoint.lat,
+                lng: this.rectangleStartPoint.lng + 130,
+            },
+        );
+        const botBounds = new L.LatLngBounds(
+            {
+                lat: e.latlng.lat,
+                lng: e.latlng.lng - 130,
+            },
+            {
+                lat: e.latlng.lat - 130,
+                lng: e.latlng.lng + 130,
+            },
+        );
+        const rightBounds = new L.LatLngBounds(
+            {
+                lat: this.rectangleStartPoint.lat,
+                lng: this.rectangleStartPoint.lng - 130,
+            },
+            {
+                lat: e.latlng.lat,
+                lng: this.rectangleStartPoint.lng,
+            },
+        );
+        const leftBounds = new L.LatLngBounds(
+            {
+                lat: this.rectangleStartPoint.lat,
+                lng: e.latlng.lng,
+            },
+            {
+                lat: e.latlng.lat,
+                lng: e.latlng.lng + 130,
+            },
+        );
+        boundsList.push(topBounds, botBounds, rightBounds, leftBounds);
+
+        this.rectangles.forEach((rec) => rec.remove());
+        boundsList.forEach((bounds) => {
+            this.rectangles.push(L.rectangle(bounds, {
+                color: '#000000', fill: true, opacity: 0,
+            }).addTo(this.lMap));
+        });
     }
 
     public endRectangleSelection(e: { latlng: L.LatLng, onEndSelection: (bounds: L.LatLngBounds) => void }): void {
         if (this.rectangleStartPoint === null) {
-            throw Error('There is no value ast the start of the rectangle.');
+            throw Error('There is no value at the start of the rectangle.');
         }
         this.lMap.off('mousemove');
         this.lMap.off('click');
         const bounds: L.LatLngBounds = new L.LatLngBounds(this.rectangleStartPoint, e.latlng);
         const zoomLevel = this.lMap.getBoundsZoom(bounds, false);
         this.lMap.flyToBounds(bounds);
+        this.lMap.setMaxBounds(new L.LatLngBounds(
+            {
+                lat: bounds.getNorthWest().lat + 1,
+                lng: bounds.getNorthWest().lng - 1,
+            },
+            {
+                lat: bounds.getSouthEast().lat - 1,
+                lng: bounds.getSouthEast().lng + 1,
+            },
+        ));
+        this.lMap.setMinZoom(12);
         e.onEndSelection(bounds);
     }
 
