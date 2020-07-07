@@ -35,7 +35,7 @@ export default class MapView extends Vue {
         const bounds = mapViewGetters.rootMap.getBounds();
         const lBounds = new L.LatLngBounds(bounds.topL, bounds.botR);
         this.defaultZoomLevel = this.map.getBoundsZoom(lBounds, false);
-        this.zoomLevelThreshold = this.defaultZoomLevel + 3;
+        this.zoomLevelThreshold = this.defaultZoomLevel + 2;
         this.map.setMaxBounds(new L.LatLngBounds(
             {
                 lat: lBounds.getNorthWest().lat + 1,
@@ -47,7 +47,7 @@ export default class MapView extends Vue {
             },
         ));
         this.map.setMinZoom(this.defaultZoomLevel - 1);
-        this.map.setZoom(this.defaultZoomLevel + 1);
+        this.map.setZoom(this.defaultZoomLevel);
         this.tileLayer = L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 23,
