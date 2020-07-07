@@ -77,6 +77,8 @@ export default class CreationMapView extends Vue {
                     topL: bounds.getNorthWest(),
                     botR: bounds.getSouthEast(),
                 });
+                const zoomLevel = this.lMap.getBoundsZoom(bounds, false);
+                this.lMap.setView(this.map.getCenter(), zoomLevel);
                 this.onMapClick = () => undefined;
                 this.spotButtonInEditorToolBarIsVisible = true;
                 this.mapAreaSelectionInfoIsVisible = false;

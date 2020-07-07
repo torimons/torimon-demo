@@ -108,7 +108,7 @@ export default class ShapeEditor {
         this.lMap.off('mousemove');
         this.lMap.off('click');
         const bounds: L.LatLngBounds = new L.LatLngBounds(this.rectangleStartPoint, e.latlng);
-        this.lMap.flyToBounds(bounds);
+        const zoomLevel = this.lMap.getBoundsZoom(bounds, false);
         this.lMap.setMaxBounds(new L.LatLngBounds(
             {
                 lat: bounds.getNorthWest().lat + 1,
@@ -119,7 +119,6 @@ export default class ShapeEditor {
                 lng: bounds.getSouthEast().lng + 1,
             },
         ));
-        const zoomLevel = this.lMap.getBoundsZoom(bounds, false);
         this.lMap.setMinZoom(zoomLevel - 1);
         e.onEndSelection(bounds);
     }
