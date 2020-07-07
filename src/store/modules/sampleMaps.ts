@@ -232,12 +232,12 @@ export const sampleMaps: RawMap[] =  [
         edges: [],
         bounds: {
             topL: {
-                lat: 33.596643,
+                lat: 33.597043,
                 lng: 130.215516,
             },
             botR: {
                 lat: 33.594083,
-                lng: 130.220609,
+                lng: 130.222009,
             },
         },
 
