@@ -11,7 +11,7 @@ export default class MapItem extends Vue {
     private mounted() {
         this.name = this.map.getName();
         this.description = this.map.getDescription() || '';
-        this.attachment = 'https://picsum.photos/id/' + String(this.map.getId()) + '/200/300';
+        this.attachment = 'https://picsum.photos/id/' + String(Math.abs(this.map.getId())) + '/200/300';
     }
 
     /**

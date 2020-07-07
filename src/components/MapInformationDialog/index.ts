@@ -58,11 +58,12 @@ export default class MapInformationDialog extends Vue {
         // 今後作成予定のアップロード関数を使う
         // とりあえずボタンクリック時に3秒待つ処理を与えている
         this.loading = !this.loading;
-        const largestMapId: number = mapViewGetters.demoMaps
+        const minimumMapId: number = mapViewGetters.demoMaps
             .map((map: Map) => map.getId())
-            .reduce((accum, newVal) => Math.max(accum, newVal));
+            .reduce((accum, newVal) => Math.min(accum, newVal));
         const mapToUpload: Map = mapViewGetters.rootMap;
-        const newMapId: number = (mapToUpload.getId() === -1) ? largestMapId + 1 : mapToUpload.getId();
+        // rootMapのidとその地図内のdetailMapIdが被ると地図利用側でバグるのでとりあえず負の値に設定
+        const newMapId: number = (mapToUpload.getId() === -1) ? minimumMapId - 1 : mapToUpload.getId();
         mapToUpload.setId(newMapId);
         mapToUpload.setName(this.mapName);
         mapToUpload.setDescription(this.mapDescription);
@@ -71,7 +72,7 @@ export default class MapInformationDialog extends Vue {
             this.loading = false;
             // map-selectに遷移
             this.$router.push('/map-select');
-        }, 3000);
+        }, 1500);
     }
 
     private startNewMap() {
