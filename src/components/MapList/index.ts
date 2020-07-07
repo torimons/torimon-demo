@@ -15,6 +15,7 @@ export default class MapList extends Vue {
 
     private selectedMap: Map | null = null;
     private dialog: boolean = false;
+    private resetKey: number = 0;
 
     /**
      * MapItemをクリックするとemitされるイベントにより呼び出され、
@@ -24,6 +25,9 @@ export default class MapList extends Vue {
     private openMapDetailDialog(map: Map) {
         this.dialog = true;
         this.selectedMap = map;
+        setTimeout(() => {
+            this.resetKey++;
+        }, 10);
     }
 
     /**

@@ -5,7 +5,7 @@
     <v-card-title>{{ name }}</v-card-title>
     <v-card-text>{{ description }}</v-card-text>
     <v-divider></v-divider>
-    <v-container id="map-view-container" :key="resetKey">
+    <v-container id="map-view-container">
       <MapView style="height: 40vh"/>
     </v-container>
     <v-divider></v-divider>

@@ -15,7 +15,6 @@ export default class MapDetailCard extends Vue {
     private name: string = '';
     private description: string = '';
     private attachment: string = '';
-    private resetKey: number = 0;
 
     private mounted() {
         this.updateContent();
@@ -30,7 +29,6 @@ export default class MapDetailCard extends Vue {
         this.name = this.map.getName();
         this.description = this.map.getDescription() || '';
         this.attachment = 'https://picsum.photos/id/' + String(Math.abs(this.map.getId())) + '/200/300';
-        this.resetKey++;
     }
 
     /**
