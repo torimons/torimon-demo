@@ -44,13 +44,12 @@ export default class CreationMapView extends Vue {
     private currentId: number = 0;
 
     private dialog: boolean = false;
-    private mapFileTreeDialog: boolean = false;
-    private drawer: boolean = false;
     private shapeEditor!: ShapeEditor;
-    private tree = [];
 
-    // treeviewで表示するアイテム
+    // 作成中のマップtreeviewで利用
     private items: any = [];
+    private tree = [];
+    private mapFileTreeDialog: boolean = false;
 
     private whileMapNameEditing: boolean = false;
     private mapNameColor: string = 'background-color:#3F8373';
@@ -235,7 +234,7 @@ export default class CreationMapView extends Vue {
         this.spotMarkers = this.spotMarkers
             .filter((marker) => marker.getSpot().getId() !== focusedSpot.getId());
         focusedSpot.getParentMap()?.removeSpot(focusedSpot.getId());
-        this.shapeEditor.displayPolygons(this.mapToEdit.getSpots());
+        this.displayPolygonsOfSpotsToEdit();
         this.shapeEditor.removeShapeEditLine();
         this.shapeEditButtonIsVisible = false;
         this.setDefaultMethodOnMapClick();
@@ -274,7 +273,7 @@ export default class CreationMapView extends Vue {
                 }
                 this.shapeEditButtonIsVisible = false;
                 this.focusedSpot?.setShape(shape);
-                this.shapeEditor.displayPolygons(this.mapToEdit.getSpots());
+                this.displayPolygonsOfSpotsToEdit();
 
                 /**
                  * 始点のCircleMarkerがクリックされた場合に本コールバックメソッドは呼ばれるが,
@@ -355,14 +354,31 @@ export default class CreationMapView extends Vue {
      * @param map 編集対象のマップ
      */
     private editDetailMap(map: Map): void {
-        // すでに表示されているポリゴン, スポットを削除
-        this.shapeEditor.removePolygons();
+        // 表示されていたマーカーを削除
         this.spotMarkers.forEach((sm: SpotMarker) => sm.remove());
+        this.spotMarkers = [];
         // 編集するマップをセット
         this.mapToEdit = map;
-        this.shapeEditor.displayPolygons(this.mapToEdit.getSpots());
+
+        // マーカー、ポリゴンを表示を表示
         this.mapToEdit.getSpots().forEach((s: Spot) => this.addMarkerToMap(s));
+        this.displayPolygonsOfSpotsToEdit();
         this.focusedSpot = null;
+    }
+
+    /**
+     * 編集対象のマップに所属するスポットのポリゴンを表示する。
+     * マップに親スポットがある場合は親スポットのポリゴンも表示。
+     */
+    private displayPolygonsOfSpotsToEdit(): void {
+        // ポリゴンの表示
+        // 親スポットが存在する場合は親スポットのポリゴンも表示対象に追加
+        const spotsToDisplay: Spot[] = this.mapToEdit.getSpots().slice();
+        const parentSpot: Spot | undefined = this.mapToEdit.getParentSpot();
+        if (parentSpot !== undefined) {
+            spotsToDisplay.push(parentSpot);
+        }
+        this.shapeEditor.displayPolygons(spotsToDisplay);
     }
 
     /**
@@ -400,12 +416,20 @@ export default class CreationMapView extends Vue {
         this.focusedSpot!.addDetailMaps([dupDetailMap]);
     }
 
+    /**
+     * マップにnewIdをセットする。spotのIdも更新する。
+     * @param map newIdを振りたいマップ
+     */
     private setNewMapId(map: Map): void {
         map.setId(++this.currentId);
         map.setName(map.getName() + '_copy');
         map.getSpots().forEach((s: Spot) => this.setNewSpotId(s));
     }
 
+    /**
+     * スポットにnewIdをセットする。detialMapのIdも更新する。
+     * @param spot newIdを振りたいスポット
+     */
     private setNewSpotId(spot: Spot): void {
         spot.setId(++this.currentId);
         spot.setName(spot.getName() + '_copy');

@@ -52,7 +52,6 @@
                 color="#3F8373"
                 dark
               >
-                <v-app-bar-nav-icon @click="drawer=!drawer"></v-app-bar-nav-icon>
                 <v-toolbar-title
                   class="pl-5"
                   @mouseover="focusMapNameInputForm"
@@ -87,13 +86,6 @@
                 >
                   <v-icon>cloud_upload</v-icon>
                 </v-btn>
-                <v-navigation-drawer
-                  width="400"
-                  v-model="drawer"
-                  app
-                  light
-                >
-                </v-navigation-drawer>
               </v-app-bar>
             </v-col>
           </v-row>
