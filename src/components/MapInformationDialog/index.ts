@@ -67,9 +67,11 @@ export default class MapInformationDialog extends Vue {
         mapToUpload.setName(this.mapName);
         mapToUpload.setDescription(this.mapDescription);
         mapViewMutations.addDemoMap(mapToUpload);
-        setTimeout(() => (this.loading = false), 3000);
-        // map-selectに遷移
-        this.$router.push('/map-select');
+        setTimeout(() => {
+            this.loading = false;
+            // map-selectに遷移
+            this.$router.push('/map-select');
+        }, 3000);
     }
 
     private startNewMap() {
