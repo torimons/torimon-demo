@@ -24,6 +24,7 @@
                 <v-btn
                   :color="spotButtonColor"
                   v-model="fabVisible"
+                  v-show="spotButtonIsVisible"
                   icon
                 >
                   <v-icon v-if="fabVisible">close</v-icon>
@@ -32,11 +33,12 @@
                 </v-btn>
               </template>
               <v-btn 
-                color="primary"
+                color="#3F8373"
                 v-for="(spotIconMap, index) in spotIconMaps"
                 v-bind:key="index"
                 fab
                 small
+                dark
                 @click="setSelectedSpotIcon(spotIconMap.iconName); onButtonClick('spot')"
               >
                 <v-icon>{{ spotIconMap.iconName }}</v-icon>

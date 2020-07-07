@@ -22,7 +22,7 @@ export default class MapDetailCard extends Vue {
     private updateContent() {
         this.name = this.map.getName();
         this.description = this.map.getDescription() || '';
-        this.attachment = 'https://picsum.photos/id/' + String(this.map.getId() + 1000) + '/200/300';
+        this.attachment = 'https://picsum.photos/id/' + String(Math.abs(this.map.getId())) + '/200/300';
     }
 
     /**
