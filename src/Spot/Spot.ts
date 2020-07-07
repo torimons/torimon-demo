@@ -100,10 +100,10 @@ export default class Spot {
      * @return スポットの名前をマップ上のマーカー下に表示するかどうか
      */
     public shouldDisplayNameOnMap(): boolean {
-        if (this.getType() !== 'default') {
-            return false;
-        }
         if (this._shouldDisplayNameOnMap === undefined) {
+            if (this.getType() !== 'default') {
+                return false;
+            }
             return true;
         }
         return this._shouldDisplayNameOnMap;
