@@ -1,4 +1,3 @@
 module.exports = {
-    publicPath: '/torimon',
-    outputDir: 'docs'
+    publicPath: '/torimon-demo',
 }
