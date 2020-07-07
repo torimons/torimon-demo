@@ -3,66 +3,6 @@
       <v-app>
         <div id="map">
         </div>
-        <v-container fluid id="app-bar" class="ma-0 pa-0">
-          <v-row no-gutters>
-            <v-col>
-              <v-card>
-                <v-app-bar
-                  flat
-                  tile
-                  app
-                >
-                  <v-app-bar-nav-icon @click="drawer=!drawer"></v-app-bar-nav-icon>
-                  <v-toolbar-title>{{ this.mapToEdit.getName() }}</v-toolbar-title>
-                  <v-spacer></v-spacer>
-                  <v-btn
-                    @click="dialog = true"
-                    icon
-                  >
-                    <v-icon>save</v-icon>
-                  </v-btn>
-                </v-app-bar>
-                <v-navigation-drawer
-                  app
-                  width="500"
-                  v-model="drawer"
-                >
-                  <v-treeview
-                    dense
-                    activatable
-                    hoverable
-                    open-all
-                    color="warning"
-                    v-model="tree"
-                    :items="items"
-                    item-key="id"
-                  >
-                  <template slot="label" slot-scope="{ item }">
-                    <v-btn
-                      icon
-                      v-if="item.type==='Map'"
-                      @click="setMapToEdit(item.id); drawer=false"
-                    >
-                      <v-icon>
-                        map
-                      </v-icon>
-                    </v-btn>
-                    <v-btn
-                      icon
-                      v-if="item.type==='Spot'"
-                    >
-                      <v-icon>
-                        place
-                      </v-icon>
-                    </v-btn>
-                    {{ item.name }}
-                  </template>
-                  </v-treeview>
-                </v-navigation-drawer>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-container>
         <v-container fluid id="map-information-dialog-container">
           <v-dialog
             v-model="dialog"
@@ -112,6 +52,7 @@
                 color="#3F8373"
                 dark
               >
+                <v-app-bar-nav-icon @click="drawer=!drawer"></v-app-bar-nav-icon>
                 <v-btn
                   @click="dialog = true; setMapToStore()"
                   color="#76978F"
@@ -140,6 +81,44 @@
                         {{ map.getName() }}
                       </span>
                 </v-toolbar-title>
+                <v-navigation-drawer
+                  width="500"
+                  v-model="drawer"
+                  app
+                  light
+                >
+                  <v-treeview
+                    dense
+                    activatable
+                    hoverable
+                    open-all
+                    color="warning"
+                    v-model="tree"
+                    :items="items"
+                    item-key="id"
+                  >
+                  <template slot="label" slot-scope="{ item }">
+                    <v-btn
+                      icon
+                      v-if="item.type==='Map'"
+                      @click="setMapToEdit(item.id); drawer=false"
+                    >
+                      <v-icon>
+                        map
+                      </v-icon>
+                    </v-btn>
+                    <v-btn
+                      icon
+                      v-if="item.type==='Spot'"
+                    >
+                      <v-icon>
+                        place
+                      </v-icon>
+                    </v-btn>
+                    {{ item.name }}
+                  </template>
+                  </v-treeview>
+                </v-navigation-drawer>
               </v-app-bar>
             </v-col>
           </v-row>
@@ -223,18 +202,10 @@ body,
   height: 100%;
 }
 
-#app-bar {
-  position: absolute;
-  z-index: 1100;
-  left: 0px;
-  top: 0px;
-}
-
 #toolbar-container {
   position: absolute;
   z-index: 1000;
   pointer-events: none;
-  top: 64px;
 }
 
 #map-information-dialog-container {
@@ -242,6 +213,7 @@ body,
   z-index: 1100;
   pointer-events: none;
 }
+
 #reset-location {
   position: absolute;
   z-index: 1100;
