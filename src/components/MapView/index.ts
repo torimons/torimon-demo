@@ -61,6 +61,21 @@ export default class MapView extends Vue {
         this.map.on('click', this.onMapClick);
         this.shapeEditor = new ShapeEditor(this.map);
         this.shapeEditor.drawRectangle(mapViewGetters.rootMap.getBounds());
+        const bounds = mapViewGetters.rootMap.getBounds();
+        const lBounds = new L.LatLngBounds(bounds.topL, bounds.botR);
+        const zoomLevel = this.map.getBoundsZoom(lBounds, false);
+        this.map.setMaxBounds(new L.LatLngBounds(
+            {
+                lat: lBounds.getNorthWest().lat + 1,
+                lng: lBounds.getNorthWest().lng - 1,
+            },
+            {
+                lat: lBounds.getSouthEast().lat - 1,
+                lng: lBounds.getSouthEast().lng + 1,
+            },
+        ));
+        this.map.setMinZoom(zoomLevel - 1);
+        this.map.setZoom(zoomLevel);
     }
 
     /**
