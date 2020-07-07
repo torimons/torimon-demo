@@ -11,7 +11,7 @@ import SpotMarker from '@/components/MapView/Marker/SpotMarker';
 import ShapeEditor from './ShapeEditor';
 import { cloneDeep } from 'lodash';
 import MapInformationDialog from '@/components/MapInformationDialog/index.vue';
-import { getBounds } from 'geolib';
+import { getBounds, isPointInPolygon } from 'geolib';
 
 @Component({
     components: {
@@ -182,8 +182,20 @@ export default class CreationMapView extends Vue {
      * @param e Leafletイベント(e.latlngを取得するためにany型にしている)
      */
     private addSpot(e: L.LeafletMouseEvent): void {
-        const lBouds = new L.LatLngBounds(this.map.getBounds().topL as L.LatLng, this.map.getBounds().botR as L.LatLng);
-        if (!lBouds.contains(e.latlng)) {
+        let isPointInMapArea: boolean;
+        if (this.map.getId() ===  this.mapToEdit.getId()) {
+            const lBouds = new L.LatLngBounds(
+                this.map.getBounds().topL as L.LatLng,
+                this.map.getBounds().botR as L.LatLng);
+            isPointInMapArea = !lBouds.contains(e.latlng);
+        } else {
+            const parentSpot: Spot = this.mapToEdit.getParentSpot()!;
+            const shape: Shape = parentSpot.getShape()!;
+            const coods: number[][][] = shape.coordinates as number[][][];
+            const latlngs: L.LatLng[] = coods[0].map((c: number[]) => new L.LatLng(c[1], c[0]));
+            isPointInMapArea = !isPointInPolygon(e.latlng, latlngs);
+        }
+        if (isPointInMapArea) {
             this.outOfMapRangeWarningIsVisible = true;
             setTimeout(() => {
                 this.outOfMapRangeWarningIsVisible = false;
