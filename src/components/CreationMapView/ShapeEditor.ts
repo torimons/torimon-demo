@@ -163,9 +163,7 @@ export default class ShapeEditor {
      */
     public displayPolygons(spotsForDisplay: Spot[]): void {
         // すでに表示されているポリゴンがある場合は先に削除する
-        if (this.polygonLayer !== undefined) {
-            this.lMap.removeLayer(this.polygonLayer);
-        }
+        this.removePolygons();
         const shapeGeoJson: GeoJsonObject = this.spotShapeToGeoJson(spotsForDisplay);
         this.polygonLayer = new L.GeoJSON(shapeGeoJson, {
             style: {
@@ -177,6 +175,15 @@ export default class ShapeEditor {
             },
         });
         this.lMap.addLayer(this.polygonLayer);
+    }
+
+    /**
+     * 現在表示しているポリゴンを削除する
+     */
+    public removePolygons(): void {
+        if (this.polygonLayer !== undefined) {
+            this.lMap.removeLayer(this.polygonLayer);
+        }
     }
 
     public removeShapeEditLine() {

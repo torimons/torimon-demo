@@ -355,8 +355,12 @@ export default class CreationMapView extends Vue {
      * @param map 編集対象のマップ
      */
     private editDetailMap(map: Map): void {
+        // すでに表示されているポリゴン, スポットを削除
+        this.shapeEditor.removePolygons();
         this.spotMarkers.forEach((sm: SpotMarker) => sm.remove());
+        // 編集するマップをセット
         this.mapToEdit = map;
+        this.shapeEditor.displayPolygons(this.mapToEdit.getSpots());
         this.mapToEdit.getSpots().forEach((s: Spot) => this.addMarkerToMap(s));
         this.focusedSpot = null;
     }
