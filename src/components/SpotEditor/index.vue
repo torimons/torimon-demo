@@ -1,7 +1,7 @@
 <template>
   <div id="spot-editor" v-if="isVisible">
     <v-card
-      outlined
+      flat
     >
       <v-card-title>
         <v-text-field
@@ -20,6 +20,8 @@
           label="概要"
           clearable
           counter="100"
+          auto-grow
+          rows="1"
         ></v-textarea>
         <v-file-input
           multiple
@@ -48,27 +50,7 @@
             <span>削除</span>
             <v-icon right>delete</v-icon>
         </v-btn>
-        <v-dialog
-          v-model="dialog"
-          width="500"
-        >
-          <delete-confirmation-dialog
-            :name="spot.getName()"
-            @del="dialog = false; $emit('delete')"
-            @cancel="dialog = false"
-          ></delete-confirmation-dialog>
-        </v-dialog>
-        <v-btn
-            class="ma-1"
-            color="#3FA590"
-            tile
-            icon
-            @click="$emit('close')"
-        >
-          <v-icon>close</v-icon>
-        </v-btn>
       </v-card-actions>
-      <v-divider></v-divider>
       <v-card-actions>
         <v-btn
           block
@@ -81,6 +63,18 @@
           <v-icon right>add</v-icon>
         </v-btn>
       </v-card-actions>
+      <v-container id="delete-confirmation-dialog-container">
+      <v-dialog
+        v-model="dialog"
+        width="500"
+      >
+        <delete-confirmation-dialog
+          :name="spot.getName()"
+          @del="dialog = false; $emit('delete')"
+          @cancel="dialog = false"
+        ></delete-confirmation-dialog>
+      </v-dialog>
+      </v-container>
       <detail-map-manage-list
         :detailMaps="spot.getDetailMaps()"
         @add="addDetailMap"
@@ -103,5 +97,9 @@
 }
 .v-text-field {
   pointer-events: auto;
+}
+#delete-confirmation-dialog-container {
+  position: absolute;
+  z-index: 1100;
 }
 </style>
