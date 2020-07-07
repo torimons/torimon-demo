@@ -2,7 +2,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import 'leaflet/dist/leaflet.css';
 import { mapViewGetters } from '@/store';
 import L, { LeafletEvent, Marker } from 'leaflet';
-import { Coordinate, SpotType, Shape } from '@/store/types';
+import { Coordinate, SpotType, Shape, Bounds } from '@/store/types';
 import Map from '@/Map/Map.ts';
 import EditorToolBar from '@/components/EditorToolBar/index.vue';
 import SpotEditor from '@/components/SpotEditor/index.vue';
@@ -21,33 +21,39 @@ import MapInformationDialog from '@/components/MapInformationDialog/index.vue';
 })
 export default class CreationMapView extends Vue {
     private lMap!: L.Map;
-    private defaultZoomLevel: number = 17;
+    private defaultZoomLevel: number = 14;
     private leafletContainer!: HTMLElement | null;
     private map: Map = new Map(0, 'New Map', {
-        topL: {lat: 0, lng: 0},
-        botR: {lat: 0, lng: 0},
+        topL: { lat: 33.596643, lng: 130.215516 },
+        botR: { lat: 33.594083, lng: 130.220609 },
     });
     // 次にクリックしたときに設置されるスポットタイプ
     private spotTypeToAddNext: SpotType = 'default';
+    private mapAreaSelectionInfoIsVisible: boolean = true;
+    private outOfMapRangeWarningIsVisible: boolean = false;
+    private shapeEditButtonIsVisible: boolean = false;
+    private spotButtonInEditorToolBarIsVisible: boolean = false;
+    private flyToMapBoundsButtonIsVisible: boolean = false;
+    private disabledShapeEditButtonInSpotEditor: boolean = false;
     private spotEditorIsVisible: boolean = false;
     private focusedSpot: Spot | null = null;
     private spotMarkers: SpotMarker[] = [];
 
     // 詳細マップ生成時に利用
     private currentMapId: number = 0;
-    private shapeEditButtonIsVisible: boolean = false;
-    private disabledShapeEditButtonInSpotEditor: boolean = false;
     private shapeEditor!: ShapeEditor;
 
     private dialog: boolean = false;
+    private drawer: boolean = true;
+    private whileMapNameEditing: boolean = false;
+    private mapNameColor: string = 'background-color:#3F8373';
 
     /**
      * とりあえず地図の表示を行なっています．
      */
     public mounted() {
-        // マップの範囲選択機能を実装していないので仮の範囲
-        const rootMapCenter: Coordinate = Map.calculateCenter(mapViewGetters.rootMap.getBounds());
-        this.lMap = L.map('map', {zoomControl: false})
+        const rootMapCenter: Coordinate = this.map.getCenter();
+        this.lMap = L.map('map', { zoomControl: false })
             .setView([rootMapCenter.lat, rootMapCenter.lng], this.defaultZoomLevel);
         L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -55,11 +61,48 @@ export default class CreationMapView extends Vue {
                 maxNativeZoom: 19,
             },
         ).addTo(this.lMap);
-        this.lMap.on('click', (e) => this.onMapClick(e));
         if (document.querySelector('.leaflet-container') !== null) {
             this.leafletContainer = document.querySelector('.leaflet-container') as HTMLElement;
         }
+        if (this.leafletContainer !== null) {
+            this.leafletContainer.style.cursor = 'crosshair';
+        }
         this.shapeEditor = new ShapeEditor(this.lMap);
+        const selectMapArea = (e: any) => {
+            if (!('latlng' in e)) {
+                return;
+            }
+            e.onEndSelection = (bounds: L.LatLngBounds) => {
+                this.map.setBounds({
+                    topL: bounds.getNorthWest(),
+                    botR: bounds.getSouthEast(),
+                });
+                const zoomLevel = this.lMap.getBoundsZoom(bounds, false);
+                this.lMap.setView(this.map.getCenter(), zoomLevel);
+                this.onMapClick = () => undefined;
+                this.spotButtonInEditorToolBarIsVisible = true;
+                this.mapAreaSelectionInfoIsVisible = false;
+                this.flyToMapBoundsButtonIsVisible = true;
+                if (this.leafletContainer !== null) {
+                    this.leafletContainer.style.removeProperty('cursor');
+                }
+                this.lMap.on('click', (event) => this.onMapClick(event));
+            };
+            this.shapeEditor.startRectangleSelection(e);
+        };
+        this.lMap.on('click', (e) => selectMapArea(e));
+    }
+
+    private flyToMapBounds(): void {
+        const bounds: Bounds = this.map.getBounds();
+        const lBounds: L.LatLngBounds = new L.LatLngBounds(bounds.topL, bounds.botR);
+        this.lMap.flyToBounds(lBounds);
+    }
+
+    private focusMapNameInputForm(): void {
+        if ('focus' in this.$refs.mapNameForm) {
+            (this.$refs.mapNameForm as any).focus();
+        }
     }
 
     /**
@@ -81,7 +124,9 @@ export default class CreationMapView extends Vue {
      * EditorToolBarコンポーネントでclickSpotイベント以外が発生した時に実行される
      */
     private setDefaultMethodOnMapClick(): void {
-        if (this.leafletContainer !== null) {
+        // マップの範囲選択時にツールバーのmoveを押してもカーソルが戻らないように.
+        // これはかなり苦しい
+        if (this.leafletContainer !== null && !this.mapAreaSelectionInfoIsVisible) {
             this.leafletContainer.style.removeProperty('cursor');
         }
         this.onMapClick = (e: any) => {
@@ -94,7 +139,15 @@ export default class CreationMapView extends Vue {
      * 作成するスポットのIDは既存のスポットのIDの中から最も大きい数値+1の値
      * @param e Leafletイベント(e.latlngを取得するためにany型にしている)
      */
-    private addSpot(e: any): void {
+    private addSpot(e: L.LeafletMouseEvent): void {
+        const lBouds = new L.LatLngBounds(this.map.getBounds().topL as L.LatLng, this.map.getBounds().botR as L.LatLng);
+        if (!lBouds.contains(e.latlng)) {
+            this.outOfMapRangeWarningIsVisible = true;
+            setTimeout(() => {
+                this.outOfMapRangeWarningIsVisible = false;
+            }, 3000);
+            return;
+        }
         const maxNumOfId = this.map.getSpots()
             .map((spot) => spot.getId())
             .reduce((accum, newValue) => Math.max(accum, newValue), -1);
@@ -170,7 +223,7 @@ export default class CreationMapView extends Vue {
             this.leafletContainer.style.cursor = 'crosshair';
         }
         this.shapeEditButtonIsVisible = true;
-        this.onMapClick = (e: { latlng: L.LatLngExpression, afterAddEndPoint: (shape: Shape) => void }) => {
+        this.onMapClick = (e: { latlng: L.LatLng, afterAddEndPoint: (shape: Shape) => void }) => {
             /**
              * ラインの終点が描画された後に呼び出される関数
              * ポリゴンの描画や後処理を行う

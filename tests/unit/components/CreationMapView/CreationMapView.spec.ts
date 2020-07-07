@@ -39,11 +39,16 @@ describe('components/CreationMapView', () => {
         expect(wrapper.vm.spotTypeToAddNext).toBe('restroom');
     });
 
-    it('addSpotにより新しいスポットがmapに追加される', () => {
+    it('addSpotにより新しいスポットがmapに追加される.マップの範囲外の場合追加されない', () => {
         const map: Map = wrapper.vm.map;
+        map.setBounds({ topL: {lat: 20, lng: 0}, botR: {lat: 0, lng: 20} });
         expect(map.getSpots().length).toBe(0);
-        const e = { latlng: { lat: 0, lng: 0 } };
-        wrapper.vm.addSpot(e);
+        const eventOnOutOfBounds = { latlng: { lat: 50, lng: 50 } };
+        wrapper.vm.addSpot(eventOnOutOfBounds);
+        expect(map.getSpots().length).toBe(0);
+
+        const event = { latlng: { lat: 10, lng: 10 } };
+        wrapper.vm.addSpot(event);
         expect(map.getSpots().length).toBe(1);
     });
 
@@ -109,14 +114,14 @@ describe('components/CreationMapView', () => {
         // ZoomInボタンのclickイベント発火
         wrapper.find(EditorToolBar).vm.$emit('clickZoomIn');
         const actualZoomLevel: number = wrapper.vm.lMap.getZoom();
-        expect(actualZoomLevel).toBeGreaterThan(17);
+        expect(actualZoomLevel).toBeGreaterThan(wrapper.vm.defaultZoomLevel);
     });
 
     it('zoomOutによってzoomLevelが小さくなる', () => {
         // ZoomOutボタンのclickイベント発火
         wrapper.find(EditorToolBar).vm.$emit('clickZoomOut');
         const actualZoomLevel: number = wrapper.vm.lMap.getZoom();
-        expect(actualZoomLevel).toBeLessThan(17);
+        expect(actualZoomLevel).toBeLessThan(wrapper.vm.defaultZoomLevel);
     });
 
     it('addイベントによってfocusedSpotに詳細マップが追加される', () => {
