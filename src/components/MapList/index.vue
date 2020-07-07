@@ -21,7 +21,7 @@
         max-width="500"
       >
         <map-detail-card
-          :map=selectedMap
+          :map="selectedMap"
           @closeDialog="closeMapDetailDialog"
         ></map-detail-card>
       </v-dialog>

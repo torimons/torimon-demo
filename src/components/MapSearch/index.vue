@@ -5,14 +5,23 @@
             flat
             :color="backgroundColor"
         >
-            <SearchBox
-                @searchWordInput="setSearchWord"
-            />
-            <MapList
-                :mapSearchResults="mapSearchResults"
-                v-show="mapListIsVisible"
-                class="px-2 pb-2"
-            ></MapList>
+            <div
+                v-if="getDataSucceeded"
+            >
+                <SearchBox
+                    @searchWordInput="setSearchWord"
+                />
+                <MapList
+                    :mapSearchResults="mapSearchResults"
+                    class="px-2 pb-2"
+                ></MapList>
+            </div>
+            <v-alert
+                v-else
+                type="error"
+            >
+                エラーが発生しました．リロードしてください．
+            </v-alert>
         </v-card>
     </div>
 </template>
