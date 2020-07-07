@@ -13,8 +13,6 @@ export default class DetailMapManageList extends Vue {
     public selectedMap: Map | null = null;
     public selectedMapName: string = '';
 
-    private hasDetailMaps: boolean = false;
-
     /**
      * 編集ボタンが押されると呼び出され、
      * 選択した詳細マップを編集するイベントを発火する。
@@ -57,15 +55,6 @@ export default class DetailMapManageList extends Vue {
      */
     private cancelMapDeletion() {
         this.dialog = false;
-    }
-
-    /**
-     * 追加された詳細マップが1つ以上ある場合は
-     * 詳細マップリストを表示する
-     */
-    @Watch('detailMaps')
-    private updateHasDetailMaps(): void {
-        this.hasDetailMaps = this.detailMaps.length > 0;
     }
 
 }

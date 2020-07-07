@@ -4,7 +4,7 @@
       tile
       dense
       style="max-height:200px; overflow-y:auto;"
-      v-show="hasDetailMaps"
+      v-show="detailMaps && detailMaps.length > 0"
     >
       <v-list-item
         v-for="(detailMap, index) in detailMaps"
