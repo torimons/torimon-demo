@@ -178,6 +178,21 @@ export default class ShapeEditor {
     }
 
     /**
+     * spotのshapeの枠線をマップに追加する
+     * @param spot shapeの枠線を表示したいスポット
+     */
+    public addPolygonLine(spot: Spot): void {
+        const shape: Shape = spot.getShape()!;
+        const coods: number[][][] = shape.coordinates as number[][][];
+        const latlngs: L.LatLng[] = coods[0].map((c: number[]) => new L.LatLng(c[1], c[0]));
+        L.polyline(latlngs, {
+            color: '#E18632',
+            weight: 4,
+            opacity: 1,
+        }).addTo(this.polygonLayer!);
+    }
+
+    /**
      * 現在表示しているポリゴンを削除する
      */
     public removePolygons(): void {

@@ -389,14 +389,13 @@ export default class CreationMapView extends Vue {
      * マップに親スポットがある場合は親スポットのポリゴンも表示。
      */
     private displayPolygonsOfSpotsToEdit(): void {
-        // ポリゴンの表示
         // 親スポットが存在する場合は親スポットのポリゴンも表示対象に追加
         const spotsToDisplay: Spot[] = this.mapToEdit.getSpots().slice();
+        this.shapeEditor.displayPolygons(spotsToDisplay);
         const parentSpot: Spot | undefined = this.mapToEdit.getParentSpot();
         if (parentSpot !== undefined) {
-            spotsToDisplay.push(parentSpot);
+            this.shapeEditor.addPolygonLine(parentSpot);
         }
-        this.shapeEditor.displayPolygons(spotsToDisplay);
     }
 
     /**
