@@ -267,6 +267,14 @@ export default class Spot {
     }
 
     /**
+     * 指定されたidを持つ詳細マップを取り除く
+     * @param id 詳細マップのid
+     */
+    public deleteDetailMap(id: number): void {
+        this.detailMaps = this.detailMaps.filter((m: Map) => m.getId() !== id);
+    }
+
+    /**
      * JSON.stringifyの引数に渡された時に呼ばれる
      * プロパティをオブジェクトに入れて返す
      * detailMapsプロパティは再起的にtoJSONを呼び出す
@@ -286,7 +294,7 @@ export default class Spot {
         };
     }
 
-    /*
+    /**
      * 検索条件を満たすかを判定する
      * @param regExp 正規表現オブジェクト
      * @return bool値，検索対象文字列が正規表現にマッチするか否か

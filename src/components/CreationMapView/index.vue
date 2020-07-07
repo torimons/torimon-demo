@@ -32,6 +32,9 @@
                 :spot="focusedSpot"
                 @clickAddShapeButton="setAddPointMethodOnMapClick"
                 @delete="deleteFocusedSpot"
+                @add="addDetailMap"
+                @dup="duplicateDetailMap"
+                @del="deleteDetailMap"
               />
             </v-col>
             <v-col>
