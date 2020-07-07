@@ -36,44 +36,59 @@ export default class ShapeEditor {
             this.rectangleStartPoint = e.latlng as L.LatLng;
         }
         const boundsList: L.LatLngBounds[] = [];
+        let topL: L.LatLng;
+        let botR: L.LatLng;
+        if (this.rectangleStartPoint.lat > e.latlng.lat && this.rectangleStartPoint.lng < e.latlng.lng) {
+            topL = this.rectangleStartPoint;
+            botR = e.latlng;
+        } else if (this.rectangleStartPoint.lat > e.latlng.lat && this.rectangleStartPoint.lng > e.latlng.lng) {
+            topL = new L.LatLng(this.rectangleStartPoint.lat, e.latlng.lng);
+            botR = new L.LatLng(e.latlng.lat, this.rectangleStartPoint.lng);
+        } else if (this.rectangleStartPoint.lat < e.latlng.lat && this.rectangleStartPoint.lng < e.latlng.lng) {
+            topL = new L.LatLng(e.latlng.lat, this.rectangleStartPoint.lng);
+            botR = new L.LatLng(this.rectangleStartPoint.lat, e.latlng.lng);
+        } else {
+            topL = new L.LatLng(e.latlng.lat, e.latlng.lng);
+            botR = new L.LatLng(this.rectangleStartPoint.lat, this.rectangleStartPoint.lng);
+        }
         const topBounds = new L.LatLngBounds(
             {
-                lat: this.rectangleStartPoint.lat + 130,
-                lng: this.rectangleStartPoint.lng - 130,
+                lat: topL.lat + 130,
+                lng: topL.lng - 130,
             },
             {
-                lat: this.rectangleStartPoint.lat,
-                lng: this.rectangleStartPoint.lng + 130,
+                lat: topL.lat,
+                lng: topL.lng + 130,
             },
         );
         const botBounds = new L.LatLngBounds(
             {
-                lat: e.latlng.lat,
-                lng: e.latlng.lng - 130,
+                lat: botR.lat,
+                lng: botR.lng - 130,
             },
             {
-                lat: e.latlng.lat - 130,
-                lng: e.latlng.lng + 130,
+                lat: botR.lat - 130,
+                lng: botR.lng + 130,
             },
         );
         const rightBounds = new L.LatLngBounds(
             {
-                lat: this.rectangleStartPoint.lat,
-                lng: this.rectangleStartPoint.lng - 130,
+                lat: topL.lat,
+                lng: topL.lng - 130,
             },
             {
-                lat: e.latlng.lat,
-                lng: this.rectangleStartPoint.lng,
+                lat: botR.lat,
+                lng: topL.lng,
             },
         );
         const leftBounds = new L.LatLngBounds(
             {
-                lat: this.rectangleStartPoint.lat,
-                lng: e.latlng.lng,
+                lat: topL.lat,
+                lng: botR.lng,
             },
             {
-                lat: e.latlng.lat,
-                lng: e.latlng.lng + 130,
+                lat: botR.lat,
+                lng: botR.lng + 130,
             },
         );
         boundsList.push(topBounds, botBounds, rightBounds, leftBounds);
@@ -93,7 +108,6 @@ export default class ShapeEditor {
         this.lMap.off('mousemove');
         this.lMap.off('click');
         const bounds: L.LatLngBounds = new L.LatLngBounds(this.rectangleStartPoint, e.latlng);
-        const zoomLevel = this.lMap.getBoundsZoom(bounds, false);
         this.lMap.flyToBounds(bounds);
         this.lMap.setMaxBounds(new L.LatLngBounds(
             {
@@ -105,7 +119,8 @@ export default class ShapeEditor {
                 lng: bounds.getSouthEast().lng + 1,
             },
         ));
-        this.lMap.setMinZoom(12);
+        const zoomLevel = this.lMap.getBoundsZoom(bounds, false);
+        this.lMap.setMinZoom(zoomLevel - 1);
         e.onEndSelection(bounds);
     }
 
