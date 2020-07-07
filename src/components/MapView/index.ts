@@ -75,7 +75,7 @@ export default class MapView extends Vue {
             },
         ));
         this.map.setMinZoom(zoomLevel - 1);
-        this.map.setZoom(zoomLevel);
+        this.map.setZoom(zoomLevel + 1);
     }
 
     /**

@@ -132,10 +132,12 @@ export type DisplayLevelType = 'default' | 'detail';
 
 /*
  * スポットの種別
- * withDetailMap: 詳細マップ持ちスポット
  * restroom: トイレ
+ * stairs:   階段
+ * elevator: エレベーター
+ * bus-stop: バス停
  */
-export type SpotType = 'default' | 'withDetailMap' | 'restroom';
+export type SpotType = 'default'  | 'restroom' | 'stairs' | 'elevator' | 'bus-stop' | 'parking' | 'restaurant';
 
 /**
  * Map型のデータをJSONで扱う時の型

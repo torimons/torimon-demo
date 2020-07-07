@@ -16,11 +16,6 @@ const routes = [
         component: MapSelection,
     },
     {
-        path: '/map-select',
-        name: 'map-select',
-        component: MapSelection,
-    },
-    {
         path: '/MainView',
         name: 'MainView',
         component: MainView,
