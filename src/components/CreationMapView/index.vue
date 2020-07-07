@@ -53,20 +53,14 @@
                 dark
               >
                 <v-app-bar-nav-icon @click="drawer=!drawer"></v-app-bar-nav-icon>
-                <v-btn
-                  @click="dialog = true; setMapToStore()"
-                  color="#76978F"
-                >
-                  <v-icon>cloud_upload</v-icon>
-                </v-btn>
                 <v-toolbar-title
                   class="pl-5"
                   @mouseover="focusMapNameInputForm"
                 >
                   <v-text-field
                     ref="mapNameForm"
-                    :value="map.getName()"
-                    @input="(value) => {map.setName(value)}"
+                    :value="mapToEdit.getName()"
+                    @input="(value) => {mapToEdit.setName(value)}"
                     v-show="whileMapNameEditing"
                     @blur="whileMapNameEditing=false;mapNameColor='background-color:#3F8373';"
                   ></v-text-field>
@@ -78,21 +72,43 @@
                         @click="whileMapNameEditing=true"
                         v-show="!whileMapNameEditing"
                       >
-                        {{ map.getName() }}
+                        {{ mapToEdit.getName() }}
                       </span>
                 </v-toolbar-title>
+                <v-btn
+                  icon
+                  @click.stop="mapFileTreeDialog=!mapFileTreeDialog"
+                >
+                  <v-icon>map</v-icon>
+                </v-btn>
+                <v-btn
+                  icon
+                  @click="dialog = true; setMapToStore()"
+                >
+                  <v-icon>cloud_upload</v-icon>
+                </v-btn>
                 <v-navigation-drawer
-                  width="500"
+                  width="400"
                   v-model="drawer"
                   app
                   light
                 >
+                </v-navigation-drawer>
+              </v-app-bar>
+            </v-col>
+          </v-row>
+          <v-row justify="center">
+            <v-dialog
+              v-model="mapFileTreeDialog"
+              hide-overlay
+              width="60%"
+            >
+              <v-card>
+                <v-card-title>Map File Tree</v-card-title>
+                <v-card-text>
                   <v-treeview
-                    dense
-                    activatable
                     hoverable
                     open-all
-                    color="warning"
                     v-model="tree"
                     :items="items"
                     item-key="id"
@@ -101,7 +117,7 @@
                     <v-btn
                       icon
                       v-if="item.type==='Map'"
-                      @click="setMapToEdit(item.id); drawer=false"
+                      @click="setMapToEdit(item.id); mapFileTreeDialog=false"
                     >
                       <v-icon>
                         map
@@ -118,9 +134,9 @@
                     {{ item.name }}
                   </template>
                   </v-treeview>
-                </v-navigation-drawer>
-              </v-app-bar>
-            </v-col>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
           </v-row>
           <v-row no-gutters>
             <v-col
@@ -167,18 +183,17 @@
             />
           </v-dialog>
         </v-container>
-          <v-btn 
-            color="#E18632"
-            fab
-            small
-            dark
-            id="reset-location"
-            v-show="flyToMapBoundsButtonIsVisible"
-            @click="flyToMapBounds"
-          >
-            <v-icon>my_location</v-icon>
-          </v-btn>
-
+        <v-btn
+          color="#E18632"
+          fab
+          small
+          dark
+          id="reset-location"
+          v-show="flyToMapBoundsButtonIsVisible"
+          @click="flyToMapBounds"
+        >
+          <v-icon>my_location</v-icon>
+        </v-btn>
       </v-app>
     </div>
 </template>
@@ -191,7 +206,14 @@ html,
 body,
 #top-bar {
   pointer-events: auto;
+  z-index: 1100;
 }
+
+#map-info {
+  z-index: 1100;
+  pointer-events: auto;
+}
+
 #creation-map-view {
   height: 100%;
   cursor: pointer

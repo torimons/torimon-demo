@@ -44,6 +44,7 @@ export default class CreationMapView extends Vue {
     private currentId: number = 0;
 
     private dialog: boolean = false;
+    private mapFileTreeDialog: boolean = false;
     private drawer: boolean = false;
     private shapeEditor!: ShapeEditor;
     private tree = [];
@@ -331,7 +332,7 @@ export default class CreationMapView extends Vue {
         mapViewMutations.setRootMap(this.map);
     }
 
-    /*
+    /**
      * SpotEditorのNew Mapボタンをクリックすると呼ばれ、
      * スポットに詳細マップを追加する。
      * 現状はマップ生成時にname, boundsを定数値にしている。
@@ -391,9 +392,20 @@ export default class CreationMapView extends Vue {
     private duplicateDetailMap(map: Map) {
         const nextMapId = ++this.currentId;
         const dupDetailMap = cloneDeep(map);
-        (dupDetailMap as any).id = nextMapId;
-        (dupDetailMap as any).name = dupDetailMap.getName() + '_copy';
+        this.setNewMapId(dupDetailMap);
         this.focusedSpot!.addDetailMaps([dupDetailMap]);
+    }
+
+    private setNewMapId(map: Map): void {
+        map.setId(++this.currentId);
+        map.setName(map.getName() + '_copy');
+        map.getSpots().forEach((s: Spot) => this.setNewSpotId(s));
+    }
+
+    private setNewSpotId(spot: Spot): void {
+        spot.setId(++this.currentId);
+        spot.setName(spot.getName() + '_copy');
+        spot.getDetailMaps().forEach((m: Map) => this.setNewMapId);
     }
 
     /**
