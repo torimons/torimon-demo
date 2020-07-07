@@ -109,7 +109,8 @@
                     <v-btn
                       icon
                       v-if="item.type==='Map'"
-                      @click="setMapToEdit(item.id); mapFileTreeDialog=false"
+                      @click="mapFileTreeDialog=false;
+                              setMapToEdit(item.id);"
                     >
                       <v-icon>
                         map
@@ -118,6 +119,8 @@
                     <v-btn
                       icon
                       v-if="item.type==='Spot'"
+                      @click="mapFileTreeDialog=false;
+                              setSpotToEdit(item.id)"
                     >
                       <v-icon>
                         place

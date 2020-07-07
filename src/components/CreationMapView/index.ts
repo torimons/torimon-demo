@@ -388,9 +388,22 @@ export default class CreationMapView extends Vue {
     private setMapToEdit(id: number) {
         const mapToEdit: Map | null = this.map.findMap(id);
         if (mapToEdit === null) {
-            throw new Error('This selected Map does not exist.');
+            throw new Error('This selected map does not exist.');
         }
         this.editDetailMap(mapToEdit);
+    }
+
+    private setSpotToEdit(id: number) {
+        const spotToEdit: Spot | null = this.map.findSpot(id);
+        if (spotToEdit === null) {
+            throw new Error('This selected spot does not exist.');
+        }
+        const parentMap: Map | undefined = spotToEdit.getParentMap();
+        if (parentMap === undefined) {
+            throw new Error('The parent map of selected spot does not exist.');
+        }
+        this.editDetailMap(parentMap);
+        this.focusedSpot = spotToEdit;
     }
 
     /**
