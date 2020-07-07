@@ -10,6 +10,8 @@ export default class ShapeEditor {
     private polygonLayer?: L.GeoJSON<GeoJsonObject>; // 表示されるポリゴンのレイヤー
     private controlLayer: L.Control.Layers = L.control.layers({}, {});
     private coordinates: Coordinate[] = [];
+    private rectangleStartPoint: L.LatLng | null = null;
+    private rectangles: L.Rectangle[] = [];
 
     constructor(lMap: L.Map) {
         this.lMap = lMap;
@@ -17,11 +19,115 @@ export default class ShapeEditor {
         pane.style.zIndex = '620';
     }
 
+    public startRectangleSelection(e: { latlng: L.LatLng, onEndSelection: (bounds: L.LatLngBounds) => void }): void {
+        if (this.rectangleStartPoint !== null) {
+            return;
+        }
+        this.rectangleStartPoint = e.latlng as L.LatLng;
+        this.lMap.on('mousemove', this.onDrawingRectangle);
+        this.lMap.on('click', (event: any) => {
+            event.onEndSelection = e.onEndSelection;
+            this.endRectangleSelection(event);
+        });
+    }
+
+    public onDrawingRectangle = (e: any): void => {
+        if (this.rectangleStartPoint === null) {
+            this.rectangleStartPoint = e.latlng as L.LatLng;
+        }
+        const boundsList: L.LatLngBounds[] = [];
+        let topL: L.LatLng;
+        let botR: L.LatLng;
+        if (this.rectangleStartPoint.lat > e.latlng.lat && this.rectangleStartPoint.lng < e.latlng.lng) {
+            topL = this.rectangleStartPoint;
+            botR = e.latlng;
+        } else if (this.rectangleStartPoint.lat > e.latlng.lat && this.rectangleStartPoint.lng > e.latlng.lng) {
+            topL = new L.LatLng(this.rectangleStartPoint.lat, e.latlng.lng);
+            botR = new L.LatLng(e.latlng.lat, this.rectangleStartPoint.lng);
+        } else if (this.rectangleStartPoint.lat < e.latlng.lat && this.rectangleStartPoint.lng < e.latlng.lng) {
+            topL = new L.LatLng(e.latlng.lat, this.rectangleStartPoint.lng);
+            botR = new L.LatLng(this.rectangleStartPoint.lat, e.latlng.lng);
+        } else {
+            topL = new L.LatLng(e.latlng.lat, e.latlng.lng);
+            botR = new L.LatLng(this.rectangleStartPoint.lat, this.rectangleStartPoint.lng);
+        }
+        const topBounds = new L.LatLngBounds(
+            {
+                lat: topL.lat + 130,
+                lng: topL.lng - 130,
+            },
+            {
+                lat: topL.lat,
+                lng: topL.lng + 130,
+            },
+        );
+        const botBounds = new L.LatLngBounds(
+            {
+                lat: botR.lat,
+                lng: botR.lng - 130,
+            },
+            {
+                lat: botR.lat - 130,
+                lng: botR.lng + 130,
+            },
+        );
+        const rightBounds = new L.LatLngBounds(
+            {
+                lat: topL.lat,
+                lng: topL.lng - 130,
+            },
+            {
+                lat: botR.lat,
+                lng: topL.lng,
+            },
+        );
+        const leftBounds = new L.LatLngBounds(
+            {
+                lat: topL.lat,
+                lng: botR.lng,
+            },
+            {
+                lat: botR.lat,
+                lng: botR.lng + 130,
+            },
+        );
+        boundsList.push(topBounds, botBounds, rightBounds, leftBounds);
+
+        this.rectangles.forEach((rec) => rec.remove());
+        boundsList.forEach((bounds) => {
+            this.rectangles.push(L.rectangle(bounds, {
+                color: '#000000', fill: true, opacity: 0,
+            }).addTo(this.lMap));
+        });
+    }
+
+    public endRectangleSelection(e: { latlng: L.LatLng, onEndSelection: (bounds: L.LatLngBounds) => void }): void {
+        if (this.rectangleStartPoint === null) {
+            throw Error('There is no value at the start of the rectangle.');
+        }
+        this.lMap.off('mousemove');
+        this.lMap.off('click');
+        const bounds: L.LatLngBounds = new L.LatLngBounds(this.rectangleStartPoint, e.latlng);
+        const zoomLevel = this.lMap.getBoundsZoom(bounds, false);
+        this.lMap.setMaxBounds(new L.LatLngBounds(
+            {
+                lat: bounds.getNorthWest().lat + 1,
+                lng: bounds.getNorthWest().lng - 1,
+            },
+            {
+                lat: bounds.getSouthEast().lat - 1,
+                lng: bounds.getSouthEast().lng + 1,
+            },
+        ));
+        this.lMap.setMinZoom(zoomLevel - 1);
+        e.onEndSelection(bounds);
+    }
+
     /**
      * マップ上にCircleMarkerを用いた点と，前の点から続くPolyLineを用いた線を描画する
      * @param e 終点追加後に完成したShapeを引数に取るコールバック関数をメンバにもつ
      */
-    public addPoint(e: { latlng: L.LatLngExpression, afterAddEndPoint: (shape: Shape) => void }): void {
+    public addPoint(e: { latlng: L.LatLng, afterAddEndPoint: (shape: Shape) => void }): void {
         this.coordinates.push(e.latlng as Coordinate);
 
         const circleMarker: L.CircleMarker = L.circleMarker(e.latlng, {

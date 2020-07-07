@@ -24,7 +24,7 @@ const mockMaps: Map[] = [
 })
 export default class MapSearch extends Vue {
     private searchWord: string = '';
-    private successfullyGetData: boolean = true;
+    private getDataSucceeded: boolean = true;
     private targetMaps: Map[] = [];
     private mapSearchResults: Map[] = [];
     private search!: Search<Map>;
