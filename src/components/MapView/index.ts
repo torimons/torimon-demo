@@ -11,6 +11,7 @@ import SpotMarker from '@/components/MapView/Marker/SpotMarker';
 import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
 import Map from '@/Map/Map.ts';
 import Spot from '@/Spot/Spot';
+import ShapeEditor from '../CreationMapView/ShapeEditor';
 
 
 @Component
@@ -23,6 +24,7 @@ export default class MapView extends Vue {
     private currentLocationMarker: CurrentLocationMarker = new CurrentLocationMarker([0, 0]);
     private zoomLevelThreshold: number = 19; // とりあえず仮で閾値決めてます
     private mapToDisplay!: Map;
+    private shapeEditor!: ShapeEditor;
 
     /**
      * とりあえず地図の表示を行なっています．
@@ -57,6 +59,8 @@ export default class MapView extends Vue {
         this.currentLocationMarker.addTo(this.map);
         // マーカー以外のmapがクリックされた時の処理を登録
         this.map.on('click', this.onMapClick);
+        this.shapeEditor = new ShapeEditor(this.map);
+        this.shapeEditor.drawRectangle(mapViewGetters.rootMap.getBounds());
     }
 
     /**
