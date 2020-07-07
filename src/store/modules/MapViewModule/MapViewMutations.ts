@@ -90,4 +90,15 @@ export class MapViewMutations extends Mutations<MapViewState> {
         this.state.centerSpotInRootMap = null;
         this.state.displayLevel = 'default';
     }
+
+    /**
+     * (デモ用)demoMapに新しいマップを追加する
+     * @param map 追加するマップ
+     */
+    public addDemoMap(map: Map) {
+        this.state.demoMaps = this.state.demoMaps.concat(map);
+    }
+    public setIsMapCreated(newIsMapCreated: boolean) {
+        this.state.isMapCreated = newIsMapCreated;
+    }
 }

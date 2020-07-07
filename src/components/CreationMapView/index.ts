@@ -1,6 +1,6 @@
 import { Component, Vue } from 'vue-property-decorator';
 import 'leaflet/dist/leaflet.css';
-import { mapViewGetters } from '@/store';
+import { mapViewGetters, mapViewMutations } from '@/store';
 import L, { LeafletEvent, Marker } from 'leaflet';
 import { Coordinate, SpotType, Shape, Bounds } from '@/store/types';
 import Map from '@/Map/Map.ts';
@@ -68,6 +68,7 @@ export default class CreationMapView extends Vue {
             this.leafletContainer.style.cursor = 'crosshair';
         }
         this.shapeEditor = new ShapeEditor(this.lMap);
+        mapViewMutations.setIsMapCreated(true);
         const selectMapArea = (e: any) => {
             if (!('latlng' in e)) {
                 return;
@@ -287,6 +288,13 @@ export default class CreationMapView extends Vue {
     private onMapClick: (e: any) => void = (e: any) => undefined;
 
     /**
+     * アップロードボタンクリック時にセットする
+     */
+    private setMapToStore() {
+        mapViewMutations.setRootMap(this.map);
+    }
+
+    /*
      * SpotEditorのNew Mapボタンをクリックすると呼ばれ、
      * スポットに詳細マップを追加する。
      * 現状はマップ生成時にname, boundsを定数値にしている。

@@ -17,6 +17,16 @@ export class MapViewGetters extends Getters<MapViewState> {
     }
 
     /**
+     * (デモ用)デモ用マップを取得する
+     */
+    get demoMaps(): Map[] {
+        return this.state.demoMaps;
+    }
+    get isMapCreated(): boolean {
+        return this.state.isMapCreated;
+    }
+
+    /**
      * Mapコンポーネントで選択されているSpotのインスタンスを返す
      * @return スポットのインスタンス
      */

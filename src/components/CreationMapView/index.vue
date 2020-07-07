@@ -43,7 +43,7 @@
                 dark
               >
                 <v-btn
-                  @click="dialog = true"
+                  @click="dialog = true; setMapToStore()"
                   color="#76978F"
                 >
                   <v-icon>cloud_upload</v-icon>

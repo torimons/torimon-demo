@@ -74,10 +74,6 @@ export default class Map {
         return this.parentSpot;
     }
 
-    public setName(name: string): void {
-        this.name = name;
-    }
-
     /**
      * 親spotをセットし,セットしたspotのdetailMapに自身を追加する.
      * @param parentSpot セットする親スポット
@@ -187,6 +183,30 @@ export default class Map {
      */
     public removeSpot(id: number): void {
         this.spots = this.spots.filter((spot) => spot.getId() !== id);
+    }
+
+    /**
+     * 新しいidを登録する
+     * @param newMapId 登録する新しいid
+     */
+    public setId(newMapId: number) {
+        this.id = newMapId;
+    }
+
+    /**
+     * 新しい名前を登録
+     * @param newName 新しい名前
+     */
+    public setName(newName: string) {
+        this.name = newName;
+    }
+
+    /**
+     * 新しいdescriptionを登録
+     * @param newDescription 新しいdescription
+     */
+    public setDescription(newDescription: string) {
+        this.description = newDescription;
     }
 
     /**

@@ -42,6 +42,7 @@
                         <v-btn
                             color="#3F8373"
                             class="ma-2 white--text"
+                            @click="startNewMap()"
                         >
                             作成開始
                         </v-btn>
@@ -60,7 +61,7 @@
                         <v-btn
                             color="#3F8373"
                             class="ma-2 white--text"
-                            @click="upload"
+                            @click="upload()"
                             :loading="loading"
                             :disabled="loading"
                         >
