@@ -36,7 +36,7 @@
                   color="#824F3E"
                   v-show="outOfMapRangeWarningIsVisible"
                 >
-                  作成するマップの範囲外です
+                  マップの範囲外です
                 </v-alert>
               </v-row>
             </v-col>
