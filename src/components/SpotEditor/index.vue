@@ -39,51 +39,24 @@
             <v-icon right>{{ shapeAddButtonIcon() }}</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
+        <v-btn
+          class="ma-1"
+          color="#3FA590"
+          outlined
+          @click.stop="dialog = true"
+        >
+            <span>削除</span>
+            <v-icon right>delete</v-icon>
+        </v-btn>
         <v-dialog
           v-model="dialog"
           width="500"
         >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              class="ma-1"
-              color="#3FA590"
-              outlined
-              v-bind="attrs"
-              v-on="on"
-            >
-                <span>削除</span>
-                <v-icon right>delete</v-icon>
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-title
-              class="headline"
-              primary-title
-            >
-              {{ spot.getName() }}を削除しますか？
-            </v-card-title>
-
-
-            <v-divider></v-divider>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="primary"
-                text
-                @click="dialog = false; $emit('delete')"
-              >
-                Delete
-              </v-btn>
-              <v-btn
-                color="secondary"
-                text
-                @click="dialog = false"
-              >
-                Cancel
-              </v-btn>
-            </v-card-actions>
-          </v-card>
+          <delete-confirmation-dialog
+            :name="spot.getName()"
+            @del="dialog = false; $emit('delete')"
+            @cancel="dialog = false"
+          ></delete-confirmation-dialog>
         </v-dialog>
         <v-btn
             class="ma-1"
@@ -96,6 +69,18 @@
         </v-btn>
       </v-card-actions>
       <v-divider></v-divider>
+      <v-card-actions>
+        <v-btn
+          block
+          color="#3fa590"
+          outlined
+          :disabled="spot.getShape() === undefined"
+          @click="addDetailMap"
+        >
+          <span>詳細マップ</span>
+          <v-icon right>add</v-icon>
+        </v-btn>
+      </v-card-actions>
       <detail-map-manage-list
         :detailMaps="spot.getDetailMaps()"
         @add="addDetailMap"

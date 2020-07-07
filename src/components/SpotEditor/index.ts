@@ -1,11 +1,13 @@
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import DetailMapManageList from '@/components/DetailMapManageList/index.vue';
+import DeleteConfirmationDialog from '@/components/DeleteConfirmationDialog/index.vue';
 import Map from '@/Map/Map';
 import Spot from '@/Spot/Spot';
 
 @Component({
     components: {
         DetailMapManageList,
+        DeleteConfirmationDialog,
     },
 })
 export default class SpotEditor extends Vue {
@@ -60,4 +62,5 @@ export default class SpotEditor extends Vue {
             return 'edit';
         }
     }
+
 }

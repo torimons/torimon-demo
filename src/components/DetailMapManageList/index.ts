@@ -1,4 +1,4 @@
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import DeleteConfirmationDialog from '@/components/DeleteConfirmationDialog/index.vue';
 import Map from '@/Map/Map';
 
@@ -12,6 +12,8 @@ export default class DetailMapManageList extends Vue {
     public dialog: boolean = false;
     public selectedMap: Map | null = null;
     public selectedMapName: string = '';
+
+    private hasDetailMaps: boolean = false;
 
     /**
      * 編集ボタンが押されると呼び出され、
@@ -56,4 +58,14 @@ export default class DetailMapManageList extends Vue {
     private cancelMapDeletion() {
         this.dialog = false;
     }
+
+    /**
+     * 追加された詳細マップが1つ以上ある場合は
+     * 詳細マップリストを表示する
+     */
+    @Watch('detailMaps')
+    private updateHasDetailMaps(): void {
+        this.hasDetailMaps = this.detailMaps.length > 0;
+    }
+
 }
