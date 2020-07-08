@@ -26,10 +26,6 @@ describe('components/EditorToolVar', () => {
         const expectedSpotTypeOfPalceIcon = 'default';
         expect(actualSpotTypeOfPlaceIcon).toBe(expectedSpotTypeOfPalceIcon);
 
-        const actualSpotTypeOfAddLocationIcon = wrapper.vm.emitSpotType('add_location');
-        const expectedSpotTypeOfAddLocationIcon = 'withDetailMap';
-        expect(actualSpotTypeOfAddLocationIcon).toBe(expectedSpotTypeOfAddLocationIcon);
-
         const actualSpotTypeOfWCIcon = wrapper.vm.emitSpotType('wc');
         const expectedSpotTypeOfWCIcon = 'restroom';
         expect(actualSpotTypeOfWCIcon).toBe(expectedSpotTypeOfWCIcon);

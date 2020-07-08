@@ -71,7 +71,7 @@ export default class MapInformationDialog extends Vue {
         setTimeout(() => {
             this.loading = false;
             // map-selectに遷移
-            this.$router.push('/map-select');
+            this.$router.push('/');
         }, 1500);
     }
 

@@ -1,5 +1,5 @@
 import SpotMarker from '@/components/MapView/Marker/SpotMarker';
-import L from 'leaflet';
+import L, { Point } from 'leaflet';
 import { mapViewGetters, mapViewMutations } from '@/store';
 import Spot from '@/Spot/Spot';
 
@@ -30,7 +30,7 @@ describe('SpotMarkers', () => {
         const expectedIcon = L.divIcon({
             className: 'custom-div-icon',
             html: htmlTemplate,
-            iconAnchor: [24, 50],
+            iconAnchor: new Point(25, 50),
         });
         expect(testMarker.getIcon()).toStrictEqual(expectedIcon);
     });

@@ -12,11 +12,6 @@ Vue.use(VueRouter);
 const routes = [
     {
         path: '/',
-        name: 'home',
-        component: Home,
-    },
-    {
-        path: '/map-select',
         name: 'map-select',
         component: MapSelection,
     },

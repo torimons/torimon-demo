@@ -22,6 +22,7 @@
       >
         <map-detail-card
           :map="selectedMap"
+          :key="resetKey"
           @closeDialog="closeMapDetailDialog"
         ></map-detail-card>
       </v-dialog>

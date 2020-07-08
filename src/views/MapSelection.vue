@@ -5,19 +5,32 @@
           flat
           tile
       >
-        <v-toolbar>
+        <v-app-bar app color="#3F8373" dark>
           <v-toolbar-title>Selection Page</v-toolbar-title>
-        </v-toolbar>
-        <v-container id="search-bar" class="pt-0" fluid>
+        </v-app-bar>
+        <v-container id="search-bar" class="pt-12" fluid>
           <v-row>
             <v-col
               cols="12"
             >
-              <MapSearch/>
+              <MapSearch class="pt-2"/>
             </v-col>
           </v-row>
         </v-container>
       </v-card>
+          <router-link to="CreationMapView">
+            <v-btn
+              fab
+              fixed
+              bottom
+              right
+              color="#E18632"
+              dark
+              id="create-map"
+            >
+              <v-icon>add</v-icon>
+            </v-btn>
+          </router-link>
     </v-app>
   </div>
 </template>

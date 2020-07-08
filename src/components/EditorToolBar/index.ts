@@ -13,9 +13,11 @@ export default class EditorToolBar extends Vue {
     ];
     private spotButtonColor: string = this.defaultColor;
     private spotIconMaps: Array<{iconName: string, spotType: SpotType}> = [
-        { iconName: 'place',        spotType: 'default' },
-        { iconName: 'add_location', spotType: 'withDetailMap' },
-        { iconName: 'wc',           spotType: 'restroom' },
+        { iconName: 'place',          spotType: 'default' },
+        { iconName: 'wc',             spotType: 'restroom' },
+        { iconName: 'directions_bus', spotType: 'bus-stop' },
+        { iconName: 'local_parking',  spotType: 'parking' },
+        { iconName: 'restaurant',  spotType: 'restaurant' },
     ];
     private shapeEditButton: { action: Action, icon: string, color: string } = {
         action: 'shape', icon: 'edit', color: this.selectedColor,
