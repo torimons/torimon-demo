@@ -1,5 +1,5 @@
 import { mapViewMutations } from '@/store';
-import { shallowMount } from '@vue/test-utils';
+import { shallowMount, mount, createLocalVue } from '@vue/test-utils';
 import 'leaflet/dist/leaflet.css';
 import { testRawMapData } from '../../../resources/testRawMapData';
 import EditorToolBar from '@/components/EditorToolBar';
@@ -9,14 +9,22 @@ import Spot from '@/Spot/Spot';
 import SpotMarker from '@/components/MapView/Marker/SpotMarker';
 import L, { Point } from 'leaflet';
 import SpotEditor from '@/components/SpotEditor';
+import Vuetify from 'vuetify';
 
 
 describe('components/CreationMapView', () => {
+    let localVue: any;
     let wrapper: any;
+    let vuetify: any;
 
     beforeEach(() => {
         mapViewMutations.setRootMapForTest(testRawMapData);
-        wrapper = shallowMount(CreationMapView, {
+        localVue = createLocalVue();
+        vuetify = new Vuetify();
+        localVue.use(Vuetify);
+        wrapper = mount(CreationMapView, {
+            localVue,
+            vuetify,
             attachToDocument: true,
         });
     });
@@ -125,7 +133,30 @@ describe('components/CreationMapView', () => {
     });
 
     it('addイベントによってfocusedSpotに詳細マップが追加される', () => {
-        const testSpot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
+        const testBounds = {
+            topL: {lat: 0, lng: 0},
+            botR: {lat: 0, lng: 0},
+        };
+        const testDetailMap = new Map(0, 'testMap', testBounds);
+        const testSpot = new Spot(
+            0,
+            'testSpot',
+            { lat: 0, lng: 0 },
+            {
+                type: 'Polygon',
+                coordinates: [
+                    [
+                        [130.21791636943817, 33.59517952985549],
+                        [130.21812558174133, 33.59524208725731],
+                        [130.2181041240692, 33.595291239469766],
+                        [130.21862983703613, 33.595465506179146],
+                        [130.2184957265854, 33.59572913976256],
+                        [130.2177768945694, 33.59551018989406],
+                        [130.21791636943817, 33.59517952985549],
+                    ],
+                ],
+            },
+        );
         wrapper.setData({focusedSpot: testSpot});
 
         const focusedSpot: Spot = wrapper.vm.focusedSpot;

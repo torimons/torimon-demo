@@ -145,6 +145,14 @@ export default class Spot {
     }
 
     /**
+     * idをセットする
+     * @param id セットしたいid
+     */
+    public setId(id: number): void {
+        this.id = id;
+    }
+
+    /**
      * スポット名をセットする
      * @param name スポット名
      */

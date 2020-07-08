@@ -3,6 +3,16 @@
       <v-app>
         <div id="map">
         </div>
+        <v-container fluid id="map-information-dialog-container">
+          <v-dialog
+            v-model="dialog"
+            width="1000"
+          >
+            <MapInformationDialog
+              @closeDialog="dialog = false"
+            />
+          </v-dialog>
+        </v-container>
         <v-container
           fluid
           id="map-information-dialog-container"
@@ -26,7 +36,7 @@
                   color="#824F3E"
                   v-show="outOfMapRangeWarningIsVisible"
                 >
-                  作成するマップの範囲外です
+                  マップの範囲外です
                 </v-alert>
               </v-row>
             </v-col>
@@ -42,20 +52,14 @@
                 color="#3F8373"
                 dark
               >
-                <v-btn
-                  @click="dialog = true; setMapToStore()"
-                  color="#76978F"
-                >
-                  <v-icon>cloud_upload</v-icon>
-                </v-btn>
                 <v-toolbar-title
                   class="pl-5"
                   @mouseover="focusMapNameInputForm"
                 >
                   <v-text-field
                     ref="mapNameForm"
-                    :value="map.getName()"
-                    @input="(value) => {map.setName(value)}"
+                    :value="mapToEdit.getName()"
+                    @input="(value) => {mapToEdit.setName(value)}"
                     v-show="whileMapNameEditing"
                     @blur="whileMapNameEditing=false;mapNameColor='background-color:#3F8373';"
                   ></v-text-field>
@@ -67,11 +71,67 @@
                         @click="whileMapNameEditing=true"
                         v-show="!whileMapNameEditing"
                       >
-                        {{ map.getName() }}
+                        {{ mapToEdit.getName() }}
                       </span>
                 </v-toolbar-title>
+                <v-btn
+                  icon
+                  @click.stop="mapFileTreeDialog=!mapFileTreeDialog"
+                >
+                  <v-icon>map</v-icon>
+                </v-btn>
+                <v-btn
+                  icon
+                  @click="dialog = true; setMapToStore()"
+                >
+                  <v-icon>cloud_upload</v-icon>
+                </v-btn>
               </v-app-bar>
             </v-col>
+          </v-row>
+          <v-row justify="center">
+            <v-dialog
+              v-model="mapFileTreeDialog"
+              hide-overlay
+              width="60%"
+            >
+              <v-card>
+                <v-card-title>Map File Tree</v-card-title>
+                <v-card-text>
+                  <v-treeview
+                    hoverable
+                    open-all
+                    v-model="tree"
+                    :items="items"
+                    item-key="id"
+                  >
+                  <template slot="label" slot-scope="{ item }">
+                    <v-btn
+                      icon
+                      v-if="item.type==='Map'"
+                      @click="mapFileTreeDialog=false;
+                              setMapToEdit(item.id);"
+                    >
+                      <v-icon>
+                        map
+                      </v-icon>
+                    </v-btn>
+                    <v-btn
+                      icon
+                      v-if="item.type==='Spot'"
+                      @click="mapFileTreeDialog=false;
+                              setSpotToEdit(item.id)"
+                    >
+                      <v-icon>
+                        place
+                      </v-icon>
+                    </v-btn>
+                    {{ item.name }}
+                  </template>
+                  </v-treeview>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
           </v-row>
           <v-row no-gutters>
             <v-col
@@ -88,6 +148,7 @@
                 @clickAddShapeButton="setAddPointMethodOnMapClick"
                 @delete="deleteFocusedSpot"
                 @add="addDetailMap"
+                @edit="editDetailMap"
                 @dup="duplicateDetailMap"
                 @del="deleteDetailMap"
               />
@@ -117,18 +178,17 @@
             />
           </v-dialog>
         </v-container>
-          <v-btn 
-            color="#E18632"
-            fab
-            small
-            dark
-            id="reset-location"
-            v-show="flyToMapBoundsButtonIsVisible"
-            @click="flyToMapBounds"
-          >
-            <v-icon>my_location</v-icon>
-          </v-btn>
-
+        <v-btn
+          color="#E18632"
+          fab
+          small
+          dark
+          id="reset-location"
+          v-show="flyToMapBoundsButtonIsVisible"
+          @click="flyToMapBounds"
+        >
+          <v-icon>my_location</v-icon>
+        </v-btn>
       </v-app>
     </div>
 </template>
@@ -141,25 +201,36 @@ html,
 body,
 #top-bar {
   pointer-events: auto;
+  z-index: 1100;
 }
+
+#map-info {
+  z-index: 1100;
+  pointer-events: auto;
+}
+
 #creation-map-view {
   height: 100%;
   cursor: pointer
 }
+
 #map {
   position: relative;
   height: 100%;
 }
+
 #toolbar-container {
   position: absolute;
   z-index: 1000;
   pointer-events: none;
 }
+
 #map-information-dialog-container {
   position: absolute;
   z-index: 1100;
   pointer-events: none;
 }
+
 #reset-location {
   position: absolute;
   z-index: 1100;
