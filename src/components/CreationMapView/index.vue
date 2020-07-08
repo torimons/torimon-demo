@@ -50,10 +50,18 @@
                 app
                 pointer-events="none"
               >
-                <v-card flat>
-                  <v-card-text>
+                <v-card
+                  flat
+                >
+                  <v-card
+                    flat
+                    color="#cbcdd1"
+                  >
+                  <v-card-text
+                  >
                     Tree View
                   </v-card-text>
+                  </v-card>
                   <v-treeview
                     hoverable
                     open-all
@@ -81,7 +89,8 @@
                       icon
                       v-if="item.type==='Spot'"
                     >
-                      <v-icon left>
+                      <v-icon left
+                      >
                         place
                       </v-icon>
                     </v-btn>
@@ -94,9 +103,15 @@
                   flat
                   v-if="focusedSpot !== null"
                 >
-                  <v-card-text>
+                  <v-card
+                    flat
+                    color="#cbcdd1"
+                  >
+                  <v-card-text
+                  >
                     Spot Editor
                   </v-card-text>
+                  </v-card>
                   <SpotEditor
                     :isVisible="focusedSpot !== null"
                     @spotInput="updateFocusedMarkerName"
