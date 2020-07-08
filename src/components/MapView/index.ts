@@ -1,4 +1,4 @@
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import { mapViewGetters, mapViewMutations, store } from '@/store';
 import { Coordinate, Bounds, DisplayLevelType } from '@/store/types';
 import 'leaflet/dist/leaflet.css';
@@ -24,6 +24,7 @@ export default class MapView extends Vue {
     private currentLocationMarker: CurrentLocationMarker = new CurrentLocationMarker([0, 0]);
     private zoomLevelThreshold: number = 19; // とりあえず仮で閾値決めてます
     private mapToDisplay!: Map;
+    private displayOSM: boolean = true;
     private shapeEditor!: ShapeEditor;
 
     /**
@@ -31,7 +32,8 @@ export default class MapView extends Vue {
      */
     public mounted() {
         const rootMapCenter: Coordinate = mapViewGetters.rootMap.getCenter();
-        this.map = L.map('map').setView([rootMapCenter.lat, rootMapCenter.lng], this.defaultZoomLevel);
+        this.map = L.map('map', { zoomControl: false })
+            .setView([rootMapCenter.lat, rootMapCenter.lng], this.defaultZoomLevel);
         const bounds = mapViewGetters.rootMap.getBounds();
         const lBounds = new L.LatLngBounds(bounds.topL, bounds.botR);
         this.defaultZoomLevel = this.map.getBoundsZoom(lBounds, false);
@@ -56,7 +58,7 @@ export default class MapView extends Vue {
         ).addTo(this.map);
         this.map.on('zoomend', this.updateDisplayLevel);
         this.map.on('move', this.updateCenterSpotInRootMap);
-        this.map.zoomControl.setPosition('bottomright');
+        // this.map.zoomControl.setPosition('bottomright');
         this.watchStoreForMoveMapCenter();
         this.watchStoreForDisplayMap();
         this.watchFocusedSpotChange();
@@ -351,5 +353,31 @@ export default class MapView extends Vue {
         }
         const firstDetailMap: Map = centerSpot.getDetailMaps()[0];
         return firstDetailMap;
+    }
+
+    /**
+     * diplayOSMの変更を検知してleafletのmapからtileLayerのON/OFFを行う
+     */
+    @Watch('displayOSM')
+    private onDisplayOSMChange() {
+        if (this.displayOSM) {
+            this.tileLayer.setUrl('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        } else {
+            this.tileLayer.setUrl('');
+        }
+    }
+
+    /**
+     * zoom_inボタンを押した時にzoominする
+     */
+    private zoomIn() {
+        this.map.zoomIn();
+    }
+
+    /**
+     * zoom_outボタンを押した時にzoomoutする
+     */
+    private zoomOut() {
+        this.map.zoomOut();
     }
 }
