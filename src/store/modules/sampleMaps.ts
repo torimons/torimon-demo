@@ -31,7 +31,7 @@ export const sampleMaps: RawMap[] =  [
                 detailMapLevelNames: ['1F', '2F'],
                 lastViewedDetailMapId: null,
                 description: '全学・工学系の共通講義と大学院統合新領域学府オートモーティブサイエンス専攻の教育研究等を行う施設',
-                type: 'withDetailMap',
+                type: 'default',
                 shouldDisplayNameOnMap: false,
             },
             {
@@ -66,7 +66,7 @@ export const sampleMaps: RawMap[] =  [
                 detailMapLevelNames: ['2F', '3F', '5F'],
                 lastViewedDetailMapId: null,
                 description: '見どころスポット：フーコーの振り子',
-                type: 'withDetailMap',
+                type: 'default',
                 shouldDisplayNameOnMap: false,
             },
             {
@@ -232,12 +232,12 @@ export const sampleMaps: RawMap[] =  [
         edges: [],
         bounds: {
             topL: {
-                lat: 33.596643,
+                lat: 33.597043,
                 lng: 130.215516,
             },
             botR: {
                 lat: 33.594083,
-                lng: 130.220609,
+                lng: 130.222009,
             },
         },
 

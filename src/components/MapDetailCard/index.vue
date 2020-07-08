@@ -5,11 +5,8 @@
     <v-card-title>{{ name }}</v-card-title>
     <v-card-text>{{ description }}</v-card-text>
     <v-divider></v-divider>
-    <v-container>
-      <v-img
-        :src="attachment"
-        style="height: 40vh;"
-      ></v-img>
+    <v-container id="map-view-container">
+      <MapView style="height: 40vh"/>
     </v-container>
     <v-divider></v-divider>
     <v-spacer></v-spacer>
@@ -39,4 +36,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#map-view-container {
+  position: relative;
+  height: 100%;
+}
 </style>

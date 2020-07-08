@@ -1,4 +1,4 @@
-import L, {LatLngExpression} from 'leaflet';
+import L, {LatLngExpression, Point} from 'leaflet';
 import { mapViewMutations, mapViewGetters } from '@/store';
 import Spot from '@/Spot/Spot';
 import { SpotType } from '@/store/types';
@@ -9,14 +9,21 @@ export default class SpotMarker extends L.Marker {
     private selectedColor: string = '#AE56B3';
     private nameLabelMarker!: L.Marker;
     private iconName: string = 'place';
+    private iconSize: number = 48;
+    private iconAnchor: Point = new Point(25, 50);
 
     constructor(spot: Spot) {
         super(spot.getCoordinate());
         this.iconName = spot.getIconName();
+        if (spot.getType() !== 'default') {
+            this.iconSize = 28;
+            this.iconAnchor = new Point(17, 28);
+            this.normalColor = '#76978F';
+        }
         const icon = L.divIcon({
             className: 'custom-div-icon',
-            html: `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${this.normalColor};">${this.iconName}</i>`,
-            iconAnchor: [24, 50],
+            html: `<div class="marker-pin"></div><i class="material-icons" style="font-size:${this.iconSize}px; color:${this.normalColor};">${this.iconName}</i>`,
+            iconAnchor: this.iconAnchor,
         });
         this.setIcon(icon);
         this.spot = spot;
@@ -50,6 +57,7 @@ export default class SpotMarker extends L.Marker {
     public getSpot(): Spot {
         return this.spot;
     }
+
     /**
      * マーカーの選択状態によって色を切り替える
      * @param isSelected true/false
@@ -57,11 +65,11 @@ export default class SpotMarker extends L.Marker {
     public setSelected(isSelected: boolean): void {
         const color = isSelected ? this.selectedColor : this.normalColor;
         const htmlTemplate =
-            `<div class="marker-pin"></div><i class="material-icons" style="font-size:48px; color:${color};">${this.iconName}</i>`;
+            `<div class="marker-pin"></div><i class="material-icons" style="font-size:${this.iconSize}px; color:${color};">${this.iconName}</i>`;
         const icon = L.divIcon({
             className: 'custom-div-icon',
             html: htmlTemplate,
-            iconAnchor: [24, 50],
+            iconAnchor: this.iconAnchor,
         });
         this.setIcon(icon);
     }

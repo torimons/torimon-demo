@@ -89,7 +89,7 @@ describe('Spotクラスのgetterのテスト', () => {
 
     it('shouldDisplayNameOnMapがundefinedの時trueを返す', () => {
         const testSpot
-            = new Spot(1, 'testSpot', testCoord, undefined, 'testFloorName', undefined, undefined, 'restroom');
+            = new Spot(1, 'testSpot', testCoord, undefined, 'testFloorName', undefined, undefined, 'default');
         const actual: boolean = testSpot.shouldDisplayNameOnMap();
         expect(actual).toEqual(true);
     });

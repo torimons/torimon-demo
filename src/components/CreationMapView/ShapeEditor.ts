@@ -1,5 +1,5 @@
 import { GeoJsonObject, GeometryObject, Feature, FeatureCollection, Polygon } from 'geojson';
-import { Coordinate, Shape } from '@/store/types';
+import { Coordinate, Shape, Bounds } from '@/store/types';
 import L, { LeafletEvent, Marker } from 'leaflet';
 import Spot from '@/Spot/Spot';
 
@@ -35,7 +35,6 @@ export default class ShapeEditor {
         if (this.rectangleStartPoint === null) {
             this.rectangleStartPoint = e.latlng as L.LatLng;
         }
-        const boundsList: L.LatLngBounds[] = [];
         let topL: L.LatLng;
         let botR: L.LatLng;
         if (this.rectangleStartPoint.lat > e.latlng.lat && this.rectangleStartPoint.lng < e.latlng.lng) {
@@ -51,54 +50,60 @@ export default class ShapeEditor {
             topL = new L.LatLng(e.latlng.lat, e.latlng.lng);
             botR = new L.LatLng(this.rectangleStartPoint.lat, this.rectangleStartPoint.lng);
         }
+        this.drawRectangle({topL, botR});
+    }
+
+    public drawRectangle(bounds: Bounds): void {
         const topBounds = new L.LatLngBounds(
             {
-                lat: topL.lat + 130,
-                lng: topL.lng - 130,
+                lat: bounds.topL.lat + 130,
+                lng: bounds.topL.lng - 130,
             },
             {
-                lat: topL.lat,
-                lng: topL.lng + 130,
+                lat: bounds.topL.lat,
+                lng: bounds.topL.lng + 130,
             },
         );
         const botBounds = new L.LatLngBounds(
             {
-                lat: botR.lat,
-                lng: botR.lng - 130,
+                lat: bounds.botR.lat,
+                lng: bounds.botR.lng - 130,
             },
             {
-                lat: botR.lat - 130,
-                lng: botR.lng + 130,
+                lat: bounds.botR.lat - 130,
+                lng: bounds.botR.lng + 130,
             },
         );
         const rightBounds = new L.LatLngBounds(
             {
-                lat: topL.lat,
-                lng: topL.lng - 130,
+                lat: bounds.topL.lat,
+                lng: bounds.topL.lng - 130,
             },
             {
-                lat: botR.lat,
-                lng: topL.lng,
+                lat: bounds.botR.lat,
+                lng: bounds.topL.lng,
             },
         );
         const leftBounds = new L.LatLngBounds(
             {
-                lat: topL.lat,
-                lng: botR.lng,
+                lat: bounds.topL.lat,
+                lng: bounds.botR.lng,
             },
             {
-                lat: botR.lat,
-                lng: botR.lng + 130,
+                lat: bounds.botR.lat,
+                lng: bounds.botR.lng + 130,
             },
         );
+        const boundsList: L.LatLngBounds[] = [];
         boundsList.push(topBounds, botBounds, rightBounds, leftBounds);
 
         this.rectangles.forEach((rec) => rec.remove());
-        boundsList.forEach((bounds) => {
-            this.rectangles.push(L.rectangle(bounds, {
+        boundsList.forEach((b) => {
+            this.rectangles.push(L.rectangle(b, {
                 color: '#000000', fill: true, opacity: 0,
             }).addTo(this.lMap));
         });
+
     }
 
     public endRectangleSelection(e: { latlng: L.LatLng, onEndSelection: (bounds: L.LatLngBounds) => void }): void {
@@ -163,9 +168,7 @@ export default class ShapeEditor {
      */
     public displayPolygons(spotsForDisplay: Spot[]): void {
         // すでに表示されているポリゴンがある場合は先に削除する
-        if (this.polygonLayer !== undefined) {
-            this.lMap.removeLayer(this.polygonLayer);
-        }
+        this.removePolygons();
         const shapeGeoJson: GeoJsonObject = this.spotShapeToGeoJson(spotsForDisplay);
         this.polygonLayer = new L.GeoJSON(shapeGeoJson, {
             style: {
@@ -177,6 +180,30 @@ export default class ShapeEditor {
             },
         });
         this.lMap.addLayer(this.polygonLayer);
+    }
+
+    /**
+     * spotのshapeの枠線をマップに追加する
+     * @param spot shapeの枠線を表示したいスポット
+     */
+    public addPolygonLine(spot: Spot): void {
+        const shape: Shape = spot.getShape()!;
+        const coods: number[][][] = shape.coordinates as number[][][];
+        const latlngs: L.LatLng[] = coods[0].map((c: number[]) => new L.LatLng(c[1], c[0]));
+        L.polyline(latlngs, {
+            color: '#E18632',
+            weight: 4,
+            opacity: 1,
+        }).addTo(this.polygonLayer!);
+    }
+
+    /**
+     * 現在表示しているポリゴンを削除する
+     */
+    public removePolygons(): void {
+        if (this.polygonLayer !== undefined) {
+            this.lMap.removeLayer(this.polygonLayer);
+        }
     }
 
     public removeShapeEditLine() {
