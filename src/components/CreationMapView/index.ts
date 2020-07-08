@@ -51,6 +51,7 @@ export default class CreationMapView extends Vue {
     private items: any = [];
     private tree = [];
     private mapFileTreeDialog: boolean = false;
+    private drawer: boolean = false;
 
     private whileMapNameEditing: boolean = false;
     private mapNameColor: string = 'background-color:#3F8373';
@@ -214,6 +215,7 @@ export default class CreationMapView extends Vue {
         this.spotMarkers.push(newMarker);
 
         this.switchFocusedMarker(newMarker);
+        this.drawer = true;
     }
 
     private unfocusedMarker(): void {

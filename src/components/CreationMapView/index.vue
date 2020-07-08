@@ -45,6 +45,89 @@
         <v-container fluid id="toolbar-container">
           <v-row>
             <v-col>
+              <v-navigation-drawer
+                v-model="drawer"
+                app
+                pointer-events="none"
+                width="350px"
+              >
+                <v-card
+                  flat
+                >
+                  <v-card
+                    flat
+                    color="#cbcdd1"
+                  >
+                  <v-card-text
+                  >
+                    Tree View
+                  </v-card-text>
+                  </v-card>
+                  <v-treeview
+                    hoverable
+                    open-all
+                    v-model="tree"
+                    :items="items"
+                    item-key="name"
+                    dense
+                  >
+                  <template
+                    v-slot:prepend="{ item }"
+                  >
+                    <div
+                      @click="item.type === 'Map'
+                        ? setMapToEdit(item.id) 
+                        : setSpotToEdit(item.id)"
+                    >
+                    <v-btn
+                      icon
+                      v-if="item.type==='Map'"
+                    >
+                      <v-icon>
+                        map
+                      </v-icon>
+                    </v-btn>
+                    <v-btn
+                      icon
+                      v-if="item.type==='Spot'"
+                    >
+                      <v-icon left
+                      >
+                        place
+                      </v-icon>
+                    </v-btn>
+                    </div>
+                  </template>
+                  </v-treeview>
+                </v-card>
+
+                <v-card 
+                  flat
+                  v-if="focusedSpot !== null"
+                >
+                  <v-card
+                    flat
+                    color="#cbcdd1"
+                  >
+                  <v-card-text
+                  >
+                    Spot Editor
+                  </v-card-text>
+                  </v-card>
+                  <SpotEditor
+                    :isVisible="focusedSpot !== null"
+                    @spotInput="updateFocusedMarkerName"
+                    :disabledShapeEditButton="disabledShapeEditButtonInSpotEditor"
+                    :spot="focusedSpot"
+                    @clickAddShapeButton="setAddPointMethodOnMapClick"
+                    @delete="deleteFocusedSpot"
+                    @add="addDetailMap"
+                    @edit="editDetailMap"
+                    @dup="duplicateDetailMap"
+                    @del="deleteDetailMap"
+                  />
+                </v-card>
+              </v-navigation-drawer>
               <v-app-bar
                 id="top-bar"
                 app
@@ -52,6 +135,11 @@
                 color="#3F8373"
                 dark
               >
+                <v-app-bar-nav-icon
+                  @click="drawer = !drawer"
+                >
+                  <v-icon>device_hub</v-icon>
+                </v-app-bar-nav-icon>
                 <v-toolbar-title
                   class="pl-5"
                   @mouseover="focusMapNameInputForm"
@@ -76,12 +164,6 @@
                 </v-toolbar-title>
                 <v-btn
                   icon
-                  @click.stop="mapFileTreeDialog=!mapFileTreeDialog"
-                >
-                  <v-icon>map</v-icon>
-                </v-btn>
-                <v-btn
-                  icon
                   @click="dialog = true; setMapToStore()"
                 >
                   <v-icon>cloud_upload</v-icon>
@@ -89,70 +171,7 @@
               </v-app-bar>
             </v-col>
           </v-row>
-          <v-row justify="center">
-            <v-dialog
-              v-model="mapFileTreeDialog"
-              hide-overlay
-              width="60%"
-            >
-              <v-card>
-                <v-card-title>Map File Tree</v-card-title>
-                <v-card-text>
-                  <v-treeview
-                    hoverable
-                    open-all
-                    v-model="tree"
-                    :items="items"
-                    item-key="id"
-                  >
-                  <template slot="label" slot-scope="{ item }">
-                    <v-btn
-                      icon
-                      v-if="item.type==='Map'"
-                      @click="mapFileTreeDialog=false;
-                              setMapToEdit(item.id);"
-                    >
-                      <v-icon>
-                        map
-                      </v-icon>
-                    </v-btn>
-                    <v-btn
-                      icon
-                      v-if="item.type==='Spot'"
-                      @click="mapFileTreeDialog=false;
-                              setSpotToEdit(item.id)"
-                    >
-                      <v-icon>
-                        place
-                      </v-icon>
-                    </v-btn>
-                    {{ item.name }}
-                  </template>
-                  </v-treeview>
-                </v-card-text>
-              </v-card>
-            </v-dialog>
-          </v-row>
           <v-row no-gutters>
-            <v-col
-              cols="5"
-              md="3"
-            >
-              <SpotEditor
-                class="pt-6"
-                @spotInput="updateFocusedMarkerName"
-                :isVisible="focusedSpot !== null"
-                :disabledShapeEditButton="disabledShapeEditButtonInSpotEditor"
-                @close="unfocusedMarker"
-                :spot="focusedSpot"
-                @clickAddShapeButton="setAddPointMethodOnMapClick"
-                @delete="deleteFocusedSpot"
-                @add="addDetailMap"
-                @edit="editDetailMap"
-                @dup="duplicateDetailMap"
-                @del="deleteDetailMap"
-              />
-            </v-col>
             <v-col>
               <v-row justify="end" no-gutters>
                 <EditorToolBar
