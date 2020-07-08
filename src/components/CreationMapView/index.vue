@@ -49,6 +49,7 @@
                 v-model="drawer"
                 app
                 pointer-events="none"
+                width="350px"
               >
                 <v-card
                   flat
@@ -68,6 +69,7 @@
                     v-model="tree"
                     :items="items"
                     item-key="name"
+                    dense
                   >
                   <template
                     v-slot:prepend="{ item }"
