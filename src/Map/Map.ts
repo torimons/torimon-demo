@@ -2,17 +2,6 @@ import Spot from '@/Spot/Spot.ts';
 import { Bounds, Coordinate, MapJson } from '@/store/types';
 
 export default class Map {
-    /**
-     * 地図上の範囲から中心の座標を計算
-     * TODO: 本クラスのインスタンスが現在取得できないので一時的にpublic staticにしてアクセス
-     * @param bounds 中心座標を計算したい地図の範囲
-     * @return 中心座標
-     */
-    public static calculateCenter(bounds: Bounds): Coordinate {
-        const centerLat = (bounds.topL.lat + bounds.botR.lat) / 2;
-        const centerLng = (bounds.topL.lng + bounds.botR.lng) / 2;
-        return { lat: centerLat, lng: centerLng };
-    }
 
     private parentSpot: Spot | undefined = undefined;
     private spots: Spot[] = [];
@@ -59,6 +48,17 @@ export default class Map {
     }
 
     /**
+     * 地図上の範囲から中心の座標を計算
+     * @param bounds 中心座標を計算したい地図の範囲
+     * @return 中心座標
+     */
+    public getCenter(): Coordinate {
+        const centerLat = (this.bounds.topL.lat + this.bounds.botR.lat) / 2;
+        const centerLng = (this.bounds.topL.lng + this.bounds.botR.lng) / 2;
+        return { lat: centerLat, lng: centerLng };
+    }
+
+    /**
      * マップのdescriptionを返す
      * @return description，存在しなければundefined
      */
@@ -84,6 +84,14 @@ export default class Map {
         }
         this.parentSpot = parentSpot;
         parentSpot.addDetailMaps([this]);
+    }
+
+    /**
+     * マップの範囲をセットする
+     * @param bounds マップの範囲
+     */
+    public setBounds(bounds: Bounds): void {
+        this.bounds = bounds;
     }
 
     /**
@@ -175,6 +183,30 @@ export default class Map {
      */
     public removeSpot(id: number): void {
         this.spots = this.spots.filter((spot) => spot.getId() !== id);
+    }
+
+    /**
+     * 新しいidを登録する
+     * @param newMapId 登録する新しいid
+     */
+    public setId(newMapId: number) {
+        this.id = newMapId;
+    }
+
+    /**
+     * 新しい名前を登録
+     * @param newName 新しい名前
+     */
+    public setName(newName: string) {
+        this.name = newName;
+    }
+
+    /**
+     * 新しいdescriptionを登録
+     * @param newDescription 新しいdescription
+     */
+    public setDescription(newDescription: string) {
+        this.description = newDescription;
     }
 
     /**

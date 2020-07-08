@@ -4,8 +4,8 @@ import { SpotType } from '@/store/types';
 @Component
 export default class EditorToolBar extends Vue {
     // 色は仮
-    private selectedColor: string = 'indigo darken-4';
-    private defaultColor: string = 'light-blue lighten-1';
+    private selectedColor: string = '#264F45';
+    private defaultColor: string = '#76978F';
     private buttons: Array<{ action: Action, icon: string, color: string }> = [
         {action: 'zoomIn',  icon: 'zoom_in',  color: this.defaultColor},
         {action: 'zoomOut', icon: 'zoom_out', color: this.defaultColor},
@@ -13,15 +13,19 @@ export default class EditorToolBar extends Vue {
     ];
     private spotButtonColor: string = this.defaultColor;
     private spotIconMaps: Array<{iconName: string, spotType: SpotType}> = [
-        { iconName: 'place',        spotType: 'default' },
-        { iconName: 'add_location', spotType: 'withDetailMap' },
-        { iconName: 'wc',           spotType: 'restroom' },
+        { iconName: 'place',          spotType: 'default' },
+        { iconName: 'wc',             spotType: 'restroom' },
+        { iconName: 'directions_bus', spotType: 'bus-stop' },
+        { iconName: 'local_parking',  spotType: 'parking' },
+        { iconName: 'restaurant',  spotType: 'restaurant' },
     ];
     private shapeEditButton: { action: Action, icon: string, color: string } = {
         action: 'shape', icon: 'edit', color: this.selectedColor,
     };
     @Prop()
     private shapeEditButtonIsVisible!: boolean;
+    @Prop()
+    private spotButtonIsVisible!: boolean;
     private selectedMode: Action = 'move';
     private selectedSpotIcon: string = '';
     private fabVisible: boolean = false;

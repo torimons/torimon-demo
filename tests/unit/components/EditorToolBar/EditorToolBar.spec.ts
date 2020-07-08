@@ -26,18 +26,14 @@ describe('components/EditorToolVar', () => {
         const expectedSpotTypeOfPalceIcon = 'default';
         expect(actualSpotTypeOfPlaceIcon).toBe(expectedSpotTypeOfPalceIcon);
 
-        const actualSpotTypeOfAddLocationIcon = wrapper.vm.emitSpotType('add_location');
-        const expectedSpotTypeOfAddLocationIcon = 'withDetailMap';
-        expect(actualSpotTypeOfAddLocationIcon).toBe(expectedSpotTypeOfAddLocationIcon);
-
         const actualSpotTypeOfWCIcon = wrapper.vm.emitSpotType('wc');
         const expectedSpotTypeOfWCIcon = 'restroom';
         expect(actualSpotTypeOfWCIcon).toBe(expectedSpotTypeOfWCIcon);
     });
 
     it('switchModeに"spot"アクションが渡された場合にSpotボタンの色を表すフィールドのみがselectedColorになる', () => {
-        const selectedColor: string = 'indigo darken-4';
-        const defaultColor: string = 'light-blue lighten-1';
+        const selectedColor: string = wrapper.vm.selectedColor;
+        const defaultColor: string = wrapper.vm.defaultColor;
 
         wrapper.vm.switchMode('spot');
         const acutualButtons: Array<{ action: Action, icon: string, color: string }> = wrapper.vm.buttons;
@@ -49,8 +45,8 @@ describe('components/EditorToolVar', () => {
     });
 
     it('switchModeにアクション(非"spot")が渡された場合にそのアクションのボタンの色を表すフィールドのみがselectedColorになる', () => {
-        const selectedColor: string = 'indigo darken-4';
-        const defaultColor: string = 'light-blue lighten-1';
+        const selectedColor: string = wrapper.vm.selectedColor;
+        const defaultColor: string = wrapper.vm.defaultColor;
 
         wrapper.vm.switchMode('move');
         expect(wrapper.vm.spotButtonColor).toBe(defaultColor);

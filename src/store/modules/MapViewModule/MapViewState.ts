@@ -78,6 +78,12 @@ export class MapViewState {
     //     MapDataConverter.json2tree(MapDataConverter.tree2json(initMap(sampleMaps)));
 
     /**
+     * デモ用
+     */
+    public isMapCreated: boolean = false;
+    public demoMaps: Map[] = [initMap(sampleMaps)];
+
+    /**
      * Mapコンポーネントで選択されているスポット
      */
     public focusedSpot: Spot | undefined = undefined;

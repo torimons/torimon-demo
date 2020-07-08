@@ -1,4 +1,6 @@
 import Search from '@/utils/Search';
+import Map from '@/Map/Map';
+import Spot from '@/Spot/Spot';
 
 /**
  * Searchクラスで扱うisMatchToRegExpをもつクラス

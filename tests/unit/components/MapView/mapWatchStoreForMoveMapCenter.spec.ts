@@ -36,7 +36,7 @@ describe('components/MapView watchStoreForMoveMapCenter()', () => {
         const parentMap: Map = mapViewGetters.rootMap.getSpots()[0].getDetailMaps()[0];
         mapViewMutations.setSpotToDisplayInMapCenter(spotInDetailMap);
         const vmMap: L.Map = wrapper.vm.map;
-        expect(vmMap.getZoom()).toBe(20.0);
+        expect(vmMap.getZoom()).toBe(wrapper.vm.zoomLevelThreshold + 1);
         expect(parentSpot.getLastViewedDetailMap()).toBe(parentMap);
         expect(vmMap.getCenter()).toStrictEqual(spotInDetailMap.getCoordinate());
     });

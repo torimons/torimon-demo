@@ -1,8 +1,13 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import Map from '@/Map/Map.ts';
 import { mapViewMutations } from '@/store';
+import MapView from '@/components/MapView/index.vue';
 
-@Component
+@Component({
+    components: {
+        MapView,
+    },
+})
 export default class MapDetailCard extends Vue {
     @Prop()
     public map!: Map;
@@ -20,9 +25,10 @@ export default class MapDetailCard extends Vue {
      */
     @Watch('map')
     private updateContent() {
+        mapViewMutations.setRootMap(this.map);
         this.name = this.map.getName();
         this.description = this.map.getDescription() || '';
-        this.attachment = 'https://picsum.photos/id/' + String(this.map.getId()) + '/200/300';
+        this.attachment = 'https://picsum.photos/id/' + String(Math.abs(this.map.getId())) + '/200/300';
     }
 
     /**

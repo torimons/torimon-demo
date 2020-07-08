@@ -30,21 +30,30 @@ export default class MapSearch extends Vue {
     private search!: Search<Map>;
     private backgroundColor: 'transparent' | 'white' = 'transparent';
 
-    public async mounted() {
-        // APIからマップデータを取得してセットする
-        // TODO: ~~ベタ書きからtypes?かどこかに移動?~~
-        // アップロードのタスクでアップロード・ダウンロードをutil/以下に移動予定
-        const mapURL: string = 'http://localhost:3000/maps';
-        try {
-            const res = await axios.get(mapURL);
-            // searchクラスに与えるMapを準備
-            res.data.map((jsonMap: any) => {
-                this.targetMaps.push(MapDataConverter.json2tree(jsonMap));
-            });
-        } catch (err) {
-            this.getDataSucceeded = false;
-        }
-        // 表示が寂しいのでとりあえずmockデータもtargetMapsに追加
+    // デモ用にコメントアウト
+    // public async mounted() {
+    //     // APIからマップデータを取得してセットする
+    //     // TODO: ~~ベタ書きからtypes?かどこかに移動?~~
+    //     // アップロードのタスクでアップロード・ダウンロードをutil/以下に移動予定
+    //     const mapURL: string = 'http://localhost:3000/maps';
+    //     try {
+    //         const res = await axios.get(mapURL);
+    //         // searchクラスに与えるMapを準備
+    //         res.data.map((jsonMap: any) => {
+    //             this.targetMaps.push(MapDataConverter.json2tree(jsonMap));
+    //         });
+    //     } catch (err) {
+    //         this.successfullyGetData = false;
+    //     }
+    //     // 表示が寂しいのでとりあえずmockデータもtargetMapsに追加
+    //     this.targetMaps = mapViewGetters.demoMaps;
+    //     this.search = new Search<Map>(this.targetMaps);
+    //     // 最初は全結果を表示
+    //     this.mapSearchResults = this.targetMaps;
+    // }
+
+    public mounted() {
+        this.targetMaps = mapViewGetters.demoMaps;
         this.targetMaps = this.targetMaps.concat(mockMaps);
         this.search = new Search<Map>(this.targetMaps);
         // 最初は全結果を表示

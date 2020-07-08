@@ -4,7 +4,7 @@
       tile
       dense
       style="max-height:200px; overflow-y:auto;"
-      v-show="hasDetailMaps"
+      v-show="detailMaps && detailMaps.length > 0"
     >
       <v-list-item
         v-for="(detailMap, index) in detailMaps"
@@ -15,7 +15,10 @@
             {{ detailMap.getName() }}
           </v-list-item-title>
         </v-list-item-content>
-        <v-btn icon>
+        <v-btn
+          icon
+          @click="editDetailMap(detailMap)"
+        >
           <v-icon>edit</v-icon>
         </v-btn>
         <v-btn
