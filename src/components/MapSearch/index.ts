@@ -6,15 +6,7 @@ import Search from '@/utils/Search';
 import MapList from '@/components/MapList/index.vue';
 import MapDataConverter from '@/utils/MapDataConverter';
 import axios from 'axios';
-
-// 地図データが用意されるまで、モックデータを検索結果として利用
-const mockMaps: Map[] = [
-    new Map(1001, 'mock1', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined, 'desctiption of mock 1'),
-    new Map(1002, 'mock2', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined, 'desctiption of mock 2'),
-    new Map(1003, 'mock3', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined, 'desctiption of mock 3'),
-    new Map(1004, 'mock4', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined, 'desctiption of mock 4'),
-    new Map(1005, 'mock5', {topL: {lat: 0, lng: 0}, botR: {lat: 0, lng: 0}}, undefined, 'desctiption of mock 5'),
-];
+import API from '@/utils/API.ts';
 
 @Component({
     components: {
@@ -24,37 +16,21 @@ const mockMaps: Map[] = [
 })
 export default class MapSearch extends Vue {
     private searchWord: string = '';
-    private getDataSucceeded: boolean = true;
+    private getDataSucceeded: boolean = false;
     private targetMaps: Map[] = [];
     private mapSearchResults: Map[] = [];
     private search!: Search<Map>;
     private backgroundColor: 'transparent' | 'white' = 'transparent';
+    private api: API = new API();
 
     // デモ用にコメントアウト
-    // public async mounted() {
-    //     // APIからマップデータを取得してセットする
-    //     // TODO: ~~ベタ書きからtypes?かどこかに移動?~~
-    //     // アップロードのタスクでアップロード・ダウンロードをutil/以下に移動予定
-    //     const mapURL: string = 'http://localhost:3000/maps';
-    //     try {
-    //         const res = await axios.get(mapURL);
-    //         // searchクラスに与えるMapを準備
-    //         res.data.map((jsonMap: any) => {
-    //             this.targetMaps.push(MapDataConverter.json2tree(jsonMap));
-    //         });
-    //     } catch (err) {
-    //         this.successfullyGetData = false;
-    //     }
-    //     // 表示が寂しいのでとりあえずmockデータもtargetMapsに追加
-    //     this.targetMaps = mapViewGetters.demoMaps;
-    //     this.search = new Search<Map>(this.targetMaps);
-    //     // 最初は全結果を表示
-    //     this.mapSearchResults = this.targetMaps;
-    // }
-
-    public mounted() {
-        this.targetMaps = mapViewGetters.demoMaps;
-        this.targetMaps = this.targetMaps.concat(mockMaps);
+    public async mounted() {
+        // APIからマップデータを取得してセットする
+        (await this.api.getAllMaps())
+            .map((map) => {
+                this.targetMaps = this.targetMaps.concat(map);
+                this.getDataSucceeded = true;
+            });
         this.search = new Search<Map>(this.targetMaps);
         // 最初は全結果を表示
         this.mapSearchResults = this.targetMaps;
