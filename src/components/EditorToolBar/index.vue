@@ -67,7 +67,6 @@
               class="mt-1"
               v-show="shapeEditButtonIsVisible"
               :color="shapeEditButton.color"
-              @click="onButtonClick(shapeEditButton.action)"
             >
               <v-icon icon>{{ shapeEditButton.icon }}</v-icon>
             </v-btn>
