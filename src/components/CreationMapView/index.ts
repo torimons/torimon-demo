@@ -277,10 +277,12 @@ export default class CreationMapView extends Vue {
             this.leafletContainer.style.cursor = 'crosshair';
         }
         this.shapeEditButtonIsVisible = true;
-        this.onMapClick = (e: { latlng: L.LatLng, afterSecondClick: () => void, afterAddEndPoint: (shape: Shape) => void }) => {
+        this.onMapClick = (e: {
+            latlng: L.LatLng, afterSecondClick: () => void, afterAddEndPoint: (shape: Shape) => void,
+        }) => {
             e.afterSecondClick = () => {
                 this.messageWhileShapeEditing = '始点をクリックして図形を閉じる';
-            }
+            };
             /**
              * ラインの終点が描画された後に呼び出される関数
              * ポリゴンの描画や後処理を行う
