@@ -55,6 +55,7 @@ export default class CreationMapView extends Vue {
 
     private whileMapNameEditing: boolean = false;
     private mapNameColor: string = 'background-color:#3F8373';
+    private isOpenTreeView: boolean = true;
 
     /**
      * とりあえず地図の表示を行なっています．
@@ -120,6 +121,11 @@ export default class CreationMapView extends Vue {
     @Watch('map', {deep: true})
     private updateMapTreeView() {
         this.items = [this.mapToJson(this.map)];
+        // v-ifにより再描画させることでtreeviewを開いた状態にする
+        this.isOpenTreeView = false;
+        this.$nextTick(() => {
+            this.isOpenTreeView = true;
+        });
     }
 
     /**

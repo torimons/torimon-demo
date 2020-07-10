@@ -64,6 +64,7 @@
                   </v-card-text>
                   </v-card>
                   <v-treeview
+                    v-if="isOpenTreeView"
                     hoverable
                     open-all
                     v-model="tree"
