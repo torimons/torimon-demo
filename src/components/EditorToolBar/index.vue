@@ -14,36 +14,54 @@
               :color="button.color"
               @click="onButtonClick(button.action)"
             >
-              <v-icon icon>{{ button.icon }}</v-icon>
+              <v-tooltip left>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon
+                    icon
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    {{ button.icon }}
+                  </v-icon>
+                </template>
+                <span>{{ button.tooltip }}</span>
+              </v-tooltip>
             </v-btn>
-            <v-speed-dial
-              direction="left"
-              v-model="fabVisible"
-            >
-              <template v-slot:activator>
-                <v-btn
-                  :color="spotButtonColor"
+            <v-tooltip left>
+              <template v-slot:activator="{ on, attrs }">
+                <v-speed-dial
+                  direction="left"
                   v-model="fabVisible"
-                  v-show="spotButtonIsVisible"
-                  icon
                 >
-                  <v-icon v-if="fabVisible">close</v-icon>
-                  <v-icon v-if="!fabVisible && selectedMode != 'spot'">add_location</v-icon>
-                  <v-icon v-if="!fabVisible && selectedMode == 'spot'">{{ selectedSpotIcon }}</v-icon>
-                </v-btn>
+                  <template v-slot:activator>
+                    <v-btn
+                      :color="spotButtonColor"
+                      v-model="fabVisible"
+                      v-show="spotButtonIsVisible"
+                      v-bind="attrs"
+                      v-on="on"
+                      icon
+                    >
+                      <v-icon v-if="fabVisible">close</v-icon>
+                      <v-icon v-if="!fabVisible && selectedMode != 'spot'">add_location</v-icon>
+                      <v-icon v-if="!fabVisible && selectedMode == 'spot'">{{ selectedSpotIcon }}</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-btn 
+                    color="#3F8373"
+                    v-for="(spotIconMap, index) in spotIconMaps"
+                    v-bind:key="index"
+                    fab
+                    small
+                    dark
+                    @click="setSelectedSpotIcon(spotIconMap.iconName); onButtonClick('spot')"
+                  >
+                    <v-icon>{{ spotIconMap.iconName }}</v-icon>
+                  </v-btn>
+                </v-speed-dial>
               </template>
-              <v-btn 
-                color="#3F8373"
-                v-for="(spotIconMap, index) in spotIconMaps"
-                v-bind:key="index"
-                fab
-                small
-                dark
-                @click="setSelectedSpotIcon(spotIconMap.iconName); onButtonClick('spot')"
-              >
-                <v-icon>{{ spotIconMap.iconName }}</v-icon>
-              </v-btn>
-            </v-speed-dial>
+              <span>スポット設置</span>
+            </v-tooltip>
             <v-btn
               icon
               class="mt-1"

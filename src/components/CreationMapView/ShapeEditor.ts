@@ -132,7 +132,7 @@ export default class ShapeEditor {
      * マップ上にCircleMarkerを用いた点と，前の点から続くPolyLineを用いた線を描画する
      * @param e 終点追加後に完成したShapeを引数に取るコールバック関数をメンバにもつ
      */
-    public addPoint(e: { latlng: L.LatLng, afterAddEndPoint: (shape: Shape) => void }): void {
+    public addPoint(e: { latlng: L.LatLng, afterAddEndPoint: (shape: Shape) => void, afterSecondClick: () => void }): void {
         this.coordinates.push(e.latlng as Coordinate);
 
         const circleMarker: L.CircleMarker = L.circleMarker(e.latlng, {
@@ -143,6 +143,9 @@ export default class ShapeEditor {
                 const shape: Shape = this.createShape();
                 e.afterAddEndPoint(shape);
             });
+        }
+        if (this.circleMarkers.length == 1) {
+            e.afterSecondClick();
         }
         circleMarker.addTo(this.lMap);
         this.circleMarkers.push(circleMarker);
