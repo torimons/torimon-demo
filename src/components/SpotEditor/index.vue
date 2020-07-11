@@ -75,14 +75,6 @@
         ></delete-confirmation-dialog>
       </v-dialog>
       </v-container>
-      <detail-map-manage-list
-        :detailMaps="spot.getDetailMaps()"
-        @add="addDetailMap"
-        @edit="editDetailMap"
-        @dup="duplicateDetailMap"
-        @del="deleteDetailMap"
-      >
-      </detail-map-manage-list>
     </v-card>
   </div>
 </template>

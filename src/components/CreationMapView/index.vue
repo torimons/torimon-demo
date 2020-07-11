@@ -67,6 +67,8 @@
                     :items="items"
                     @setMapToEdit="setMapToEdit"
                     @setSpotToEdit="setSpotToEdit"
+                    @dup="duplicateDetailMap"
+                    @del="deleteDetailMap"
                   />
                 </v-card>
 
@@ -92,8 +94,6 @@
                     @delete="deleteFocusedSpot"
                     @add="addDetailMap"
                     @edit="editDetailMap"
-                    @dup="duplicateDetailMap"
-                    @del="deleteDetailMap"
                   />
                 </v-card>
               </v-navigation-drawer>

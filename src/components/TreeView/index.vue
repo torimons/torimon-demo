@@ -9,39 +9,60 @@
             dense
         >
             <template v-slot:label="{ item }">
-                <div
-                    @click="item.type === 'Map'
-                    ? sendMapToEdit(item.id) 
-                    : sendSpotToEdit(item.id)"
-                    @mouseover="item.hovered = true"
-                    @mouseleave="item.hovered = false"
-                >
-                    {{ item.name }}
-                </div>
+                <v-hover v-slot:default="{ hover }">
+                    <div
+                        @click="item.type === 'Map'
+                        ? sendMapToEdit(item.id) 
+                        : sendSpotToEdit(item.id)"
+                    >
+                        <span>{{ item.name }}</span>
+                        <template v-if="item.type === 'Map' && item.id !== 0">
+                            <v-btn icon
+                                v-if="hover"
+                                @click.stop="confirmMapDeletion(item)"
+                            >
+                                <v-icon>delete</v-icon>
+                            </v-btn>
+                            <v-btn icon
+                                v-if="hover"
+                                @click.stop="sendMapToDuplicate(item.id)"
+                            >
+                                <v-icon>file_copy</v-icon>
+                            </v-btn>
+                        </template>
+                    </div>
+                </v-hover>
             </template>
             <template v-slot:prepend="{ item }">
                 <v-icon v-if="item.type==='Map'">
                     map
                 </v-icon>
                 <v-icon v-if="item.type==='Spot'">
-                    place
+                    {{ item.iconName }}
                 </v-icon>
             </template>
-            <template v-slot:append="{ item }">
-                <template v-if="item.hovered">
-                    <v-btn icon>
-                        <v-icon>file_copy</v-icon>
-                    </v-btn>
-                    <v-btn icon>
-                        <v-icon>delete</v-icon>
-                    </v-btn>
-                </template>
-            </template>
         </v-treeview>
+        <v-container id="delete-confirmation-dialog-container">
+            <v-dialog v-model="dialog" width="500">
+                <delete-confirmation-dialog
+                    class="delete-confirmation"
+                    :name="selectedMapName"
+                    @del="deleteMap"
+                    @cancel="cancelMapDeletion"
+                ></delete-confirmation-dialog>
+            </v-dialog>
+        </v-container>
     </div>
 </template>
 
 <script lang="ts" src="./index.ts"/>
 
 <style scoped>
+.appendRight {
+    float: right;
+}
+#delete-confirmation-dialog-container {
+  position: absolute;
+  z-index: 1100;
+}
 </style>

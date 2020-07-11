@@ -146,6 +146,7 @@ export default class CreationMapView extends Vue {
             id: spot.getId(),
             name: spot.getName(),
             type: 'Spot',
+            iconName: spot.getIconName(),
             children: spot.getDetailMaps().map((m: Map) => this.mapToJson(m)),
             hovered: false,
         };
@@ -456,11 +457,19 @@ export default class CreationMapView extends Vue {
      * 引数のマップを複製してスポットに登録する。
      * @param map 複製対象のマップ
      */
-    private duplicateDetailMap(map: Map) {
+    private duplicateDetailMap(mapId: number) {
+        const targetMap: Map | null = this.map.findMap(mapId);
+        if (targetMap === null) {
+            throw new Error('The selected Map does not exist.');
+        }
         const nextMapId = ++this.currentId;
-        const dupDetailMap = cloneDeep(map);
+        const dupDetailMap = cloneDeep(targetMap);
         this.setNewMapId(dupDetailMap);
-        this.focusedSpot!.addDetailMaps([dupDetailMap]);
+        const parentSpot: Spot | undefined = targetMap.getParentSpot();
+        if (parentSpot === undefined) {
+            throw new Error('Parent spot does not exist on selected Map');
+        }
+        parentSpot.addDetailMaps([dupDetailMap]);
     }
 
     /**
@@ -484,11 +493,16 @@ export default class CreationMapView extends Vue {
     }
 
     /**
-     * SpotEditorから詳細マップ削除イベントが発火されると呼び出され、
+     * TreeViewから詳細マップ削除イベントが発火されると呼び出され、
      * 指定されたidを持つ詳細マップをスポットから削除する
      * @param id 削除対象マップのid
      */
     private deleteDetailMap(id: number) {
-        this.focusedSpot!.deleteDetailMap(id);
+        const targetMap: Map | null = this.map.findMap(id);
+        const parentSpot: Spot | undefined = targetMap?.getParentSpot();
+        if (parentSpot === undefined) {
+            throw new Error('The selected Map does not have parent spot.');
+        }
+        parentSpot.deleteDetailMap(id);
     }
 }
