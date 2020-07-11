@@ -8,19 +8,24 @@
             item-key="name"
             dense
         >
-            <template v-slot:prepend="{ item }">
+            <template v-slot:label="{ item }"
+            >
                 <div
                     @click="item.type === 'Map'
                     ? sendMapToEdit(item.id) 
                     : sendSpotToEdit(item.id)"
                 >
-                    <v-btn icon v-if="item.type==='Map'">
-                        <v-icon>map</v-icon>
-                    </v-btn>
-                    <v-btn icon v-if="item.type==='Spot'">
-                        <v-icon>place</v-icon>
-                    </v-btn>
+                    {{ item.name }}
                 </div>
+            </template>
+            <template v-slot:prepend="{ item }"
+            >
+                <v-btn icon v-if="item.type==='Map'">
+                    <v-icon>map</v-icon>
+                </v-btn>
+                <v-btn icon v-if="item.type==='Spot'">
+                    <v-icon>place</v-icon>
+                </v-btn>
             </template>
         </v-treeview>
     </div>
