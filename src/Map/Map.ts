@@ -5,6 +5,7 @@ export default class Map {
 
     private parentSpot: Spot | undefined = undefined;
     private spots: Spot[] = [];
+    private _id: string | undefined;
 
     constructor(
         private id: number,
@@ -13,6 +14,13 @@ export default class Map {
         private floorName?: string,
         private description?: string,
     ) {
+    }
+
+    /**
+     * mongodbから与えられた固有idを返す
+     */
+    public getDBId(): string | undefined {
+        return this._id;
     }
 
     /**
@@ -207,6 +215,14 @@ export default class Map {
      */
     public setDescription(newDescription: string) {
         this.description = newDescription;
+    }
+
+    /**
+     * monogodbから与えられた固有idをセットする
+     * (コンストラクタで渡すと変更箇所が多く影響範囲が多いのでとりあえず)
+     */
+    public setDBId(_id: string) {
+        this._id = _id;
     }
 
     /**
