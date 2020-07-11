@@ -374,7 +374,7 @@ export default class CreationMapView extends Vue {
 
         const newDetailMap: Map = new Map(
             nextMapId,
-            'testDetailMap' + String(nextMapId),
+            '詳細マップ' + String(nextMapId),
             mapBounds,
             undefined,
         );
