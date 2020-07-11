@@ -133,7 +133,6 @@ export default class CreationMapView extends Vue {
             name: map.getName(),
             type: 'Map',
             children: map.getSpots().map((s: Spot) => this.spotToJson(s)),
-            hovered: false,
         };
     }
 
@@ -148,7 +147,6 @@ export default class CreationMapView extends Vue {
             type: 'Spot',
             iconName: spot.getIconName(),
             children: spot.getDetailMaps().map((m: Map) => this.mapToJson(m)),
-            hovered: false,
         };
     }
 

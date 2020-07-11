@@ -9,11 +9,37 @@ import Map from '@/Map/Map';
 })
 export default class TreeView extends Vue {
     @Prop()
-    private items: any;
+    private items!: any[];
     private tree = [];
     private dialog: boolean = false;
     private selectedMapId!: number;
     private selectedMapName: string = '';
+
+    private getItemFromKey(id: number, searchTarget: any[]): any {
+        for (const item of searchTarget) {
+            if (item.id === id) {
+                return item;
+            } else if (item.children !== undefined) {
+                const found = this.getItemFromKey(id, item.children);
+                if (found !== null) {
+                    return found;
+                }
+            }
+        }
+        return null;
+    }
+
+    private nodeClick(active: any[]) {
+        if (active.length === 0) {
+            return;
+        }
+        const item = this.getItemFromKey(active[0], this.items);
+        if (item.type === 'Map') {
+            this.sendMapToEdit(item.id);
+        } else if (item.type === 'Spot') {
+            this.sendSpotToEdit(item.id);
+        }
+    }
 
     @Emit('setMapToEdit')
     private sendMapToEdit(id: number) {

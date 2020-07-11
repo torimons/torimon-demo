@@ -5,17 +5,16 @@
             open-all
             v-model="tree"
             :items="items"
-            item-key="name"
+            item-key="id"
             dense
+            activatable
+            @update:active="nodeClick"
         >
             <template v-slot:label="{ item }">
                 <v-hover v-slot:default="{ hover }">
-                    <div
-                        @click="item.type === 'Map'
-                        ? sendMapToEdit(item.id) 
-                        : sendSpotToEdit(item.id)"
-                    >
-                        <span>{{ item.name }}</span>
+                    <div>
+                        <span v-if="item.name.length < 10">{{ item.name }}</span>
+                        <span v-else>{{ item.name.substring(0, 10) }}...</span>
                         <template v-if="item.type === 'Map' && item.id !== 0">
                             <v-btn icon
                                 v-if="hover"
