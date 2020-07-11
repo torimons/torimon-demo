@@ -19,6 +19,16 @@
         Close
       </v-btn>
       <v-spacer></v-spacer>
+      <router-link :to="{ name: 'CreationMapView', params: { from: 'edit' }}" >
+        <v-btn
+          class="openMap"
+          text
+          @click="openMap"
+        >
+          Edit Map
+        </v-btn>
+      </router-link>
+      <v-spacer></v-spacer>
       <router-link to="/MainView">
         <v-btn
           class="openMap"

@@ -83,6 +83,30 @@ export default class Map {
     }
 
     /**
+     * @return 全ての子孫スポットを取得
+     */
+    public getAllDescendantSpots(): Spot[] {
+        const spots: Spot[] = this.getSpots();
+        return spots.concat(this.getSpots().map((spot) => {
+            return spot.getDetailMaps()
+                .map((map) => {
+                    return map.getAllDescendantSpots();
+                });
+        }).flat(2));
+    }
+
+    /**
+     * @return 全ての子孫マップを取得
+     */
+    public getAllDescendantMaps(): Map[] {
+        const maps: Map[] = [this];
+        return maps.concat(this.getSpots().map((spot) => {
+            return spot.getDetailMaps()
+                .map((map) => map.getAllDescendantMaps());
+        }).flat(2));
+    }
+
+    /**
      * 親spotをセットし,セットしたspotのdetailMapに自身を追加する.
      * @param parentSpot セットする親スポット
      */
