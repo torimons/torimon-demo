@@ -13,6 +13,7 @@ import { cloneDeep } from 'lodash';
 import MapInformationDialog from '@/components/MapInformationDialog/index.vue';
 import { getBounds, isPointInPolygon } from 'geolib';
 import TreeView from '@/components/TreeView/index.vue';
+import SpotMarker from '@/components/MapView/Marker/SpotMarker';
 
 @Component({
     components: {
@@ -439,6 +440,13 @@ export default class CreationMapView extends Vue {
         }
         this.editDetailMap(parentMap);
         this.focusedSpot = spotToEdit;
+    }
+
+    @Watch('focusedSpot')
+    private updateMarker() {
+        const targetMarker: SpotMarker | undefined = this.spotMarkers
+            .find((spotMarker: SpotMarker) => spotMarker.getSpot().getId() === this.focusedSpot?.getId());
+        targetMarker?.setSelected(true);
     }
 
     /**
