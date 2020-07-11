@@ -22,6 +22,7 @@ export default class MapSearch extends Vue {
     private search!: Search<Map>;
     private backgroundColor: 'transparent' | 'white' = 'transparent';
     private api: API = new API();
+    private loading: boolean = true;
 
     // デモ用にコメントアウト
     public async mounted() {
@@ -32,6 +33,7 @@ export default class MapSearch extends Vue {
                 this.getDataSucceeded = true;
             });
         this.search = new Search<Map>(this.targetMaps);
+        this.loading = false;
         // 最初は全結果を表示
         this.mapSearchResults = this.targetMaps;
     }
