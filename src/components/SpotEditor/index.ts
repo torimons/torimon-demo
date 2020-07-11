@@ -17,7 +17,7 @@ export default class SpotEditor extends Vue {
     public isVisible!: boolean;
     @Prop()
     public whileShapeEditing!: boolean;
-    private shapeAddButtonName: 'スポットの範囲' | 'キャンセル' = 'スポットの範囲';
+    private shapeAddButtonName: '範囲選択' | 'キャンセル' = '範囲選択';
     private attachment: [{name: string, url: string}] = [{name: '', url: ''}];
     private dialog: boolean = false;
 
@@ -69,7 +69,7 @@ export default class SpotEditor extends Vue {
         if (this.whileShapeEditing) {
             this.shapeAddButtonName = 'キャンセル';
         } else {
-            this.shapeAddButtonName = 'スポットの範囲';
+            this.shapeAddButtonName = '範囲選択';
         }
     }
 
