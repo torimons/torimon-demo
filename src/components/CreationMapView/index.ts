@@ -12,12 +12,14 @@ import ShapeEditor from './ShapeEditor';
 import { cloneDeep } from 'lodash';
 import MapInformationDialog from '@/components/MapInformationDialog/index.vue';
 import { getBounds, isPointInPolygon } from 'geolib';
+import TreeView from '@/components/TreeView/index.vue';
 
 @Component({
     components: {
         EditorToolBar,
         SpotEditor,
         MapInformationDialog,
+        TreeView,
     },
 })
 export default class CreationMapView extends Vue {
@@ -49,7 +51,6 @@ export default class CreationMapView extends Vue {
 
     // 作成中のマップtreeviewで利用
     private items: any = [];
-    private tree = [];
     private mapFileTreeDialog: boolean = false;
     private drawer: boolean = false;
 
