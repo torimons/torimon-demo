@@ -8,34 +8,35 @@
     <v-container id="map-view-container">
       <MapView style="height: 40vh"/>
     </v-container>
-    <v-divider></v-divider>
-    <v-spacer></v-spacer>
     <v-card-actions>
       <v-btn
-        class="close"
         text
+        fab
         @click="close"
       >
-        Close
+        <v-icon>close</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
       <router-link :to="{ name: 'CreationMapView', params: { from: 'edit' }}" >
         <v-btn
-          class="openMap"
-          text
+          class="openMap mr-3"
+          color="#3F8373"
+          outlined
+          rounded
           @click="openMap"
         >
-          Edit Map
+          edit
+          <v-icon>edit</v-icon>
         </v-btn>
       </router-link>
-      <v-spacer></v-spacer>
       <router-link to="/MainView">
         <v-btn
           class="openMap"
-          text
+          color="#3F8373"
+          dark
           @click="openMap"
         >
-          Open Map
+          Open
         </v-btn>
       </router-link>
     </v-card-actions>
@@ -49,5 +50,8 @@
 #map-view-container {
   position: relative;
   height: 100%;
+}
+a {
+  text-decoration: none;
 }
 </style>
