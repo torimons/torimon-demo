@@ -78,18 +78,20 @@ export default class CreationMapView extends Vue {
         this.shapeEditor = new ShapeEditor(this.lMap);
         mapViewMutations.setIsMapCreated(true);
         /* 既存のマップを元に作成を始める場合 */
-        if (this.$route.params.from === 'edit') {
-            this.rootMap = mapViewGetters.rootMap;
-            this.resetAllIds();
-            this.rootMap.getSpots().forEach((spot) => {
-                this.displaySpotMarker(spot);
-            });
-            this.shapeEditor.displayPolygons(this.rootMap.getSpots());
-            this.mapToEdit = this.rootMap;
-            this.shapeEditor.drawRectangle(this.rootMap.getBounds());
-            this.currentId = this.getNextId();
-            this.initMapView();
-            return;
+        if (this.$route !== undefined) { // テスト時のエラー回避
+            if (this.$route.params.from === 'edit') {
+                this.rootMap = mapViewGetters.rootMap;
+                this.resetAllIds();
+                this.rootMap.getSpots().forEach((spot) => {
+                    this.displaySpotMarker(spot);
+                });
+                this.shapeEditor.displayPolygons(this.rootMap.getSpots());
+                this.mapToEdit = this.rootMap;
+                this.shapeEditor.drawRectangle(this.rootMap.getBounds());
+                this.currentId = this.getNextId();
+                this.initMapView();
+                return;
+            }
         }
         const selectMapArea = (e: any) => {
             if (!('latlng' in e)) {
