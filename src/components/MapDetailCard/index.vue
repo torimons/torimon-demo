@@ -9,6 +9,31 @@
       <MapView style="height: 40vh"/>
     </v-container>
     <v-card-actions>
+      <router-link to="/MainView">
+        <v-btn
+          class="openMap ml-2"
+          color="#3F8373"
+          dark
+          rounded
+          @click="openMap"
+        >
+          <v-icon left>mdi-arrow-expand</v-icon>
+          Open
+        </v-btn>
+      </router-link>
+      <router-link :to="{ name: 'CreationMapView', params: { from: 'edit' }}" >
+        <v-btn
+          class="openMap ml-3"
+          color="#3F8373"
+          outlined
+          rounded
+          @click="openMap"
+        >
+          <v-icon left>edit</v-icon>
+          edit
+        </v-btn>
+      </router-link>
+      <v-spacer></v-spacer>
       <v-btn
         text
         fab
@@ -16,29 +41,6 @@
       >
         <v-icon>close</v-icon>
       </v-btn>
-      <v-spacer></v-spacer>
-      <router-link :to="{ name: 'CreationMapView', params: { from: 'edit' }}" >
-        <v-btn
-          class="openMap mr-3"
-          color="#3F8373"
-          outlined
-          rounded
-          @click="openMap"
-        >
-          edit
-          <v-icon>edit</v-icon>
-        </v-btn>
-      </router-link>
-      <router-link to="/MainView">
-        <v-btn
-          class="openMap"
-          color="#3F8373"
-          dark
-          @click="openMap"
-        >
-          Open
-        </v-btn>
-      </router-link>
     </v-card-actions>
   </v-card>
 </template>
