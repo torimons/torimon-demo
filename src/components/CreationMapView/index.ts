@@ -32,11 +32,12 @@ export default class CreationMapView extends Vue {
     // 次にクリックしたときに設置されるスポットタイプ
     private spotTypeToAddNext: SpotType = 'default';
     private mapAreaSelectionInfoIsVisible: boolean = true;
+    private messageWhileShapeEditing: 'クリックしてスポットの範囲を描画' | '始点をクリックして範囲選択を終了する' = 'クリックしてスポットの範囲を描画';
     private outOfMapRangeWarningIsVisible: boolean = false;
     private shapeEditButtonIsVisible: boolean = false;
     private spotButtonInEditorToolBarIsVisible: boolean = false;
     private flyToMapBoundsButtonIsVisible: boolean = false;
-    private disabledShapeEditButtonInSpotEditor: boolean = false;
+    private whileShapeEditing: boolean = false;
     private spotEditorIsVisible: boolean = false;
     private focusedSpot: Spot | null = null;
     private spotMarkers: SpotMarker[] = [];
@@ -298,12 +299,17 @@ export default class CreationMapView extends Vue {
      * マップクリック時に実行される関数を，形状描画メソッドにする
      */
     private setAddPointMethodOnMapClick(): void {
-        this.disabledShapeEditButtonInSpotEditor = true;
+        this.whileShapeEditing = true;
         if (this.leafletContainer !== null) {
             this.leafletContainer.style.cursor = 'crosshair';
         }
         this.shapeEditButtonIsVisible = true;
-        this.onMapClick = (e: { latlng: L.LatLng, afterAddEndPoint: (shape: Shape) => void }) => {
+        this.onMapClick = (e: {
+            latlng: L.LatLng, afterSecondClick: () => void, afterAddEndPoint: (shape: Shape) => void,
+        }) => {
+            e.afterSecondClick = () => {
+                this.messageWhileShapeEditing = '始点をクリックして範囲選択を終了する';
+            };
             /**
              * ラインの終点が描画された後に呼び出される関数
              * ポリゴンの描画や後処理を行う
@@ -327,19 +333,20 @@ export default class CreationMapView extends Vue {
                  */
                 this.onMapClick = (event: any) => undefined;
                 setTimeout(this.setDefaultMethodOnMapClick, 500);
-                this.disabledShapeEditButtonInSpotEditor = false;
+                this.whileShapeEditing = false;
+                this.messageWhileShapeEditing = 'クリックしてスポットの範囲を描画';
             };
             this.shapeEditor.addPoint(e);
         };
     }
 
     /**
-     * 編集ツールバーコンボーケントでモードが切り替わった際に実行される
+     * 編集ツールバーコンボーネントでモードが切り替わった際に実行される
      */
-    private onSwitchModeOfToolBar() {
+    private cancelShapeEditMode() {
         this.shapeEditButtonIsVisible = false;
         this.shapeEditor.removeShapeEditLine();
-        this.disabledShapeEditButtonInSpotEditor = false;
+        this.whileShapeEditing = false;
     }
 
     /**
@@ -542,3 +549,5 @@ export default class CreationMapView extends Vue {
         }
     }
 }
+
+

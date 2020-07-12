@@ -34,11 +34,10 @@
           class="ma-1"
           color="#3fa590"
           outlined
-          :disabled="disabledShapeEditButton"
-          @click="$emit('clickAddShapeButton')"
+          @click="onClickShapeAddButton()"
         >
-            <span>形状</span>
-            <v-icon right>{{ shapeAddButtonIcon() }}</v-icon>
+          <span>{{ shapeAddButtonName }}</span>
+          <v-icon right v-show="!whileShapeEditing">{{ shapeAddButtonIcon() }}</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
         <v-btn
