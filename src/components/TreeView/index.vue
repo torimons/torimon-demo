@@ -1,6 +1,7 @@
 <template>
     <div id="tree-view">
         <v-treeview
+            v-if="isExpanded"
             hoverable
             open-all
             v-model="tree"

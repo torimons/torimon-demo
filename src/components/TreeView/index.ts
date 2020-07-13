@@ -1,4 +1,4 @@
-import { Component, Emit, Vue, Prop } from 'vue-property-decorator';
+import { Component, Emit, Vue, Prop, Watch } from 'vue-property-decorator';
 import DeleteConfirmationDialog from '@/components/DeleteConfirmationDialog/index.vue';
 import Map from '@/Map/Map';
 
@@ -14,6 +14,15 @@ export default class TreeView extends Vue {
     private dialog: boolean = false;
     private selectedMapId!: number;
     private selectedMapName: string = '';
+    private isExpanded: boolean = true;
+
+    @Watch('items', {deep: true})
+    private expandMapTreeView(): void {
+        this.isExpanded = false;
+        this.$nextTick(() => {
+            this.isExpanded = true;
+        });
+    }
 
     private getItemFromKey(id: number, searchTarget: any[]): any {
         for (const item of searchTarget) {
