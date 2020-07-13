@@ -16,9 +16,10 @@ export default class SpotEditor extends Vue {
     @Prop()
     public isVisible!: boolean;
     @Prop()
-    public disabledShapeEditButton!: boolean;
-    public attachment: [{name: string, url: string}] = [{name: '', url: ''}];
-    public dialog: boolean = false;
+    public whileShapeEditing!: boolean;
+    private shapeAddButtonName: '範囲選択' | 'キャンセル' = '範囲選択';
+    private attachment: [{name: string, url: string}] = [{name: '', url: ''}];
+    private dialog: boolean = false;
 
     /**
      * DetailMapManageListから詳細マップ追加のイベントが発火されると呼び出され、
@@ -60,6 +61,23 @@ export default class SpotEditor extends Vue {
             return 'add_circle';
         } else {
             return 'edit';
+        }
+    }
+
+    @Watch('whileShapeEditing')
+    private switchShapeAddButtonName(): void {
+        if (this.whileShapeEditing) {
+            this.shapeAddButtonName = 'キャンセル';
+        } else {
+            this.shapeAddButtonName = '範囲選択';
+        }
+    }
+
+    private onClickShapeAddButton(): void {
+        if (this.whileShapeEditing) {
+            this.$emit('clickAddShapeCancelButton');
+        } else {
+            this.$emit('clickAddShapeButton');
         }
     }
 

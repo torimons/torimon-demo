@@ -30,6 +30,15 @@
                   作成するマップの範囲を選択してください
                 </v-alert>
                 <v-alert
+                  type="info"
+                  border="top"
+                  colored-border
+                  color="#CF944E"
+                  v-show="whileShapeEditing"
+                >
+                  {{ messageWhileShapeEditing }}
+                </v-alert>
+                <v-alert
                   type="warning"
                   border="top"
                   colored-border
@@ -51,58 +60,8 @@
                 pointer-events="none"
                 width="350px"
               >
-                <v-card
-                  flat
-                >
-                  <v-card
-                    flat
-                    color="#cbcdd1"
-                  >
-                  <v-card-text
-                  >
-                    Tree View
-                  </v-card-text>
-                  </v-card>
-                  <v-treeview
-                    v-if="isOpenTreeView"
-                    hoverable
-                    open-all
-                    v-model="tree"
-                    :items="items"
-                    item-key="name"
-                    dense
-                  >
-                  <template
-                    v-slot:prepend="{ item }"
-                  >
-                    <div
-                      @click="item.type === 'Map'
-                        ? setMapToEdit(item.id) 
-                        : setSpotToEdit(item.id)"
-                    >
-                    <v-btn
-                      icon
-                      v-if="item.type==='Map'"
-                    >
-                      <v-icon>
-                        map
-                      </v-icon>
-                    </v-btn>
-                    <v-btn
-                      icon
-                      v-if="item.type==='Spot'"
-                    >
-                      <v-icon left
-                      >
-                        place
-                      </v-icon>
-                    </v-btn>
-                    </div>
-                  </template>
-                  </v-treeview>
-                </v-card>
 
-                <v-card 
+                <v-card
                   flat
                   v-if="focusedSpot !== null"
                 >
@@ -118,12 +77,31 @@
                   <SpotEditor
                     :isVisible="focusedSpot !== null"
                     @spotInput="updateFocusedMarkerName"
-                    :disabledShapeEditButton="disabledShapeEditButtonInSpotEditor"
+                    :whileShapeEditing="whileShapeEditing"
                     :spot="focusedSpot"
                     @clickAddShapeButton="setAddPointMethodOnMapClick"
+                    @clickAddShapeCancelButton="cancelShapeEditMode"
                     @delete="deleteFocusedSpot"
                     @add="addDetailMap"
                     @edit="editDetailMap"
+                  />
+                </v-card>
+                <v-card
+                  flat
+                >
+                  <v-card
+                    flat
+                    color="#cbcdd1"
+                  >
+                  <v-card-text
+                  >
+                    Tree View
+                  </v-card-text>
+                  </v-card>
+                  <TreeView
+                    :items="items"
+                    @setMapToEdit="setMapToEdit"
+                    @setSpotToEdit="setSpotToEdit"
                     @dup="duplicateDetailMap"
                     @del="deleteDetailMap"
                   />
@@ -167,7 +145,15 @@
                   icon
                   @click="dialog = true; setMapToStore()"
                 >
-                  <v-icon>cloud_upload</v-icon>
+                <v-tooltip right>
+                  <template v-slot:activator="{ on, attrs }">
+                  <v-icon
+                    v-bind="attrs"
+                    v-on="on"
+                  >cloud_upload</v-icon>
+                </template>
+                <span>アップロード</span>
+              </v-tooltip>
                 </v-btn>
               </v-app-bar>
             </v-col>
@@ -182,7 +168,7 @@
                   @clickZoomOut="zoomOut"
                   @clickSelect="setDefaultMethodOnMapClick"
                   @clickSpot="setAddSpotMethodOnMapClick"
-                  @switchMode="onSwitchModeOfToolBar"
+                  @switchMode="cancelShapeEditMode"
                   :spotButtonIsVisible="spotButtonInEditorToolBarIsVisible"
                   :shapeEditButtonIsVisible="shapeEditButtonIsVisible"
                 />

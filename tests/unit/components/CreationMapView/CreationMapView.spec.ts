@@ -10,6 +10,7 @@ import SpotMarker from '@/components/MapView/Marker/SpotMarker';
 import L, { Point } from 'leaflet';
 import SpotEditor from '@/components/SpotEditor';
 import Vuetify from 'vuetify';
+import TreeView from '@/components/TreeView';
 
 
 describe('components/CreationMapView', () => {
@@ -48,7 +49,7 @@ describe('components/CreationMapView', () => {
     });
 
     it('addSpotにより新しいスポットがmapに追加される.マップの範囲外の場合追加されない', () => {
-        const map: Map = wrapper.vm.map;
+        const map: Map = wrapper.vm.rootMap;
         map.setBounds({ topL: {lat: 20, lng: 0}, botR: {lat: 0, lng: 20} });
         expect(map.getSpots().length).toBe(0);
         const eventOnOutOfBounds = { latlng: { lat: 50, lng: 50 } };
@@ -61,7 +62,7 @@ describe('components/CreationMapView', () => {
     });
 
     it('switchFocusedMarkerによりフォーカスされるスポットとマーカーが切り替わる', () => {
-        const map: Map = wrapper.vm.map;
+        const map: Map = wrapper.vm.rootMap;
         // 切り替え前のスポット用意
         const oldFocusedSpot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
         map.addSpot(oldFocusedSpot);
@@ -104,7 +105,7 @@ describe('components/CreationMapView', () => {
     });
 
     it('deleteFocusedMarkerによりfocusedSpotがmapの子スポットから消え，マーカーも地図上から消える', () => {
-        const map: Map = wrapper.vm.map;
+        const map: Map = wrapper.vm.rootMap;
         const testSpot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
         map.addSpot(testSpot);
         const testMarker = new SpotMarker(testSpot);
@@ -170,14 +171,17 @@ describe('components/CreationMapView', () => {
             topL: {lat: 0, lng: 0},
             botR: {lat: 0, lng: 0},
         };
-        const testDetailMap = new Map(0, 'testMap', testBounds);
+        const rootMap = new Map(0, 'testMap', testBounds);
+        const testDetailMap = new Map(1, 'testMap', testBounds);
         const testSpot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
 
+        wrapper.setData({map: rootMap});
         wrapper.setData({focusedSpot: testSpot});
-        const focusedSpot: Spot = wrapper.vm.focusedSpot;
-        expect(focusedSpot.getDetailMaps().length).toBe(0);
-        wrapper.find(SpotEditor).vm.$emit('dup', testDetailMap);
-        expect(focusedSpot.getDetailMaps().length).toBe(1);
+        rootMap.addSpot(testSpot);
+        testSpot.addDetailMaps([testDetailMap]);
+        expect(testSpot.getDetailMaps().length).toBe(1);
+        wrapper.find(TreeView).vm.$emit('dup', testDetailMap.getId());
+        expect(testSpot.getDetailMaps().length).toBe(2);
     });
 
     it('deleteDetailMapで詳細マップを削除', () => {
@@ -185,15 +189,16 @@ describe('components/CreationMapView', () => {
             topL: {lat: 0, lng: 0},
             botR: {lat: 0, lng: 0},
         };
-        const testDetailMap = new Map(0, 'testMap', testBounds);
+        const rootMap = new Map(0, 'testMap', testBounds);
+        const testDetailMap = new Map(1, 'testMap', testBounds);
         const testSpot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
         wrapper.setData({focusedSpot: testSpot});
-
-        const focusedSpot: Spot = wrapper.vm.focusedSpot;
-        focusedSpot.addDetailMaps([testDetailMap]);
-        expect(focusedSpot.getDetailMaps().length).toBe(1);
-        wrapper.find(SpotEditor).vm.$emit('del', testDetailMap.getId());
-        expect(focusedSpot.getDetailMaps().length).toBe(0);
+        wrapper.setData({map: rootMap});
+        testSpot.addDetailMaps([testDetailMap]);
+        rootMap.addSpot(testSpot);
+        expect(testSpot.getDetailMaps().length).toBe(1);
+        wrapper.find(TreeView).vm.$emit('del', testDetailMap.getId());
+        expect(testSpot.getDetailMaps().length).toBe(0);
     });
 
 });
