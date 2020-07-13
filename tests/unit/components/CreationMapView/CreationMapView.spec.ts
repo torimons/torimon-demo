@@ -49,7 +49,7 @@ describe('components/CreationMapView', () => {
     });
 
     it('addSpotにより新しいスポットがmapに追加される.マップの範囲外の場合追加されない', () => {
-        const map: Map = wrapper.vm.map;
+        const map: Map = wrapper.vm.rootMap;
         map.setBounds({ topL: {lat: 20, lng: 0}, botR: {lat: 0, lng: 20} });
         expect(map.getSpots().length).toBe(0);
         const eventOnOutOfBounds = { latlng: { lat: 50, lng: 50 } };
@@ -62,7 +62,7 @@ describe('components/CreationMapView', () => {
     });
 
     it('switchFocusedMarkerによりフォーカスされるスポットとマーカーが切り替わる', () => {
-        const map: Map = wrapper.vm.map;
+        const map: Map = wrapper.vm.rootMap;
         // 切り替え前のスポット用意
         const oldFocusedSpot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
         map.addSpot(oldFocusedSpot);
@@ -105,7 +105,7 @@ describe('components/CreationMapView', () => {
     });
 
     it('deleteFocusedMarkerによりfocusedSpotがmapの子スポットから消え，マーカーも地図上から消える', () => {
-        const map: Map = wrapper.vm.map;
+        const map: Map = wrapper.vm.rootMap;
         const testSpot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
         map.addSpot(testSpot);
         const testMarker = new SpotMarker(testSpot);

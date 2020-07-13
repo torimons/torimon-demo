@@ -4,7 +4,7 @@
       <v-row>
         <v-col
           v-for="mapSearchResult in mapSearchResults"
-          :key="mapSearchResult.getId()"
+          :key="mapSearchResult.getDBId()"
           cols="12"
           sm="6"
           md="4"

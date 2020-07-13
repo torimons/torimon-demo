@@ -16,8 +16,8 @@
                     outlined
                     disabled
                 >
+                    <v-icon left>call_split</v-icon>
                     <span>経路</span>
-                    <v-icon right>call_split</v-icon>
                 </v-btn>
                 <v-btn
                     class="ma-1"
@@ -25,8 +25,8 @@
                     outlined
                     disabled
                 >
+                    <v-icon left>info</v-icon>
                     <span>詳細</span>
-                    <v-icon right>info</v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
                 <v-btn
