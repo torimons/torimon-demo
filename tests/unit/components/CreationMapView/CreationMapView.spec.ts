@@ -175,7 +175,7 @@ describe('components/CreationMapView', () => {
         const testDetailMap = new Map(1, 'testMap', testBounds);
         const testSpot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
 
-        wrapper.setData({map: rootMap});
+        wrapper.setData({rootMap});
         wrapper.setData({focusedSpot: testSpot});
         rootMap.addSpot(testSpot);
         testSpot.addDetailMaps([testDetailMap]);
@@ -193,7 +193,7 @@ describe('components/CreationMapView', () => {
         const testDetailMap = new Map(1, 'testMap', testBounds);
         const testSpot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
         wrapper.setData({focusedSpot: testSpot});
-        wrapper.setData({map: rootMap});
+        wrapper.setData({rootMap});
         testSpot.addDetailMaps([testDetailMap]);
         rootMap.addSpot(testSpot);
         expect(testSpot.getDetailMaps().length).toBe(1);
