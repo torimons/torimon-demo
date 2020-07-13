@@ -1,11 +1,30 @@
 <template>
     <div id="tree-view">
+        <v-sheet
+            class="pa-2 lighten-2"
+            color="#3fa590"
+        >
+            <v-text-field
+                v-model="search"
+                label="Search map or spot"
+                flat
+                dark
+                dense
+                solo-inverted
+                clearable
+                hide-details
+                clear-icon="mdi-close-circle-outline"
+            >
+            </v-text-field>
+        </v-sheet>
         <v-treeview
             v-if="isExpanded"
             hoverable
             open-all
             v-model="tree"
             :items="items"
+            :search="search"
+            :filter="filter()"
             item-key="id"
             dense
             activatable

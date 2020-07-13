@@ -67,7 +67,9 @@
                 >
                   <v-card
                     flat
-                    color="#cbcdd1"
+                    tile
+                    dark
+                    color="#3fa590"
                   >
                   <v-card-text
                   >
@@ -89,15 +91,6 @@
                 <v-card
                   flat
                 >
-                  <v-card
-                    flat
-                    color="#cbcdd1"
-                  >
-                  <v-card-text
-                  >
-                    Tree View
-                  </v-card-text>
-                  </v-card>
                   <TreeView
                     :items="items"
                     @setMapToEdit="setMapToEdit"

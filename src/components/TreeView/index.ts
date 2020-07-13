@@ -15,13 +15,25 @@ export default class TreeView extends Vue {
     private selectedMapId!: number;
     private selectedMapName: string = '';
     private isExpanded: boolean = true;
+    private search: string | null = null;
 
+    /**
+     * treeviewのitemsの変更を検知して、treeviewを描画し直す
+     */
     @Watch('items', {deep: true})
     private expandMapTreeView(): void {
         this.isExpanded = false;
         this.$nextTick(() => {
             this.isExpanded = true;
         });
+    }
+
+    /**
+     * treeviewのfilterを行う
+     */
+    private filter() {
+        return (item: string[], search: string, textKey: number) =>
+            item[textKey].indexOf(search) > -1;
     }
 
     private getItemFromKey(id: number, searchTarget: any[]): any {

@@ -52,8 +52,8 @@
       </v-card-actions>
       <v-card-actions>
         <v-btn
-          block
           color="#3fa590"
+          block
           outlined
           :disabled="spot.getShape() === undefined"
           @click="addDetailMap"
