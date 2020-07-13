@@ -36,8 +36,8 @@
           outlined
           @click="onClickShapeAddButton()"
         >
+          <v-icon left v-show="!whileShapeEditing">{{ shapeAddButtonIcon() }}</v-icon>
           <span>{{ shapeAddButtonName }}</span>
-          <v-icon right v-show="!whileShapeEditing">{{ shapeAddButtonIcon() }}</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
         <v-btn
@@ -46,8 +46,8 @@
           outlined
           @click.stop="dialog = true"
         >
+            <v-icon left>delete</v-icon>
             <span>削除</span>
-            <v-icon right>delete</v-icon>
         </v-btn>
       </v-card-actions>
       <v-card-actions>
@@ -58,8 +58,8 @@
           :disabled="spot.getShape() === undefined"
           @click="addDetailMap"
         >
+          <v-icon left>add</v-icon>
           <span>詳細マップ</span>
-          <v-icon right>add</v-icon>
         </v-btn>
       </v-card-actions>
       <v-container id="delete-confirmation-dialog-container">
