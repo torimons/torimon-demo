@@ -72,42 +72,13 @@
                     Tree View
                   </v-card-text>
                   </v-card>
-                  <v-treeview
-                    hoverable
-                    open-all
-                    v-model="tree"
+                  <TreeView
                     :items="items"
-                    item-key="name"
-                    dense
-                  >
-                  <template
-                    v-slot:prepend="{ item }"
-                  >
-                    <div
-                      @click="item.type === 'Map'
-                        ? setMapToEdit(item.id) 
-                        : setSpotToEdit(item.id)"
-                    >
-                    <v-btn
-                      icon
-                      v-if="item.type==='Map'"
-                    >
-                      <v-icon>
-                        map
-                      </v-icon>
-                    </v-btn>
-                    <v-btn
-                      icon
-                      v-if="item.type==='Spot'"
-                    >
-                      <v-icon left
-                      >
-                        place
-                      </v-icon>
-                    </v-btn>
-                    </div>
-                  </template>
-                  </v-treeview>
+                    @setMapToEdit="setMapToEdit"
+                    @setSpotToEdit="setSpotToEdit"
+                    @dup="duplicateDetailMap"
+                    @del="deleteDetailMap"
+                  />
                 </v-card>
 
                 <v-card 
@@ -133,8 +104,6 @@
                     @delete="deleteFocusedSpot"
                     @add="addDetailMap"
                     @edit="editDetailMap"
-                    @dup="duplicateDetailMap"
-                    @del="deleteDetailMap"
                   />
                 </v-card>
               </v-navigation-drawer>

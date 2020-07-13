@@ -12,12 +12,14 @@ import ShapeEditor from './ShapeEditor';
 import { cloneDeep } from 'lodash';
 import MapInformationDialog from '@/components/MapInformationDialog/index.vue';
 import { getBounds, isPointInPolygon } from 'geolib';
+import TreeView from '@/components/TreeView/index.vue';
 
 @Component({
     components: {
         EditorToolBar,
         SpotEditor,
         MapInformationDialog,
+        TreeView,
     },
 })
 export default class CreationMapView extends Vue {
@@ -50,7 +52,6 @@ export default class CreationMapView extends Vue {
 
     // 作成中のマップtreeviewで利用
     private items: any = [];
-    private tree = [];
     private mapFileTreeDialog: boolean = false;
     private drawer: boolean = false;
 
@@ -167,6 +168,7 @@ export default class CreationMapView extends Vue {
             id: spot.getId(),
             name: spot.getName(),
             type: 'Spot',
+            iconName: spot.getIconName(),
             children: spot.getDetailMaps().map((m: Map) => this.mapToJson(m)),
         };
     }
@@ -404,7 +406,7 @@ export default class CreationMapView extends Vue {
 
         const newDetailMap: Map = new Map(
             nextMapId,
-            'testDetailMap' + String(nextMapId),
+            '詳細マップ' + String(nextMapId),
             mapBounds,
             undefined,
         );
@@ -471,6 +473,13 @@ export default class CreationMapView extends Vue {
         this.focusedSpot = spotToEdit;
     }
 
+    @Watch('focusedSpot')
+    private updateMarker() {
+        const targetMarker: SpotMarker | undefined = this.spotMarkers
+            .find((spotMarker: SpotMarker) => spotMarker.getSpot().getId() === this.focusedSpot?.getId());
+        targetMarker?.setSelected(true);
+    }
+
     /**
      * スポットを画面上のマーカーとして登録する
      * @param spot: 画面にマーカーとして登録したいスポット
@@ -487,11 +496,19 @@ export default class CreationMapView extends Vue {
      * 引数のマップを複製してスポットに登録する。
      * @param map 複製対象のマップ
      */
-    private duplicateDetailMap(map: Map) {
+    private duplicateDetailMap(mapId: number) {
+        const targetMap: Map | null = this.rootMap.findMap(mapId);
+        if (targetMap === null) {
+            throw new Error('The selected Map does not exist.');
+        }
         const nextMapId = ++this.currentId;
-        const dupDetailMap = cloneDeep(map);
+        const dupDetailMap = cloneDeep(targetMap);
         this.setNewMapId(dupDetailMap);
-        this.focusedSpot!.addDetailMaps([dupDetailMap]);
+        const parentSpot: Spot | undefined = targetMap.getParentSpot();
+        if (parentSpot === undefined) {
+            throw new Error('Parent spot does not exist on selected Map');
+        }
+        parentSpot.addDetailMaps([dupDetailMap]);
     }
 
     /**
@@ -515,12 +532,17 @@ export default class CreationMapView extends Vue {
     }
 
     /**
-     * SpotEditorから詳細マップ削除イベントが発火されると呼び出され、
+     * TreeViewから詳細マップ削除イベントが発火されると呼び出され、
      * 指定されたidを持つ詳細マップをスポットから削除する
      * @param id 削除対象マップのid
      */
     private deleteDetailMap(id: number) {
-        this.focusedSpot!.deleteDetailMap(id);
+        const targetMap: Map | null = this.rootMap.findMap(id);
+        const parentSpot: Spot | undefined = targetMap?.getParentSpot();
+        if (parentSpot === undefined) {
+            throw new Error('The selected Map does not have parent spot.');
+        }
+        parentSpot.deleteDetailMap(id);
     }
 
     /**
