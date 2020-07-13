@@ -497,7 +497,7 @@ export default class CreationMapView extends Vue {
      * @param map 複製対象のマップ
      */
     private duplicateDetailMap(mapId: number) {
-        const targetMap: Map | null = this.map.findMap(mapId);
+        const targetMap: Map | null = this.rootMap.findMap(mapId);
         if (targetMap === null) {
             throw new Error('The selected Map does not exist.');
         }
@@ -537,7 +537,7 @@ export default class CreationMapView extends Vue {
      * @param id 削除対象マップのid
      */
     private deleteDetailMap(id: number) {
-        const targetMap: Map | null = this.map.findMap(id);
+        const targetMap: Map | null = this.rootMap.findMap(id);
         const parentSpot: Spot | undefined = targetMap?.getParentSpot();
         if (parentSpot === undefined) {
             throw new Error('The selected Map does not have parent spot.');
