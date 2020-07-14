@@ -11,6 +11,7 @@ import L, { Point } from 'leaflet';
 import SpotEditor from '@/components/SpotEditor';
 import Vuetify from 'vuetify';
 import TreeView from '@/components/TreeView';
+import ShapeEditor from '@/components/CreationMapView/ShapeEditor';
 
 
 describe('components/CreationMapView', () => {
@@ -138,7 +139,6 @@ describe('components/CreationMapView', () => {
             topL: {lat: 0, lng: 0},
             botR: {lat: 0, lng: 0},
         };
-        const testDetailMap = new Map(0, 'testMap', testBounds);
         const testSpot = new Spot(
             0,
             'testSpot',
@@ -149,20 +149,23 @@ describe('components/CreationMapView', () => {
                     [
                         [130.21791636943817, 33.59517952985549],
                         [130.21812558174133, 33.59524208725731],
-                        [130.2181041240692, 33.595291239469766],
+                        [130.2181041240692,  33.595291239469766],
                         [130.21862983703613, 33.595465506179146],
-                        [130.2184957265854, 33.59572913976256],
-                        [130.2177768945694, 33.59551018989406],
+                        [130.2184957265854,  33.59572913976256],
+                        [130.2177768945694,  33.59551018989406],
                         [130.21791636943817, 33.59517952985549],
                     ],
                 ],
             },
         );
+        (wrapper.vm.rootMap as Map).addSpot(testSpot);
         wrapper.setData({focusedSpot: testSpot});
+        (wrapper.vm.shapeEditor as ShapeEditor).displayPolygons = jest.fn();
+        (wrapper.vm.shapeEditor as ShapeEditor).addPolygonLine = jest.fn();
 
         const focusedSpot: Spot = wrapper.vm.focusedSpot;
         expect(focusedSpot.getDetailMaps().length).toBe(0);
-        wrapper.find(SpotEditor).vm.$emit('add');
+        wrapper.find(SpotEditor).vm.$emit('clickDetailMapAddButton');
         expect(focusedSpot.getDetailMaps().length).toBe(1);
     });
 
