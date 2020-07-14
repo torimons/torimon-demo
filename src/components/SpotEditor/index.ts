@@ -16,16 +16,32 @@ export default class SpotEditor extends Vue {
     @Prop()
     public isVisible!: boolean;
     @Prop()
-    public disabledShapeEditButton!: boolean;
-    public attachment: [{name: string, url: string}] = [{name: '', url: ''}];
-    public dialog: boolean = false;
+    public whileShapeEditing!: boolean;
+    @Prop()
+    public whileShapeEditingForDetailMapAdding!: boolean;
+    private shapeAddIconIsVisible = true;
+    private detailMapAddButtonName: '詳細マップ' | 'キャンセル' = '詳細マップ';
+    private shapeAddButtonName: '範囲選択' | 'キャンセル' = '範囲選択';
+    private attachment: [{name: string, url: string}] = [{name: '', url: ''}];
+    private dialog: boolean = false;
+
+    public mounted() {
+        this.$watch(
+            () => [this.whileShapeEditing, this.whileShapeEditingForDetailMapAdding],
+            this.switchShapeAddButtonName,
+        );
+    }
 
     /**
      * DetailMapManageListから詳細マップ追加のイベントが発火されると呼び出され、
      * 詳細マップ追加のイベントを発火する。
      */
-    private addDetailMap(): void {
-        this.$emit('add');
+    private onClickDetailMapAddButton(): void {
+        if (this.whileShapeEditingForDetailMapAdding) {
+            this.$emit('clickDetailMapAddCancelButton');
+        } else {
+            this.$emit('clickDetailMapAddButton');
+        }
     }
 
     /**
@@ -63,4 +79,30 @@ export default class SpotEditor extends Vue {
         }
     }
 
+    private switchShapeAddButtonName(): void {
+        if (this.whileShapeEditing && !this.whileShapeEditingForDetailMapAdding) {
+            this.shapeAddButtonName = 'キャンセル';
+            this.shapeAddIconIsVisible = false;
+        } else {
+            this.shapeAddButtonName = '範囲選択';
+            this.shapeAddIconIsVisible = true;
+        }
+    }
+
+    private onClickShapeAddButton(): void {
+        if (this.whileShapeEditing && !this.whileShapeEditingForDetailMapAdding) {
+            this.$emit('clickAddShapeCancelButton');
+        } else {
+            this.$emit('clickAddShapeButton');
+        }
+    }
+
+    @Watch('whileShapeEditingForDetailMapAdding')
+    private switchDetailMapAddButtonName(): void {
+        if (this.whileShapeEditingForDetailMapAdding) {
+            this.detailMapAddButtonName = 'キャンセル';
+        } else {
+            this.detailMapAddButtonName = '詳細マップ';
+        }
+    }
 }

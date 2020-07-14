@@ -39,6 +39,8 @@ export default class MapDataConverter {
             mapJson.floorName,
             mapJson.description,
         );
+        map.setDBId((mapJson as any)._id);
+
         if (mapJson.spots !== undefined) {
             // spotsはこの時点ではまだJson
             const spots: SpotJson[] = mapJson.spots;

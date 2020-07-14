@@ -2,6 +2,9 @@ import { Component, Vue, Emit } from 'vue-property-decorator';
 import { store, mapViewGetters, mapViewMutations } from '@/store';
 import Map from '@/Map/Map.ts';
 import { MapViewGetters } from '@/store/modules/MapViewModule/MapViewGetters';
+import axios from 'axios';
+import MapDataConverter from '@/utils/MapDataConverter';
+import API from '@/utils/API';
 
 @Component
 export default class MapInformationDialog extends Vue {
@@ -16,6 +19,7 @@ export default class MapInformationDialog extends Vue {
     private mapDescriptionRules = [
         (v: string) => !!v || '地図の説明が必要です',
     ];
+    private api: API = new API();
 
     public mounted() {
         // 地図作成から開いた時，フォームに情報を入力しておく
@@ -54,25 +58,17 @@ export default class MapInformationDialog extends Vue {
      * アップロードボタンを押した時の処理
      * サーバーにデータをアップロードする
      */
-    private upload() {
+    private async upload() {
         // 今後作成予定のアップロード関数を使う
-        // とりあえずボタンクリック時に3秒待つ処理を与えている
-        this.loading = !this.loading;
-        const minimumMapId: number = mapViewGetters.demoMaps
-            .map((map: Map) => map.getId())
-            .reduce((accum, newVal) => Math.min(accum, newVal));
+        this.loading = true;
+        // アップロードするマップの準備
         const mapToUpload: Map = mapViewGetters.rootMap;
-        // rootMapのidとその地図内のdetailMapIdが被ると地図利用側でバグるのでとりあえず負の値に設定
-        const newMapId: number = (mapToUpload.getId() === -1) ? minimumMapId - 1 : mapToUpload.getId();
-        mapToUpload.setId(newMapId);
         mapToUpload.setName(this.mapName);
         mapToUpload.setDescription(this.mapDescription);
-        mapViewMutations.addDemoMap(mapToUpload);
-        setTimeout(() => {
-            this.loading = false;
-            // map-selectに遷移
-            this.$router.push('/');
-        }, 1500);
+        await this.api.postMap(mapToUpload);
+        this.loading = false;
+        // map-selectに遷移
+        this.$router.push('/');
     }
 
     private startNewMap() {
