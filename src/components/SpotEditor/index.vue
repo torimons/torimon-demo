@@ -36,8 +36,8 @@
           outlined
           @click="onClickShapeAddButton()"
         >
+          <v-icon left v-show="shapeAddIconIsVisible">{{ shapeAddButtonIcon() }}</v-icon>
           <span>{{ shapeAddButtonName }}</span>
-          <v-icon right v-show="!whileShapeEditing">{{ shapeAddButtonIcon() }}</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
         <v-btn
@@ -46,20 +46,19 @@
           outlined
           @click.stop="dialog = true"
         >
+            <v-icon left>delete</v-icon>
             <span>削除</span>
-            <v-icon right>delete</v-icon>
         </v-btn>
       </v-card-actions>
       <v-card-actions>
         <v-btn
+          color="#3fa590"
           block
-          color="accent"
           outlined
-          :disabled="spot.getShape() === undefined"
-          @click="addDetailMap"
+          @click="onClickDetailMapAddButton()"
         >
-          <span>詳細マップ</span>
-          <v-icon right>add</v-icon>
+          <v-icon left v-show="!whileShapeEditingForDetailMapAdding">add</v-icon>
+          <span>{{ detailMapAddButtonName }}</span>
         </v-btn>
       </v-card-actions>
       <v-container id="delete-confirmation-dialog-container">
@@ -74,14 +73,6 @@
         ></delete-confirmation-dialog>
       </v-dialog>
       </v-container>
-      <detail-map-manage-list
-        :detailMaps="spot.getDetailMaps()"
-        @add="addDetailMap"
-        @edit="editDetailMap"
-        @dup="duplicateDetailMap"
-        @del="deleteDetailMap"
-      >
-      </detail-map-manage-list>
     </v-card>
   </div>
 </template>

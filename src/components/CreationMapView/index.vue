@@ -60,59 +60,8 @@
                 pointer-events="none"
                 width="350px"
               >
-                <v-card
-                  flat
-                >
-                  <v-card
-                    flat
-                    dark
-                    tile
-                    color="primary"
-                  >
-                  <v-card-text
-                  >
-                    Tree View
-                  </v-card-text>
-                  </v-card>
-                  <v-treeview
-                    hoverable
-                    open-all
-                    v-model="tree"
-                    :items="items"
-                    item-key="name"
-                    dense
-                  >
-                  <template
-                    v-slot:prepend="{ item }"
-                  >
-                    <div
-                      @click="item.type === 'Map'
-                        ? setMapToEdit(item.id)
-                        : setSpotToEdit(item.id)"
-                    >
-                    <v-btn
-                      icon
-                      v-if="item.type==='Map'"
-                    >
-                      <v-icon>
-                        map
-                      </v-icon>
-                    </v-btn>
-                    <v-btn
-                      icon
-                      v-if="item.type==='Spot'"
-                    >
-                      <v-icon left
-                      >
-                        place
-                      </v-icon>
-                    </v-btn>
-                    </div>
-                  </template>
-                  </v-treeview>
-                </v-card>
 
-                <v-card 
+                <v-card
                   flat
                   v-if="focusedSpot !== null"
                 >
@@ -130,13 +79,24 @@
                   <SpotEditor
                     :isVisible="focusedSpot !== null"
                     @spotInput="updateFocusedMarkerName"
-                    :whileShapeEditing="whileShapeEditing"
                     :spot="focusedSpot"
-                    @clickAddShapeButton="setAddPointMethodOnMapClick"
+                    :whileShapeEditing="whileShapeEditing"
+                    :whileShapeEditingForDetailMapAdding="whileShapeEditingForDetailMapAdding"
+                    @clickAddShapeButton="onClickShapeAddButton"
                     @clickAddShapeCancelButton="cancelShapeEditMode"
+                    @clickDetailMapAddButton="onClickDetailMapAddButton"
+                    @clickDetailMapAddCancelButton="cancelDetailMapAddMode"
                     @delete="deleteFocusedSpot"
-                    @add="addDetailMap"
                     @edit="editDetailMap"
+                  />
+                </v-card>
+                <v-card
+                  flat
+                >
+                  <TreeView
+                    :items="items"
+                    @setMapToEdit="setMapToEdit"
+                    @setSpotToEdit="setSpotToEdit"
                     @dup="duplicateDetailMap"
                     @del="deleteDetailMap"
                   />
@@ -210,7 +170,7 @@
                   @clickZoomOut="zoomOut"
                   @clickSelect="setDefaultMethodOnMapClick"
                   @clickSpot="setAddSpotMethodOnMapClick"
-                  @switchMode="cancelShapeEditMode"
+                  @switchMode="cancelDetailMapAddMode"
                   :spotButtonIsVisible="spotButtonInEditorToolBarIsVisible"
                   :shapeEditButtonIsVisible="shapeEditButtonIsVisible"
                 />
