@@ -84,7 +84,9 @@
                     @clickAddShapeButton="setAddPointMethodOnMapClick"
                     @clickAddShapeCancelButton="cancelShapeEditMode"
                     @delete="deleteFocusedSpot"
-                    @add="addDetailMap"
+                    @clickDetailMapAddButton="onClickDetailMapAddButton"
+                    @clickDetailMapAddCancelButton="cancelDetailMapAddMode"
+                    :whileShapeEditingForDetailMapAdding="whileShapeEditingForDetailMapAdding"
                     @edit="editDetailMap"
                   />
                 </v-card>
@@ -161,7 +163,7 @@
                   @clickZoomOut="zoomOut"
                   @clickSelect="setDefaultMethodOnMapClick"
                   @clickSpot="setAddSpotMethodOnMapClick"
-                  @switchMode="cancelShapeEditMode"
+                  @switchMode="cancelDetailMapAddMode"
                   :spotButtonIsVisible="spotButtonInEditorToolBarIsVisible"
                   :shapeEditButtonIsVisible="shapeEditButtonIsVisible"
                 />

@@ -36,7 +36,7 @@
           outlined
           @click="onClickShapeAddButton()"
         >
-          <v-icon left v-show="!whileShapeEditing">{{ shapeAddButtonIcon() }}</v-icon>
+          <v-icon left v-show="shapeAddIconIsVisible">{{ shapeAddButtonIcon() }}</v-icon>
           <span>{{ shapeAddButtonName }}</span>
         </v-btn>
         <v-spacer></v-spacer>
@@ -55,11 +55,10 @@
           color="#3fa590"
           block
           outlined
-          :disabled="spot.getShape() === undefined"
-          @click="addDetailMap"
+          @click="onClickDetailMapAddButton()"
         >
-          <v-icon left>add</v-icon>
-          <span>詳細マップ</span>
+          <v-icon left v-show="!whileShapeEditingForDetailMapAdding">add</v-icon>
+          <span>{{ detailMapAddButtonName }}</span>
         </v-btn>
       </v-card-actions>
       <v-container id="delete-confirmation-dialog-container">
