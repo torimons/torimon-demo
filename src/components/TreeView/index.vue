@@ -40,13 +40,23 @@
                                 v-if="hover"
                                 @click.stop="confirmMapDeletion(item)"
                             >
-                                <v-icon>delete</v-icon>
+                                <v-tooltip id="tooltip" bottom>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-icon v-bind="attrs" v-on="on">delete</v-icon>
+                                    </template>
+                                    <span>削除</span>
+                                </v-tooltip>
                             </v-btn>
                             <v-btn icon
                                 v-if="hover"
                                 @click.stop="sendMapToDuplicate(item.id)"
                             >
-                                <v-icon>file_copy</v-icon>
+                                <v-tooltip id="tooltip" bottom>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-icon v-bind="attrs" v-on="on">file_copy</v-icon>
+                                    </template>
+                                    <span>複製</span>
+                                </v-tooltip>
                             </v-btn>
                         </template>
                     </div>
@@ -82,6 +92,9 @@
 }
 #delete-confirmation-dialog-container {
   position: absolute;
+  z-index: 1100;
+}
+#tooltip {
   z-index: 1100;
 }
 </style>
