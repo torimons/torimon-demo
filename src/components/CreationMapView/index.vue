@@ -60,34 +60,16 @@
                 pointer-events="none"
                 width="350px"
               >
-                <v-card
-                  flat
-                >
-                  <v-card
-                    flat
-                    color="#cbcdd1"
-                  >
-                  <v-card-text
-                  >
-                    Tree View
-                  </v-card-text>
-                  </v-card>
-                  <TreeView
-                    :items="items"
-                    @setMapToEdit="setMapToEdit"
-                    @setSpotToEdit="setSpotToEdit"
-                    @dup="duplicateDetailMap"
-                    @del="deleteDetailMap"
-                  />
-                </v-card>
 
-                <v-card 
+                <v-card
                   flat
                   v-if="focusedSpot !== null"
                 >
                   <v-card
                     flat
-                    color="#cbcdd1"
+                    tile
+                    dark
+                    color="#3fa590"
                   >
                   <v-card-text
                   >
@@ -104,6 +86,17 @@
                     @delete="deleteFocusedSpot"
                     @add="addDetailMap"
                     @edit="editDetailMap"
+                  />
+                </v-card>
+                <v-card
+                  flat
+                >
+                  <TreeView
+                    :items="items"
+                    @setMapToEdit="setMapToEdit"
+                    @setSpotToEdit="setSpotToEdit"
+                    @dup="duplicateDetailMap"
+                    @del="deleteDetailMap"
                   />
                 </v-card>
               </v-navigation-drawer>
