@@ -24,7 +24,7 @@
                   type="info"
                   border="top"
                   colored-border
-                  color="#CF944E"
+                  color="info"
                   v-show="mapAreaSelectionInfoIsVisible"
                 >
                   作成するマップの範囲を選択してください
@@ -33,7 +33,7 @@
                   type="info"
                   border="top"
                   colored-border
-                  color="#CF944E"
+                  color="info"
                   v-show="whileShapeEditing"
                 >
                   {{ messageWhileShapeEditing }}
@@ -42,7 +42,7 @@
                   type="warning"
                   border="top"
                   colored-border
-                  color="#824F3E"
+                  color="warning"
                   v-show="outOfMapRangeWarningIsVisible"
                 >
                   マップの範囲外です
@@ -65,7 +65,9 @@
                 >
                   <v-card
                     flat
-                    color="#cbcdd1"
+                    dark
+                    tile
+                    color="primary"
                   >
                   <v-card-text
                   >
@@ -85,7 +87,7 @@
                   >
                     <div
                       @click="item.type === 'Map'
-                        ? setMapToEdit(item.id) 
+                        ? setMapToEdit(item.id)
                         : setSpotToEdit(item.id)"
                     >
                     <v-btn
@@ -116,7 +118,9 @@
                 >
                   <v-card
                     flat
-                    color="#cbcdd1"
+                    dark
+                    tile
+                    color="primary"
                   >
                   <v-card-text
                   >
@@ -142,7 +146,7 @@
                 id="top-bar"
                 app
                 dense
-                color="#3F8373"
+                color="primary"
                 dark
               >
                 <v-app-bar-nav-icon
@@ -216,7 +220,7 @@
           </v-dialog>
         </v-container>
         <v-btn
-          color="#E18632"
+          color="secondary"
           fab
           small
           dark

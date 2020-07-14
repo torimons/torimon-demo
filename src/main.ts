@@ -18,6 +18,20 @@ new Vue({
         icons: {
             iconfont: 'mdi',
         },
+        theme: {
+            themes: {
+                light: {
+                    primary: '#3F8373',
+                    secondary: '#E18632',
+                    info: '#CF944E',
+                    warning: '#FF5252',
+                    accent: '#3FA590',
+                },
+                dark: {
+                    primary: '#3F8373',
+                },
+            },
+        },
     }),
     render: (h) => h(App),
 }).$mount('#app');

@@ -2,10 +2,10 @@
   <div class="map-selection">
     <v-app>
       <v-card
-          flat
-          tile
+        flat
+        tile
       >
-        <v-app-bar app color="#3F8373" dark>
+        <v-app-bar app color="primary" dark>
           <v-toolbar-title>Selection Page</v-toolbar-title>
         </v-app-bar>
         <v-container id="search-bar" class="pt-12" fluid>
@@ -18,19 +18,19 @@
           </v-row>
         </v-container>
       </v-card>
-          <router-link to="CreationMapView">
-            <v-btn
-              fab
-              fixed
-              bottom
-              right
-              color="#E18632"
-              dark
-              id="create-map"
-            >
-              <v-icon>add</v-icon>
-            </v-btn>
-          </router-link>
+      <router-link to="CreationMapView">
+        <v-btn
+          fab
+          fixed
+          bottom
+          right
+          color="secondary"
+          dark
+          id="create-map"
+        >
+          <v-icon>add</v-icon>
+        </v-btn>
+      </router-link>
     </v-app>
   </div>
 </template>
@@ -40,9 +40,9 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import MapSearch from '@/components/MapSearch/index.vue';
 
 @Component({
-    components: {
-        MapSearch,
-    },
+  components: {
+    MapSearch,
+  },
 })
 export default class MapSelection extends Vue {
 }

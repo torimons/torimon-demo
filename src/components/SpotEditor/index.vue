@@ -32,7 +32,7 @@
       <v-card-actions>
         <v-btn
           class="ma-1"
-          color="#3fa590"
+          color="accent"
           outlined
           @click="onClickShapeAddButton()"
         >
@@ -42,7 +42,7 @@
         <v-spacer></v-spacer>
         <v-btn
           class="ma-1"
-          color="#3FA590"
+          color="accent"
           outlined
           @click.stop="dialog = true"
         >
@@ -53,7 +53,7 @@
       <v-card-actions>
         <v-btn
           block
-          color="#3fa590"
+          color="accent"
           outlined
           :disabled="spot.getShape() === undefined"
           @click="addDetailMap"

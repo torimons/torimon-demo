@@ -8,22 +8,22 @@
     </v-card-title>
     <v-divider></v-divider>
     <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn
-        class="delete"
-        text
-        color="primary"
-        @click="confirmedDeletion"
-      >
-        Delete
-      </v-btn>
       <v-btn
         class="cancel"
-        color="secondary"
+        color="primary"
         text
         @click="cancelDeletion"
       >
         Cancel
+      </v-btn>
+      <v-spacer></v-spacer>
+      <v-btn
+        class="delete"
+        text
+        color="warning"
+        @click="confirmedDeletion"
+      >
+        Delete
       </v-btn>
     </v-card-actions>
   </v-card>

@@ -22,7 +22,7 @@
 
         <v-app-bar
             app
-            color="#3F8373"
+            color="primary"
             dark
         >
             <v-spacer></v-spacer>
@@ -33,7 +33,7 @@
         <slot></slot>
 
         <v-footer
-            color="#3F8373"
+            color="primary"
             app
         >
             <v-spacer></v-spacer>
