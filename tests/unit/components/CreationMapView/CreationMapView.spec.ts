@@ -159,6 +159,7 @@ describe('components/CreationMapView', () => {
             },
         );
         (wrapper.vm.rootMap as Map).addSpot(testSpot);
+        wrapper.setData({drawer: true});
         wrapper.setData({focusedSpot: testSpot});
         (wrapper.vm.shapeEditor as ShapeEditor).displayPolygons = jest.fn();
         (wrapper.vm.shapeEditor as ShapeEditor).addPolygonLine = jest.fn();
@@ -180,6 +181,7 @@ describe('components/CreationMapView', () => {
 
         wrapper.setData({rootMap});
         wrapper.setData({focusedSpot: testSpot});
+        wrapper.setData({drawer: true});
         rootMap.addSpot(testSpot);
         testSpot.addDetailMaps([testDetailMap]);
         expect(testSpot.getDetailMaps().length).toBe(1);
@@ -197,6 +199,7 @@ describe('components/CreationMapView', () => {
         const testSpot = new Spot(0, 'testSpot', { lat: 0, lng: 0 });
         wrapper.setData({focusedSpot: testSpot});
         wrapper.setData({rootMap});
+        wrapper.setData({drawer: true});
         testSpot.addDetailMaps([testDetailMap]);
         rootMap.addSpot(testSpot);
         expect(testSpot.getDetailMaps().length).toBe(1);
