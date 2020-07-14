@@ -438,7 +438,7 @@ export default class CreationMapView extends Vue {
 
         this.focusedSpot!.addDetailMaps([newDetailMap]);
         newDetailMap.setParentSpot(this.focusedSpot!);
-
+        this.setMapToEdit(newDetailMap.getId());
     }
 
     /**
