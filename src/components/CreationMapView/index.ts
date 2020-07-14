@@ -37,6 +37,7 @@ export default class CreationMapView extends Vue {
     private messageWhileShapeEditing: 'クリックしてスポットの範囲を描画' | '始点をクリックして範囲選択を終了する' = 'クリックしてスポットの範囲を描画';
     private outOfMapRangeWarningIsVisible: boolean = false;
     private shapeEditButtonIsVisible: boolean = false;
+    private whileShapeEditingForDetailMapAdding: boolean = false;
     private spotButtonInEditorToolBarIsVisible: boolean = false;
     private flyToMapBoundsButtonIsVisible: boolean = false;
     private whileShapeEditing: boolean = false;
@@ -300,8 +301,10 @@ export default class CreationMapView extends Vue {
 
     /**
      * マップクリック時に実行される関数を，形状描画メソッドにする
+     * @param onShapeCreated 形状の作成が完了したときに呼び出す関数
      */
-    private setAddPointMethodOnMapClick(): void {
+    private setAddPointMethodOnMapClick(onShapeCreated: () => void = () => undefined): void {
+        this.shapeEditor.removeShapeEditLine();
         this.whileShapeEditing = true;
         if (this.leafletContainer !== null) {
             this.leafletContainer.style.cursor = 'crosshair';
@@ -338,18 +341,52 @@ export default class CreationMapView extends Vue {
                 setTimeout(this.setDefaultMethodOnMapClick, 500);
                 this.whileShapeEditing = false;
                 this.messageWhileShapeEditing = 'クリックしてスポットの範囲を描画';
+                onShapeCreated();
             };
             this.shapeEditor.addPoint(e);
         };
     }
 
     /**
+     * スポットエディターでスポットの範囲選択ボタンが押された際に実行
+     */
+    private  onClickShapeAddButton(): void {
+        this.whileShapeEditingForDetailMapAdding = false;
+        this.setAddPointMethodOnMapClick();
+    }
+
+    /**
+     * スポットのShape編集をキャンセル
+     * スポットエディタースポットの範囲選択がキャンセルされた際と，
      * 編集ツールバーコンボーネントでモードが切り替わった際に実行される
      */
     private cancelShapeEditMode() {
         this.shapeEditButtonIsVisible = false;
         this.shapeEditor.removeShapeEditLine();
         this.whileShapeEditing = false;
+    }
+
+    /**
+     * スポットエディターでスポットの詳細マップ追加ボタンがクリックされた際に実行
+     */
+    private onClickDetailMapAddButton() {
+        if (this.focusedSpot!.getShape() === undefined) {
+            this.whileShapeEditingForDetailMapAdding = true;
+            this.setAddPointMethodOnMapClick(() => {
+                this.whileShapeEditingForDetailMapAdding = false;
+                this.addDetailMap();
+            });
+        } else {
+            this.addDetailMap();
+        }
+    }
+
+    /**
+     * 詳細マップの追加（のためのShape編集を）キャンセル
+     */
+    private cancelDetailMapAddMode() {
+        this.whileShapeEditingForDetailMapAdding = false;
+        this.cancelShapeEditMode();
     }
 
     /**
@@ -383,6 +420,7 @@ export default class CreationMapView extends Vue {
         mapViewMutations.setRootMap(this.rootMap);
     }
 
+
     /**
      * SpotEditorの詳細マップ追加ボタンをクリックすると呼ばれ、スポットに詳細マップを追加する。
      * 現状はマップ生成時にnameを定数値にしている。
@@ -414,6 +452,7 @@ export default class CreationMapView extends Vue {
 
         this.focusedSpot!.addDetailMaps([newDetailMap]);
         newDetailMap.setParentSpot(this.focusedSpot!);
+        this.setMapToEdit(newDetailMap.getId());
     }
 
     /**

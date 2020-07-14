@@ -79,12 +79,14 @@
                   <SpotEditor
                     :isVisible="focusedSpot !== null"
                     @spotInput="updateFocusedMarkerName"
-                    :whileShapeEditing="whileShapeEditing"
                     :spot="focusedSpot"
-                    @clickAddShapeButton="setAddPointMethodOnMapClick"
+                    :whileShapeEditing="whileShapeEditing"
+                    :whileShapeEditingForDetailMapAdding="whileShapeEditingForDetailMapAdding"
+                    @clickAddShapeButton="onClickShapeAddButton"
                     @clickAddShapeCancelButton="cancelShapeEditMode"
+                    @clickDetailMapAddButton="onClickDetailMapAddButton"
+                    @clickDetailMapAddCancelButton="cancelDetailMapAddMode"
                     @delete="deleteFocusedSpot"
-                    @add="addDetailMap"
                     @edit="editDetailMap"
                   />
                 </v-card>
@@ -161,7 +163,7 @@
                   @clickZoomOut="zoomOut"
                   @clickSelect="setDefaultMethodOnMapClick"
                   @clickSpot="setAddSpotMethodOnMapClick"
-                  @switchMode="cancelShapeEditMode"
+                  @switchMode="cancelDetailMapAddMode"
                   :spotButtonIsVisible="spotButtonInEditorToolBarIsVisible"
                   :shapeEditButtonIsVisible="shapeEditButtonIsVisible"
                 />
