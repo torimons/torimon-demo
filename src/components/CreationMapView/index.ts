@@ -303,7 +303,7 @@ export default class CreationMapView extends Vue {
      * マップクリック時に実行される関数を，形状描画メソッドにする
      * @param onShapeCreated 形状の作成が完了したときに呼び出す関数
      */
-    private setAddPointMethodOnMapClick(onShapeCreated: () => void): void {
+    private setAddPointMethodOnMapClick(onShapeCreated: () => void = () => undefined): void {
         this.shapeEditor.removeShapeEditLine();
         this.whileShapeEditing = true;
         if (this.leafletContainer !== null) {
