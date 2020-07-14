@@ -9,7 +9,7 @@ Vue.use(VueRouter);
 
 const routes = [
     {
-        path: '/',
+        path: '/map-select',
         name: 'map-select',
         component: MapSelection,
     },
@@ -25,7 +25,7 @@ const routes = [
         component: CreationMapView,
     },
     {
-        path: '/home',
+        path: '/',
         name: 'Home',
         component: Home,
     },

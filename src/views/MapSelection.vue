@@ -7,6 +7,13 @@
       >
         <v-app-bar app color="primary" dark>
           <v-toolbar-title>Selection Page</v-toolbar-title>
+          <v-spacer/>
+          <v-btn
+            to="/"
+            text
+          >
+            <v-icon left>home</v-icon>home
+          </v-btn>
         </v-app-bar>
         <v-container id="search-bar" class="pt-12" fluid>
           <v-row>

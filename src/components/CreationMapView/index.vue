@@ -180,15 +180,22 @@
                   icon
                   @click="dialog = true; setMapToStore()"
                 >
-                <v-tooltip right>
-                  <template v-slot:activator="{ on, attrs }">
-                  <v-icon
-                    v-bind="attrs"
-                    v-on="on"
-                  >cloud_upload</v-icon>
-                </template>
-                <span>アップロード</span>
-              </v-tooltip>
+                  <v-tooltip right>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon
+                        v-bind="attrs"
+                        v-on="on"
+                      >cloud_upload</v-icon>
+                    </template>
+                    <span>アップロード</span>
+                  </v-tooltip>
+                </v-btn>
+                <v-spacer/>
+                <v-btn
+                  to="/"
+                  text
+                >
+                  <v-icon left>home</v-icon>home
                 </v-btn>
               </v-app-bar>
             </v-col>
