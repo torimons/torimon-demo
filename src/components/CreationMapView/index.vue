@@ -55,10 +55,11 @@
           <v-row>
             <v-col>
               <v-navigation-drawer
-                v-model="drawer"
+                v-if="drawer"
                 app
                 pointer-events="none"
                 width="350px"
+                permanent
               >
 
                 <v-card
