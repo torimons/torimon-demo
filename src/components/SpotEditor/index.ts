@@ -90,7 +90,7 @@ export default class SpotEditor extends Vue {
     }
 
     private onClickShapeAddButton(): void {
-        if (this.whileShapeEditing) {
+        if (this.whileShapeEditing && !this.whileShapeEditingForDetailMapAdding) {
             this.$emit('clickAddShapeCancelButton');
         } else {
             this.$emit('clickAddShapeButton');
