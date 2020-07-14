@@ -1,6 +1,7 @@
 {
     "maps": [
         {
+            "_id": "hogehogetekitou",
             "id": 0,
             "name": "九州大学",
             "bounds": {
@@ -39,6 +40,7 @@
                     "description": "全学・工学系の共通講義と大学院統合新領域学府オートモーティブサイエンス専攻の教育研究等を行う施設",
                     "detailMaps": [
                         {
+                            "_id": "hogehogetekitou1f",
                             "id": 1,
                             "name": "総合学習プラザ 1F",
                             "floorName": "1F",
@@ -412,6 +414,7 @@
             ]
         },
         {
+            "_id": "hogehogetekitou1",
             "id": 1,
             "name": "総合学習プラザ",
             "bounds": {
@@ -427,6 +430,7 @@
             "description": "総合学習プラザの地図データです"
         },
         {
+            "_id": "hogehogetekitou2",
             "id": 2,
             "name": "ウェスト2号館",
             "bounds": {

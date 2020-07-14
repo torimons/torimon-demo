@@ -6,10 +6,10 @@ export default class EditorToolBar extends Vue {
     // 色は仮
     private selectedColor: string = '#264F45';
     private defaultColor: string = '#76978F';
-    private buttons: Array<{ action: Action, icon: string, color: string }> = [
-        {action: 'zoomIn',  icon: 'zoom_in',  color: this.defaultColor},
-        {action: 'zoomOut', icon: 'zoom_out', color: this.defaultColor},
-        {action: 'move',    icon: 'pan_tool', color: this.selectedColor},
+    private buttons: Array<{ action: Action, icon: string, color: string, tooltip: string }> = [
+        {action: 'zoomIn',  icon: 'zoom_in',  color: this.defaultColor, tooltip: '拡大'},
+        {action: 'zoomOut', icon: 'zoom_out', color: this.defaultColor, tooltip: '縮小'},
+        {action: 'move',    icon: 'pan_tool', color: this.selectedColor, tooltip: '移動'},
     ];
     private spotButtonColor: string = this.defaultColor;
     private spotIconMaps: Array<{iconName: string, spotType: SpotType}> = [

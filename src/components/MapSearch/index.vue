@@ -5,6 +5,24 @@
             flat
             :color="backgroundColor"
         >
+            <div v-show="loading">
+                <v-alert type="info">
+                    データを取得しています
+                    <template v-slot:append>
+                        <v-progress-circular
+                            indeterminate
+                            color="white"
+                        >
+                        </v-progress-circular>
+                    </template>
+                </v-alert>
+            </div>
+            <v-alert
+                v-if="!loading && !getDataSucceeded"
+                type="error"
+            >
+                エラーが発生しました．リロードしてください．
+            </v-alert>
             <div
                 v-if="getDataSucceeded"
             >
@@ -16,12 +34,6 @@
                     class="px-2 pb-2"
                 ></MapList>
             </div>
-            <v-alert
-                v-else
-                type="error"
-            >
-                エラーが発生しました．リロードしてください．
-            </v-alert>
         </v-card>
     </div>
 </template>

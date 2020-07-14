@@ -132,7 +132,9 @@ export default class ShapeEditor {
      * マップ上にCircleMarkerを用いた点と，前の点から続くPolyLineを用いた線を描画する
      * @param e 終点追加後に完成したShapeを引数に取るコールバック関数をメンバにもつ
      */
-    public addPoint(e: { latlng: L.LatLng, afterAddEndPoint: (shape: Shape) => void }): void {
+    public addPoint(e: {
+        latlng: L.LatLng, afterAddEndPoint: (shape: Shape) => void, afterSecondClick: () => void,
+    }): void {
         this.coordinates.push(e.latlng as Coordinate);
 
         const circleMarker: L.CircleMarker = L.circleMarker(e.latlng, {
@@ -143,23 +145,32 @@ export default class ShapeEditor {
                 const shape: Shape = this.createShape();
                 e.afterAddEndPoint(shape);
             });
+            circleMarker.on('mouseover', (event) => {
+                if (this.circleMarkers.length > 1) {
+                    circleMarker.setStyle({fillColor: '#CF944E'});
+                }
+            });
+            circleMarker.on('mouseout', (event) => {
+                if (this.circleMarkers.length > 1) {
+                    circleMarker.setStyle({fillColor: 'white'});
+                }
+            });
         }
+        if (this.circleMarkers.length === 1) {
+            e.afterSecondClick();
+        }
+        this.lMap.on('mousemove', (event: L.LeafletMouseEvent) => {
+            const coordinates = this.coordinates.concat([event.latlng]);
+            this.displayRouteLine(coordinates);
+        });
         circleMarker.addTo(this.lMap);
         this.circleMarkers.push(circleMarker);
 
         if (this.coordinates.length > 1) {
-            if (this.routeLine !== null) {
-                this.routeLine.remove();
-                this.controlLayer.removeLayer(this.routeLine);
-            }
-            this.routeLine = L.polyline(this.coordinates, {
-                color: '#555555',
-                weight: 5,
-                opacity: 0.7,
-            });
-            this.routeLine.addTo(this.lMap);
+            this.displayRouteLine(this.coordinates);
         }
     }
+
 
     /**
      * 指定されたスポットのポリゴンを表示する
@@ -214,6 +225,20 @@ export default class ShapeEditor {
         this.circleMarkers.forEach((marker) => marker.remove());
         this.circleMarkers = [];
         this.coordinates = [];
+        this.lMap.off('mousemove');
+    }
+
+    private displayRouteLine(coordinates: Coordinate[]) {
+        if (this.routeLine !== null) {
+            this.routeLine.remove();
+            this.controlLayer.removeLayer(this.routeLine);
+        }
+        this.routeLine = L.polyline(coordinates, {
+            color: '#555555',
+            weight: 5,
+            opacity: 0.7,
+        });
+        this.routeLine.addTo(this.lMap);
     }
 
     /**

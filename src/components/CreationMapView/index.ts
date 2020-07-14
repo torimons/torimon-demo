@@ -1,4 +1,4 @@
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 import 'leaflet/dist/leaflet.css';
 import { mapViewGetters, mapViewMutations } from '@/store';
 import L, { LeafletEvent, Marker } from 'leaflet';
@@ -12,31 +12,35 @@ import ShapeEditor from './ShapeEditor';
 import { cloneDeep } from 'lodash';
 import MapInformationDialog from '@/components/MapInformationDialog/index.vue';
 import { getBounds, isPointInPolygon } from 'geolib';
+import TreeView from '@/components/TreeView/index.vue';
 
 @Component({
     components: {
         EditorToolBar,
         SpotEditor,
         MapInformationDialog,
+        TreeView,
     },
 })
 export default class CreationMapView extends Vue {
     private lMap!: L.Map;
     private defaultZoomLevel: number = 14;
     private leafletContainer!: HTMLElement | null;
-    private map: Map = new Map(0, 'New Map', {
+    private rootMap: Map = new Map(0, 'New Map', {
         topL: { lat: 33.596643, lng: 130.215516 },
         botR: { lat: 33.594083, lng: 130.220609 },
     });
-    private mapToEdit: Map = this.map;
+    private mapToEdit: Map = this.rootMap;
     // 次にクリックしたときに設置されるスポットタイプ
     private spotTypeToAddNext: SpotType = 'default';
     private mapAreaSelectionInfoIsVisible: boolean = true;
+    private messageWhileShapeEditing: 'クリックしてスポットの範囲を描画' | '始点をクリックして範囲選択を終了する' = 'クリックしてスポットの範囲を描画';
     private outOfMapRangeWarningIsVisible: boolean = false;
     private shapeEditButtonIsVisible: boolean = false;
+    private whileShapeEditingForDetailMapAdding: boolean = false;
     private spotButtonInEditorToolBarIsVisible: boolean = false;
     private flyToMapBoundsButtonIsVisible: boolean = false;
-    private disabledShapeEditButtonInSpotEditor: boolean = false;
+    private whileShapeEditing: boolean = false;
     private spotEditorIsVisible: boolean = false;
     private focusedSpot: Spot | null = null;
     private spotMarkers: SpotMarker[] = [];
@@ -49,18 +53,18 @@ export default class CreationMapView extends Vue {
 
     // 作成中のマップtreeviewで利用
     private items: any = [];
-    private tree = [];
     private mapFileTreeDialog: boolean = false;
     private drawer: boolean = false;
 
     private whileMapNameEditing: boolean = false;
     private mapNameColor: string = 'background-color:#3F8373';
+    private isOpenTreeView: boolean = true;
 
     /**
      * とりあえず地図の表示を行なっています．
      */
     public mounted() {
-        const rootMapCenter: Coordinate = this.map.getCenter();
+        const rootMapCenter: Coordinate = this.rootMap.getCenter();
         this.lMap = L.map('map', { zoomControl: false })
             .setView([rootMapCenter.lat, rootMapCenter.lng], this.defaultZoomLevel);
         L.tileLayer(
@@ -77,29 +81,51 @@ export default class CreationMapView extends Vue {
         }
         this.shapeEditor = new ShapeEditor(this.lMap);
         mapViewMutations.setIsMapCreated(true);
+        /* 既存のマップを元に作成を始める場合 */
+        if (this.$route !== undefined) { // テスト時のエラー回避
+            if (this.$route.params.from === 'edit') {
+                this.rootMap = mapViewGetters.rootMap;
+                this.resetAllIds();
+                this.rootMap.getSpots().forEach((spot) => {
+                    this.displaySpotMarker(spot);
+                });
+                this.shapeEditor.displayPolygons(this.rootMap.getSpots());
+                this.mapToEdit = this.rootMap;
+                this.shapeEditor.drawRectangle(this.rootMap.getBounds());
+                this.currentId = this.getNextId();
+                this.initMapView();
+                return;
+            }
+        }
         const selectMapArea = (e: any) => {
             if (!('latlng' in e)) {
                 return;
             }
             e.onEndSelection = (bounds: L.LatLngBounds) => {
-                this.map.setBounds({
+                this.rootMap.setBounds({
                     topL: bounds.getNorthWest(),
                     botR: bounds.getSouthEast(),
                 });
-                const zoomLevel = this.lMap.getBoundsZoom(bounds, false);
-                this.lMap.setView(this.map.getCenter(), zoomLevel);
-                this.onMapClick = () => undefined;
-                this.spotButtonInEditorToolBarIsVisible = true;
-                this.mapAreaSelectionInfoIsVisible = false;
-                this.flyToMapBoundsButtonIsVisible = true;
-                if (this.leafletContainer !== null) {
-                    this.leafletContainer.style.removeProperty('cursor');
-                }
-                this.lMap.on('click', (event) => this.onMapClick(event));
+                this.initMapView();
             };
             this.shapeEditor.startRectangleSelection(e);
         };
         this.lMap.on('click', (e) => selectMapArea(e));
+    }
+
+    private initMapView() {
+        const zoomLevel = this.lMap.getBoundsZoom(
+            new L.LatLngBounds(this.rootMap.getBounds().topL, this.rootMap.getBounds().botR), false,
+        );
+        this.lMap.setView(this.rootMap.getCenter(), zoomLevel);
+        this.onMapClick = () => undefined;
+        this.spotButtonInEditorToolBarIsVisible = true;
+        this.mapAreaSelectionInfoIsVisible = false;
+        this.flyToMapBoundsButtonIsVisible = true;
+        if (this.leafletContainer !== null) {
+            this.leafletContainer.style.removeProperty('cursor');
+        }
+        this.lMap.on('click', (event) => this.onMapClick(event));
     }
 
     private flyToMapBounds(): void {
@@ -117,9 +143,9 @@ export default class CreationMapView extends Vue {
     /**
      * スポット、詳細マップの追加が行われるとtreeviewを更新する
      */
-    @Watch('map', {deep: true})
+    @Watch('rootMap', {deep: true})
     private updateMapTreeView() {
-        this.items = [this.mapToJson(this.map)];
+        this.items = [this.mapToJson(this.rootMap)];
     }
 
     /**
@@ -144,6 +170,7 @@ export default class CreationMapView extends Vue {
             id: spot.getId(),
             name: spot.getName(),
             type: 'Spot',
+            iconName: spot.getIconName(),
             children: spot.getDetailMaps().map((m: Map) => this.mapToJson(m)),
         };
     }
@@ -184,10 +211,10 @@ export default class CreationMapView extends Vue {
      */
     private addSpot(e: L.LeafletMouseEvent): void {
         let isPointInMapArea: boolean;
-        if (this.map.getId() ===  this.mapToEdit.getId()) {
+        if (this.rootMap.getId() ===  this.mapToEdit.getId()) {
             const lBouds = new L.LatLngBounds(
-                this.map.getBounds().topL as L.LatLng,
-                this.map.getBounds().botR as L.LatLng);
+                this.rootMap.getBounds().topL as L.LatLng,
+                this.rootMap.getBounds().botR as L.LatLng);
             isPointInMapArea = !lBouds.contains(e.latlng);
         } else {
             const parentSpot: Spot = this.mapToEdit.getParentSpot()!;
@@ -209,13 +236,18 @@ export default class CreationMapView extends Vue {
         );
         this.mapToEdit.addSpot(newSpot);
 
-        const newMarker: SpotMarker = new SpotMarker(newSpot);
+
+        const spotMarker: SpotMarker = this.displaySpotMarker(newSpot);
+        this.switchFocusedMarker(spotMarker);
+        this.drawer = true;
+    }
+
+    private displaySpotMarker(spot: Spot): SpotMarker {
+        const newMarker: SpotMarker = new SpotMarker(spot);
         newMarker.addTo(this.lMap);
         newMarker.on('click', (event) => this.switchFocusedMarker(event.target));
         this.spotMarkers.push(newMarker);
-
-        this.switchFocusedMarker(newMarker);
-        this.drawer = true;
+        return newMarker;
     }
 
     private unfocusedMarker(): void {
@@ -269,14 +301,21 @@ export default class CreationMapView extends Vue {
 
     /**
      * マップクリック時に実行される関数を，形状描画メソッドにする
+     * @param onShapeCreated 形状の作成が完了したときに呼び出す関数
      */
-    private setAddPointMethodOnMapClick(): void {
-        this.disabledShapeEditButtonInSpotEditor = true;
+    private setAddPointMethodOnMapClick(onShapeCreated: () => void = () => undefined): void {
+        this.shapeEditor.removeShapeEditLine();
+        this.whileShapeEditing = true;
         if (this.leafletContainer !== null) {
             this.leafletContainer.style.cursor = 'crosshair';
         }
         this.shapeEditButtonIsVisible = true;
-        this.onMapClick = (e: { latlng: L.LatLng, afterAddEndPoint: (shape: Shape) => void }) => {
+        this.onMapClick = (e: {
+            latlng: L.LatLng, afterSecondClick: () => void, afterAddEndPoint: (shape: Shape) => void,
+        }) => {
+            e.afterSecondClick = () => {
+                this.messageWhileShapeEditing = '始点をクリックして範囲選択を終了する';
+            };
             /**
              * ラインの終点が描画された後に呼び出される関数
              * ポリゴンの描画や後処理を行う
@@ -300,19 +339,54 @@ export default class CreationMapView extends Vue {
                  */
                 this.onMapClick = (event: any) => undefined;
                 setTimeout(this.setDefaultMethodOnMapClick, 500);
-                this.disabledShapeEditButtonInSpotEditor = false;
+                this.whileShapeEditing = false;
+                this.messageWhileShapeEditing = 'クリックしてスポットの範囲を描画';
+                onShapeCreated();
             };
             this.shapeEditor.addPoint(e);
         };
     }
 
     /**
-     * 編集ツールバーコンボーケントでモードが切り替わった際に実行される
+     * スポットエディターでスポットの範囲選択ボタンが押された際に実行
      */
-    private onSwitchModeOfToolBar() {
+    private  onClickShapeAddButton(): void {
+        this.whileShapeEditingForDetailMapAdding = false;
+        this.setAddPointMethodOnMapClick();
+    }
+
+    /**
+     * スポットのShape編集をキャンセル
+     * スポットエディタースポットの範囲選択がキャンセルされた際と，
+     * 編集ツールバーコンボーネントでモードが切り替わった際に実行される
+     */
+    private cancelShapeEditMode() {
         this.shapeEditButtonIsVisible = false;
         this.shapeEditor.removeShapeEditLine();
-        this.disabledShapeEditButtonInSpotEditor = false;
+        this.whileShapeEditing = false;
+    }
+
+    /**
+     * スポットエディターでスポットの詳細マップ追加ボタンがクリックされた際に実行
+     */
+    private onClickDetailMapAddButton() {
+        if (this.focusedSpot!.getShape() === undefined) {
+            this.whileShapeEditingForDetailMapAdding = true;
+            this.setAddPointMethodOnMapClick(() => {
+                this.whileShapeEditingForDetailMapAdding = false;
+                this.addDetailMap();
+            });
+        } else {
+            this.addDetailMap();
+        }
+    }
+
+    /**
+     * 詳細マップの追加（のためのShape編集を）キャンセル
+     */
+    private cancelDetailMapAddMode() {
+        this.whileShapeEditingForDetailMapAdding = false;
+        this.cancelShapeEditMode();
     }
 
     /**
@@ -343,8 +417,9 @@ export default class CreationMapView extends Vue {
      * アップロードボタンクリック時にセットする
      */
     private setMapToStore() {
-        mapViewMutations.setRootMap(this.map);
+        mapViewMutations.setRootMap(this.rootMap);
     }
+
 
     /**
      * SpotEditorの詳細マップ追加ボタンをクリックすると呼ばれ、スポットに詳細マップを追加する。
@@ -370,13 +445,14 @@ export default class CreationMapView extends Vue {
 
         const newDetailMap: Map = new Map(
             nextMapId,
-            'testDetailMap' + String(nextMapId),
+            '詳細マップ' + String(nextMapId),
             mapBounds,
             undefined,
         );
 
         this.focusedSpot!.addDetailMaps([newDetailMap]);
         newDetailMap.setParentSpot(this.focusedSpot!);
+        this.setMapToEdit(newDetailMap.getId());
     }
 
     /**
@@ -417,7 +493,7 @@ export default class CreationMapView extends Vue {
      * @param id 詳細マップのid
      */
     private setMapToEdit(id: number) {
-        const mapToEdit: Map | null = this.map.findMap(id);
+        const mapToEdit: Map | null = this.rootMap.findMap(id);
         if (mapToEdit === null) {
             throw new Error('This selected map does not exist.');
         }
@@ -425,7 +501,7 @@ export default class CreationMapView extends Vue {
     }
 
     private setSpotToEdit(id: number) {
-        const spotToEdit: Spot | null = this.map.findSpot(id);
+        const spotToEdit: Spot | null = this.rootMap.findSpot(id);
         if (spotToEdit === null) {
             throw new Error('This selected spot does not exist.');
         }
@@ -435,6 +511,13 @@ export default class CreationMapView extends Vue {
         }
         this.editDetailMap(parentMap);
         this.focusedSpot = spotToEdit;
+    }
+
+    @Watch('focusedSpot')
+    private updateMarker() {
+        const targetMarker: SpotMarker | undefined = this.spotMarkers
+            .find((spotMarker: SpotMarker) => spotMarker.getSpot().getId() === this.focusedSpot?.getId());
+        targetMarker?.setSelected(true);
     }
 
     /**
@@ -453,11 +536,19 @@ export default class CreationMapView extends Vue {
      * 引数のマップを複製してスポットに登録する。
      * @param map 複製対象のマップ
      */
-    private duplicateDetailMap(map: Map) {
+    private duplicateDetailMap(mapId: number) {
+        const targetMap: Map | null = this.rootMap.findMap(mapId);
+        if (targetMap === null) {
+            throw new Error('The selected Map does not exist.');
+        }
         const nextMapId = ++this.currentId;
-        const dupDetailMap = cloneDeep(map);
+        const dupDetailMap = cloneDeep(targetMap);
         this.setNewMapId(dupDetailMap);
-        this.focusedSpot!.addDetailMaps([dupDetailMap]);
+        const parentSpot: Spot | undefined = targetMap.getParentSpot();
+        if (parentSpot === undefined) {
+            throw new Error('Parent spot does not exist on selected Map');
+        }
+        parentSpot.addDetailMaps([dupDetailMap]);
     }
 
     /**
@@ -481,11 +572,44 @@ export default class CreationMapView extends Vue {
     }
 
     /**
-     * SpotEditorから詳細マップ削除イベントが発火されると呼び出され、
+     * TreeViewから詳細マップ削除イベントが発火されると呼び出され、
      * 指定されたidを持つ詳細マップをスポットから削除する
      * @param id 削除対象マップのid
      */
     private deleteDetailMap(id: number) {
-        this.focusedSpot!.deleteDetailMap(id);
+        const targetMap: Map | null = this.rootMap.findMap(id);
+        const parentSpot: Spot | undefined = targetMap?.getParentSpot();
+        if (parentSpot === undefined) {
+            throw new Error('The selected Map does not have parent spot.');
+        }
+        parentSpot.deleteDetailMap(id);
+    }
+
+    /**
+     * 次に設置するマップ及びスポットのIDを得る
+     */
+    private getNextId(): number {
+        const spotIds: number[] = this.rootMap.getAllDescendantSpots().map((spot) => spot.getId());
+        const maxNumOfSpotId = spotIds.reduce((accum, id) => Math.max(accum, id), -1);
+        const mapIds: number[] = this.rootMap.getAllDescendantMaps().map((map) => map.getId());
+        const maxNumOfMapId = mapIds.reduce((accum, id) => Math.max(accum, id), -1);
+        return Math.max(maxNumOfSpotId, maxNumOfMapId) + 1;
+    }
+
+    /**
+     * RootMap以下の全てのMapとSpotのIDを連番で再設定する
+     */
+    private resetAllIds(): void {
+        let id: number = 0;
+        const maps: Map[] = this.rootMap.getAllDescendantMaps();
+        for (const map of maps) {
+            map.setId(id++);
+        }
+        const spots: Spot[] = this.rootMap.getAllDescendantSpots();
+        for (const spot of spots) {
+            spot.setId(id++);
+        }
     }
 }
+
+
