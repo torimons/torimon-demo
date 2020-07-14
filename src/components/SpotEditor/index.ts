@@ -25,11 +25,11 @@ export default class SpotEditor extends Vue {
     private attachment: [{name: string, url: string}] = [{name: '', url: ''}];
     private dialog: boolean = false;
 
-    mounted() {
+    public mounted() {
         this.$watch(
             () => [this.whileShapeEditing, this.whileShapeEditingForDetailMapAdding],
             this.switchShapeAddButtonName,
-        )
+        );
     }
 
     /**
@@ -80,7 +80,6 @@ export default class SpotEditor extends Vue {
     }
 
     private switchShapeAddButtonName(): void {
-        console.log(this.whileShapeEditingForDetailMapAdding);
         if (this.whileShapeEditing && !this.whileShapeEditingForDetailMapAdding) {
             this.shapeAddButtonName = 'キャンセル';
             this.shapeAddIconIsVisible = false;
