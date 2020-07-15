@@ -4,8 +4,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/torimon-demo/404.html"
   },
   {
-    "revision": "01cbfe8a1c5711d9c0da",
-    "url": "/torimon-demo/css/app.a53de7f1.css"
+    "revision": "e06bef4f3009f07b8dcd",
+    "url": "/torimon-demo/css/app.4cde0962.css"
   },
   {
     "revision": "a8cf69da0b6e091bce40",
@@ -44,7 +44,31 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/torimon-demo/fonts/materialdesignicons-webfont.f5111234.ttf"
   },
   {
-    "revision": "b4178ecd99d1ccdf88aa5fe20423c5a3",
+    "revision": "48fb8a8037d090be968672d84d7bf8dc",
+    "url": "/torimon-demo/img/edit-detailmap.48fb8a80.png"
+  },
+  {
+    "revision": "507c04a20147cea943bd1d92ebdedbb5",
+    "url": "/torimon-demo/img/floor-switch.507c04a2.png"
+  },
+  {
+    "revision": "fea88c1e76c743484dd12df08936a922",
+    "url": "/torimon-demo/img/header-img.fea88c1e.png"
+  },
+  {
+    "revision": "a8d4951c95d8dd6b97064ea5ddc7d6c7",
+    "url": "/torimon-demo/img/make-spot.a8d4951c.png"
+  },
+  {
+    "revision": "2da4ad26d7a0ab5612d3247bc4612179",
+    "url": "/torimon-demo/img/search-spot.2da4ad26.png"
+  },
+  {
+    "revision": "394c0181fa43434dea5553974b06e74e",
+    "url": "/torimon-demo/img/spot-marker.394c0181.png"
+  },
+  {
+    "revision": "ba1fad5e9970a9ba401079372405123a",
     "url": "/torimon-demo/index.html"
   },
   {
@@ -52,8 +76,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/torimon-demo/js/about.1cc41081.js"
   },
   {
-    "revision": "01cbfe8a1c5711d9c0da",
-    "url": "/torimon-demo/js/app.9ad2ccaf.js"
+    "revision": "e06bef4f3009f07b8dcd",
+    "url": "/torimon-demo/js/app.b470b6c9.js"
   },
   {
     "revision": "a8cf69da0b6e091bce40",
