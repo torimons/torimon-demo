@@ -5,7 +5,7 @@
         @click.stop="openDialog()"
     >
       <v-img
-        :src="attachment"
+        :src="require('@/assets/spot-marker.png')"
         height="200px"
       ></v-img>
       <v-card-title>

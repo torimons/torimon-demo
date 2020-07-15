@@ -40,7 +40,7 @@
 
                         <router-link to="/CreationMapView">
                         <v-btn
-                            color="#3F8373"
+                            color="primary"
                             class="ma-2 white--text"
                             @click="startNewMap()"
                         >
@@ -59,7 +59,7 @@
                         </v-btn>
 
                         <v-btn
-                            color="#3F8373"
+                            color="primary"
                             class="ma-2 white--text"
                             @click="upload()"
                             :loading="loading"
