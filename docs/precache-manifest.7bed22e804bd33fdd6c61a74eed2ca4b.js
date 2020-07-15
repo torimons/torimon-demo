@@ -68,7 +68,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/torimon-demo/img/spot-marker.394c0181.png"
   },
   {
-    "revision": "ba1fad5e9970a9ba401079372405123a",
+    "revision": "c84f63ed932e389f8d2a3cecf2f583fd",
     "url": "/torimon-demo/index.html"
   },
   {

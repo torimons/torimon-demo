@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/torimon-demo/precache-manifest.732dfd98bc62b8b00a558bf3940d337e.js"
+  "/torimon-demo/precache-manifest.7bed22e804bd33fdd6c61a74eed2ca4b.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "torimon"});
