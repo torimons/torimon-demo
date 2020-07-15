@@ -28,6 +28,7 @@ describe('components/CreationMapView', () => {
             localVue,
             vuetify,
             attachToDocument: true,
+            stubs: ['router-link'],
         });
     });
 

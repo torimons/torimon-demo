@@ -12,7 +12,7 @@
             <v-card-actions>
                 <v-btn
                     class="ma-1"
-                    color="#3FA590"
+                    color="accent"
                     outlined
                     disabled
                 >
@@ -21,7 +21,7 @@
                 </v-btn>
                 <v-btn
                     class="ma-1"
-                    color="#3FA590"
+                    color="accent"
                     outlined
                     disabled
                 >
@@ -31,7 +31,7 @@
                 <v-spacer></v-spacer>
                 <v-btn
                     class="ma-1"
-                    color="#3FA590"
+                    color="accent"
                     tile
                     icon
                     @click="closeSpotInfoCard"

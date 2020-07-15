@@ -47,8 +47,8 @@
                       <v-icon v-if="!fabVisible && selectedMode == 'spot'">{{ selectedSpotIcon }}</v-icon>
                     </v-btn>
                   </template>
-                  <v-btn 
-                    color="#3F8373"
+                  <v-btn
+                    color="primary"
                     v-for="(spotIconMap, index) in spotIconMaps"
                     v-bind:key="index"
                     fab

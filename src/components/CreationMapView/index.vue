@@ -24,7 +24,7 @@
                   type="info"
                   border="top"
                   colored-border
-                  color="#CF944E"
+                  color="info"
                   v-show="mapAreaSelectionInfoIsVisible"
                 >
                   作成するマップの範囲を選択してください
@@ -33,7 +33,7 @@
                   type="info"
                   border="top"
                   colored-border
-                  color="#CF944E"
+                  color="info"
                   v-show="whileShapeEditing"
                 >
                   {{ messageWhileShapeEditing }}
@@ -42,7 +42,7 @@
                   type="warning"
                   border="top"
                   colored-border
-                  color="#824F3E"
+                  color="warning"
                   v-show="outOfMapRangeWarningIsVisible"
                 >
                   マップの範囲外です
@@ -68,9 +68,9 @@
                 >
                   <v-card
                     flat
-                    tile
                     dark
-                    color="#3fa590"
+                    tile
+                    color="primary"
                   >
                   <v-card-text
                   >
@@ -107,7 +107,7 @@
                 id="top-bar"
                 app
                 dense
-                color="#3F8373"
+                color="primary"
                 dark
               >
                 <v-app-bar-nav-icon
@@ -141,15 +141,22 @@
                   icon
                   @click="dialog = true; setMapToStore()"
                 >
-                <v-tooltip right>
-                  <template v-slot:activator="{ on, attrs }">
-                  <v-icon
-                    v-bind="attrs"
-                    v-on="on"
-                  >cloud_upload</v-icon>
-                </template>
-                <span>アップロード</span>
-              </v-tooltip>
+                  <v-tooltip right>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-icon
+                        v-bind="attrs"
+                        v-on="on"
+                      >cloud_upload</v-icon>
+                    </template>
+                    <span>アップロード</span>
+                  </v-tooltip>
+                </v-btn>
+                <v-spacer/>
+                <v-btn
+                  to="/"
+                  text
+                >
+                  <v-icon left>home</v-icon>home
                 </v-btn>
               </v-app-bar>
             </v-col>
@@ -181,7 +188,7 @@
           </v-dialog>
         </v-container>
         <v-btn
-          color="#E18632"
+          color="secondary"
           fab
           small
           dark

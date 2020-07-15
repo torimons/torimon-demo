@@ -4,14 +4,12 @@ import Home from '../views/Home.vue';
 import MainView from '../components/MainView/index.vue';
 import CreationMapView from '../components/CreationMapView/index.vue';
 import MapSelection from '../views/MapSelection.vue';
-import MainCreationView from '../components/MainCreationView/index.vue';
-import MapInformationDialog from '@/components/MapInformationDialog/index.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
     {
-        path: '/',
+        path: '/map-select',
         name: 'map-select',
         component: MapSelection,
     },
@@ -25,6 +23,11 @@ const routes = [
         path: '/CreationMapView',
         name: 'CreationMapView',
         component: CreationMapView,
+    },
+    {
+        path: '/',
+        name: 'Home',
+        component: Home,
     },
     {
         path: '/about',
